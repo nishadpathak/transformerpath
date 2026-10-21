@@ -96,7 +96,8 @@ function directorySection(ev) {
     // would 404. The name still appears in the list.
     const href = publishedHref(row.href);
     const link = href ? '<a href="' + esc(href) + '">' + label + '</a>' : label;
-    return '<li>' + link + '</li>';
+    const booth = row.booth ? ' <span style="color:var(--muted)">Booth ' + esc(row.booth) + '</span>' : '';
+    return '<li>' + link + booth + '</li>';
   }).join('');
   return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>';
 }

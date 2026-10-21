@@ -1,8 +1,92 @@
 {
   "$schema": "https://transformerpath.com/companies.schema.json",
-  "generated_at": "2026-10-21T01:40:04.715Z",
-  "count": 1478,
+  "generated_at": "2026-10-21T02:37:24.960Z",
+  "count": 1640,
   "companies": [
+    {
+      "id": "cmp:shizuki-electric",
+      "name": "(株)指月電機製作所",
+      "slug": "shizuki-electric",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Japan",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:365-transformer-services",
+      "name": "365 Transformer Services",
+      "slug": "365-transformer-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://365transformerservices.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://365transformerservices.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:3m",
+      "name": "3M",
+      "slug": "3m",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
     {
       "id": "cmp:a-plus-power-solution",
       "name": "A Plus Power Solution",
@@ -149,6 +233,36 @@
       },
       "sources": {
         "website": "https://advertiseethiopianbusiness.com/listing/abay-transformers-plc/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:abb",
+      "name": "ABB",
+      "slug": "abb",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:abb:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -597,6 +711,66 @@
       }
     },
     {
+      "id": "cmp:acs-laboratorios",
+      "name": "ACS Laboratorios",
+      "slug": "acs-laboratorios",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Brazil",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.acslab.com.br",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.acslab.com.br",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:action-instruments",
+      "name": "ACTION INSTRUMENTS",
+      "slug": "action-instruments",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:actom-power-and-distribution-transformers",
       "name": "ACTOM Power & Distribution Transformers",
       "slug": "actom-power-and-distribution-transformers",
@@ -658,6 +832,36 @@
       }
     },
     {
+      "id": "cmp:acutran-transformers",
+      "name": "Acutran Transformers",
+      "slug": "acutran-transformers",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://acutran.com",
+      "facility_ids": [
+        "fac:acutran-transformers:usa"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://acutran.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:aditya-powers",
       "name": "Aditya Powers",
       "slug": "aditya-powers",
@@ -685,6 +889,92 @@
       },
       "sources": {
         "website": "https://adityapowers.in",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:adn-testing-services",
+      "name": "ADN Testing Services",
+      "slug": "adn-testing-services",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Australia",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.adntesting.com.au",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.adntesting.com.au",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ads-metal",
+      "name": "ADS Metal",
+      "slug": "ads-metal",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Türkiye",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.adsmetal.com.tr",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.adsmetal.com.tr",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:aeisa-transformadores",
+      "name": "AEISA Transformadores",
+      "slug": "aeisa-transformadores",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Costa Rica",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://aeisacr.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://aeisacr.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -1326,6 +1616,34 @@
       },
       "sources": {
         "website": "https://alageum.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:alamo-transformer-supply",
+      "name": "ALAMO Transformer Supply",
+      "slug": "alamo-transformer-supply",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://alamotransformer.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://alamotransformer.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -2069,6 +2387,36 @@
       }
     },
     {
+      "id": "cmp:ametek",
+      "name": "Ametek",
+      "slug": "ametek",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.ametek.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.ametek.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:amimer-energie",
       "name": "Amimer Energie",
       "slug": "amimer-energie",
@@ -2097,6 +2445,36 @@
       },
       "sources": {
         "website": "https://www.amimerenergie.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:amotronics",
+      "name": "AMOtronics",
+      "slug": "amotronics",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.amotronics.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.amotronics.de",
         "capability_source": "",
         "capability_note": ""
       }
@@ -2968,6 +3346,62 @@
       }
     },
     {
+      "id": "cmp:asianol-biotech",
+      "name": "Asianol Biotech",
+      "slug": "asianol-biotech",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://asianol.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://asianol.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:aspectus-engineering-services",
+      "name": "Aspectus Engineering Services",
+      "slug": "aspectus-engineering-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Singapore",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://aspectus.com.sg",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://aspectus.com.sg",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:aspha-board-pvt-ltd",
       "name": "ASPHA BOARD PVT LTD",
       "slug": "aspha-board-pvt-ltd",
@@ -3183,6 +3617,36 @@
       },
       "sources": {
         "website": "https://www.atlastrafo.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:atlas-transformer",
+      "name": "Atlas Transformer",
+      "slug": "atlas-transformer",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Canada",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://atlastransformer.com",
+      "facility_ids": [
+        "fac:atlas-transformer:canada"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://atlastransformer.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -3990,6 +4454,34 @@
       }
     },
     {
+      "id": "cmp:bayou-transformers",
+      "name": "Bayou Transformers",
+      "slug": "bayou-transformers",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://bayoutransformers.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://bayoutransformers.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:bechtel-corporation-energy-transition-and-infrastructure",
       "name": "Bechtel Corporation — Energy Transition & Infrastructure",
       "slug": "bechtel-corporation-energy-transition-and-infrastructure",
@@ -4296,6 +4788,34 @@
       }
     },
     {
+      "id": "cmp:belyea-company",
+      "name": "Belyea Company",
+      "slug": "belyea-company",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.belyeapower.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.belyeapower.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:bemag-transformer",
       "name": "Bemag Transformer",
       "slug": "bemag-transformer",
@@ -4324,6 +4844,36 @@
       },
       "sources": {
         "website": "https://www.bemag.ca/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:bender-india-private-limited",
+      "name": "BENDER INDIA PRIVATE LIMITED",
+      "slug": "bender-india-private-limited",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -4974,6 +5524,34 @@
       }
     },
     {
+      "id": "cmp:brastrafo-do-brasil",
+      "name": "Brastrafo do Brasil",
+      "slug": "brastrafo-do-brasil",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Brazil",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://brastrafo.com.br",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://brastrafo.com.br",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:breimer-roth",
       "name": "Breimer-Roth",
       "slug": "breimer-roth",
@@ -5164,6 +5742,62 @@
       }
     },
     {
+      "id": "cmp:bss-hochspannungstechnik",
+      "name": "BSS Hochspannungstechnik",
+      "slug": "bss-hochspannungstechnik",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.bss-hochspannungstechnik.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.bss-hochspannungstechnik.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:bstransfo",
+      "name": "BSTransfo",
+      "slug": "bstransfo",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Italy",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.bstransfo.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.bstransfo.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:bth-hanoi-transformer-mfg",
       "name": "BTH – Hanoi Transformer Mfg.",
       "slug": "bth-hanoi-transformer-mfg",
@@ -5224,6 +5858,34 @@
       },
       "sources": {
         "website": "https://www.btracuk.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:buffalo-transformer-services",
+      "name": "Buffalo Transformer Services",
+      "slug": "buffalo-transformer-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.buffalotransformerservices.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.buffalotransformerservices.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -5445,6 +6107,34 @@
       }
     },
     {
+      "id": "cmp:cangzhou-kaiyang-electric",
+      "name": "Cangzhou Kaiyang Electric",
+      "slug": "cangzhou-kaiyang-electric",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://kaiyangelectric.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://kaiyangelectric.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:capri-transformers-pvt-ltd",
       "name": "Capri Transformers Pvt. Ltd.",
       "slug": "capri-transformers-pvt-ltd",
@@ -5596,6 +6286,36 @@
       },
       "sources": {
         "website": "https://cda-ingenieros.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:cea-compania-electro-andina",
+      "name": "CEA Compañía Electro Andina",
+      "slug": "cea-compania-electro-andina",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Peru",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://cea.com.pe",
+      "facility_ids": [
+        "fac:cea-compania-electro-andina:peru"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://cea.com.pe",
         "capability_source": "",
         "capability_note": ""
       }
@@ -6176,6 +6896,34 @@
       }
     },
     {
+      "id": "cmp:chengdu-zhongkai-electrical-equipment-co-ltd",
+      "name": "CHENGDU ZHONGKAI ELECTRICAL EQUIPMENT CO., LTD.",
+      "slug": "chengdu-zhongkai-electrical-equipment-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:china-bluestar-chengrand-co-ltd",
       "name": "CHINA BLUESTAR CHENGRAND CO., LTD.",
       "slug": "china-bluestar-chengrand-co-ltd",
@@ -6706,6 +7454,36 @@
       },
       "sources": {
         "website": "https://www.columbiapetro.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:comel-belgrade",
+      "name": "Comel Belgrade",
+      "slug": "comel-belgrade",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Serbia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://comel.rs",
+      "facility_ids": [
+        "fac:comel-belgrade:serbia"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://comel.rs",
         "capability_source": "",
         "capability_note": ""
       }
@@ -7862,6 +8640,34 @@
       }
     },
     {
+      "id": "cmp:delpro-a-s",
+      "name": "DELPRO A/S",
+      "slug": "delpro-a-s",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Denmark",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.delpro.dk",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.delpro.dk",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:delta-star",
       "name": "Delta Star",
       "slug": "delta-star",
@@ -8050,6 +8856,36 @@
       }
     },
     {
+      "id": "cmp:dhinimex",
+      "name": "Dhinimex",
+      "slug": "dhinimex",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Cambodia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://dhinimex.com",
+      "facility_ids": [
+        "fac:dhinimex:cambodia"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://dhinimex.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:diagnostic-technologies-india-pvt-ltd",
       "name": "DIAGNOSTIC TECHNOLOGIES INDIA PVT LTD",
       "slug": "diagnostic-technologies-india-pvt-ltd",
@@ -8113,6 +8949,34 @@
       }
     },
     {
+      "id": "cmp:digsilent-gmbh",
+      "name": "DIgSILENT GmbH",
+      "slug": "digsilent-gmbh",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.digsilent.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.digsilent.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:digvijay-industries",
       "name": "Digvijay Industries",
       "slug": "digvijay-industries",
@@ -8140,6 +9004,36 @@
       },
       "sources": {
         "website": "https://www.digvijayindustries.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:dilo",
+      "name": "Dilo",
+      "slug": "dilo",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.dilo.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.dilo.de",
         "capability_source": "",
         "capability_note": ""
       }
@@ -8265,6 +9159,36 @@
       },
       "sources": {
         "website": "https://www.dialacompany.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:dlv-ingenieria",
+      "name": "DLV Ingenieria",
+      "slug": "dlv-ingenieria",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Argentina",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.dlvingenieria.com.ar",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.dlvingenieria.com.ar",
         "capability_source": "",
         "capability_note": ""
       }
@@ -8651,6 +9575,34 @@
       }
     },
     {
+      "id": "cmp:dugan-technology-solutions",
+      "name": "Dugan Technology Solutions",
+      "slug": "dugan-technology-solutions",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Türkiye",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.duganenerji.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.duganenerji.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:dupont-nomex",
       "name": "DuPont (Nomex)",
       "slug": "dupont-nomex",
@@ -8831,6 +9783,36 @@
       "provenance": {
         "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:eaglerise-electric-and-electronic-china-co-ltd",
+      "name": "Eaglerise Electric & Electronic (China) Co., Ltd.",
+      "slug": "eaglerise-electric-and-electronic-china-co-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:eaglerise-electric-and-electronic-china-co-ltd:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
       },
       "sources": {
         "website": null,
@@ -9026,6 +10008,62 @@
       },
       "sources": {
         "website": "https://www.eaton.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:eaton-corporation",
+      "name": "Eaton Corporation",
+      "slug": "eaton-corporation",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:eaton-power-systems-division",
+      "name": "Eaton Power Systems Division",
+      "slug": "eaton-power-systems-division",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -9450,6 +10488,36 @@
       }
     },
     {
+      "id": "cmp:elcon-megarad-s-p-a",
+      "name": "Elcon Megarad S.p.a.",
+      "slug": "elcon-megarad-s-p-a",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:elec-steel-processing-industries-limited",
       "name": "ELEC STEEL PROCESSING INDUSTRIES LIMITED",
       "slug": "elec-steel-processing-industries-limited",
@@ -9539,6 +10607,36 @@
       },
       "sources": {
         "website": "https://www.emc-transformers.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:electric-power-systems",
+      "name": "Electric Power Systems",
+      "slug": "electric-power-systems",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -9760,6 +10858,34 @@
       },
       "sources": {
         "website": "http://www.electrored.com.bo/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:electro-standard",
+      "name": "Electro Standard",
+      "slug": "electro-standard",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Romania",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.electrostandard.ro",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.electrostandard.ro",
         "capability_source": "",
         "capability_note": ""
       }
@@ -10437,6 +11563,34 @@
       },
       "sources": {
         "website": "https://www.elininsulation.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:elinser",
+      "name": "ELINSER",
+      "slug": "elinser",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Spain",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://elinser.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://elinser.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -11392,6 +12546,34 @@
       }
     },
     {
+      "id": "cmp:emerson-solahd",
+      "name": "Emerson | SolaHD",
+      "slug": "emerson-solahd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:emh-energie-messtechnik-gmbh",
       "name": "EMH Energie-Messtechnik GmbH",
       "slug": "emh-energie-messtechnik-gmbh",
@@ -11606,6 +12788,62 @@
       },
       "sources": {
         "website": "https://www.emtecca.com.do/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:energis-high-voltage-resources",
+      "name": "Energis High Voltage Resources",
+      "slug": "energis-high-voltage-resources",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://energisinc.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://energisinc.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:energo-complex",
+      "name": "Energo-Complex",
+      "slug": "energo-complex",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Poland",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.energo-complex.pl",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.energo-complex.pl",
         "capability_source": "",
         "capability_note": ""
       }
@@ -11893,6 +13131,34 @@
       }
     },
     {
+      "id": "cmp:epms-limited",
+      "name": "EPMS Limited",
+      "slug": "epms-limited",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "United Kingdom",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://epmslimited.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://epmslimited.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:epp-composites-pvt-ltd",
       "name": "EPP COMPOSITES PVT LTD",
       "slug": "epp-composites-pvt-ltd",
@@ -11977,6 +13243,36 @@
       },
       "sources": {
         "website": "https://erea.be",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:eremu-transformers",
+      "name": "EREMU Transformers",
+      "slug": "eremu-transformers",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Spain",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.eremu.es",
+      "facility_ids": [
+        "fac:eremu-transformers:spain"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.eremu.es",
         "capability_source": "",
         "capability_note": ""
       }
@@ -12137,6 +13433,34 @@
       },
       "sources": {
         "website": "https://esennar.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:espi-limited",
+      "name": "ESPI Limited",
+      "slug": "espi-limited",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.espi.co.in",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.espi.co.in",
         "capability_source": "",
         "capability_note": ""
       }
@@ -12839,6 +14163,36 @@
       }
     },
     {
+      "id": "cmp:faramax",
+      "name": "FARAMAX",
+      "slug": "faramax",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Spain",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.faramax.com",
+      "facility_ids": [
+        "fac:faramax:spain"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.faramax.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:fatehpuria-transformers-and-switchgears-p-ltd",
       "name": "Fatehpuria Transformers & Switchgears (P) Ltd.",
       "slug": "fatehpuria-transformers-and-switchgears-p-ltd",
@@ -13071,6 +14425,34 @@
       "headquarters": {
         "country": "",
         "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:fieldbase-services-limited",
+      "name": "Fieldbase Services Limited",
+      "slug": "fieldbase-services-limited",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
         "address": ""
       },
       "website": "",
@@ -13517,6 +14899,34 @@
       }
     },
     {
+      "id": "cmp:fuootech",
+      "name": "FuooTech",
+      "slug": "fuootech",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.fuootech.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.fuootech.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:fyr-ingenieros-s-a-c-transformadores",
       "name": "FYR Ingenieros S.A.C. (Transformadores)",
       "slug": "fyr-ingenieros-s-a-c-transformadores",
@@ -13545,6 +14955,34 @@
       },
       "sources": {
         "website": "https://www.fyringenieros.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:g-k-xianghe-electricals-pvt-ltd",
+      "name": "G K XIANGHE ELECTRICALS PVT LTD",
+      "slug": "g-k-xianghe-electricals-pvt-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -13860,15 +15298,15 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 95,
+      "completeness_score": 60,
       "provenance": {
-        "type": "TRANSFORMERPATH_RESEARCHED",
+        "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.gevernova.com",
-        "capability_source": "GE Vernova SEC 10-K & Investor Disclosures",
-        "capability_note": "Electrification grid equipment manufacturing capacity reported across North American and European power transformer facilities in SEC disclosures."
+        "capability_source": "",
+        "capability_note": "The GE Vernova source (GE Vernova SEC 10-K & Investor Disclosures) describes a group envelope. Those figures are not a sourced rating for this site, so they are not shown here."
       }
     },
     {
@@ -13895,15 +15333,15 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 95,
+      "completeness_score": 60,
       "provenance": {
-        "type": "TRANSFORMERPATH_RESEARCHED",
+        "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.gevernova.com",
-        "capability_source": "GE Vernova SEC 10-K & Investor Disclosures",
-        "capability_note": "Electrification grid equipment manufacturing capacity reported across North American and European power transformer facilities in SEC disclosures."
+        "capability_source": "",
+        "capability_note": "The GE Vernova source (GE Vernova SEC 10-K & Investor Disclosures) describes a group envelope. Those figures are not a sourced rating for this site, so they are not shown here."
       }
     },
     {
@@ -13932,15 +15370,45 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 95,
+      "completeness_score": 60,
       "provenance": {
-        "type": "TRANSFORMERPATH_RESEARCHED",
+        "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.gevernova.com",
-        "capability_source": "GE Vernova SEC 10-K & Investor Disclosures",
-        "capability_note": "Electrification grid equipment manufacturing capacity reported across North American and European power transformer facilities in SEC disclosures."
+        "capability_source": "",
+        "capability_note": "The GE Vernova source (GE Vernova SEC 10-K & Investor Disclosures) describes a group envelope. Those figures are not a sourced rating for this site, so they are not shown here."
+      }
+    },
+    {
+      "id": "cmp:gec-zimbabwe",
+      "name": "GEC Zimbabwe",
+      "slug": "gec-zimbabwe",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Zimbabwe",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.gec.co.zw",
+      "facility_ids": [
+        "fac:gec-zimbabwe:zimbabwe"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.gec.co.zw",
+        "capability_source": "",
+        "capability_note": ""
       }
     },
     {
@@ -14068,6 +15536,36 @@
       }
     },
     {
+      "id": "cmp:gfuve-group",
+      "name": "GFUVE Group",
+      "slug": "gfuve-group",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.gfuvegroup.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.gfuvegroup.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:glassfibre-and-allied-industries",
       "name": "GLASSFIBRE & ALLIED INDUSTRIES",
       "slug": "glassfibre-and-allied-industries",
@@ -14091,6 +15589,36 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:global-electrical-laboratory",
+      "name": "Global Electrical Laboratory",
+      "slug": "global-electrical-laboratory",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.gelab.co.in",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.gelab.co.in",
         "capability_source": "",
         "capability_note": ""
       }
@@ -14406,6 +15934,34 @@
       }
     },
     {
+      "id": "cmp:grupo-inselqro",
+      "name": "Grupo Inselqro",
+      "slug": "grupo-inselqro",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Mexico",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.inselqro.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.inselqro.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:grupo-temi",
       "name": "Grupo TEMI",
       "slug": "grupo-temi",
@@ -14686,6 +16242,34 @@
       }
     },
     {
+      "id": "cmp:guanyu-electrical-group-co-ltd",
+      "name": "Guanyu Electrical Group Co., Ltd.",
+      "slug": "guanyu-electrical-group-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.guanyudq.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.guanyudq.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:guizhou-zhongqian-electrical-equipment-co-ltd",
       "name": "Guizhou Zhongqian Electrical Equipment Co., Ltd.",
       "slug": "guizhou-zhongqian-electrical-equipment-co-ltd",
@@ -14843,6 +16427,34 @@
       }
     },
     {
+      "id": "cmp:gw-electric",
+      "name": "GW Electric",
+      "slug": "gw-electric",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:h-j-enterprises-the-h-j-family-of-companies",
       "name": "H-J Enterprises (The H-J Family of Companies)",
       "slug": "h-j-enterprises-the-h-j-family-of-companies",
@@ -14903,6 +16515,36 @@
       "sources": {
         "website": "https://www.hdtransformers.co.in",
         "capability_source": "https://www.hdtransformers.co.in/distribution-transformer.html",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:h2scan",
+      "name": "H2scan",
+      "slug": "h2scan",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://h2scan.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://h2scan.com",
+        "capability_source": "",
         "capability_note": ""
       }
     },
@@ -15026,6 +16668,64 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:haleys-electrical-engineering-pty-ltd",
+      "name": "HALEYS ELECTRICAL ENGINEERING PTY LTD",
+      "slug": "haleys-electrical-engineering-pty-ltd",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:hammad-engineering",
+      "name": "Hammad Engineering",
+      "slug": "hammad-engineering",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Pakistan",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://hammadengineering.com",
+      "facility_ids": [
+        "fac:hammad-engineering:pakistan"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://hammadengineering.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -16014,6 +17714,34 @@
       }
     },
     {
+      "id": "cmp:hewad-engineering-services",
+      "name": "Hewad Engineering Services",
+      "slug": "hewad-engineering-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Pakistan",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://hewadeng.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://hewadeng.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:hi-tech-radiators-private-limited",
       "name": "Hi Tech Radiators Private Limited",
       "slug": "hi-tech-radiators-private-limited",
@@ -16072,6 +17800,66 @@
       },
       "sources": {
         "website": "https://www.highvolt.in",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:high-voltage-test-lab-sdn-bhd",
+      "name": "High Voltage Test Lab Sdn Bhd",
+      "slug": "high-voltage-test-lab-sdn-bhd",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Malaysia",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.hvtl.com.my",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.hvtl.com.my",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:hightest-technology",
+      "name": "Hightest Technology",
+      "slug": "hightest-technology",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "United Kingdom",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.hightest.co.uk",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.hightest.co.uk",
         "capability_source": "",
         "capability_note": ""
       }
@@ -16169,6 +17957,36 @@
       },
       "sources": {
         "website": "https://www.himelectronics.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:himag-planar-magnetics-ltd",
+      "name": "Himag Planar Magnetics Ltd",
+      "slug": "himag-planar-magnetics-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:himag-planar-magnetics-ltd:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -17114,6 +18932,64 @@
       }
     },
     {
+      "id": "cmp:hopu-filtration",
+      "name": "HOPU Filtration",
+      "slug": "hopu-filtration",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.hopufiltration.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.hopufiltration.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:houston-transformer-company",
+      "name": "Houston Transformer Company",
+      "slug": "houston-transformer-company",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://houstontransformer.com",
+      "facility_ids": [
+        "fac:houston-transformer-company:houston"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://houstontransformer.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:howard-industries-howard-power-solutions",
       "name": "Howard Industries (Howard Power Solutions)",
       "slug": "howard-industries-howard-power-solutions",
@@ -17141,6 +19017,34 @@
       },
       "sources": {
         "website": "https://www.howard-ind.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:hsp-hochspannungsgerate",
+      "name": "HSP Hochspannungsgeräte",
+      "slug": "hsp-hochspannungsgerate",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Germany",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.hsp-grid.com/en",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.hsp-grid.com/en",
         "capability_source": "",
         "capability_note": ""
       }
@@ -17176,6 +19080,36 @@
       }
     },
     {
+      "id": "cmp:htt-hochspannungstechnik-und-transformatorbau",
+      "name": "HTT Hochspannungstechnik und Transformatorbau",
+      "slug": "htt-hochspannungstechnik-und-transformatorbau",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Germany",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://htt-trafo.de",
+      "facility_ids": [
+        "fac:htt-hochspannungstechnik-und-transformatorbau:germany"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://htt-trafo.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:huaming-power-equipment-co-ltd",
       "name": "Huaming Power Equipment Co., Ltd.",
       "slug": "huaming-power-equipment-co-ltd",
@@ -17201,6 +19135,34 @@
       },
       "sources": {
         "website": "https://www.huaming.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:huatech-xiamen",
+      "name": "Huatech (Xiamen)",
+      "slug": "huatech-xiamen",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -17288,6 +19250,34 @@
       "provenance": {
         "type": "PUBLIC_SOURCE",
         "last_verified": "—"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:hunan-fengri-powerandelectric-co-ltd",
+      "name": "HUNAN FENGRI POWER&ELECTRIC CO., LTD",
+      "slug": "hunan-fengri-powerandelectric-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
       },
       "sources": {
         "website": null,
@@ -17410,6 +19400,64 @@
       }
     },
     {
+      "id": "cmp:hunan-sinopower-equipment-co-ltd",
+      "name": "Hunan Sinopower Equipment Co.,Ltd.",
+      "slug": "hunan-sinopower-equipment-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:hv-test",
+      "name": "HV Test",
+      "slug": "hv-test",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Mexico",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://hvtest.com.mx",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://hvtest.com.mx",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:hyosung",
       "name": "Hyosung",
       "slug": "hyosung",
@@ -17524,6 +19572,36 @@
       }
     },
     {
+      "id": "cmp:i-current-transformer",
+      "name": "I Current Transformer",
+      "slug": "i-current-transformer",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Hong Kong",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.icurrenttransformer.com",
+      "facility_ids": [
+        "fac:i-current-transformer:hong-kong"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.icurrenttransformer.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:i-p-l-products",
       "name": "I.P.L Products",
       "slug": "i-p-l-products",
@@ -17551,6 +19629,34 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ibmsan",
+      "name": "IBMSAN",
+      "slug": "ibmsan",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Türkiye",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://ibmsan.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://ibmsan.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -18365,6 +20471,36 @@
       }
     },
     {
+      "id": "cmp:inp-e",
+      "name": "INP-E",
+      "slug": "inp-e",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.inp-e.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.inp-e.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:inspros-engineers-ltd",
       "name": "Inspros Engineers Ltd",
       "slug": "inspros-engineers-ltd",
@@ -18450,6 +20586,34 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:integrated-engineering-software",
+      "name": "Integrated Engineering Software",
+      "slug": "integrated-engineering-software",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.integratedsoft.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.integratedsoft.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -18871,6 +21035,66 @@
       }
     },
     {
+      "id": "cmp:itesa",
+      "name": "ITESA",
+      "slug": "itesa",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Peru",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.itesa.com.pe",
+      "facility_ids": [
+        "fac:itesa:peru"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.itesa.com.pe",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ivat-utm",
+      "name": "IVAT UTM",
+      "slug": "ivat-utm",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Malaysia",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://research.utm.my/ivat/",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://research.utm.my/ivat/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:izolyator-aks-llc",
       "name": "Izolyator-AKS LLC",
       "slug": "izolyator-aks-llc",
@@ -18926,6 +21150,34 @@
       },
       "sources": {
         "website": "https://www.j-schneider.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:jainco-transmission-ltd",
+      "name": "JAINCO TRANSMISSION LTD.",
+      "slug": "jainco-transmission-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -19052,6 +21304,34 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:jcl-energy",
+      "name": "JCL Energy",
+      "slug": "jcl-energy",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.jcl.energy",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.jcl.energy",
         "capability_source": "",
         "capability_note": ""
       }
@@ -19397,6 +21677,36 @@
       "provenance": {
         "type": "PUBLIC_SOURCE",
         "last_verified": "—"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:jiangsu-ltec",
+      "name": "Jiangsu LTEC",
+      "slug": "jiangsu-ltec",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:jiangsu-ltec:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
       },
       "sources": {
         "website": null,
@@ -20142,6 +22452,34 @@
       },
       "sources": {
         "website": "https://j2es.in",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:jubaili-bros",
+      "name": "Jubaili Bros",
+      "slug": "jubaili-bros",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -21909,6 +24247,36 @@
       }
     },
     {
+      "id": "cmp:landr-electric-group",
+      "name": "L&R Electric Group",
+      "slug": "landr-electric-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:landr-electric-group:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:lae-s-r-l",
       "name": "LAE S.r.l.",
       "slug": "lae-s-r-l",
@@ -22117,6 +24485,34 @@
       },
       "sources": {
         "website": "https://leevedla.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:legion-insulators-private-limited",
+      "name": "LEGION INSULATORS PRIVATE LIMITED",
+      "slug": "legion-insulators-private-limited",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -22799,6 +25195,36 @@
       }
     },
     {
+      "id": "cmp:machinemonitor",
+      "name": "MachineMonitor",
+      "slug": "machinemonitor",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Australia",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.machinemonitor.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.machinemonitor.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:macpower-switchgear-pvt-ltd",
       "name": "Macpower Switchgear Pvt.Ltd",
       "slug": "macpower-switchgear-pvt-ltd",
@@ -22889,6 +25315,36 @@
       },
       "sources": {
         "website": "https://www.maddox.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:mag-tran",
+      "name": "Mag-Tran",
+      "slug": "mag-tran",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.mag-tran.com",
+      "facility_ids": [
+        "fac:mag-tran:usa"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.mag-tran.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -23178,6 +25634,34 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:mandlakazi-electrical-technologies",
+      "name": "Mandlakazi Electrical Technologies",
+      "slug": "mandlakazi-electrical-technologies",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "South Africa",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://met.co.za",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://met.co.za",
         "capability_source": "",
         "capability_note": ""
       }
@@ -23663,6 +26147,36 @@
       }
     },
     {
+      "id": "cmp:matlakse",
+      "name": "Matlakse",
+      "slug": "matlakse",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "South Africa",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.matlakse.co.za",
+      "facility_ids": [
+        "fac:matlakse:south-africa"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.matlakse.co.za",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:mbt-electrical-equipment",
       "name": "MBT Electrical Equipment",
       "slug": "mbt-electrical-equipment",
@@ -24001,6 +26515,34 @@
       }
     },
     {
+      "id": "cmp:meide-group",
+      "name": "Meide Group",
+      "slug": "meide-group",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:meiden-singapore",
       "name": "Meiden Singapore",
       "slug": "meiden-singapore",
@@ -24165,6 +26707,34 @@
       }
     },
     {
+      "id": "cmp:melcon",
+      "name": "Melcon",
+      "slug": "melcon",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.melconindia.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.melconindia.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:memf-electrical-industries-co",
       "name": "MEMF Electrical Industries Co.",
       "slug": "memf-electrical-industries-co",
@@ -24257,6 +26827,34 @@
       },
       "sources": {
         "website": "https://www.menk-apparatebau.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:mersen",
+      "name": "Mersen",
+      "slug": "mersen",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -24429,6 +27027,36 @@
       }
     },
     {
+      "id": "cmp:metelx-technologies",
+      "name": "Metelx Technologies",
+      "slug": "metelx-technologies",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Pakistan",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.metelx.com",
+      "facility_ids": [
+        "fac:metelx-technologies:pakistan"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.metelx.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:metravi-instruments-pvt-ltd",
       "name": "METRAVI INSTRUMENTS PVT. LTD.",
       "slug": "metravi-instruments-pvt-ltd",
@@ -24550,6 +27178,34 @@
       },
       "sources": {
         "website": "https://www.mftransformadores.com.ar",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:mg-power-associates",
+      "name": "MG Power Associates",
+      "slug": "mg-power-associates",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Canada",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://mgpowerassociates.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://mgpowerassociates.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -24771,6 +27427,34 @@
       }
     },
     {
+      "id": "cmp:mindian-electric-co-ltd",
+      "name": "Mindian Electric Co., Ltd.",
+      "slug": "mindian-electric-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:minel-trafo-a-s",
       "name": "Minel Trafo a.s.",
       "slug": "minel-trafo-a-s",
@@ -24934,6 +27618,36 @@
       }
     },
     {
+      "id": "cmp:miron",
+      "name": "Miron",
+      "slug": "miron",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Argentina",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://miron.com.ar",
+      "facility_ids": [
+        "fac:miron:argentina"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://miron.com.ar",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:mitsubishi-electric",
       "name": "Mitsubishi Electric",
       "slug": "mitsubishi-electric",
@@ -24964,6 +27678,34 @@
         "website": "https://www.mitsubishielectric.com",
         "capability_source": "Mitsubishi Electric Integrated Annual Report",
         "capability_note": "Ako and Transmission & Distribution Systems manufacturing capacity documented in corporate annual reports."
+      }
+    },
+    {
+      "id": "cmp:mitsubishi-electric-power-modules",
+      "name": "Mitsubishi Electric Power Modules",
+      "slug": "mitsubishi-electric-power-modules",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
       }
     },
     {
@@ -25374,6 +28116,36 @@
       },
       "sources": {
         "website": "https://www.multi-wing.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:mva-diagnostics",
+      "name": "MVA Diagnostics",
+      "slug": "mva-diagnostics",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://mvadiagnostics.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://mvadiagnostics.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -25928,6 +28700,64 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:nazca-energy",
+      "name": "Nazca Energy",
+      "slug": "nazca-energy",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Peru",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.nazcaenergy.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.nazcaenergy.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ndl-power",
+      "name": "NDL Power",
+      "slug": "ndl-power",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.ndlpower.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.ndlpower.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -26536,6 +29366,36 @@
       }
     },
     {
+      "id": "cmp:norsk-elkraft-kontroll",
+      "name": "Norsk Elkraft Kontroll",
+      "slug": "norsk-elkraft-kontroll",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Norway",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.neka.no",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.neka.no",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:northern-transformer",
       "name": "Northern Transformer",
       "slug": "northern-transformer",
@@ -26569,6 +29429,34 @@
       }
     },
     {
+      "id": "cmp:nova-miron",
+      "name": "Nova Miron",
+      "slug": "nova-miron",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Argentina",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.novamiron.com.ar",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.novamiron.com.ar",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:nova-transformer-services",
       "name": "Nova Transformer Services",
       "slug": "nova-transformer-services",
@@ -26597,6 +29485,64 @@
       },
       "sources": {
         "website": "https://www.novatransformer.com.ng/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:novacec-services",
+      "name": "NovAcec Services",
+      "slug": "novacec-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Belgium",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.novacec.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.novacec.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:novatech-automation",
+      "name": "NOVATECH AUTOMATION",
+      "slug": "novatech-automation",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.novatechautomation.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.novatechautomation.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -26876,6 +29822,34 @@
       }
     },
     {
+      "id": "cmp:omexom-deutschland",
+      "name": "Omexom Deutschland",
+      "slug": "omexom-deutschland",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:omicron-electronics-gmbh",
       "name": "OMICRON electronics GmbH",
       "slug": "omicron-electronics-gmbh",
@@ -26922,6 +29896,36 @@
       "facility_ids": [],
       "factory_count": 0,
       "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:omicron-lab",
+      "name": "OMICRON LAB",
+      "slug": "omicron-lab",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
       "commercial_status": "LISTED",
       "completeness_score": 50,
       "provenance": {
@@ -27051,6 +30055,36 @@
       },
       "sources": {
         "website": "https://optics11.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:orion-transformers-and-electrics",
+      "name": "Orion Transformers and Electrics",
+      "slug": "orion-transformers-and-electrics",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Uganda",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://oriontransformers.com",
+      "facility_ids": [
+        "fac:orion-transformers-and-electrics:uganda"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://oriontransformers.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -27245,6 +30279,36 @@
       },
       "sources": {
         "website": "https://www.ornettransformers.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:osensa-innovations",
+      "name": "OSENSA Innovations",
+      "slug": "osensa-innovations",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Canada",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.osensa.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.osensa.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -28100,6 +31164,36 @@
       }
     },
     {
+      "id": "cmp:pfiffner-group",
+      "name": "PFIFFNER Group",
+      "slug": "pfiffner-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.pfiffner-group.com",
+      "facility_ids": [
+        "fac:pfiffner-group:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.pfiffner-group.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:pfisterer-pfisterer-middle-east-fzco",
       "name": "Pfisterer (Pfisterer Middle East FZCO)",
       "slug": "pfisterer-pfisterer-middle-east-fzco",
@@ -28469,6 +31563,62 @@
       },
       "sources": {
         "website": "https://www.posco.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:powell-industries-inc",
+      "name": "Powell Industries Inc.",
+      "slug": "powell-industries-inc",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:power-electronics-transformer-services",
+      "name": "Power Electronics (transformer services)",
+      "slug": "power-electronics-transformer-services",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.powerelectronicsus.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.powerelectronicsus.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -28902,6 +32052,34 @@
       }
     },
     {
+      "id": "cmp:powerchina-jiangxi-electric-power-construction-co-ltd",
+      "name": "PowerChina Jiangxi Electric Power Construction Co.,Ltd.",
+      "slug": "powerchina-jiangxi-electric-power-construction-co-ltd",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:powercon-transformers-ltd",
       "name": "Powercon Transformers Ltd",
       "slug": "powercon-transformers-ltd",
@@ -29143,6 +32321,36 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:precision-testing-group",
+      "name": "Precision Testing Group",
+      "slug": "precision-testing-group",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.precisiontestinggroup.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.precisiontestinggroup.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -29428,6 +32636,34 @@
       }
     },
     {
+      "id": "cmp:projoy-electric-co-ltd",
+      "name": "Projoy Electric Co., Ltd",
+      "slug": "projoy-electric-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:prolec-ge",
       "name": "Prolec GE",
       "slug": "prolec-ge",
@@ -29667,6 +32903,34 @@
       }
     },
     {
+      "id": "cmp:pt-mulya-jatra",
+      "name": "PT Mulya Jatra",
+      "slug": "pt-mulya-jatra",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Indonesia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.mulyajatra.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.mulyajatra.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:pti-transformers",
       "name": "PTI Transformers",
       "slug": "pti-transformers",
@@ -29726,6 +32990,36 @@
       },
       "sources": {
         "website": "https://www.hitachienergy.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:pvj-power-solutions-pvt-ltd",
+      "name": "PVJ Power Solutions Pvt. Ltd.",
+      "slug": "pvj-power-solutions-pvt-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:pvj-power-solutions-pvt-ltd:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -30824,6 +34118,34 @@
       }
     },
     {
+      "id": "cmp:ribe-group",
+      "name": "RIBE Group",
+      "slug": "ribe-group",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.ribe.de",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.ribe.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:rishabh-instruments-ltd",
       "name": "RISHABH INSTRUMENTS LTD",
       "slug": "rishabh-instruments-ltd",
@@ -31108,6 +34430,36 @@
       }
     },
     {
+      "id": "cmp:rtrc-limited",
+      "name": "RTRC Limited",
+      "slug": "rtrc-limited",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://rtrclab.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://rtrclab.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:ruby-mica-co-ltd",
       "name": "RUBY MICA CO. LTD.",
       "slug": "ruby-mica-co-ltd",
@@ -31196,6 +34548,34 @@
       },
       "sources": {
         "website": "https://www.ruhstrat.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:russelectric",
+      "name": "Russelectric",
+      "slug": "russelectric",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -31326,6 +34706,34 @@
       },
       "sources": {
         "website": "https://transformerthailand.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sandc-electric-co",
+      "name": "S&C Electric Co.",
+      "slug": "sandc-electric-co",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -31707,6 +35115,36 @@
       }
     },
     {
+      "id": "cmp:saras-mande-services",
+      "name": "SARAS M&E Services",
+      "slug": "saras-mande-services",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "UAE",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://saras.ae",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://saras.ae",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:sarens",
       "name": "Sarens",
       "slug": "sarens",
@@ -32019,6 +35457,36 @@
       },
       "sources": {
         "website": "https://www.savita.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sb-electrotech",
+      "name": "SB Electrotech",
+      "slug": "sb-electrotech",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.sbelectrotech.com",
+      "facility_ids": [
+        "fac:sb-electrotech:india"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.sbelectrotech.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -32579,6 +36047,34 @@
       }
     },
     {
+      "id": "cmp:sea-marconi",
+      "name": "Sea Marconi",
+      "slug": "sea-marconi",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Italy",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://seamarconi.com/it/",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://seamarconi.com/it/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:sea-transformers",
       "name": "SEA Transformers",
       "slug": "sea-transformers",
@@ -32759,6 +36255,36 @@
       },
       "sources": {
         "website": "https://www.senapathywhiteley.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sensible-photonics",
+      "name": "Sensible Photonics",
+      "slug": "sensible-photonics",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "United Kingdom",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.sensiblephotonics.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.sensiblephotonics.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -33189,6 +36715,36 @@
       }
     },
     {
+      "id": "cmp:sgb-usa",
+      "name": "SGB-USA",
+      "slug": "sgb-usa",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://sgbusa.com",
+      "facility_ids": [
+        "fac:sgb-usa:usa"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://sgbusa.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:shaanxi-hanzhong-transformer-co-ltd",
       "name": "SHAANXI HANZHONG TRANSFORMER CO., LTD.",
       "slug": "shaanxi-hanzhong-transformer-co-ltd",
@@ -33277,6 +36833,34 @@
       },
       "sources": {
         "website": "https://www.yinhetrans.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:shaanxi-yuguang-electric-co-ltd",
+      "name": "SHAANXI YUGUANG ELECTRIC CO.,LTD",
+      "slug": "shaanxi-yuguang-electric-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -33498,6 +37082,34 @@
       },
       "sources": {
         "website": "https://www.hada-elec.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:shandong-huaye-electric-co-ltd",
+      "name": "Shandong Huaye Electric Co., Ltd",
+      "slug": "shandong-huaye-electric-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -34264,6 +37876,36 @@
       },
       "sources": {
         "website": "https://www.shengye.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:shenheng-power-equipment",
+      "name": "Shenheng Power Equipment",
+      "slug": "shenheng-power-equipment",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.shenhengpower.com",
+      "facility_ids": [
+        "fac:shenheng-power-equipment:china"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.shenhengpower.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -35212,6 +38854,34 @@
       }
     },
     {
+      "id": "cmp:siemens-smart-infrastructure",
+      "name": "Siemens Smart Infrastructure",
+      "slug": "siemens-smart-infrastructure",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:siemens-transformer-wuhan",
       "name": "Siemens Transformer (Wuhan)",
       "slug": "siemens-transformer-wuhan",
@@ -35338,6 +39008,34 @@
       },
       "sources": {
         "website": "https://en.sieyuan.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:signal-fluid-solutions",
+      "name": "Signal Fluid Solutions",
+      "slug": "signal-fluid-solutions",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.signalfluidsolutions.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.signalfluidsolutions.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -36188,6 +39886,34 @@
       }
     },
     {
+      "id": "cmp:sturdy-volt",
+      "name": "Sturdy Volt",
+      "slug": "sturdy-volt",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.sturdyvolt.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.sturdyvolt.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:sudarshan-transformers-pvt-ltd",
       "name": "Sudarshan Transformers Pvt Ltd",
       "slug": "sudarshan-transformers-pvt-ltd",
@@ -36441,6 +40167,36 @@
       }
     },
     {
+      "id": "cmp:sunrise-transformer-manufacturer-private-limited",
+      "name": "SUNRISE TRANSFORMER MANUFACTURER PRIVATE LIMITED",
+      "slug": "sunrise-transformer-manufacturer-private-limited",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://sunrisetransformer.com",
+      "facility_ids": [
+        "fac:sunrise-transformer-manufacturer-private-limited:india"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://sunrisetransformer.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:sunten-electric-co-ltd",
       "name": "Sunten Electric Co., Ltd.",
       "slug": "sunten-electric-co-ltd",
@@ -36599,6 +40355,34 @@
       }
     },
     {
+      "id": "cmp:surplec",
+      "name": "Surplec",
+      "slug": "surplec",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Canada",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.surplec.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.surplec.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:suzhou-guanlong-magnet-wire",
       "name": "Suzhou GuanLong Magnet Wire",
       "slug": "suzhou-guanlong-magnet-wire",
@@ -36689,6 +40473,36 @@
       },
       "sources": {
         "website": "https://svel.ru",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:swi-systems",
+      "name": "SWI Systems",
+      "slug": "swi-systems",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -36926,6 +40740,34 @@
       ],
       "headquarters": {
         "country": "China",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:taizhou-tianli-iron-core-manufacturing-co-ltd",
+      "name": "TAIZHOU TIANLI IRON CORE MANUFACTURING CO.,LTD",
+      "slug": "taizhou-tianli-iron-core-manufacturing-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
         "city": "—",
         "address": ""
       },
@@ -37522,6 +41364,36 @@
       },
       "sources": {
         "website": "https://www.tbea.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:team-uis",
+      "name": "Team UIS",
+      "slug": "team-uis",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://teamuis.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://teamuis.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -38310,6 +42182,36 @@
       }
     },
     {
+      "id": "cmp:tesla-transformers-power-bangladesh",
+      "name": "TESLA TRANSFORMERS (Power Bangladesh)",
+      "slug": "tesla-transformers-power-bangladesh",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:tesla-transformers-power-bangladesh:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:tesseract-transformers",
       "name": "Tesseract Transformers",
       "slug": "tesseract-transformers",
@@ -38338,6 +42240,64 @@
       },
       "sources": {
         "website": "https://www.tesseract.net.au/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:texas-transformers-and-equipment",
+      "name": "Texas Transformers and Equipment",
+      "slug": "texas-transformers-and-equipment",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:texas-transformers-and-equipment:"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:tgc-transformer-parts",
+      "name": "TGC Transformer Parts",
+      "slug": "tgc-transformer-parts",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://tgcparts.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://tgcparts.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -39611,6 +43571,34 @@
       }
     },
     {
+      "id": "cmp:trafocare",
+      "name": "TrafoCare",
+      "slug": "trafocare",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Brazil",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://trafocare.com.br",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://trafocare.com.br",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:trafocz",
       "name": "Trafocz",
       "slug": "trafocz",
@@ -39769,6 +43757,36 @@
       },
       "sources": {
         "website": "https://www.trafonetz.at/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:trafosur",
+      "name": "Trafosur",
+      "slug": "trafosur",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Paraguay",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.trafosur.com.py",
+      "facility_ids": [
+        "fac:trafosur:paraguay"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.trafosur.com.py",
         "capability_source": "",
         "capability_note": ""
       }
@@ -39963,6 +43981,34 @@
       },
       "sources": {
         "website": "http://www.transel.com.py/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:transequipos",
+      "name": "Transequipos",
+      "slug": "transequipos",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Colombia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://transequipos.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://transequipos.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -40644,6 +44690,34 @@
       }
     },
     {
+      "id": "cmp:transformadores-monterrey-tramosa",
+      "name": "Transformadores Monterrey (TRAMOSA)",
+      "slug": "transformadores-monterrey-tramosa",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Mexico",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://tramosa.mx",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://tramosa.mx",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:transformadores-oliver-s-a-sucursal-portugal",
       "name": "Transformadores Oliver S.A. (Sucursal Portugal)",
       "slug": "transformadores-oliver-s-a-sucursal-portugal",
@@ -41002,6 +45076,62 @@
       }
     },
     {
+      "id": "cmp:transformateurs-solutions-venissieux",
+      "name": "Transformateurs Solutions Vénissieux",
+      "slug": "transformateurs-solutions-venissieux",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "France",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.tsv-transfo.com/fr/",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.tsv-transfo.com/fr/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:transformator-service-ab",
+      "name": "Transformator Service AB",
+      "slug": "transformator-service-ab",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Sweden",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.transformatorservice.se",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.transformatorservice.se",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:transformatore-electrice-arad-tea",
       "name": "Transformatore Electrice Arad (TEA)",
       "slug": "transformatore-electrice-arad-tea",
@@ -41061,6 +45191,36 @@
       },
       "sources": {
         "website": "http://www.transformatori.hr/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:transformer-engineering",
+      "name": "Transformer Engineering",
+      "slug": "transformer-engineering",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:transformer-engineering:cleveland"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -41330,6 +45490,34 @@
       }
     },
     {
+      "id": "cmp:transvolt-engineering",
+      "name": "Transvolt Engineering",
+      "slug": "transvolt-engineering",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.transvolt.co.in",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.transvolt.co.in",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:transweld-nepal-pvt-ltd",
       "name": "Transweld Nepal Pvt. Ltd.",
       "slug": "transweld-nepal-pvt-ltd",
@@ -41417,6 +45605,36 @@
       },
       "sources": {
         "website": "https://www.transzforg.hu/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:trasf-eco",
+      "name": "Trasf Eco",
+      "slug": "trasf-eco",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Italy",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.trasfeco.it",
+      "facility_ids": [
+        "fac:trasf-eco:italy"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.trasfeco.it",
         "capability_source": "",
         "capability_note": ""
       }
@@ -41513,6 +45731,34 @@
       }
     },
     {
+      "id": "cmp:tridelta-weichferrit-gmbh",
+      "name": "TRIDELTA Weichferrit GmbH",
+      "slug": "tridelta-weichferrit-gmbh",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:trio-transformers",
       "name": "Trio Transformers",
       "slug": "trio-transformers",
@@ -41600,6 +45846,34 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:triveni-electroplast",
+      "name": "Triveni Electroplast",
+      "slug": "triveni-electroplast",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.triveniradiators.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.triveniradiators.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -41824,6 +46098,36 @@
       },
       "sources": {
         "website": "https://www.tuboly-astronic.ch",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:tunisie-transformateurs",
+      "name": "Tunisie Transformateurs",
+      "slug": "tunisie-transformateurs",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Tunisia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://tunisie-transformateurs.com",
+      "facility_ids": [
+        "fac:tunisie-transformateurs:tunisia"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://tunisie-transformateurs.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -42684,6 +46988,34 @@
       }
     },
     {
+      "id": "cmp:utb-transformers",
+      "name": "UTB Transformers",
+      "slug": "utb-transformers",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "USA",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://utbtransformers.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://utbtransformers.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:uttam-bharat-electricals",
       "name": "Uttam Bharat Electricals",
       "slug": "uttam-bharat-electricals",
@@ -42942,6 +47274,34 @@
       }
     },
     {
+      "id": "cmp:veer-electronics-pvt-ltd",
+      "name": "Veer Electronics Pvt. Ltd.",
+      "slug": "veer-electronics-pvt-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "India",
+        "city": "Gandhinagar",
+        "address": ""
+      },
+      "website": "https://www.veerelectronics.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.veerelectronics.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:veiki-vnl-electric-large-laboratories",
       "name": "VEIKI-VNL Electric Large Laboratories",
       "slug": "veiki-vnl-electric-large-laboratories",
@@ -43069,6 +47429,36 @@
       },
       "sources": {
         "website": "https://www.viatin.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:vicar-electricals",
+      "name": "Vicar Electricals",
+      "slug": "vicar-electricals",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Bangladesh",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://vicar.com.bd",
+      "facility_ids": [
+        "fac:vicar-electricals:bangladesh"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://vicar.com.bd",
         "capability_source": "",
         "capability_note": ""
       }
@@ -43974,6 +48364,36 @@
       }
     },
     {
+      "id": "cmp:wagwago-electric",
+      "name": "Wagwago Electric",
+      "slug": "wagwago-electric",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Ethiopia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://wagwagoelectric.com",
+      "facility_ids": [
+        "fac:wagwago-electric:ethiopia"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://wagwagoelectric.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:weg-chile-planta-transformadores",
       "name": "WEG Chile (Planta Transformadores)",
       "slug": "weg-chile-planta-transformadores",
@@ -44046,6 +48466,43 @@
         "website": "https://www.weg.net",
         "capability_source": "WEG Integrated Annual Report & CVM Filings",
         "capability_note": "Blumenau, Itajaí, and international transformer production capacity disclosed in audited CVM regulatory filings."
+      }
+    },
+    {
+      "id": "cmp:weg-south-africa-pty-ltd",
+      "name": "WEG South Africa (Pty) Ltd",
+      "slug": "weg-south-africa-pty-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "—",
+        "city": "",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [
+        "fac:weg-south-africa-pty-ltd:"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "PAD_MOUNTED",
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST",
+        "TR_GSU",
+        "TR_POWER",
+        "TR_SPEC_RENEWABLE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": "The WEG source (WEG Integrated Annual Report & CVM Filings) describes a group envelope. Those figures are not a sourced rating for this site, so they are not shown here."
       }
     },
     {
@@ -44393,6 +48850,34 @@
       },
       "sources": {
         "website": "https://www.westernautomation.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:western-transformers",
+      "name": "Western Transformers",
+      "slug": "western-transformers",
+      "roles": [
+        "Transformer Service Provider"
+      ],
+      "headquarters": {
+        "country": "Saudi Arabia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.westerntransformers.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.westerntransformers.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -45137,6 +49622,36 @@
       }
     },
     {
+      "id": "cmp:xintebian-special-transformer",
+      "name": "Xintebian Special Transformer",
+      "slug": "xintebian-special-transformer",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.tstrafo.com",
+      "facility_ids": [
+        "fac:xintebian-special-transformer:china"
+      ],
+      "factory_count": 1,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-15"
+      },
+      "sources": {
+        "website": "https://www.tstrafo.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:xuchang-eric-insulation-product-co-ltd",
       "name": "XUCHANG ERIC INSULATION PRODUCT CO., LTD.",
       "slug": "xuchang-eric-insulation-product-co-ltd",
@@ -45188,6 +49703,36 @@
       },
       "sources": {
         "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:xzh-test",
+      "name": "XZH TEST",
+      "slug": "xzh-test",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "China",
+        "city": "—",
+        "address": ""
+      },
+      "website": "https://www.xzhtest.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.xzhtest.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -45555,6 +50100,36 @@
       },
       "sources": {
         "website": "https://zera.de",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:zes-zimmer-a-rohde-and-schwarz-company",
+      "name": "ZES ZIMMER – A Rohde & Schwarz Company",
+      "slug": "zes-zimmer-a-rohde-and-schwarz-company",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -45953,6 +50528,34 @@
       }
     },
     {
+      "id": "cmp:zhejiang-putai-high-voltage-electricity-co-ltd",
+      "name": "ZHEJIANG PUTAI HIGH VOLTAGE ELECTRICITY CO., LTD.",
+      "slug": "zhejiang-putai-high-voltage-electricity-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:zhejiang-sodi-electrical-appliance-co-ltd",
       "name": "Zhejiang Sodi Electrical Appliance Co., Ltd.",
       "slug": "zhejiang-sodi-electrical-appliance-co-ltd",
@@ -46224,6 +50827,34 @@
       }
     },
     {
+      "id": "cmp:zhengzhou-tongke-electrification-equipment-co-ltd",
+      "name": "Zhengzhou Tongke Electrification Equipment Co., Ltd",
+      "slug": "zhengzhou-tongke-electrification-equipment-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:zhenjiang-xintai-insulating-materials-co-ltd",
       "name": "Zhenjiang Xintai Insulating Materials Co.,Ltd.",
       "slug": "zhenjiang-xintai-insulating-materials-co-ltd",
@@ -46413,6 +51044,36 @@
       }
     },
     {
+      "id": "cmp:multi-measuring-instruments",
+      "name": "マルチ計測器(株)",
+      "slug": "multi-measuring-instruments",
+      "roles": [
+        "Testing Laboratory"
+      ],
+      "headquarters": {
+        "country": "Japan",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "LAB_HIGH_VOLTAGE"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:shang-hai-hua-tong-hu-gan-qi-you-xian-gong-si",
       "name": "上海华通互感器有限公司",
       "slug": "shang-hai-hua-tong-hu-gan-qi-you-xian-gong-si",
@@ -46524,6 +51185,34 @@
       },
       "sources": {
         "website": "https://www.jtgroup.com.cn",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:terasaki-electric",
+      "name": "寺崎電気産業(株)",
+      "slug": "terasaki-electric",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Japan",
+        "city": "—",
+        "address": ""
+      },
+      "website": "",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }

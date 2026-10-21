@@ -1,8 +1,8 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-10-21T01:40:04.716Z",
-  "count": 1042,
-  "public_count": 34,
+  "generated_at": "2026-10-21T02:37:24.960Z",
+  "count": 1081,
+  "public_count": 40,
   "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence, counted once per city and country inside a company group. A sister-company copy of the same plant is not counted again. HQ-clone facilities are not created.",
   "facilities": [
     {
@@ -66,10 +66,38 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:abb:",
+      "company_id": "cmp:abb",
+      "company_name": "ABB",
+      "facility_name": "ABB — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:abb-china-co-ltd:china",
       "company_id": "cmp:abb-china-co-ltd",
       "company_name": "ABB (China) Co., LTD",
-      "facility_name": "ABB (China) Co., LTD",
+      "facility_name": "ABB (China) Co., LTD — —",
       "city": "—",
       "country": "China",
       "region": "East Asia",
@@ -87,10 +115,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://global.abb",
-      "last_checked": "2026-08-28",
+      "last_checked": "—",
       "confidence": "LIMITED"
     },
     {
@@ -427,6 +455,34 @@
       "source_tier": "Tier C",
       "source_url": "https://actom.co.za/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:acutran-transformers:usa",
+      "company_id": "cmp:acutran-transformers",
+      "company_name": "Acutran Transformers",
+      "facility_name": "Acutran Transformers — —",
+      "city": "—",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://acutran.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -2397,6 +2453,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:atlas-transformer:canada",
+      "company_id": "cmp:atlas-transformer",
+      "company_name": "Atlas Transformer",
+      "facility_name": "Atlas Transformer — —",
+      "city": "—",
+      "country": "Canada",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://atlastransformer.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:automatica-s-a-transformers-and-switchgear:bucharest",
       "company_id": "cmp:automatica-s-a-transformers-and-switchgear",
       "company_name": "Automatica S.A. (Transformers & Switchgear)",
@@ -3762,6 +3846,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:cea-compania-electro-andina:peru",
+      "company_id": "cmp:cea-compania-electro-andina",
+      "company_name": "CEA Compañía Electro Andina",
+      "facility_name": "CEA Compañía Electro Andina — —",
+      "city": "—",
+      "country": "Peru",
+      "region": "Latin America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://cea.com.pe",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:celme-transformers:tribano-pd",
       "company_id": "cmp:celme-transformers",
       "company_name": "Celme Transformers",
@@ -3924,10 +4036,10 @@
       "city": "Mumbai / Bhopal",
       "country": "India",
       "region": "South Asia",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "COMPANY_REPORTED",
+      "produces": "power transformers",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -3940,13 +4052,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "power transformers"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
       "source_tier": "Tier C",
-      "source_url": "https://www.cgpower.co.in",
+      "source_url": "https://www.cgglobal.com/",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:cg-power-and-industrial-solutions:",
@@ -4300,6 +4412,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.cncele.com/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:comel-belgrade:serbia",
+      "company_id": "cmp:comel-belgrade",
+      "company_name": "Comel Belgrade",
+      "facility_name": "Comel Belgrade — —",
+      "city": "—",
+      "country": "Serbia",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://comel.rs",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -5310,6 +5450,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:dhinimex:cambodia",
+      "company_id": "cmp:dhinimex",
+      "company_name": "Dhinimex",
+      "facility_name": "Dhinimex — —",
+      "city": "—",
+      "country": "Cambodia",
+      "region": "Southeast Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://dhinimex.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:diamond-power-infrastructure:vadodara",
       "company_id": "cmp:diamond-power-infrastructure",
       "company_name": "Diamond Power Infrastructure",
@@ -5738,6 +5906,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.eta-danmark.dk/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:eaglerise-electric-and-electronic-china-co-ltd:",
+      "company_id": "cmp:eaglerise-electric-and-electronic-china-co-ltd",
+      "company_name": "Eaglerise Electric & Electronic (China) Co., Ltd.",
+      "facility_name": "Eaglerise Electric & Electronic (China) Co., Ltd. — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -8109,6 +8305,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:eremu-transformers:spain",
+      "company_id": "cmp:eremu-transformers",
+      "company_name": "EREMU Transformers",
+      "facility_name": "EREMU Transformers — —",
+      "city": "—",
+      "country": "Spain",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.eremu.es",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:eren-transformator:ankara-sincan",
       "company_id": "cmp:eren-transformator",
       "company_name": "Eren Transformatör",
@@ -8811,6 +9035,34 @@
       "source_tier": "Tier C",
       "source_url": "",
       "last_checked": "—",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:faramax:spain",
+      "company_id": "cmp:faramax",
+      "company_name": "FARAMAX",
+      "facility_name": "FARAMAX — —",
+      "city": "—",
+      "country": "Spain",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.faramax.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -9584,11 +9836,7 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC",
-          "UL"
-        ],
+        "certifications": [],
         "test_capabilities": [],
         "produces": ""
       },
@@ -9622,11 +9870,7 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC",
-          "UL"
-        ],
+        "certifications": [],
         "test_capabilities": [],
         "produces": ""
       },
@@ -9724,6 +9968,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.gevernova.com",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:gec-zimbabwe:zimbabwe",
+      "company_id": "cmp:gec-zimbabwe",
+      "company_name": "GEC Zimbabwe",
+      "facility_name": "GEC Zimbabwe — —",
+      "city": "—",
+      "country": "Zimbabwe",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.gec.co.zw",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -10393,6 +10665,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:hammad-engineering:pakistan",
+      "company_id": "cmp:hammad-engineering",
+      "company_name": "Hammad Engineering",
+      "facility_name": "Hammad Engineering — —",
+      "city": "—",
+      "country": "Pakistan",
+      "region": "South Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://hammadengineering.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:hammond-power-solutions:guelph",
       "company_id": "cmp:hammond-power-solutions",
       "company_name": "Hammond Power Solutions",
@@ -10555,10 +10855,10 @@
       "city": "Ulsan",
       "country": "South Korea",
       "region": "East Asia",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "COMPANY_REPORTED",
+      "produces": "power transformers",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10571,13 +10871,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "power transformers"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
       "source_tier": "Tier C",
-      "source_url": "https://www.hd-hyundaielectric.com",
+      "source_url": "https://www.hd-hyundaielectric.com/",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:hd-hyundai-electric:",
@@ -10633,10 +10933,10 @@
       "city": "Montgomery, AL",
       "country": "USA",
       "region": "North America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "COMPANY_REPORTED",
+      "produces": "power transformers (2nd 765 kV-class plant groundbroken 2026)",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -10647,13 +10947,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "power transformers (2nd 765 kV-class plant groundbroken 2026)"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
       "source_tier": "Tier C",
       "source_url": "https://www.hd-hyundaielectric.com/",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:hd-hyundai-electro-bulgaria-formerly-hyundai-heavy-sofia:sofia",
@@ -11143,6 +11443,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.himelectronics.com",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:himag-planar-magnetics-ltd:",
+      "company_id": "cmp:himag-planar-magnetics-ltd",
+      "company_name": "Himag Planar Magnetics Ltd",
+      "facility_name": "Himag Planar Magnetics Ltd — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -12382,6 +12710,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:houston-transformer-company:houston",
+      "company_id": "cmp:houston-transformer-company",
+      "company_name": "Houston Transformer Company",
+      "facility_name": "Houston Transformer Company — Houston",
+      "city": "Houston",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://houstontransformer.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:howard-industries-howard-power-solutions:laurel",
       "company_id": "cmp:howard-industries-howard-power-solutions",
       "company_name": "Howard Industries (Howard Power Solutions)",
@@ -12409,6 +12765,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.howard-ind.com/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:htt-hochspannungstechnik-und-transformatorbau:germany",
+      "company_id": "cmp:htt-hochspannungstechnik-und-transformatorbau",
+      "company_name": "HTT Hochspannungstechnik und Transformatorbau",
+      "facility_name": "HTT Hochspannungstechnik und Transformatorbau — —",
+      "city": "—",
+      "country": "Germany",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://htt-trafo.de",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -12666,6 +13050,34 @@
       "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:i-current-transformer:hong-kong",
+      "company_id": "cmp:i-current-transformer",
+      "company_name": "I Current Transformer",
+      "facility_name": "I Current Transformer — —",
+      "city": "—",
+      "country": "Hong Kong",
+      "region": "East Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.icurrenttransformer.com",
       "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
@@ -13688,6 +14100,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:itesa:peru",
+      "company_id": "cmp:itesa",
+      "company_name": "ITESA",
+      "facility_name": "ITESA — —",
+      "city": "—",
+      "country": "Peru",
+      "region": "Latin America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.itesa.com.pe",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:j-schneider-elektrotechnik:offenburg",
       "company_id": "cmp:j-schneider-elektrotechnik",
       "company_name": "J. Schneider Elektrotechnik",
@@ -14084,6 +14524,34 @@
       "source_tier": "Tier C",
       "source_url": "",
       "last_checked": "—",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:jiangsu-ltec:",
+      "company_id": "cmp:jiangsu-ltec",
+      "company_name": "Jiangsu LTEC",
+      "facility_name": "Jiangsu LTEC — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -15516,7 +15984,7 @@
       "id": "fac:kukdong-electric-co-ltd:south-korea",
       "company_id": "cmp:kukdong-electric-co-ltd",
       "company_name": "Kukdong Electric Co., Ltd",
-      "facility_name": "Kukdong Electric Co., Ltd",
+      "facility_name": "Kukdong Electric Co., Ltd — —",
       "city": "—",
       "country": "South Korea",
       "region": "East Asia",
@@ -15534,10 +16002,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "http://kukdongelec.com/en/main",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -15599,6 +16067,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.kytepowertech.com",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:landr-electric-group:",
+      "company_id": "cmp:landr-electric-group",
+      "company_name": "L&R Electric Group",
+      "facility_name": "L&R Electric Group — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -16055,6 +16551,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.maddox.com/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:mag-tran:usa",
+      "company_id": "cmp:mag-tran",
+      "company_name": "Mag-Tran",
+      "facility_name": "Mag-Tran — —",
+      "city": "—",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.mag-tran.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -16668,6 +17192,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:matlakse:south-africa",
+      "company_id": "cmp:matlakse",
+      "company_name": "Matlakse",
+      "facility_name": "Matlakse — —",
+      "city": "—",
+      "country": "South Africa",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.matlakse.co.za",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:mbt-electrical-equipment:hanoi",
       "company_id": "cmp:mbt-electrical-equipment",
       "company_name": "MBT Electrical Equipment",
@@ -17126,6 +17678,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:metelx-technologies:pakistan",
+      "company_id": "cmp:metelx-technologies",
+      "company_name": "Metelx Technologies",
+      "facility_name": "Metelx Technologies — —",
+      "city": "—",
+      "country": "Pakistan",
+      "region": "South Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.metelx.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:metsan-trafo:ankara",
       "company_id": "cmp:metsan-trafo",
       "company_name": "Metsan Trafo",
@@ -17457,6 +18037,34 @@
       "source_tier": "Tier C",
       "source_url": "https://mzt.by/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:miron:argentina",
+      "company_id": "cmp:miron",
+      "company_name": "Miron",
+      "facility_name": "Miron — —",
+      "city": "—",
+      "country": "Argentina",
+      "region": "Latin America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://miron.com.ar",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -18593,6 +19201,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:orion-transformers-and-electrics:uganda",
+      "company_id": "cmp:orion-transformers-and-electrics",
+      "company_name": "Orion Transformers and Electrics",
+      "facility_name": "Orion Transformers and Electrics — —",
+      "city": "—",
+      "country": "Uganda",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://oriontransformers.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:orissa-transformers-otpl:bhubaneswar",
       "company_id": "cmp:orissa-transformers-otpl",
       "company_name": "Orissa Transformers (OTPL)",
@@ -19168,7 +19804,7 @@
       "id": "fac:pearl-electric-co-ltd:",
       "company_id": "cmp:pearl-electric-co-ltd",
       "company_name": "Pearl Electric Co., Ltd.",
-      "facility_name": "Pearl Electric Co., Ltd.",
+      "facility_name": "Pearl Electric Co., Ltd. — —",
       "city": "—",
       "country": "—",
       "region": "",
@@ -19186,10 +19822,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://www.pearltransformer.com",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -19372,6 +20008,34 @@
       "source_tier": "Tier C",
       "source_url": "http://www.pztm.kz/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:pfiffner-group:",
+      "company_id": "cmp:pfiffner-group",
+      "company_name": "PFIFFNER Group",
+      "facility_name": "PFIFFNER Group — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.pfiffner-group.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -19929,10 +20593,10 @@
       "city": "Apodaca, Nuevo León",
       "country": "Mexico",
       "region": "North America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power transformers",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -19944,13 +20608,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "power transformers"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.prolec.energy/",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.prolec.energy",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:prolec-ge:",
@@ -20075,10 +20739,10 @@
       "city": "Canoas, RS",
       "country": "Brazil",
       "region": "Latin America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "transformers 60-1000 MVA up to 800 kV + shunt reactors",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -20090,13 +20754,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "transformers 60-1000 MVA up to 800 kV + shunt reactors"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
+      "source_tier": "Tier A",
       "source_url": "https://www.prolec.energy",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:promelsa:lima",
@@ -20219,6 +20883,34 @@
       "source_tier": "Tier C",
       "source_url": "https://ptitransformers.com/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:pvj-power-solutions-pvt-ltd:",
+      "company_id": "cmp:pvj-power-solutions-pvt-ltd",
+      "company_name": "PVJ Power Solutions Pvt. Ltd.",
+      "facility_name": "PVJ Power Solutions Pvt. Ltd. — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -20349,7 +21041,7 @@
       "id": "fac:quality-power-electrical-equipments-pvt-ltd:",
       "company_id": "cmp:quality-power-electrical-equipments-pvt-ltd",
       "company_name": "QUALITY POWER ELECTRICAL EQUIPMENTS PVT. LTD.",
-      "facility_name": "QUALITY POWER ELECTRICAL EQUIPMENTS PVT. LTD.",
+      "facility_name": "QUALITY POWER ELECTRICAL EQUIPMENTS PVT. LTD. — —",
       "city": "—",
       "country": "—",
       "region": "",
@@ -20367,10 +21059,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://qualitypower.com",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -21785,6 +22477,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:sb-electrotech:india",
+      "company_id": "cmp:sb-electrotech",
+      "company_name": "SB Electrotech",
+      "facility_name": "SB Electrotech — —",
+      "city": "—",
+      "country": "India",
+      "region": "South Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.sbelectrotech.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:scan-transformator-a-s:horsens",
       "company_id": "cmp:scan-transformator-a-s",
       "company_name": "Scan-Transformator A/S",
@@ -22737,6 +23457,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:sgb-usa:usa",
+      "company_id": "cmp:sgb-usa",
+      "company_name": "SGB-USA",
+      "facility_name": "SGB-USA — —",
+      "city": "—",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://sgbusa.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:shaanxi-hanzhong-transformer-co-ltd:china",
       "company_id": "cmp:shaanxi-hanzhong-transformer-co-ltd",
       "company_name": "SHAANXI HANZHONG TRANSFORMER CO., LTD.",
@@ -23343,6 +24091,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:shenheng-power-equipment:china",
+      "company_id": "cmp:shenheng-power-equipment",
+      "company_name": "Shenheng Power Equipment",
+      "facility_name": "Shenheng Power Equipment — —",
+      "city": "—",
+      "country": "China",
+      "region": "East Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.shenhengpower.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:shenyang-feichi-smart-electric-co-ltd:china",
       "company_id": "cmp:shenyang-feichi-smart-electric-co-ltd",
       "company_name": "Shenyang Feichi Smart Electric Co., Ltd.",
@@ -23815,10 +24591,10 @@
       "city": "Weiz, Styria",
       "country": "Austria",
       "region": "Europe",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "phase-shifting transformers",
+      "public_count": true,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -23829,13 +24605,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": ""
+        "produces": "phase-shifting transformers"
       },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
+      "source": "TransformerPath deep-research (independently sourced factory record)",
+      "source_tier": "Tier A",
       "source_url": "https://www.siemens-energy.com",
       "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
+      "confidence": "HIGH"
     },
     {
       "id": "fac:siemens-energy:jundiai",
@@ -24951,6 +25727,34 @@
       "source_tier": "Tier C",
       "source_url": "http://www.sjtr.co.kr",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sunrise-transformer-manufacturer-private-limited:india",
+      "company_id": "cmp:sunrise-transformer-manufacturer-private-limited",
+      "company_name": "SUNRISE TRANSFORMER MANUFACTURER PRIVATE LIMITED",
+      "facility_name": "SUNRISE TRANSFORMER MANUFACTURER PRIVATE LIMITED — —",
+      "city": "—",
+      "country": "India",
+      "region": "South Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://sunrisetransformer.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -26319,6 +27123,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:tesla-transformers-power-bangladesh:",
+      "company_id": "cmp:tesla-transformers-power-bangladesh",
+      "company_name": "TESLA TRANSFORMERS (Power Bangladesh)",
+      "facility_name": "TESLA TRANSFORMERS (Power Bangladesh) — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:tesseract-transformers:melbourne",
       "company_id": "cmp:tesseract-transformers",
       "company_name": "Tesseract Transformers",
@@ -26347,6 +27179,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.tesseract.net.au/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:texas-transformers-and-equipment:",
+      "company_id": "cmp:texas-transformers-and-equipment",
+      "company_name": "Texas Transformers and Equipment",
+      "facility_name": "Texas Transformers and Equipment — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -27327,6 +28187,34 @@
       "source_tier": "Tier C",
       "source_url": "https://www.trafonetz.at/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:trafosur:paraguay",
+      "company_id": "cmp:trafosur",
+      "company_name": "Trafosur",
+      "facility_name": "Trafosur — —",
+      "city": "—",
+      "country": "Paraguay",
+      "region": "Latin America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.trafosur.com.py",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -28516,6 +29404,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:transformer-engineering:cleveland",
+      "company_id": "cmp:transformer-engineering",
+      "company_name": "Transformer Engineering",
+      "facility_name": "Transformer Engineering — Cleveland",
+      "city": "Cleveland",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:transformers-and-rectifiers-india-taril:ahmedabad",
       "company_id": "cmp:transformers-and-rectifiers-india-taril",
       "company_name": "Transformers & Rectifiers India (TARIL)",
@@ -28908,6 +29824,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:trasf-eco:italy",
+      "company_id": "cmp:trasf-eco",
+      "company_name": "Trasf Eco",
+      "facility_name": "Trasf Eco — —",
+      "city": "—",
+      "country": "Italy",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.trasfeco.it",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:trasfor-abb:lugano",
       "company_id": "cmp:trasfor-abb",
       "company_name": "Trasfor (ABB)",
@@ -29093,7 +30037,7 @@
       "id": "fac:tsty-electric-co-ltd:china",
       "company_id": "cmp:tsty-electric-co-ltd",
       "company_name": "TSTY Electric Co., LTD.",
-      "facility_name": "TSTY Electric Co., LTD.",
+      "facility_name": "TSTY Electric Co., LTD. — —",
       "city": "—",
       "country": "China",
       "region": "East Asia",
@@ -29111,10 +30055,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://www.tstytransformer.com",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -29176,6 +30120,34 @@
       "source_tier": "Tier C",
       "source_url": "http://www.tts.com.tn/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:tunisie-transformateurs:tunisia",
+      "company_id": "cmp:tunisie-transformateurs",
+      "company_name": "Tunisie Transformateurs",
+      "facility_name": "Tunisie Transformateurs — —",
+      "city": "—",
+      "country": "Tunisia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://tunisie-transformateurs.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -29945,6 +30917,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:vicar-electricals:bangladesh",
+      "company_id": "cmp:vicar-electricals",
+      "company_name": "Vicar Electricals",
+      "facility_name": "Vicar Electricals — —",
+      "city": "—",
+      "country": "Bangladesh",
+      "region": "South Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://vicar.com.bd",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:vijai-electricals:hyderabad",
       "company_id": "cmp:vijai-electricals",
       "company_name": "Vijai Electricals",
@@ -30104,7 +31104,7 @@
       "city": "Roanoke, VA",
       "country": "USA",
       "region": "North America",
-      "status": "OPERATIONAL",
+      "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "produces": "—",
       "public_count": true,
@@ -30122,11 +31122,11 @@
         "test_capabilities": [],
         "produces": "—"
       },
-      "source": "TransformerPath deep-research (independently sourced factory record)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.vatransformer.com/about-us/",
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.vatransformer.com/",
       "last_checked": "2026-08-28",
-      "confidence": "HIGH"
+      "confidence": "LIMITED"
     },
     {
       "id": "fac:vishal-transformers-and-switchgears:meerut",
@@ -30560,6 +31560,34 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:wagwago-electric:ethiopia",
+      "company_id": "cmp:wagwago-electric",
+      "company_name": "Wagwago Electric",
+      "facility_name": "Wagwago Electric — —",
+      "city": "—",
+      "country": "Ethiopia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://wagwagoelectric.com",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:weg-chile-planta-transformadores:lampa",
       "company_id": "cmp:weg-chile-planta-transformadores",
       "company_name": "WEG Chile (Planta Transformadores)",
@@ -30662,6 +31690,41 @@
       "source_url": "https://www.weg.net",
       "last_checked": "2026-08-28",
       "confidence": "HIGH"
+    },
+    {
+      "id": "fac:weg-south-africa-pty-ltd:",
+      "company_id": "cmp:weg-south-africa-pty-ltd",
+      "company_name": "WEG South Africa (Pty) Ltd",
+      "facility_name": "WEG South Africa (Pty) Ltd — —",
+      "city": "—",
+      "country": "—",
+      "region": "",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "PAD_MOUNTED",
+          "TR_GSU",
+          "TR_SPEC_RENEWABLE"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "",
+      "last_checked": "2026-08-15",
+      "confidence": "LIMITED"
     },
     {
       "id": "fac:weg-transformers-usa:washington",
@@ -31180,6 +32243,34 @@
       "source_tier": "Tier C",
       "source_url": "http://e.wxbyq.com/",
       "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:xintebian-special-transformer:china",
+      "company_id": "cmp:xintebian-special-transformer",
+      "company_name": "Xintebian Special Transformer",
+      "facility_name": "Xintebian Special Transformer — —",
+      "city": "—",
+      "country": "China",
+      "region": "East Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.tstrafo.com",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {

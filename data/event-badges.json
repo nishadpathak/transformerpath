@@ -1,5 +1,5 @@
 {
-  "how_to_add": "Add an event or a year in this file only. No template change. One events object is one edition: slug, series (every year of that show uses the same series and the same name), name, year, past_name, start, end, timezone, url, source_url, source_note. On the company, add one history entry per edition: event (the edition slug), year, source (http or https URL of the exhibitor list for that year). source is required. CI rejects a missing, blank, or non-URL source. On and before the end date, in that timezone, the year stays highlighted: Exhibiting at {name} · {dates}. Years of the same series that have already ended share one line, most recent first: Exhibited at EP Shanghai 2026 · 2025. A show with one past year reads Exhibited at WETEX 2025. The next calendar day after the end date, the highlighted year joins that line. Sourced editions in this file are EP Shanghai 2026, Enlit Europe 2026, ADIPEC 2026, ENERGETICS 2026, ELECRAMA 2025, CIGRE GCC Power 2025, WETEX 2025, and Vietnam Energy Week 2025. Do not add a year that has no exhibitor list.",
+  "how_to_add": "Add an event or a year in this file only. No template change. One events object is one edition: slug, series (every year of that show uses the same series and the same name), name, year, past_name, start, end, timezone, url, source_url, source_note. On the company, add one history entry per edition: event (the edition slug), year, source (http or https URL of the exhibitor list for that year). source is required. CI rejects a missing, blank, or non-URL source. On and before the end date, in that timezone, the year stays highlighted: Exhibiting at {name} · {dates}. Years of the same series that have already ended share one line, most recent first: Exhibited at EP Shanghai 2026 · 2025. A show with one past year reads Exhibited at WETEX 2025. The next calendar day after the end date, the highlighted year joins that line. Sourced editions in this file are EP Shanghai 2026, Enlit Europe 2026, ADIPEC 2026, ENERGETICS 2026, ELECRAMA 2025, CIGRE GCC Power 2025, WETEX 2025, and Vietnam Energy Week 2025. Do not add a year that has no exhibitor list. Batch 3 adds Power Bangladesh 2023, CIGRE Symposium Heidelberg 2027, VDE Hochspannungstechnik 2026, JECA FAIR 2027, Electrical Expo 2026, ECCE Europe 2026, Power & Water Nigeria 2026, Power & Energy Kenya 2027, Power & Energy Tanzania 2026, Electric & Power Philippines 2026, and Power & Electricity World Africa 2026. Batch 4 adds exhibitor history for CWIEME Berlin 2026, Coiltech North America 2026, Coiltech Italia 2026, CIGRE Paris Session 2026, HANNOVER MESSE 2026, Middle East Energy 2026, Electra Mining Africa 2026, WETEX 2026, Data Center World POWER 2026, and SMRP 34th Annual Conference 2026.",
   "events": [
     {
       "slug": "ep-shanghai-2026",
@@ -104,6 +104,279 @@
       "url": "/events/vietnam-energy-week-2025/",
       "source_url": "https://www.vietnamenergyweek.com/en/technical-seminar/",
       "source_note": "Official seminar page states 05–07/11/2025 at SECC, Ho Chi Minh City. History cites the official exhibitor profile list, which names ACEZ Instruments. This is a different series from Vietnam ETE."
+    },
+    {
+      "slug": "power-bangladesh-2023",
+      "series": "power-bangladesh",
+      "name": "Power Bangladesh",
+      "year": 2023,
+      "past_name": "Power Bangladesh 2023",
+      "start": "2023-12-07",
+      "end": "2023-12-09",
+      "timezone": "Asia/Dhaka",
+      "url": "/events/power-bangladesh-2023/",
+      "source_url": "https://power-bangladesh.com/page/exhibitor-list",
+      "source_note": "The 25th Power Bangladesh International Expo ran 7–9 December 2023 at International Convention City Bashundhara, Dhaka. History cites the organiser exhibitor list, which still names these companies."
+    },
+    {
+      "slug": "cigre-international-symposium-heidelberg-2027",
+      "series": "cigre-international-symposium-heidelberg",
+      "name": "CIGRE Symposium Heidelberg",
+      "year": 2027,
+      "past_name": "CIGRE Symposium Heidelberg 2027",
+      "start": "2027-04-27",
+      "end": "2027-04-30",
+      "timezone": "Europe/Berlin",
+      "url": "/events/cigre-international-symposium-heidelberg-2027/",
+      "source_url": "https://www.cigresymposium2027.de/",
+      "source_note": "Official symposium page checked 20 Oct 2026: 27–30 April 2027 at the Heidelberg Congress Centre. History cites the exhibitor and sponsor page."
+    },
+    {
+      "slug": "vde-hochspannungstechnik-2026",
+      "series": "vde-hochspannungstechnik",
+      "name": "VDE Hochspannungstechnik",
+      "year": 2026,
+      "past_name": "VDE Hochspannungstechnik 2026",
+      "start": "2026-11-10",
+      "end": "2026-11-12",
+      "timezone": "Europe/Berlin",
+      "url": "/events/vde-hochspannungstechnik-2026/",
+      "source_url": "https://www.vde.com/de/veranstaltungen/info?id=23803&type=vde%7Cvdb",
+      "source_note": "VDE event page checked 20 Oct 2026: 10–12 November 2026 at Mercure Hotel MOA Berlin. History cites the Fachausstellung page."
+    },
+    {
+      "slug": "jeca-fair-kansai-edition-2027",
+      "series": "jeca-fair-kansai-edition",
+      "name": "JECA FAIR",
+      "year": 2027,
+      "past_name": "JECA FAIR 2027",
+      "start": "2027-05-26",
+      "end": "2027-05-28",
+      "timezone": "Asia/Tokyo",
+      "url": "/events/jeca-fair-kansai-edition-2027/",
+      "source_url": "https://www.jecafair.jp/outline/",
+      "source_note": "Official JECA outline checked 20 Oct 2026: 26–28 May 2027 at INTEX Osaka. History cites the exhibitor list. This is the Osaka edition, not JECA FAIR 2026 in Tokyo."
+    },
+    {
+      "slug": "electrical-expo-2026",
+      "series": "electrical-expo",
+      "name": "Electrical Expo",
+      "year": 2026,
+      "past_name": "Electrical Expo 2026",
+      "start": "2026-08-26",
+      "end": "2026-08-27",
+      "timezone": "America/Chicago",
+      "url": "/events/electrical-expo-2026/",
+      "source_url": "https://electricalboard.org/electrical-expo-2026/",
+      "source_note": "Electrical Board of Missouri and Illinois exhibitor page checked 20 Oct 2026: 26–27 August 2026. History cites that exhibitor list."
+    },
+    {
+      "slug": "ecce-europe-2026",
+      "series": "ecce-europe",
+      "name": "ECCE Europe",
+      "year": 2026,
+      "past_name": "ECCE Europe 2026",
+      "start": "2026-09-14",
+      "end": "2026-09-18",
+      "timezone": "Europe/Madrid",
+      "url": "/events/ecce-europe-2026/",
+      "source_url": "https://www.ecce-europe.org/2026/",
+      "source_note": "ECCE Europe 2026 (EPE) ran 14–18 September 2026 in Valencia. This is not IEEE ECCE in Vancouver. History cites the exhibitor page."
+    },
+    {
+      "slug": "power-and-water-nigeria-exhibition-2026",
+      "series": "power-and-water-nigeria-exhibition",
+      "name": "Power & Water Nigeria",
+      "year": 2026,
+      "past_name": "Power & Water Nigeria 2026",
+      "start": "2026-04-28",
+      "end": "2026-04-30",
+      "timezone": "Africa/Lagos",
+      "url": "/events/power-and-water-nigeria-exhibition-2026/",
+      "source_url": "https://pnwnigeria.com/",
+      "source_note": "Power & Water Nigeria 2026 ran 28–30 April 2026 in Lagos. History cites the exhibitor directory."
+    },
+    {
+      "slug": "power-and-energy-kenya-2027",
+      "series": "power-and-energy-kenya",
+      "name": "Power & Energy Kenya",
+      "year": 2027,
+      "past_name": "Power & Energy Kenya 2027",
+      "start": "2027-06-16",
+      "end": "2027-06-18",
+      "timezone": "Africa/Nairobi",
+      "url": "/events/power-and-energy-kenya-2027/",
+      "source_url": "https://www.expogr.com/kenyaenergy/venue_timings.php",
+      "source_note": "Official venue page checked 20 Oct 2026: 16–18 June 2027 at Carnivore Exhibition Grounds, Nairobi. The public prime-exhibitor list is titled 2027. This is not the July 2026 edition."
+    },
+    {
+      "slug": "power-and-energy-tanzania-2026",
+      "series": "power-and-energy-tanzania",
+      "name": "Power & Energy Tanzania",
+      "year": 2026,
+      "past_name": "Power & Energy Tanzania 2026",
+      "start": "2026-10-07",
+      "end": "2026-10-09",
+      "timezone": "Africa/Dar_es_Salaam",
+      "url": "/events/power-and-energy-tanzania-2026/",
+      "source_url": "https://www.expogr.com/tanzania/powerenergy/",
+      "source_note": "Power & Energy Tanzania 2026 ran 7–9 October 2026 in Dar es Salaam. History cites the prime exhibitor list."
+    },
+    {
+      "slug": "electric-and-power-philippines-2026",
+      "series": "electric-and-power-philippines",
+      "name": "Electric & Power Philippines",
+      "year": 2026,
+      "past_name": "Electric & Power Philippines 2026",
+      "start": "2026-04-22",
+      "end": "2026-04-24",
+      "timezone": "Asia/Manila",
+      "url": "/events/electric-and-power-philippines-2026/",
+      "source_url": "https://www.terrapinn.com/exhibition/power-electricity-world-philippines/",
+      "source_note": "Electric & Power Philippines 2026 ran 22–24 April 2026 in Manila. History cites the 2026 sponsors and exhibitors page. The show is not titled Solar & Storage Live."
+    },
+    {
+      "slug": "power-and-electricity-world-africa-2026",
+      "series": "power-and-electricity-world-africa",
+      "name": "Power & Electricity World Africa",
+      "year": 2026,
+      "past_name": "Power & Electricity World Africa 2026",
+      "start": "2026-03-25",
+      "end": "2026-03-27",
+      "timezone": "Africa/Johannesburg",
+      "url": "/events/power-and-electricity-world-africa-2026/",
+      "source_url": "https://www.terrapinn.com/exhibition/power-electricity-world-africa/index.stm",
+      "source_note": "Power & Electricity World Africa 2026 ran 25–27 March 2026 in Johannesburg. History cites the sponsors and exhibitors page. The show is not titled Solar & Storage Live."
+    },
+    {
+      "slug": "cwieme-berlin-2026",
+      "series": "cwieme-berlin",
+      "name": "CWIEME Berlin",
+      "year": 2026,
+      "past_name": "CWIEME Berlin 2026",
+      "start": "2026-05-19",
+      "end": "2026-05-21",
+      "timezone": "Europe/Berlin",
+      "url": "/events/cwieme-berlin-2026/",
+      "source_url": "https://berlin.cwiemeevents.com/",
+      "source_note": "CWIEME Berlin 2026 edition already on the calendar, 19-21 May 2026. History cites each company official page or the organiser exhibitor page, including the booth."
+    },
+    {
+      "slug": "coiltech-2026",
+      "series": "coiltech",
+      "name": "Coiltech North America",
+      "year": 2026,
+      "past_name": "Coiltech North America 2026",
+      "start": "2026-06-10",
+      "end": "2026-06-11",
+      "timezone": "America/Detroit",
+      "url": "/events/coiltech-2026/",
+      "source_url": "https://www.coiltech.us/",
+      "source_note": "Coiltech North America 2026. History cites the ESPI company page for booth P27."
+    },
+    {
+      "slug": "coiltech-italia-2026",
+      "series": "coiltech-italia",
+      "name": "Coiltech Italia",
+      "year": 2026,
+      "past_name": "Coiltech Italia 2026",
+      "start": "2026-09-23",
+      "end": "2026-09-24",
+      "timezone": "Europe/Rome",
+      "url": "/events/coiltech-italia-2026/",
+      "source_url": "https://www.coiltech.it/",
+      "source_note": "Coiltech Italia 2026. History cites the ESPI company page for Hall 9 / C14."
+    },
+    {
+      "slug": "cigre-paris-2026",
+      "series": "cigre-paris",
+      "name": "CIGRE Paris Session",
+      "year": 2026,
+      "past_name": "CIGRE Paris Session 2026",
+      "start": "2026-08-23",
+      "end": "2026-08-28",
+      "timezone": "Europe/Paris",
+      "url": "/events/cigre-paris-2026/",
+      "source_url": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf",
+      "source_note": "CIGRE Paris Session 2026 booth list. History for Vaisala cites the Vaisala events page."
+    },
+    {
+      "slug": "hannover-messe-2026",
+      "series": "hannover-messe",
+      "name": "HANNOVER MESSE",
+      "year": 2026,
+      "past_name": "HANNOVER MESSE 2026",
+      "start": "2026-04-20",
+      "end": "2026-04-24",
+      "timezone": "Europe/Berlin",
+      "url": "/events/hannover-messe-2026/",
+      "source_url": "https://www.hannovermesse.de/",
+      "source_note": "HANNOVER MESSE 2026. History cites the exhibitor pages for Hall 12."
+    },
+    {
+      "slug": "middle-east-energy-2026",
+      "series": "middle-east-energy",
+      "name": "Middle East Energy",
+      "year": 2026,
+      "past_name": "Middle East Energy 2026",
+      "start": "2026-09-01",
+      "end": "2026-09-03",
+      "timezone": "Asia/Dubai",
+      "url": "/events/middle-east-energy-2026/",
+      "source_url": "https://www.middleeast-energy.com/",
+      "source_note": "Middle East Energy 2026 ran 1-3 September 2026. History cites each company page for the booth."
+    },
+    {
+      "slug": "electra-mining-africa-2026",
+      "series": "electra-mining-africa",
+      "name": "Electra Mining Africa",
+      "year": 2026,
+      "past_name": "Electra Mining Africa 2026",
+      "start": "2026-09-07",
+      "end": "2026-09-11",
+      "timezone": "Africa/Johannesburg",
+      "url": "/events/electra-mining-africa-2026/",
+      "source_url": "https://www.electramining.co.za/exhibitors/actom",
+      "source_note": "Electra Mining Africa exhibitor page for ACTOM, Green Zone P44."
+    },
+    {
+      "slug": "wetex-2026",
+      "series": "wetex",
+      "name": "WETEX",
+      "year": 2026,
+      "past_name": "WETEX 2026",
+      "start": "2026-10-20",
+      "end": "2026-10-22",
+      "timezone": "Asia/Dubai",
+      "url": "/events/wetex-2026/",
+      "source_url": "https://www.wetex.ae/",
+      "source_note": "WETEX 2026 is 20-22 October 2026 at Dubai World Trade Centre. alfanar is tagged from the official seminar page. Booth not stated."
+    },
+    {
+      "slug": "data-center-world-power-2026",
+      "series": "data-center-world-power",
+      "name": "Data Center World POWER",
+      "year": 2026,
+      "past_name": "Data Center World POWER 2026",
+      "start": "2026-09-21",
+      "end": "2026-09-23",
+      "timezone": "America/Chicago",
+      "url": "/events/data-center-world-power-2026/",
+      "source_url": "https://exhibitors.dcwpower.com/alphabetical.php",
+      "source_note": "Data Center World POWER 2026 exhibitor list. Texas Transformers and Equipment is booth 140."
+    },
+    {
+      "slug": "smrp-annual-conference-2026",
+      "series": "smrp-annual-conference",
+      "name": "SMRP Annual Conference",
+      "year": 2026,
+      "past_name": "SMRP 34th Annual Conference 2026",
+      "start": "2026-09-28",
+      "end": "2026-10-01",
+      "timezone": "America/New_York",
+      "url": "/events/smrp-annual-conference-2026/",
+      "source_url": "https://h2scan.com/events/",
+      "source_note": "SMRP 34th Annual Conference 2026 in Raleigh. H2scan booth 1131 is cited from the company events page."
     }
   ],
   "companies": [
@@ -153,13 +426,19 @@
       "slug": "jiangsu-yawei-transformer",
       "name": "Jiangsu Yawei Transformer",
       "aliases": [
-        "JIANGSU YAWEI TRANSFORMER CO., LTD."
+        "JIANGSU YAWEI TRANSFORMER CO., LTD.",
+        "YAWEI Transformer"
       ],
       "history": [
         {
           "event": "ep-shanghai-2026",
           "year": 2026,
           "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "middle-east-energy-2026",
+          "year": 2026,
+          "source": "https://www.yaweitransformer.com/news/yawei-transformer-at-middle-east-energy-dubai-85619903.html"
         }
       ]
     },
@@ -249,13 +528,19 @@
       "slug": "h-j-enterprises-the-h-j-family-of-companies",
       "name": "H-J Enterprises (The H-J Family of Companies)",
       "aliases": [
-        "THE H-J FAMILY OF COMPANIES"
+        "THE H-J FAMILY OF COMPANIES",
+        "H-J Family of Companies"
       ],
       "history": [
         {
           "event": "ep-shanghai-2026",
           "year": 2026,
           "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://berlin.cwiemeevents.com/exhibitors/the-h-j-family-of-companies"
         }
       ]
     },
@@ -399,7 +684,15 @@
           "event": "ep-shanghai-2026",
           "year": 2026,
           "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://berlin.cwiemeevents.com/exhibitors/bushingbeijing-hv-electric-coltd"
         }
+      ],
+      "aliases": [
+        "Bushing (Beijing) HV Electric"
       ]
     },
     {
@@ -2087,6 +2380,11 @@
           "event": "enlit-europe-2026",
           "year": 2026,
           "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
         }
       ]
     },
@@ -2098,6 +2396,11 @@
           "event": "enlit-europe-2026",
           "year": 2026,
           "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
         }
       ]
     },
@@ -2361,11 +2664,23 @@
           "event": "gcc-power-2025",
           "year": 2025,
           "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        },
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        },
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
         }
       ],
       "aliases": [
         "MASCHINENFABRIK REINHAUSEN GMBH",
-        "MR"
+        "MR",
+        "Reinhausen",
+        "REINHAUSEN GmbH"
       ]
     },
     {
@@ -2668,7 +2983,15 @@
           "event": "elecrama-2025",
           "year": 2025,
           "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        },
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://apar.com/exhibition/cigre-technical-exhibition-paris-session-2026/"
         }
+      ],
+      "aliases": [
+        "APAR Industries"
       ]
     },
     {
@@ -3800,7 +4123,15 @@
           "event": "gcc-power-2025",
           "year": 2025,
           "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        },
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
         }
+      ],
+      "aliases": [
+        "OMICRON"
       ]
     },
     {
@@ -4031,7 +4362,20 @@
           "event": "wetex-2025",
           "year": 2025,
           "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        },
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        },
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://www.hitachienergy.com/news-and-events/events-and-webinars/2026/05/cwieme-berlin-2026"
         }
+      ],
+      "aliases": [
+        "Hitachi"
       ]
     },
     {
@@ -4477,10 +4821,16 @@
           "event": "elecrama-2025",
           "year": 2025,
           "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        },
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
         }
       ],
       "aliases": [
-        "PERMALI WALLACE PRIVATE LIMITED"
+        "PERMALI WALLACE PRIVATE LIMITED",
+        "PERMALI WALLACE PVT LTD"
       ]
     },
     {
@@ -4727,6 +5077,873 @@
           "year": 2025,
           "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
         }
+      ]
+    },
+    {
+      "slug": "tesla-transformers-power-bangladesh",
+      "name": "TESLA TRANSFORMERS (Power Bangladesh)",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ],
+      "aliases": [
+        "TESLA TRANSFORMERS"
+      ]
+    },
+    {
+      "slug": "taizhou-tianli-iron-core-manufacturing-co-ltd",
+      "name": "TAIZHOU TIANLI IRON CORE MANUFACTURING CO.,LTD",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "legion-insulators-private-limited",
+      "name": "LEGION INSULATORS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-putai-high-voltage-electricity-co-ltd",
+      "name": "ZHEJIANG PUTAI HIGH VOLTAGE ELECTRICITY CO., LTD.",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "shaanxi-yuguang-electric-co-ltd",
+      "name": "SHAANXI YUGUANG ELECTRIC CO.,LTD",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "chengdu-zhongkai-electrical-equipment-co-ltd",
+      "name": "CHENGDU ZHONGKAI ELECTRICAL EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "g-k-xianghe-electricals-pvt-ltd",
+      "name": "G K XIANGHE ELECTRICALS PVT LTD",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "bender-india-private-limited",
+      "name": "BENDER INDIA PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "jainco-transmission-ltd",
+      "name": "JAINCO TRANSMISSION LTD.",
+      "history": [
+        {
+          "event": "power-bangladesh-2023",
+          "year": 2023,
+          "source": "https://power-bangladesh.com/page/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "abb",
+      "name": "ABB",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        },
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "dilo",
+      "name": "Dilo",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ]
+    },
+    {
+      "slug": "highvolt-pruftechnik-dresden",
+      "name": "HIGHVOLT Prüftechnik Dresden",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        },
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ],
+      "aliases": [
+        "HIGHVOLT Prüftechnik Dresden GmbH",
+        "HIGHVOLT"
+      ]
+    },
+    {
+      "slug": "ribe-group",
+      "name": "RIBE Group",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ]
+    },
+    {
+      "slug": "omexom-deutschland",
+      "name": "Omexom Deutschland",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ]
+    },
+    {
+      "slug": "elektromotoren-und-geratebau-barleben-gmbh-emb",
+      "name": "Elektromotoren und Gerätebau Barleben GmbH (EMB)",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ],
+      "aliases": [
+        "Elektromotoren und Gerätebau Barleben GmbH"
+      ]
+    },
+    {
+      "slug": "digsilent-gmbh",
+      "name": "DIgSILENT GmbH",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ]
+    },
+    {
+      "slug": "ametek",
+      "name": "Ametek",
+      "history": [
+        {
+          "event": "cigre-international-symposium-heidelberg-2027",
+          "year": 2027,
+          "source": "https://www.cigresymposium2027.de/all-exhibitors-sponsors/"
+        }
+      ]
+    },
+    {
+      "slug": "rugged-monitoring-inc",
+      "name": "Rugged Monitoring Inc.",
+      "history": [
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ],
+      "aliases": [
+        "RUGGED MONITORING"
+      ]
+    },
+    {
+      "slug": "bss-hochspannungstechnik",
+      "name": "BSS Hochspannungstechnik",
+      "history": [
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ]
+    },
+    {
+      "slug": "pfiffner-group",
+      "name": "PFIFFNER Group",
+      "history": [
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ]
+    },
+    {
+      "slug": "amotronics",
+      "name": "AMOtronics",
+      "history": [
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ]
+    },
+    {
+      "slug": "inp-e",
+      "name": "INP-E",
+      "history": [
+        {
+          "event": "vde-hochspannungstechnik-2026",
+          "year": 2026,
+          "source": "https://www.vde-hochspannungstechnik.de/de/fachausstellung"
+        }
+      ]
+    },
+    {
+      "slug": "shizuki-electric",
+      "name": "(株)指月電機製作所",
+      "history": [
+        {
+          "event": "jeca-fair-kansai-edition-2027",
+          "year": 2027,
+          "source": "https://www.jecafair.jp/exhibitor/"
+        }
+      ]
+    },
+    {
+      "slug": "terasaki-electric",
+      "name": "寺崎電気産業(株)",
+      "history": [
+        {
+          "event": "jeca-fair-kansai-edition-2027",
+          "year": 2027,
+          "source": "https://www.jecafair.jp/exhibitor/"
+        }
+      ]
+    },
+    {
+      "slug": "multi-measuring-instruments",
+      "name": "マルチ計測器(株)",
+      "history": [
+        {
+          "event": "jeca-fair-kansai-edition-2027",
+          "year": 2027,
+          "source": "https://www.jecafair.jp/exhibitor/"
+        }
+      ]
+    },
+    {
+      "slug": "core-transformers",
+      "name": "CORE Transformers",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ],
+      "aliases": [
+        "Core Transformers"
+      ]
+    },
+    {
+      "slug": "hammond-power-solutions",
+      "name": "Hammond Power Solutions",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "eaton-corporation",
+      "name": "Eaton Corporation",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "eaton-power-systems-division",
+      "name": "Eaton Power Systems Division",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "siemens-smart-infrastructure",
+      "name": "Siemens Smart Infrastructure",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "sandc-electric-co",
+      "name": "S&C Electric Co.",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "powell-industries-inc",
+      "name": "Powell Industries Inc.",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "russelectric",
+      "name": "Russelectric",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "emerson-solahd",
+      "name": "Emerson | SolaHD",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "mersen",
+      "name": "Mersen",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "electric-power-systems",
+      "name": "Electric Power Systems",
+      "history": [
+        {
+          "event": "electrical-expo-2026",
+          "year": 2026,
+          "source": "https://electricalboard.org/electrical-expos-2026exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "torytrans",
+      "name": "Torytrans",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ],
+      "aliases": [
+        "Torytrans S.L."
+      ]
+    },
+    {
+      "slug": "himag-planar-magnetics-ltd",
+      "name": "Himag Planar Magnetics Ltd",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "tridelta-weichferrit-gmbh",
+      "name": "TRIDELTA Weichferrit GmbH",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "omicron-lab",
+      "name": "OMICRON LAB",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "mitsubishi-electric-power-modules",
+      "name": "Mitsubishi Electric Power Modules",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "zes-zimmer-a-rohde-and-schwarz-company",
+      "name": "ZES ZIMMER – A Rohde & Schwarz Company",
+      "history": [
+        {
+          "event": "ecce-europe-2026",
+          "year": 2026,
+          "source": "https://www.ecce-europe.org/2026/exhibitionsponsorship/exhibitors/"
+        }
+      ]
+    },
+    {
+      "slug": "elcon-megarad-s-p-a",
+      "name": "Elcon Megarad S.p.a.",
+      "history": [
+        {
+          "event": "power-and-water-nigeria-exhibition-2026",
+          "year": 2026,
+          "source": "https://pnwnigeria.com/exhibitor-directory/"
+        }
+      ]
+    },
+    {
+      "slug": "jubaili-bros",
+      "name": "Jubaili Bros",
+      "history": [
+        {
+          "event": "power-and-water-nigeria-exhibition-2026",
+          "year": 2026,
+          "source": "https://pnwnigeria.com/exhibitor-directory/"
+        }
+      ]
+    },
+    {
+      "slug": "fieldbase-services-limited",
+      "name": "Fieldbase Services Limited",
+      "history": [
+        {
+          "event": "power-and-water-nigeria-exhibition-2026",
+          "year": 2026,
+          "source": "https://pnwnigeria.com/exhibitor-directory/"
+        }
+      ]
+    },
+    {
+      "slug": "novatech-automation",
+      "name": "NOVATECH AUTOMATION",
+      "history": [
+        {
+          "event": "power-and-energy-kenya-2027",
+          "year": 2027,
+          "source": "https://expogr.com/kenyaenergy/exhibitor_list.php"
+        }
+      ]
+    },
+    {
+      "slug": "guanyu-electrical-group-co-ltd",
+      "name": "Guanyu Electrical Group Co., Ltd.",
+      "history": [
+        {
+          "event": "power-and-energy-tanzania-2026",
+          "year": 2026,
+          "source": "https://www.expogr.com/tanzania/powerenergy/exhibitor_list.php"
+        }
+      ]
+    },
+    {
+      "slug": "eaglerise-electric-and-electronic-china-co-ltd",
+      "name": "Eaglerise Electric & Electronic (China) Co., Ltd.",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-sinopower-equipment-co-ltd",
+      "name": "Hunan Sinopower Equipment Co.,Ltd.",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "zhengzhou-tongke-electrification-equipment-co-ltd",
+      "name": "Zhengzhou Tongke Electrification Equipment Co., Ltd",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-huaye-electric-co-ltd",
+      "name": "Shandong Huaye Electric Co., Ltd",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-fengri-powerandelectric-co-ltd",
+      "name": "HUNAN FENGRI POWER&ELECTRIC CO., LTD",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "mindian-electric-co-ltd",
+      "name": "Mindian Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "projoy-electric-co-ltd",
+      "name": "Projoy Electric Co., Ltd",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "powerchina-jiangxi-electric-power-construction-co-ltd",
+      "name": "PowerChina Jiangxi Electric Power Construction Co.,Ltd.",
+      "history": [
+        {
+          "event": "electric-and-power-philippines-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-philippines/2026-Sponsors-Exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "weg-south-africa-pty-ltd",
+      "name": "WEG South Africa (Pty) Ltd",
+      "history": [
+        {
+          "event": "power-and-electricity-world-africa-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-africa/Sponsors-exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "action-instruments",
+      "name": "ACTION INSTRUMENTS",
+      "history": [
+        {
+          "event": "power-and-electricity-world-africa-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-africa/Sponsors-exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "haleys-electrical-engineering-pty-ltd",
+      "name": "HALEYS ELECTRICAL ENGINEERING PTY LTD",
+      "history": [
+        {
+          "event": "power-and-electricity-world-africa-2026",
+          "year": 2026,
+          "source": "https://www.terrapinn.com/exhibition/solar-storage-live-africa/Sponsors-exhibitors.stm"
+        }
+      ]
+    },
+    {
+      "slug": "espi-limited",
+      "name": "ESPI Limited",
+      "history": [
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://www.espi.co.in/cwieme-berlin-2026-electrical-steel-espi/"
+        },
+        {
+          "event": "coiltech-2026",
+          "year": 2026,
+          "source": "https://www.espi.co.in/coiltech-north-america-2026-espil/"
+        },
+        {
+          "event": "coiltech-italia-2026",
+          "year": 2026,
+          "source": "https://www.espi.co.in/coiltech-italia-2026-espil-transformer-core-solutions/"
+        }
+      ]
+    },
+    {
+      "slug": "cangzhou-kaiyang-electric",
+      "name": "Cangzhou Kaiyang Electric",
+      "history": [
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://kaiyangelectric.com/company-news/kaiyang-electric-to-exhibit-at-cwieme-berlin-2026-stand-32a23/"
+        }
+      ]
+    },
+    {
+      "slug": "integrated-engineering-software",
+      "name": "Integrated Engineering Software",
+      "history": [
+        {
+          "event": "cwieme-berlin-2026",
+          "year": 2026,
+          "source": "https://www.integratedsoft.com/company/events"
+        }
+      ]
+    },
+    {
+      "slug": "meide-group",
+      "name": "Meide Group",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "3m",
+      "name": "3M",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "gw-electric",
+      "name": "GW Electric",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "swi-systems",
+      "name": "SWI Systems",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "landr-electric-group",
+      "name": "L&R Electric Group",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-ltec",
+      "name": "Jiangsu LTEC",
+      "history": [
+        {
+          "event": "hannover-messe-2026",
+          "year": 2026,
+          "source": "https://www.hannovermesse.de/exhibitor/jiangsu-ltec-electric/N1566136"
+        }
+      ]
+    },
+    {
+      "slug": "huatech-xiamen",
+      "name": "Huatech (Xiamen)",
+      "history": [
+        {
+          "event": "hannover-messe-2026",
+          "year": 2026,
+          "source": "https://www.hannovermesse.de/exhibitor/xiamen-huadian-switchgear/N1566758"
+        }
+      ]
+    },
+    {
+      "slug": "texas-transformers-and-equipment",
+      "name": "Texas Transformers and Equipment",
+      "history": [
+        {
+          "event": "data-center-world-power-2026",
+          "year": 2026,
+          "source": "https://exhibitors.dcwpower.com/alphabetical.php"
+        }
+      ]
+    },
+    {
+      "slug": "h2scan",
+      "name": "H2scan",
+      "history": [
+        {
+          "event": "smrp-annual-conference-2026",
+          "year": 2026,
+          "source": "https://h2scan.com/events/"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-dingxin-electric",
+      "name": "Jiangsu Dingxin Electric",
+      "history": [
+        {
+          "event": "middle-east-energy-2026",
+          "year": 2026,
+          "source": "https://www.dingxinelectric.com/dingxin-to-exhibit-at-middle-east-energy-2026-in-dubai"
+        }
+      ],
+      "aliases": [
+        "Dingxin Electric"
+      ]
+    },
+    {
+      "slug": "alfanar",
+      "name": "alfanar",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.cigre-exhibition.com/wp-content/uploads/sites/1/CIGRE-2026_booth-number__20260515.pdf"
+        },
+        {
+          "event": "wetex-2026",
+          "year": 2026,
+          "source": "https://www.wetex.ae/en/seminars/2026/20-oct-2026/from-following-standards-to-setting-new-benchmarks-alfanars-journey-toward-the-sf6-free-grid"
+        }
+      ]
+    },
+    {
+      "slug": "vaisala-oyj",
+      "name": "Vaisala Oyj",
+      "history": [
+        {
+          "event": "cigre-paris-2026",
+          "year": 2026,
+          "source": "https://www.vaisala.com/en/events/events/lp/cigre-paris-session-2026"
+        }
+      ],
+      "aliases": [
+        "Vaisala"
+      ]
+    },
+    {
+      "slug": "actom-power-and-distribution-transformers",
+      "name": "ACTOM Power & Distribution Transformers",
+      "history": [
+        {
+          "event": "electra-mining-africa-2026",
+          "year": 2026,
+          "source": "https://www.electramining.co.za/exhibitors/actom"
+        }
+      ],
+      "aliases": [
+        "ACTOM"
       ]
     }
   ]
