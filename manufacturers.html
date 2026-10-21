@@ -281,6 +281,14 @@
         <option value="">Any sourced test evidence</option>
       </select>
       <select id="fOrigin" aria-label="Declared origin"><option value="">Any declared origin</option></select>
+      <select id="fEvidence" aria-label="Evidence status">
+        <option value="">Verified facts and company declarations</option>
+        <option value="verified">Verified facts only</option>
+        <option value="company-declared">Company-declared only</option>
+      </select>
+      <select id="fFactory" aria-label="Factory country"><option value="">Any sourced factory country</option></select>
+      <select id="fExport" aria-label="Export market"><option value="">Any sourced export market</option></select>
+      <p id="evidenceLegend" style="color:var(--muted);font-size:.78rem;margin:8px 0 0">Verified facts and company declarations are labelled separately. A verified fact was checked against a source other than the supplier statement. A company declaration is quoted from the supplier and linked. An empty field is —. <a href="supplier-passport.html">Supplier Qualification Passport is coming soon</a>.</p>
     </div>
     <p class="avail-filters"><button type="button" class="avail-chip" id="shippableChip" data-shippable-filter="1" aria-pressed="false">Shippable units</button></p>
     <p class="geo-share" style="color:var(--muted);font-size:.78rem;margin:-2px 0 8px;overflow-wrap:anywhere">Region and country combine with search and category. The address keeps ?region= and ?country= so a filtered view can be shared.</p>
@@ -392,6 +400,7 @@ const fCountry=document.getElementById('fCountry');
 const search=document.getElementById('search'), fType=document.getElementById('fType');
 const fKv=document.getElementById('fKv'), fMva=document.getElementById('fMva'), fCert=document.getElementById('fCert');
 const fCool=document.getElementById('fCool'), fTest=document.getElementById('fTest'), fOrigin=document.getElementById('fOrigin');
+const fEvidence=document.getElementById('fEvidence'), fFactory=document.getElementById('fFactory'), fExport=document.getElementById('fExport');
 const CAPS={};
 const TEST_LABEL={'short-circuit':'Short-circuit test','impulse':'Impulse test','routine-type':'Routine, type or FAT','temperature-rise':'Temperature-rise test'};
 function capOf(name){ return CAPS[slugKey(name)] || null; }
@@ -401,6 +410,7 @@ function ensureCap(name){
   return CAPS[key];
 }
 let ORIGIN_BY_SLUG = {};
+let CLAIMS_BY_SLUG = {};
 function originRecord(name){
   const slug = paySlug(name);
   return (slug && ORIGIN_BY_SLUG[slug]) || null;
@@ -419,6 +429,43 @@ function passesOrigin(name){
   if(!fOrigin || !fOrigin.value) return true;
   const rec = originRecord(name);
   return !!(rec && (rec.origin||[]).indexOf(fOrigin.value)>=0);
+}
+
+function claimRec(name){
+  const slug = paySlug(name);
+  return (slug && CLAIMS_BY_SLUG[slug]) || null;
+}
+function evidenceSpan(name){
+  const claims = ((claimRec(name)||{}).claims) || [];
+  if(!claims.length) return '';
+  let html='';
+  if(claims.some(function(c){ return c.verification_status==='verified'; })) html += ' <span class="evidence-badge" data-evidence="verified">Verified fact</span>';
+  if(claims.some(function(c){ return c.verification_status==='company-declared'; })) html += ' <span class="evidence-badge" data-evidence="company-declared">Company-declared</span>';
+  return html;
+}
+function claimStatusOk(claim){
+  if(!fEvidence || !fEvidence.value) return true;
+  return claim.verification_status===fEvidence.value;
+}
+function passesClaims(name){
+  const evidence=fEvidence&&fEvidence.value;
+  const factory=fFactory&&fFactory.value;
+  const exp=fExport&&fExport.value;
+  if(!evidence && !factory && !exp) return true;
+  const claims=((claimRec(name)||{}).claims)||[];
+  if(!claims.length) return false;
+  if(factory && !claims.some(function(c){ return c.field==='factory' && c.country===factory && claimStatusOk(c); })) return false;
+  if(exp && !claims.some(function(c){ return c.field==='export_market' && c.display===exp && claimStatusOk(c); })) return false;
+  if(evidence){
+    const checks=[];
+    if(fKv.value) checks.push(function(c){ return c.field==='voltage_class' && typeof c.kv==='number' && c.kv>=Number(fKv.value) && c.verification_status===evidence; });
+    if(fMva.value) checks.push(function(c){ return c.field==='rated_mva' && typeof c.mva_max==='number' && c.mva_max>=Number(fMva.value) && c.verification_status===evidence; });
+    if(fCert.value) checks.push(function(c){ return (c.field==='standard'||c.field==='certification') && String(c.code||'').toUpperCase().indexOf(fCert.value)>=0 && c.verification_status===evidence; });
+    if(fTest.value) checks.push(function(c){ return c.field==='testing' && c.test===fTest.value && c.verification_status===evidence; });
+    if(!checks.length) return claims.some(function(c){ return c.verification_status===evidence; });
+    return checks.every(function(fn){ return claims.some(fn); });
+  }
+  return true;
 }
 function passesSpec(name){
   const kv=fKv.value, mva=fMva.value, cert=fCert.value, cool=fCool.value, test=fTest.value;
@@ -533,6 +580,27 @@ async function loadData() {
         });
         Object.keys(values).sort(function(a,b){ return a.localeCompare(b,'en',{sensitivity:'base'}); }).forEach(function(name){
           addFilterOption(fOrigin, name, name);
+        });
+      }
+    } catch (e) {}
+    try {
+      const claimRes = await fetch('data/profile-claims-public.json');
+      if (claimRes.ok) {
+        const claimDoc = await claimRes.json();
+        const countries = {}, markets = {};
+        (claimDoc.companies || []).forEach(function(row){
+          if (!row || !row.slug) return;
+          CLAIMS_BY_SLUG[row.slug] = row;
+          (row.claims || []).forEach(function(claim){
+            if (claim && claim.field==='factory' && claim.country) countries[claim.country] = 1;
+            if (claim && claim.field==='export_market' && claim.display) markets[claim.display] = 1;
+          });
+        });
+        Object.keys(countries).sort(function(a,b){ return a.localeCompare(b,'en',{sensitivity:'base'}); }).forEach(function(name){
+          addFilterOption(fFactory, name, name);
+        });
+        Object.keys(markets).sort(function(a,b){ return a.localeCompare(b,'en',{sensitivity:'base'}); }).forEach(function(name){
+          addFilterOption(fExport, name, name);
         });
       }
     } catch (e) {}
@@ -691,6 +759,7 @@ function makerRow(m){
     <div class="mk-name"><a class="prof" href="${makerHref(m[0])}" style="color:var(--accent);font-weight:700">${m[0]}</a>${eventBadge}${vbadge(m)}${availabilityMark(m[0])}${tpills(m[3])}</div>
     <span class="city">${m[1]||''}${m[5]?` · est. ${m[5]}`:''}</span>
     ${originSpan(m[0])}
+    ${evidenceSpan(m[0])}
     <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;max-width:100%">
       <button type="button" class="btn btn-outline btn-sm tp-shortlist-btn" data-slug="${slug}" data-name="${escAttr(m[0])}" style="font-size:.72rem;padding:3px 8px">+ Shortlist</button>
       ${m[2]?`<a href="${m[2]}" target="_blank" rel="noopener" style="font-size:.82rem">Site →</a>`:''}
@@ -811,7 +880,8 @@ function renderBoard(){
   writeGeoQuery();
   const specOn=!!(fKv.value||fMva.value||fCert.value||fCool.value||fTest.value);
   const originOn=!!(fOrigin&&fOrigin.value);
-  const filtered=!!(q||r||cc||ty||specOn||originOn||shippableOnly);
+  const claimOn=!!((fEvidence&&fEvidence.value)||(fFactory&&fFactory.value)||(fExport&&fExport.value));
+  const filtered=!!(q||r||cc||ty||specOn||originOn||shippableOnly||claimOn);
   let list=DATA.map(c=>{
     let makers=(c.makers||[]).filter(function(m){ return m && !hideAliasDuplicate(m[0]); });
     if(shippableOnly) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : !!availabilityFor(m[0]));
@@ -819,6 +889,7 @@ function renderBoard(){
     if(q) makers=makers.filter(m=>(m[0]+' '+(m[1]||'')+' '+c.country).toLowerCase().includes(q));
     if(specOn) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : passesSpec(m[0]));
     if(originOn) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : passesOrigin(m[0]));
+    if(claimOn) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : passesClaims(m[0]));
     return {...c, makers};
   }).filter(c=>{ if(r&&c.region!==r) return false; if(cc&&c.country!==cc) return false; return c.makers.some(m=>!/^Served by/i.test(m[0])); });
   list.sort((a,b)=>countryCompare(a.country, b.country));
@@ -866,7 +937,7 @@ document.getElementById('board').addEventListener('click',function(ev){
   render();
   document.getElementById('board').scrollIntoView({behavior:'smooth',block:'start'});
 });
-[search,fRegion,fCountry,fType,fKv,fMva,fCert,fCool,fTest,fOrigin].forEach(el=>{
+[search,fRegion,fCountry,fType,fKv,fMva,fCert,fCool,fTest,fOrigin,fEvidence,fFactory,fExport].forEach(el=>{
   el.addEventListener('input',()=>{ if(geoSilent) return; page=1; render(); });
   el.addEventListener('change',()=>{ if(geoSilent) return; page=1; render(); });
 });

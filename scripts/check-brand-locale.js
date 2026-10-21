@@ -106,7 +106,8 @@ const PUBLISHED_LIB = new Set([
   'lib/saved-design.js',
   'lib/learning-catalog.js',
   'lib/dga-interpret.js',
-  'lib/commissioning-jobs.js'
+  'lib/commissioning-jobs.js',
+  'lib/profile-claims.js'
 ]);
 
 function isPublishedJs(rel) {

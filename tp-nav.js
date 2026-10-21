@@ -193,6 +193,13 @@
       }
     }
 
+    /* Company profiles mount structured claims without a full page rebuild. */
+    if (document.querySelector('.claim-listing-row') && !document.querySelector('[data-profile-claims]')) {
+      var claimsScript = document.createElement('script');
+      claimsScript.src = '/lib/profile-claims.js';
+      document.body.appendChild(claimsScript);
+    }
+
     /* ── Account label reflects sign-in state when accounts are on ─────── */
     var acct = document.querySelector('[data-tp-account]');
     if (acct) {
