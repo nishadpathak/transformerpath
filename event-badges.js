@@ -182,7 +182,13 @@
       });
     }
     var slug = String(query.slug || '').replace(/^lab:/, '');
-    if (slug) add(bySlug[slug]);
+    /* A slug is one profile. Do not also match on the display name, or a
+     * separate listing that shares that name (generic Mitsubishi Electric)
+     * would paint its badge onto the other profile. */
+    if (slug) {
+      add(bySlug[slug]);
+      return rows;
+    }
     if (query.name) add(byName[query.name]);
     return rows;
   }

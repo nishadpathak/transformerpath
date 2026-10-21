@@ -357,6 +357,11 @@ const unconfirmed = eventSeo.eventProfileTitle({
 assert(!/Nov/.test(unconfirmed) && /Abu Dhabi/.test(unconfirmed), 'unconfirmed dates stay out of the title ' + unconfirmed);
 const hubTitle = eventSeo.eventHubTitle('ADIPEC');
 assert(hubTitle === 'ADIPEC editions | Transformer Events | TransformerPath', 'hub title ' + hubTitle);
+const apecBlurb = eventSeo.hubBlurb('IEEE APEC', [
+  { name: 'IEEE APEC 2027 (New Orleans)', city: 'New Orleans' },
+  { name: 'IEEE APEC 2026', city: 'San Antonio' }
+]);
+assert(apecBlurb === 'Editions of IEEE APEC on TransformerPath: IEEE APEC 2027 (New Orleans); IEEE APEC 2026 (San Antonio). Each year has its own page.', 'hub blurb does not repeat a city already in the name: ' + apecBlurb);
 assert(hubTitle !== adipecTitle, 'hub title differs from the year page');
 const acdcHub = eventSeo.eventHubTitle('ACDC China (24th IET AC & DC Power Transmission Conference)');
 assert(acdcHub === 'ACDC China editions | Transformer Events | TransformerPath', 'hub title drops an unclosed parenthetical: ' + acdcHub);

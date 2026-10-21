@@ -33,11 +33,23 @@ function relOf(file) {
   return path.relative(root, file).split(path.sep).join('/');
 }
 
-function isPublicHtml(rel) {
-  if (!/\.html?$/i.test(rel)) return false;
+function publicRel(rel) {
   const parts = rel.split('/');
   if (parts[0] === 'dist') parts.shift();
+  return parts.join('/');
+}
+
+function isPublicHtml(rel) {
+  if (!/\.html?$/i.test(rel)) return false;
+  const parts = publicRel(rel).split('/');
   return !parts.some(function (part) { return skipPhrase.has(part); });
+}
+
+/* A third-party event can be a webinar. That is not TransformerPath
+ * offering a personal webinar. The ban still applies on every other page. */
+function isEventRecord(rel) {
+  const cleaned = publicRel(rel);
+  return cleaned === 'events.html' || cleaned.indexOf('events/') === 0;
 }
 
 function lineOf(text, index) {
@@ -78,7 +90,8 @@ function scanText(rel, text) {
   nameRe.lastIndex = 0;
   if (nameHit) report(rel, scrubbed, nameHit.index, 'owner name');
   if (isPublicHtml(rel)) {
-    const visible = stripExhibitorQuotations(maskAbsoluteUrls(text));
+    let visible = stripExhibitorQuotations(maskAbsoluteUrls(text));
+    if (isEventRecord(rel)) visible = visible.replace(/webinars?/gi, ' ');
     const phraseHit = phraseRe.exec(visible);
     phraseRe.lastIndex = 0;
     if (phraseHit) report(rel, visible, phraseHit.index, 'public HTML phrase "' + phraseHit[0] + '"');

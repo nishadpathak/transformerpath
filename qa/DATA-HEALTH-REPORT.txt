@@ -1,5 +1,5 @@
 TransformerPath DATA HEALTH REPORT
-Generated: 2026-10-16T07:39:38.624Z
+Generated: 2026-10-21T01:13:26.636Z
 Result: PASS
 Errors: 0 | Warnings: 30
 Child gates skipped: yes
@@ -8,13 +8,13 @@ Child gates skipped: yes
   Skipped (--skip-children / TP_DATA_HEALTH_SKIP_CHILDREN=1)
 
 ## Stale manufacturer counts
-  Canonical manufacturers = 894
+  Canonical manufacturers = 1011
   OK — no stale 709/911/1002 manufacturer-count copy in key surfaces
 
 ## Duplicate canonical company IDs
   data/companies.json: 1153 records, duplicates=0
-  data/directory-index.json: 1177 records, duplicates=0
-  data/manufacturer-intel.json: 894 records, duplicates=0
+  data/directory-index.json: 1664 records, duplicates=0
+  data/manufacturer-intel.json: 1018 records, duplicates=0
   OK — no duplicate canonical company IDs
 
 ## Orphan facilities / manufacturing evidence
@@ -31,12 +31,12 @@ Child gates skipped: yes
   OK — no annual MVA misfiled as unit rating
 
 ## Intel source / status
-  Intel feed posts=526 missing source=0
+  Intel feed posts=553 missing source=0
   GCC candidates=15 bad grade=0 published-without-source=0
   daily_intel status=Updated today
 
 ## Date anomalies
-  Future-date hard findings: 0 (today=2026-10-16)
+  Future-date hard findings: 0 (today=2026-10-21)
   OK — no future publication/observation/archive dates
 
 ## Duplicate canonical events
@@ -70,43 +70,43 @@ Child gates skipped: yes
   OK — no iCloud conflict copies or stray project dumps at scan roots
 
 ## Census + search smoke
-  Census makers match site-stats (894)
+  Public company count matches site-stats (1011; census rows 1018)
   Search "765 kV" → 3 hits
   Search "Transformerboard" → 1 hits
   Search "OLTC" → 22 hits
-  Search "Saudi Arabia" → 11 hits
-  Search "India" → 251 hits
+  Search "Saudi Arabia" → 12 hits
+  Search "India" → 292 hits
 
 ## Warnings (review — non-blocking)
   ⚠ [facilities] 907/1114 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
-  ⚠ [dates] intel:grid-finance-sina-com-cn-roll-2026-04-15-doc-inhuqwta dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-afdb-org-en-news-and-events-press-releases-a dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-powerelectronicsnews-com-real-world-solid-st dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-cnnbrasil-com-br-economia-investimentos-anee dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-energymagazine-com-au-construction-complete- dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:news-www-energiaestrategica-com-strategicenergy-es-no dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:news-www-anla-gov-co-noticias-anla-anla-aprobo-segund dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-presidencia-gob-do-noticias-edeeste-pone-en-oper dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-www-celec-gob-ec-hidronacion-uncategorized-gobie dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-hitachi-com-en-insights-hitachihyoron-hitach dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-clubefiinews-com-br-acoes-engie-brasil-energ dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-ember-energy-org-latest-insights-putting-the-mis dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:tech-www-zawya-com-en-press-release-research-and-stud dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:news-www-energiaestrategica-com-strategicenergy-es-no dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:news-www-anla-gov-co-noticias-anla-anla-aprobo-segund dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-powermag-com-ferc-sets-june-deadline-to-rewr dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-utilitydive-com-news-firstenergy-ferc-data-c dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:tech-www-zawya-com-en-press-release-research-and-stud dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-zawya-com-en-projects-utilities-gcc-grid-aut dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-mitnetz-strom-de-unternehmen-presse-pressemi dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-www-martinkaessler-com-leistungstransformatoren- dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-theenergynewsbeat-substack-com-p-india-plans-109 dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-sedaily-com-newsview-2h0i41mc9b dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-mitnetz-strom-de-unternehmen-presse-pressemi dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:news-andina-pe-agencia-noticia-minem-optimiza-proyect dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-indianmasterminds-com-news-power-grid-investment dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-indianmasterminds-com-news-power-grid-renewable- dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-mdpi-com-2673-4591-140-1-64 dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-marketresearchfuture-com-reports-amorphous-c dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-www-iwr-de-news-neue-2-gw-klasse-fuer-offshore-w dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:grid-www-terna-it-it-media-comunicati-stampa-dettagli dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-www-utilitydive-com-news-reshore-electrical-equi dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-finance-sina-com-cn-roll-2026-04-15-doc-inhuqwta dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-afdb-org-en-news-and-events-press-releases-a dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-cnnbrasil-com-br-economia-investimentos-anee dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-energymagazine-com-au-construction-complete- dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-clubefiinews-com-br-acoes-engie-brasil-energ dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-ember-energy-org-latest-insights-putting-the-mis dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-sedaily-com-newsview-2h0i41mc9b dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:news-andina-pe-agencia-noticia-minem-optimiza-proyect dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-indianmasterminds-com-news-power-grid-renewable- dateIso=2026-12-31 (precision=year) is after today — review sentinel
+  ⚠ [dates] intel:grid-www-terna-it-it-media-comunicati-stampa-dettagli dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-patsnap-com-resources-blog-rd-blog-solid-sta dateIso=2026-12-31 (precision=year) is after today — review sentinel
 
 ## Errors
