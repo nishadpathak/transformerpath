@@ -1093,7 +1093,18 @@ Latest sourced item <b>20 Oct 2026</b>. Dates are on the source, not this visit.
 <script>
 /* ====== DAILY-UPDATED TICKER (the daily intel job rewrites this one line) ====== */
 const TICKER = "<b>Copper</b> $<span data-m='copper' data-m-type='num'>14,170</span>/t LME 3-mo ref · obs. <span data-m-obs='copper'>2026-08-20</span> &nbsp; <b>Aluminium</b> $<span data-m='aluminium' data-m-type='num'>3,182</span>/t LME 3-mo ref · obs. <span data-m-obs='aluminium'>2026-08-20</span> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders — closed 25 Aug – 17 Sep 2026";
-(function(){var tk=document.getElementById('ticker'); if(tk) tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';})();
+function paintTicker(){
+  var tk=document.getElementById('ticker');
+  if(!tk || tk.dataset.ready) return;
+  tk.dataset.ready='1';
+  tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';
+}
+function deferTicker(){
+  if('requestIdleCallback' in window) requestIdleCallback(paintTicker,{timeout:2000});
+  else setTimeout(paintTicker, 1);
+}
+if(document.readyState==='complete') deferTicker();
+else window.addEventListener('load', deferTicker);
 // Count-up KPIs (fire when the row scrolls into view)
 function countUp(el){
   const target = +el.dataset.count, suffix = el.dataset.suffix || '';
