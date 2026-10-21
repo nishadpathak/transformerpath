@@ -123,8 +123,10 @@ function hostOf(url) {
 }
 
 /* The group filing stays on a census row in the tier's own country.
- * A different country loses the copy only when that home row exists.
- * If it does not, this row is the only place the sourced figure is published. */
+ * A different country loses the copy when that home row exists.
+ * If no home row exists, a single other-country row keeps the figure
+ * (it is the only place the filing is published). Several other-country
+ * rows that only share the group domain do not each inherit it. */
 function tierHasHomeCensus(tier) {
   if (!tier || !tier.country) return false;
   const tierHost = hostOf(tier.site);
@@ -138,6 +140,23 @@ function tierHasHomeCensus(tier) {
     });
   });
   return found;
+}
+
+/* Census rows outside the tier country that match the group website.
+ * A name match is the filing itself and is not counted. */
+function foreignDomainSiblings(tier) {
+  if (!tier) return 0;
+  const tierHost = hostOf(tier.site);
+  if (!tierHost) return 0;
+  let n = 0;
+  Object.keys(censusByName).forEach(function (key) {
+    (censusByName[key] || []).forEach(function (row) {
+      if (sameCountry(row.country, tier.country)) return;
+      if (norm(row.name) === norm(tier.name)) return;
+      if (hostOf(row.url) === tierHost) n++;
+    });
+  });
+  return n;
 }
 
 // Research-completeness components (internal).
@@ -276,7 +295,8 @@ Object.keys(censusByName).forEach((name) => {
   // a different country. A provenance row for this exact name can still fill
   // a figure the group filing does not.
   const cgOtherPlant = !!(tier && norm(tier.name) === 'cg power' && !sameCountry(primary.country, tier.country || ''));
-  const groupCopy = !!(tier && attached.how !== 'name' && !sameCountry(primary.country, tier.country || '') && tierHasHomeCensus(tier));
+  const repeatedAbroad = foreignDomainSiblings(tier) > 1;
+  const groupCopy = !!(tier && attached.how !== 'name' && !sameCountry(primary.country, tier.country || '') && (tierHasHomeCensus(tier) || repeatedAbroad));
   const otherSite = cgOtherPlant || groupCopy;
   const plantPlace = String(primary.city || primary.country || 'this').split(',')[0].trim();
   const provVoltage = prov && prov.facts && prov.facts.some((f) => f.unit === 'kV') ? prov.facts.filter((f) => f.unit === 'kV').map((f) => f.value + ' kV').join(', ') : '';

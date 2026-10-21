@@ -195,6 +195,20 @@ const brasilPage = fs.readFileSync('manufacturers/hitachi-energy-brasil/index.ht
 check('Brasil profile does not show 500,000 MVA', !/500,000/.test(brasilPage));
 check('Brasil profile does not show 1200 kV as its rating', !/1200 kV/.test(brasilPage));
 
+['ge-vernova-hvdc-transformers', 'ge-vernova-grid-solutions', 'ge-vernova-tandd-india'].forEach(function (slug) {
+  const row = makers.find(function (c) { return c.slug === slug; });
+  check(slug + ' does not carry the 350,000 MVA group figure', row && !row.reported_mva, row && row.reported_mva);
+  check(slug + ' does not carry the 550 kV group figure', row && !row.reported_voltage, row && row.reported_voltage);
+  check(slug + ' says the group filing is not its rating', row && /not a sourced rating for this site/.test((row.sources && row.sources.capability_note) || ''));
+  const page = fs.readFileSync('manufacturers/' + slug + '/index.html', 'utf8');
+  check(slug + ' profile does not show 350,000 MVA', !/350,000/.test(page));
+  check(slug + ' profile does not show 550 kV as its rating', !/550 kV/.test(page));
+});
+const geGroup = fs.readFileSync('manufacturers/ge-vernova/index.html', 'utf8');
+check('the GE Vernova group profile still shows the 350,000 MVA filing', /350,000/.test(geGroup));
+const hico = makers.find(function (c) { return c.name === 'HICO America (Hyosung)'; });
+check('HICO America keeps its only published Greensburg filing', hico && /75,000/.test(String(hico.reported_mva || '')), hico && hico.reported_mva);
+
 if (failed) {
   console.error('DATA CORRECTNESS AUDIT FAILED (' + failed + ')');
   process.exit(1);
