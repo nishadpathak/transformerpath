@@ -107,6 +107,11 @@ a.plain:hover { text-decoration:underline; }
 .intel-wire { margin:18px 0; border:1px dashed var(--border); border-radius:12px; padding:10px 12px; background:var(--bg); }
 .intel-wire summary { cursor:pointer; font-size:12.5px; color:var(--muted); font-weight:700; }
 .intel-wire-item { font-size:13px; padding:8px 0; border-bottom:1px solid var(--border); }
+.intel-region-nav{position:sticky;top:4.6rem;z-index:40;display:flex;gap:8px;overflow:auto;padding:8px 0;margin:0 0 12px;background:var(--bg,#0b1524);border-bottom:1px solid var(--border)}
+.intel-region-nav a{white-space:nowrap;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:4px 10px}
+.region-block{margin:0 0 8px}
+.region-block > summary.region-h{cursor:pointer;scroll-margin-top:8.2rem}
+.intel-value-filter{font-size:12px;font-weight:700;color:var(--text);display:inline-flex;align-items:center;gap:6px}
 @media (max-width:520px) {
   .intel-app { padding:0 12px 32px; }
   .intel-headline { font-size:14.5px; }
@@ -541,6 +546,7 @@ a.plain:hover { text-decoration:underline; }
     <button id="sort-date" class="sort-btn active" data-sort="date" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Date</button>
     <button id="sort-value" class="sort-btn" data-sort="value" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Value</button>
     <button id="sort-region" class="sort-btn" data-sort="region" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Your Region</button>
+    <label class="intel-value-filter"><input type="checkbox" id="intel-value-filter"> Has stated contract value</label>
   </div>
 
   <div class="panel intel-legacy-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news" tabindex="0">
@@ -2528,5 +2534,84 @@ tabList.forEach((t, idx) => {
 <script src="tp-freshness.js?v=8" defer></script>
 <script src="tp-watchlist.js?v=8" defer></script>
 <script src="tp-feedback.js?v=8" defer></script>
+<script>
+/* Region headings become collapsible sections with a sticky anchor nav.
+   "Has stated contract value" shows only cards that already carry a .val. */
+(function () {
+  function slug(text, n) {
+    var base = String(text || 'region').split('(')[0].trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'region';
+    return 'region-' + base + '-' + n;
+  }
+  function groupRegions() {
+    var heads = Array.prototype.slice.call(document.querySelectorAll('.region-h'));
+    heads.forEach(function (head, n) {
+      if (head.closest && head.closest('details.region-block')) return;
+      var details = document.createElement('details');
+      details.className = 'region-block';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'region-h';
+      summary.id = slug(head.textContent, n);
+      while (head.firstChild) summary.appendChild(head.firstChild);
+      var sib = head.nextElementSibling;
+      head.parentNode.insertBefore(details, head);
+      details.appendChild(summary);
+      head.parentNode.removeChild(head);
+      while (sib && !sib.classList.contains('region-h')) {
+        var next = sib.nextElementSibling;
+        details.appendChild(sib);
+        sib = next;
+      }
+    });
+  }
+  function buildNav() {
+    var blocks = document.querySelectorAll('details.region-block');
+    if (!blocks.length || document.getElementById('intel-region-nav')) return;
+    var nav = document.createElement('nav');
+    nav.id = 'intel-region-nav';
+    nav.className = 'intel-region-nav';
+    nav.setAttribute('aria-label', 'Regions');
+    Array.prototype.forEach.call(blocks, function (block) {
+      var summary = block.querySelector('summary');
+      if (!summary) return;
+      var a = document.createElement('a');
+      a.href = '#' + summary.id;
+      a.textContent = summary.textContent.trim().split('(')[0].trim();
+      nav.appendChild(a);
+    });
+    var firstPanel = blocks[0].closest ? (blocks[0].closest('.panel') || blocks[0]) : blocks[0];
+    firstPanel.parentNode.insertBefore(nav, firstPanel);
+  }
+  function applyValueFilter() {
+    var box = document.getElementById('intel-value-filter');
+    var on = !!(box && box.checked);
+    Array.prototype.forEach.call(document.querySelectorAll('.intel-post, .region-block .card'), function (el) {
+      el.hidden = on && !el.querySelector('.val');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('details.region-block'), function (block) {
+      var cards = block.querySelectorAll('.card');
+      var any = false;
+      Array.prototype.forEach.call(cards, function (card) { if (!card.hidden) any = true; });
+      block.hidden = on && cards.length > 0 && !any;
+    });
+    var nav = document.getElementById('intel-region-nav');
+    if (!nav) return;
+    Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) {
+      var id = (a.getAttribute('href') || '').slice(1);
+      var target = id && document.getElementById(id);
+      var block = target && target.closest ? target.closest('details.region-block') : null;
+      a.hidden = !!(block && block.hidden);
+    });
+  }
+  function boot() {
+    groupRegions();
+    buildNav();
+    var box = document.getElementById('intel-value-filter');
+    if (box) box.addEventListener('change', applyValueFilter);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
 </body>
 </html>
