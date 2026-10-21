@@ -472,7 +472,11 @@ function censusLead(r, tier, intelRec, sourcedKv) {
   const sourced = [];
   if (voltage) sourced.push('highest sourced voltage ' + voltage);
   if (capacity) sourced.push('indicative capacity ' + capacity);
-  if (sourced.length) {
+  const envelope = ((tier && tier.note) || '') + ' ' + ((intelRec && intelRec.sources && intelRec.sources.capability_note) || '');
+  const groupEnvelope = /global|network capacity|annual MVA envelope|consolidated|group envelope|\bacross\b|registration document|registration filings/i.test(envelope);
+  if (sourced.length && groupEnvelope) {
+    sentences.push('Group figure on file: ' + sourced.join('; ') + '. The source describes it as a group envelope, not a sourced rating for this site.');
+  } else if (sourced.length) {
     sentences.push('Sourced figures on file: ' + sourced.join('; ') + '. These are the highest sourced values, not an audited company maximum.');
   }
   const certs = [];
