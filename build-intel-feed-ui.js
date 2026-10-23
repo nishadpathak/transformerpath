@@ -532,6 +532,18 @@ Object.keys(TECH_WATCH || {}).forEach(function (cat) {
   });
 });
 
+// Intel items that are not already a tender, an award, or a curated card.
+// A prior-information notice, a no-winner result, or a contract modification
+// still belongs in the feed when it is in data/intel.json.
+const INTEL_FEED = readJson('data/intel.json', {});
+Object.keys(INTEL_FEED).forEach(function (regionKey) {
+  const block = INTEL_FEED[regionKey];
+  if (!block || !Array.isArray(block.items)) return;
+  block.items.forEach(function (it) {
+    fromCurated(it, 'news', regionKey, block.label || regionKey, it.cls || 'INFERRED');
+  });
+});
+
 // Sort posts chronologically
 function sortKey(p) {
   if (p.ageTier === 'FRESH') return '9999-' + (p.dateIso || TODAY_STR);

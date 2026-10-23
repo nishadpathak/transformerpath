@@ -210,7 +210,7 @@ INTEL_ITEMS.forEach((it) => {
   addTender({
     title: (it.title || '').replace(/\s*—.*$/, '').replace(/\s*\(.*\),?\s*$/, '').trim() || it.title,
     full_title: it.title,
-    buyer: '',
+    buyer: it.buyer || '',
     utility: '',
     epc: '',
     country: country || '',
