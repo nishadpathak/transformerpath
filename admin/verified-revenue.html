@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verified revenue — TransformerPath</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+  .wrap { max-width: 720px; margin: 28px auto 64px; padding: 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  input { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+  .row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="wrap" id="main">
+  <p class="muted"><a href="../admin.html">Admin</a> · <a href="verified-review.html">Review queue</a></p>
+  <h1>Verified Manufacturer revenue</h1>
+  <p class="muted">Internal. Counts and amounts only. $499 one-time payment · covers 12 months. No auto-renewal. Identity and contact checked, not a product certification.</p>
+  <div class="card">
+    <label for="token">Review token</label>
+    <input id="token" type="password" autocomplete="current-password">
+    <p><button class="btn btn-amber" type="button" id="open">Load</button></p>
+    <p class="muted" id="msg"></p>
+    <div id="out"></div>
+  </div>
+</main>
+<script>
+(function () {
+  function row(label, value) {
+    var line = document.createElement('div');
+    line.className = 'row';
+    var a = document.createElement('span');
+    a.textContent = label;
+    var b = document.createElement('span');
+    b.textContent = value == null ? '—' : String(value);
+    line.appendChild(a);
+    line.appendChild(b);
+    return line;
+  }
+  document.getElementById('open').addEventListener('click', function () {
+    var msg = document.getElementById('msg');
+    var out = document.getElementById('out');
+    out.textContent = '';
+    fetch('/.netlify/functions/verified-revenue', {
+      headers: { 'Authorization': 'Bearer ' + document.getElementById('token').value }
+    }).then(function (r) {
+      return r.json().then(function (body) { return { status: r.status, body: body }; });
+    }).then(function (res) {
+      if (res.status === 503) { msg.textContent = 'Revenue access is not configured.'; return; }
+      if (res.status === 401) { msg.textContent = 'That token was not accepted.'; return; }
+      msg.textContent = '';
+      var body = res.body || {};
+      var counts = body.counts || {};
+      var money = body.amount_cents || {};
+      var mode = body.livemode || {};
+      ['paid_pending_verification', 'verified', 'rejected', 'refunded', 'expired'].forEach(function (key) {
+        out.appendChild(row(key, counts[key]));
+      });
+      out.appendChild(row('Collected cents', money.collected));
+      out.appendChild(row('Refunded cents', money.refunded));
+      out.appendChild(row('Test-mode rows', mode.test));
+      out.appendChild(row('Live rows', mode.live));
+      out.appendChild(row('Expiring within 30 days', body.expiring_within_30_days));
+    }).catch(function () { msg.textContent = 'Revenue could not be loaded.'; });
+  });
+})();
+</script>
+</body>
+</html>

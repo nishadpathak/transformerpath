@@ -1,117 +1,179 @@
-/* Netlify function: link a paid Stripe Checkout Session to a Supabase
- * entitlement. This is the machine side of "Stripe takes payment → Supabase
- * stores the entitlement". The browser is never trusted to grant access.
+/* Netlify function: link a paid Stripe Checkout Session to the existing
+ * Supabase tables. The browser is never trusted to grant access.
  *
- * Flow: after a successful Stripe Checkout, Stripe redirects the buyer to
- *   pricing.html?unlocked=<product>&session_id={CHECKOUT_SESSION_ID}
- * The front-end calls this function with session_id; it verifies the session
- * is genuinely paid (server-side, via STRIPE_SECRET_KEY), then writes a
- * payment + entitlement row through the service-role Supabase client.
+ * Listing products, including Verified Manufacturer, upsert public.paid_listings
+ * on session_id with status paid_pending_verification. They do not grant a
+ * course entitlement and they do not publish a badge.
  *
- * The buyer may not have a TransformerPath account yet (anonymous Stripe
- * checkout). The entitlement is therefore keyed by the Stripe customer email,
- * and linked to a user_id when that email later signs up.
+ * Course products upsert public.entitlements on (user_id, product) using the
+ * columns from supabase/migrations/20261016150000_payments_tables.sql.
+ * There is no public.payments table and no entitlements.email column.
+ * A course with no profiles.id is not stored.
  *
- * Env vars (Netlify): STRIPE_SECRET_KEY, SUPABASE_URL, SUPABASE_SECRET_KEY
- * (see functions/lib/supabase-server.js).
+ * Env: STRIPE_SECRET_KEY, SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY
+ * (SUPABASE_SECRET_KEY is accepted by functions/lib/supabase-server.js).
  */
 'use strict';
+
 const { isConfigured, client } = require('./lib/supabase-server');
 const { classifyCourse } = require('../lib/course-payment');
+const { listingProduct } = require('../lib/paid-listings');
+const flow = require('../lib/verified-flow');
 
 const STRIPE_API = 'https://api.stripe.com/v1';
-const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
 
-function derive(session) {
-  const meta = session && session.metadata ? session.metadata : {};
-  if (meta.product) return { product: meta.product, plan: meta.plan || meta.product };
-  const course = classifyCourse(session);
-  if (!course) return null;
-  return { product: course.product, plan: course.plan };
+let storeOverride = null;
+
+function secret() {
+  return (process.env.STRIPE_SECRET_KEY || '').trim();
 }
 
-const iso = (d) => new Date(d).toISOString();
+function ready() {
+  return Boolean(secret() && (storeOverride || isConfigured()));
+}
+
+function json(statusCode, body) {
+  return {
+    statusCode: statusCode,
+    headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+    body: JSON.stringify(body)
+  };
+}
+
+function listingPayload(row) {
+  const payload = {};
+  flow.LISTING_COLUMNS.forEach(function (key) {
+    payload[key] = row[key] == null ? null : row[key];
+  });
+  return payload;
+}
+
+async function defaultStore(decision) {
+  const supabase = client();
+  if (decision.kind === 'listing') {
+    const { error } = await supabase
+      .from('paid_listings')
+      .upsert(listingPayload(decision.listing), { onConflict: 'session_id' });
+    if (error) {
+      const err = new Error('paid_listings upsert failed');
+      err.code = 'write_failed';
+      throw err;
+    }
+    return { stored: true };
+  }
+  if (decision.kind === 'entitlement') {
+    const row = decision.entitlement;
+    const { error } = await supabase.from('entitlements').upsert({
+      user_id: row.user_id,
+      product: row.product,
+      plan: row.plan,
+      access_start: row.access_start,
+      access_end: row.access_end,
+      status: row.status
+    }, { onConflict: 'user_id,product' });
+    if (error) {
+      const err = new Error('entitlements upsert failed');
+      err.code = 'write_failed';
+      throw err;
+    }
+    return { stored: true };
+  }
+  return { stored: false };
+}
+
+function decide(session, userId) {
+  const listing = listingProduct(session);
+  if (listing) {
+    const row = flow.listingRowFromSession(session);
+    row.product = listing;
+    return { kind: 'listing', listing: row, entitlement: null };
+  }
+  const course = classifyCourse(session);
+  if (!course) return { kind: 'unclassified' };
+  if (!userId) return { kind: 'account_required', course: course };
+  return {
+    kind: 'entitlement',
+    entitlement: flow.courseEntitlement(course, userId),
+    listing: null
+  };
+}
 
 exports.handler = async (event) => {
-  // GET: config status probe (the front-end disables checkout when unconfigured).
   if (event.httpMethod === 'GET') {
-    const reason = !SK ? 'STRIPE_SECRET_KEY not set' : !isConfigured() ? 'SUPABASE not configured' : 'ok';
-    return { statusCode: 200, body: JSON.stringify({ configured: Boolean(SK && isConfigured()), reason }) };
+    const reason = !secret() ? 'STRIPE_SECRET_KEY not set' : !isConfigured() ? 'SUPABASE not configured' : 'ok';
+    return json(200, { configured: Boolean(secret() && isConfigured()), reason: reason });
   }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
-  }
-  if (!SK || !isConfigured()) {
-    return { statusCode: 200, body: JSON.stringify({ valid: false, configured: false, reason: 'not_configured' }) };
+  if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
+  if (!ready()) {
+    return json(200, { valid: false, configured: false, reason: 'not_configured' });
   }
 
   let body;
-  try { body = JSON.parse(event.body || '{}'); } catch (e) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
-  }
+  try { body = JSON.parse(event.body || '{}'); }
+  catch (e) { return json(400, { error: 'Invalid JSON' }); }
   const sessionId = (body.session_id || '').trim();
-  if (!sessionId) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'session_id required' }) };
+  if (!sessionId || sessionId.indexOf('{') !== -1) {
+    return json(400, { error: 'session_id required' });
   }
 
   try {
-    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=payment_link`, {
-      headers: { Authorization: `Bearer ${SK}` },
+    const res = await fetch(STRIPE_API + '/checkout/sessions/' + encodeURIComponent(sessionId) + '?expand[]=payment_link', {
+      headers: { Authorization: 'Bearer ' + secret() }
     });
     const session = await res.json();
-    if (!res.ok) {
-      return { statusCode: 200, body: JSON.stringify({ valid: false, reason: 'stripe_error' }) };
+    if (!res.ok) return json(200, { valid: false, reason: 'stripe_error' });
+    if (session.livemode === true && secret().indexOf('sk_test_') === 0) {
+      return json(200, { valid: false, reason: 'live_session_on_test_key' });
     }
-    // Security boundary: only a genuinely paid session grants access.
     if (session.payment_status !== 'paid') {
-      return { statusCode: 200, body: JSON.stringify({ valid: false, paid: false, payment_status: session.payment_status }) };
+      return json(200, { valid: false, paid: false, payment_status: session.payment_status || null, stored: false });
     }
 
-    const derived = derive(session);
-    if (!derived) {
-      return { statusCode: 200, body: JSON.stringify({ valid: false, paid: true, reason: 'unclassified' }) };
-    }
-    const product = derived.product;
-    const plan = derived.plan;
-    const email = (session.customer_details && session.customer_details.email) || session.customer_email || null;
-    const supabase = client();
-
-    // Link to an existing account if the Stripe customer email already signed up.
+    const email = flow.emailOf(
+      (session.customer_details && session.customer_details.email) || session.customer_email
+    );
     let userId = null;
-    if (email) {
-      const { data: prof } = await supabase.from('profiles').select('id').eq('email', email).maybeSingle();
+    if (email && !storeOverride) {
+      const { data: prof } = await client().from('profiles').select('id').eq('email', email).maybeSingle();
       userId = prof ? prof.id : null;
+    } else if (storeOverride && storeOverride.userIdForEmail) {
+      userId = await storeOverride.userIdForEmail(email);
     }
 
-    // Record the payment (one row per Stripe session).
-    await supabase.from('payments').insert({
-      stripe_session_id: sessionId, email: email, user_id: userId, product: product, plan: plan,
-      amount: (typeof session.amount_total === 'number') ? session.amount_total : null,
-      currency: session.currency || 'usd', status: 'paid',
+    const decision = decide(session, userId);
+    if (decision.kind === 'unclassified') {
+      return json(200, { valid: false, paid: true, reason: 'unclassified', stored: false });
+    }
+    if (decision.kind === 'account_required') {
+      return json(200, {
+        valid: true,
+        paid: true,
+        stored: false,
+        reason: 'account_required',
+        product: decision.course.product,
+        plan: decision.course.plan
+      });
+    }
+
+    const writer = storeOverride && storeOverride.write ? storeOverride.write : defaultStore;
+    const written = await writer(decision);
+    const listing = decision.listing;
+    const entitlement = decision.entitlement;
+    return json(200, {
+      valid: true,
+      paid: true,
+      stored: written.stored !== false,
+      product: listing ? listing.product : entitlement.product,
+      plan: listing ? listing.product : entitlement.plan,
+      listing: listing ? listing.status : null,
+      access_start: entitlement ? entitlement.access_start : null,
+      access_end: entitlement ? entitlement.access_end : null,
+      user_id: entitlement ? entitlement.user_id : null
     });
-
-    const accessStart = new Date();
-    const accessEnd = new Date(accessStart.getTime() + 365 * 24 * 3600 * 1000); // 12 months
-    const entitlement = {
-      email: email, user_id: userId, product: product, plan: plan,
-      access_start: iso(accessStart), access_end: iso(accessEnd), status: 'active',
-    };
-    // One active entitlement per (email, product); updates if the buyer renews.
-    const conflict = email ? 'email,product' : undefined;
-    const write = conflict
-      ? supabase.from('entitlements').upsert(entitlement, { onConflict: conflict }).select().maybeSingle()
-      : supabase.from('entitlements').insert(entitlement).select().maybeSingle();
-    const { error } = await write;
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        valid: true, paid: true, product: product, plan: plan,
-        access_start: entitlement.access_start, access_end: entitlement.access_end,
-        user_id: userId, email: email, stored: !error,
-      }),
-    };
   } catch (e) {
-    return { statusCode: 200, body: JSON.stringify({ valid: false, reason: 'error', detail: String(e && e.message) }) };
+    return json(200, { valid: false, reason: 'error' });
   }
 };
+
+exports._setStoreForTests = function (store) { storeOverride = store; };
+exports._decideForTests = decide;

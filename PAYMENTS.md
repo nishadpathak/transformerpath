@@ -29,6 +29,7 @@ Set these on the Netlify site (Site → Environment variables). Server-only. Do 
 | `RESEND_API_KEY` | Buyer confirmation and internal notice from the webhook. |
 | `RESEND_FROM` | Verified sender, for example `TransformerPath <noreply@transformerpath.com>`. |
 | `NOTIFY_TO` | Internal paid-listing notice. Defaults to `hello@transformerpath.com`. |
+| `VERIFIED_REVIEW_TOKEN` | Server-only token for `functions/verified-review.js` and `functions/verified-revenue.js`. At least 24 characters. Never put it in a page or a commit. If it is unset, both functions return `503` and change nothing. |
 
 Engineer Payment Links on `pricing.html` are unchanged and do not use these price ids.
 
