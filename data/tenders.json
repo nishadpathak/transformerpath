@@ -1,37 +1,80 @@
 {
   "schema": "https://transformerpath.com/tenders.schema.json",
   "$comment": "First-class tenders. Derived from source-backed project/intel data; never fabricated. Public metadata + official links only.",
-  "updated": "2026-10-21",
+  "updated": "2026-10-23",
   "stats": {
-    "generated_at": "2026-10-21T05:31:23.953Z",
-    "total": 196,
+    "generated_at": "2026-10-23T05:29:49.340Z",
+    "total": 210,
     "by_status": {
-      "OPEN": 19,
-      "CLOSING_SOON": 10,
-      "UNDATED": 16,
+      "OPEN": 22,
+      "CLOSING_SOON": 12,
+      "UNDATED": 19,
       "EXPECTED": 67,
       "EVALUATION": 4,
       "PROCUREMENT_PLAN": 1,
-      "FRAMEWORK": 3,
-      "AWARDED": 69,
+      "FRAMEWORK": 4,
+      "AWARDED": 74,
       "CLOSED": 7
     },
     "by_region": {
-      "Other": 7,
+      "Europe": 91,
+      "Other": 2,
       "Asia": 35,
-      "Europe": 72,
       "Middle East": 29,
       "Africa": 10,
       "Latin America": 13,
       "Oceania": 13,
       "North America": 17
     },
-    "countries": 58,
+    "countries": 59,
     "confirmed_scope": 25,
     "by_pipeline_of_projects": 22,
-    "source_verified": 196
+    "source_verified": 210
   },
   "tenders": [
+    {
+      "title": "Energienetze Steiermark tenders 110 kV SF6-free outdoor circuit breakers",
+      "full_title": "Energienetze Steiermark tenders 110 kV SF6-free outdoor circuit breakers",
+      "buyer": "Energienetze Steiermark GmbH",
+      "utility": "",
+      "epc": "",
+      "country": "Austria",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "110 kV · 40 kA",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/734609-2026",
+      "source": "TED · 23 Oct 2026 [de]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/734609-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-11-19",
+      "deadline_raw": "2026-11-19",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED contract notice 734609-2026, published 23 October 2026, is from Energienetze Steiermark GmbH. The scope is supply of 110 kV SF6-free outdoor circuit breakers, 40 kA, in a GRP design with porcelain as an option, for the company's distribution networks. Requests to participate are due 19 November 2026 at 13:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Graz. The fields retrieved do not state a unit count or a contract value. The notice does not name a transformer. Original notice in German.",
+      "snippet": "TED contract notice 734609-2026, published 23 October 2026, is from Energienetze Steiermark GmbH. The scope is supply of 110 kV SF6-free outdoor circuit breakers, 40 kA, in a GRP design with porcelain as an option, for the company's distribution networks. Requests to participate are due 19 November 2026 at 13:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Graz. The fields retrieved do not state a unit count or a contract value. The notice does not name a transformer. Original notice in German.",
+      "tender_id": "T-energienetze-steiermark-tenders",
+      "project_country": "Austria",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "OPEN",
+      "statusLabel": "Open",
+      "statusGroup": "Open",
+      "deadline": "2026-11-19",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
+    },
     {
       "title": "Electrodistribution Sever tenders oil-filled distribution transformers with on-load voltage regulation",
       "full_title": "Electrodistribution Sever tenders oil-filled distribution transformers with on-load voltage regulation",
@@ -39,7 +82,7 @@
       "utility": "",
       "epc": "",
       "country": "Bulgaria",
-      "region": "Other",
+      "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
@@ -72,7 +115,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-27",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
@@ -115,7 +158,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-12",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
@@ -158,7 +201,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-16",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
@@ -168,7 +211,7 @@
       "utility": "",
       "epc": "",
       "country": "Cyprus",
-      "region": "Other",
+      "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
@@ -201,7 +244,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-12-02",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
@@ -244,7 +287,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-17",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -287,7 +330,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-16",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -330,7 +373,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-20",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -373,51 +416,51 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-12-04",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
-      "title": "Sadales tīkls seeks mobile 630 kVA transformer substations",
-      "full_title": "Sadales tīkls seeks mobile 630 kVA transformer substations",
-      "buyer": "",
+      "title": "Leipziger Verkehrsbetriebe tenders power transformers and SF6-free switchgear for the Mockau rectifier substation",
+      "full_title": "Leipziger Verkehrsbetriebe tenders power transformers and SF6-free switchgear for the Mockau rectifier substation",
+      "buyer": "Leipziger Verkehrsbetriebe (LVB) GmbH",
       "utility": "",
       "epc": "",
-      "country": "Latvia",
+      "country": "Germany",
       "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
-      "quantity": "EUR 220,771.70 estimated",
+      "quantity": "",
       "primary_voltage": "",
       "secondary_voltage": "",
       "rating": "",
       "standard": "",
       "delivery_requirement": "",
       "qualification_requirement": "",
-      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/712579-2026",
-      "source": "TED · 15 Oct 2026 [lv]",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/735138-2026",
+      "source": "TED · 23 Oct 2026 [de]",
       "source_urls": [
-        "https://ted.europa.eu/en/notice/-/detail/712579-2026"
+        "https://ted.europa.eu/en/notice/-/detail/735138-2026"
       ],
       "source_verified": true,
-      "expected_raw": "2026-11-05",
-      "deadline_raw": "2026-11-05",
+      "expected_raw": "2026-11-19",
+      "deadline_raw": "2026-11-19",
       "stage": "tendering",
       "cls": "",
       "awardee": "",
-      "award_basis": "TED notice 712579-2026, published 15 October 2026, is a contract notice from Latvian distribution operator Sadales tīkls for the supply of mobile transformer substations rated 630 kVA. The notice states an estimated value of EUR 220,771.70. Tenders are due 5 November 2026 at 10:00 (UTC+2). It does not state how many units. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
-      "snippet": "TED notice 712579-2026, published 15 October 2026, is a contract notice from Latvian distribution operator Sadales tīkls for the supply of mobile transformer substations rated 630 kVA. The notice states an estimated value of EUR 220,771.70. Tenders are due 5 November 2026 at 10:00 (UTC+2). It does not state how many units. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
-      "tender_id": "T-sadales-tikls-seeks-mobile-630-k",
-      "project_country": "Latvia",
+      "award_basis": "TED contract notice 735138-2026, published 23 October 2026, is from Leipziger Verkehrsbetriebe (LVB) GmbH. The title is GUW Mockau, VE 02, manufacture and delivery of technical equipment. The lot description says the work is an upgrade of a rectifier substation to change the traction power network to 750 V. It lists VE 01 as building and civil works, VE 02 as manufacture and delivery of technical equipment, VE 03 as additional LVB-group services, and VE 04 as disposal of transformers. For VE 02 it names site setup and delivery and commissioning of technical equipment, including an F-gas-free medium-voltage switchgear, power transformers, a direct-current installation, an auxiliary switchgear, and a telecontrol system (Fernwirkanlage/ZSPS). Offers are due 19 November 2026 at 09:00 (UTC+1). The procedure is open. A change note says the offer deadline and the binding period were extended. The fields retrieved do not state the previous deadlines or a contract value. The buyer city on the notice is Leipzig. Original notice in German.",
+      "snippet": "TED contract notice 735138-2026, published 23 October 2026, is from Leipziger Verkehrsbetriebe (LVB) GmbH. The title is GUW Mockau, VE 02, manufacture and delivery of technical equipment. The lot description says the work is an upgrade of a rectifier substation to change the traction power network to 750 V. It lists VE 01 as building and civil works, VE 02 as manufacture and delivery of technical equipment, VE 03 as additional LVB-group services, and VE 04 as disposal of transformers. For VE 02 it names site setup and delivery and commissioning of technical equipment, including an F-gas-free medium-voltage switchgear, power transformers, a direct-current installation, an auxiliary switchgear, and a telecontrol system (Fernwirkanlage/ZSPS). Offers are due 19 November 2026 at 09:00 (UTC+1). The procedure is open. A change note says the offer deadline and the binding period were extended. The fields retrieved do not state the previous deadlines or a contract value. The buyer city on the notice is Leipzig. Original notice in German.",
+      "tender_id": "T-leipziger-verkehrsbetriebe-tende",
+      "project_country": "Germany",
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
-      "deadline": "2026-11-05",
-      "last_verified": "2026-10-21",
-      "publication_date": "2026-10-15"
+      "deadline": "2026-11-19",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "Rīgas satiksme tenders medium-voltage transformers, with rectifiers, for two traction substations",
@@ -459,8 +502,51 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-19",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
+    },
+    {
+      "title": "Creos tenders a power transformer for the Flebour large-scale battery storage system",
+      "full_title": "Creos tenders a power transformer for the Flebour large-scale battery storage system",
+      "buyer": "Creos Luxembourg S.A.",
+      "utility": "",
+      "epc": "",
+      "country": "Luxembourg",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/733630-2026",
+      "source": "TED · 23 Oct 2026 [fr]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/733630-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-11-23",
+      "deadline_raw": "2026-11-23",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED contract notice 733630-2026, published 23 October 2026, is from Creos Luxembourg S.A. The title is ELU_2026_007-Large Scale BESS Flebour-transformateur. The description is supply of a power transformer for a battery storage system. Requests to participate are due 23 November 2026 at 12:00 (UTC+2). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Luxembourg. The fields retrieved do not state a contract value, an MVA rating, or a unit count beyond the wording of one power transformer. Original notice in French.",
+      "snippet": "TED contract notice 733630-2026, published 23 October 2026, is from Creos Luxembourg S.A. The title is ELU_2026_007-Large Scale BESS Flebour-transformateur. The description is supply of a power transformer for a battery storage system. Requests to participate are due 23 November 2026 at 12:00 (UTC+2). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Luxembourg. The fields retrieved do not state a contract value, an MVA rating, or a unit count beyond the wording of one power transformer. Original notice in French.",
+      "tender_id": "T-creos-tenders-a-power-transforme",
+      "project_country": "Luxembourg",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "OPEN",
+      "statusLabel": "Open",
+      "statusGroup": "Open",
+      "deadline": "2026-11-23",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "PSE tenders stage IX of its transformer-population renewal",
@@ -502,7 +588,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2027-02-05",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -545,7 +631,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2027-03-05",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -588,7 +674,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-23",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
@@ -631,7 +717,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2027-01-18",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
@@ -674,7 +760,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-17",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -684,7 +770,7 @@
       "utility": "",
       "epc": "",
       "country": "Slovenia",
-      "region": "Other",
+      "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
@@ -717,51 +803,51 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-13",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
-      "title": "Jönköping Energi tenders a 145/52 kV power transformer for Huskvarna",
-      "full_title": "Jönköping Energi tenders a 145/52 kV power transformer for Huskvarna",
-      "buyer": "",
+      "title": "Elektro Maribor tenders 20 kV switchgear cells for the Lendava and Ptuj 110/20 kV substations",
+      "full_title": "Elektro Maribor tenders 20 kV switchgear cells for the Lendava and Ptuj 110/20 kV substations",
+      "buyer": "ELEKTRO MARIBOR, podjetje za distribucijo električne energije, d.d.",
       "utility": "",
       "epc": "",
-      "country": "Sweden",
+      "country": "Slovenia",
       "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
-      "quantity": "SEK 31,000,000 · 145/52 kV",
+      "quantity": "20 kV",
       "primary_voltage": "",
       "secondary_voltage": "",
       "rating": "",
       "standard": "",
       "delivery_requirement": "",
       "qualification_requirement": "",
-      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/732737-2026",
-      "source": "TED · 22 Oct 2026 [sv]",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736659-2026",
+      "source": "TED · 23 Oct 2026 [sl]",
       "source_urls": [
-        "https://ted.europa.eu/en/notice/-/detail/732737-2026"
+        "https://ted.europa.eu/en/notice/-/detail/736659-2026"
       ],
       "source_verified": true,
-      "expected_raw": "2026-11-05",
-      "deadline_raw": "2026-11-05",
+      "expected_raw": "2026-11-16",
+      "deadline_raw": "2026-11-16",
       "stage": "tendering",
       "cls": "",
       "awardee": "",
-      "award_basis": "TED contract notice 732737-2026, published 22 October 2026, is from Jönköping Energi AB. The title is HF Krafttransformator. The description says the purchase, delivery, placement and installation of a new power transformer with a construction voltage of 145/52 kV for Huskvarna Fördelning. The estimated value on the notice is SEK 31,000,000. Requests to participate are due 5 November 2026 at 00:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Jönköping. The fields retrieved do not state an MVA rating or a winner. Original notice in Swedish.",
-      "snippet": "TED contract notice 732737-2026, published 22 October 2026, is from Jönköping Energi AB. The title is HF Krafttransformator. The description says the purchase, delivery, placement and installation of a new power transformer with a construction voltage of 145/52 kV for Huskvarna Fördelning. The estimated value on the notice is SEK 31,000,000. Requests to participate are due 5 November 2026 at 00:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Jönköping. The fields retrieved do not state an MVA rating or a winner. Original notice in Swedish.",
-      "tender_id": "T-jonkoping-energi-tenders-a-145-5",
-      "project_country": "Sweden",
+      "award_basis": "TED contract notice 736659-2026, published 23 October 2026, is from ELEKTRO MARIBOR, podjetje za distribucijo električne energije, d.d. The title and the description are supply and installation of 20 kV cells for the 110/20 kV Lendava and 110/20 kV Ptuj substations. Offers are due 16 November 2026 at 13:00 (UTC+2). The procedure is open. A change note says the buyer extended the deadline for questions and for submission of offers. The fields retrieved do not state the previous deadlines, a cell count, or a contract value. The notice does not name a transformer. The buyer city on the notice is Maribor. Original notice in Slovenian.",
+      "snippet": "TED contract notice 736659-2026, published 23 October 2026, is from ELEKTRO MARIBOR, podjetje za distribucijo električne energije, d.d. The title and the description are supply and installation of 20 kV cells for the 110/20 kV Lendava and 110/20 kV Ptuj substations. Offers are due 16 November 2026 at 13:00 (UTC+2). The procedure is open. A change note says the buyer extended the deadline for questions and for submission of offers. The fields retrieved do not state the previous deadlines, a cell count, or a contract value. The notice does not name a transformer. The buyer city on the notice is Maribor. Original notice in Slovenian.",
+      "tender_id": "T-elektro-maribor-tenders-20-kv-sw",
+      "project_country": "Slovenia",
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
-      "deadline": "2026-11-05",
-      "last_verified": "2026-10-22",
-      "publication_date": "2026-10-22"
+      "deadline": "2026-11-16",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "FMV tenders 65/16.5 kV transformers for the new Ernen substation",
@@ -803,8 +889,51 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-30",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
+    },
+    {
+      "title": "Repower tenders replacement 20 kV plunger-core earth-fault suppression coils",
+      "full_title": "Repower tenders replacement 20 kV plunger-core earth-fault suppression coils",
+      "buyer": "Repower AG",
+      "utility": "",
+      "epc": "",
+      "country": "Switzerland",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "4 × 400 A · 6 × 200 A · 2 × 200 A",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736816-2026",
+      "source": "TED · 23 Oct 2026 [de]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/736816-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-12-04",
+      "deadline_raw": "2026-12-04",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED contract notice 736816-2026, published 23 October 2026, is from Repower AG. The title is 20 kV plunger-core earth-fault suppression coils. The description says the supply is replacement of those coils. It lists Pos. 1 – 2 as 4 units of 20 kV plunger-core earth-fault suppression coils with a rated current of 400 A, Pos. 3 – 5 as 6 units with a rated current of 200 A, and Pos. 6 as 2 units at 20(10) kV with a rated current of 200 A. It also lists engineering, manufacture, routine tests at the works, an installation manual, acceptance tests, transport to the destination installation, unloading, and release for commissioning. Offers are due 4 December 2026 at 23:59 (UTC+1). The procedure is open. A change note says the timetable of the tender was adjusted, covering the question round, the answers, submission of offers, and opening of offers. The fields retrieved do not state the previous dates or a contract value. The notice does not describe a power transformer. The buyer city on the notice is Poschiavo. Original notice in German.",
+      "snippet": "TED contract notice 736816-2026, published 23 October 2026, is from Repower AG. The title is 20 kV plunger-core earth-fault suppression coils. The description says the supply is replacement of those coils. It lists Pos. 1 – 2 as 4 units of 20 kV plunger-core earth-fault suppression coils with a rated current of 400 A, Pos. 3 – 5 as 6 units with a rated current of 200 A, and Pos. 6 as 2 units at 20(10) kV with a rated current of 200 A. It also lists engineering, manufacture, routine tests at the works, an installation manual, acceptance tests, transport to the destination installation, unloading, and release for commissioning. Offers are due 4 December 2026 at 23:59 (UTC+1). The procedure is open. A change note says the timetable of the tender was adjusted, covering the question round, the answers, submission of offers, and opening of offers. The fields retrieved do not state the previous dates or a contract value. The notice does not describe a power transformer. The buyer city on the notice is Poschiavo. Original notice in German.",
+      "tender_id": "T-repower-tenders-replacement-20-k",
+      "project_country": "Switzerland",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "OPEN",
+      "statusLabel": "Open",
+      "statusGroup": "Open",
+      "deadline": "2026-12-04",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "İSPARK tenders monthly and yearly maintenance of transformer systems",
@@ -846,7 +975,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-11-12",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
@@ -889,7 +1018,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-27",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -932,7 +1061,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-11-03",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -975,8 +1104,51 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-11-02",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
+    },
+    {
+      "title": "Sadales tīkls seeks mobile 630 kVA transformer substations",
+      "full_title": "Sadales tīkls seeks mobile 630 kVA transformer substations",
+      "buyer": "",
+      "utility": "",
+      "epc": "",
+      "country": "Latvia",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "EUR 220,771.70 estimated",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/712579-2026",
+      "source": "TED · 15 Oct 2026 [lv]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/712579-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-11-05",
+      "deadline_raw": "2026-11-05",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED notice 712579-2026, published 15 October 2026, is a contract notice from Latvian distribution operator Sadales tīkls for the supply of mobile transformer substations rated 630 kVA. The notice states an estimated value of EUR 220,771.70. Tenders are due 5 November 2026 at 10:00 (UTC+2). It does not state how many units. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
+      "snippet": "TED notice 712579-2026, published 15 October 2026, is a contract notice from Latvian distribution operator Sadales tīkls for the supply of mobile transformer substations rated 630 kVA. The notice states an estimated value of EUR 220,771.70. Tenders are due 5 November 2026 at 10:00 (UTC+2). It does not state how many units. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
+      "tender_id": "T-sadales-tikls-seeks-mobile-630-k",
+      "project_country": "Latvia",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "CLOSING_SOON",
+      "statusLabel": "Closing soon",
+      "statusGroup": "Open",
+      "deadline": "2026-11-05",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-15"
     },
     {
       "title": "Augstsprieguma tīkls tenders a rebuild of 110 kV substation No. 6 TEC-1",
@@ -1018,7 +1190,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-11-03",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -1028,7 +1200,7 @@
       "utility": "",
       "epc": "",
       "country": "Lithuania",
-      "region": "Other",
+      "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
@@ -1061,7 +1233,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-26",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -1104,7 +1276,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-27",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -1147,7 +1319,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-28",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -1190,7 +1362,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-28",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -1233,8 +1405,51 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-11-03",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
+    },
+    {
+      "title": "Jönköping Energi tenders a 145/52 kV power transformer for Huskvarna",
+      "full_title": "Jönköping Energi tenders a 145/52 kV power transformer for Huskvarna",
+      "buyer": "",
+      "utility": "",
+      "epc": "",
+      "country": "Sweden",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "SEK 31,000,000 · 145/52 kV",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/732737-2026",
+      "source": "TED · 22 Oct 2026 [sv]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/732737-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-11-05",
+      "deadline_raw": "2026-11-05",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED contract notice 732737-2026, published 22 October 2026, is from Jönköping Energi AB. The title is HF Krafttransformator. The description says the purchase, delivery, placement and installation of a new power transformer with a construction voltage of 145/52 kV for Huskvarna Fördelning. The estimated value on the notice is SEK 31,000,000. Requests to participate are due 5 November 2026 at 00:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Jönköping. The fields retrieved do not state an MVA rating or a winner. Original notice in Swedish.",
+      "snippet": "TED contract notice 732737-2026, published 22 October 2026, is from Jönköping Energi AB. The title is HF Krafttransformator. The description says the purchase, delivery, placement and installation of a new power transformer with a construction voltage of 145/52 kV for Huskvarna Fördelning. The estimated value on the notice is SEK 31,000,000. Requests to participate are due 5 November 2026 at 00:00 (UTC+1). The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Jönköping. The fields retrieved do not state an MVA rating or a winner. Original notice in Swedish.",
+      "tender_id": "T-jonkoping-energi-tenders-a-145-5",
+      "project_country": "Sweden",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "CLOSING_SOON",
+      "statusLabel": "Closing soon",
+      "statusGroup": "Open",
+      "deadline": "2026-11-05",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-22"
     },
     {
       "title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
@@ -1286,7 +1501,7 @@
       "statusLabel": "Closing soon",
       "statusGroup": "Open",
       "deadline": "2026-10-27",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-09-24"
     },
     {
@@ -1329,7 +1544,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "AMBA I – Ampliación del Sistema de Transporte Eléctrico",
@@ -1373,7 +1588,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Interconexión Eléctrica 500 kV Puerto Madryn – Choele Choel – Bahía Blanca",
@@ -1417,7 +1632,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Hunter Transmission Project",
@@ -1460,7 +1675,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "New England REZ transmission line",
@@ -1503,7 +1718,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "South West REZ transmission project",
@@ -1546,7 +1761,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Sydney Ring South",
@@ -1588,7 +1803,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Victoria–NSW Interconnector West",
@@ -1631,7 +1846,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Borumba Pumped Hydro Project – Transmission Connections",
@@ -1673,7 +1888,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Eyre Peninsula Upgrade",
@@ -1715,7 +1930,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Grid reinforcement east",
@@ -1758,7 +1973,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Matarbari 400/230/132 kV substation & LILO of Matarbari–Banskhali 400 kV line",
@@ -1800,7 +2015,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "PGCB 765 kV transmission project",
@@ -1842,7 +2057,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Boucle du Hainaut",
@@ -1884,7 +2099,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "TritonLink",
@@ -1931,7 +2146,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Alberta–British Columbia Intertie Restoration",
@@ -1974,7 +2189,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ontario Northeast Power Line",
@@ -2018,7 +2233,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Longwood to Lakeshore Transmission Line",
@@ -2061,7 +2276,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Sistema de Transmisión S/E Tineo – S/E Nueva Ancud",
@@ -2105,7 +2320,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ganjiang–Gannan 1000 kV UHVAC project",
@@ -2148,7 +2363,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Interconexión Eléctrica Colombia-Panamá",
@@ -2191,7 +2406,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Køge–Vordingborg 400 kV connection",
@@ -2233,7 +2448,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Germany–Denmark offshore interconnector",
@@ -2280,7 +2495,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "El Dabaa nuclear power plant grid connection",
@@ -2323,7 +2538,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "2028",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Helen Electricity Network closes the Sörnäinen 400 MVA transformer and reactor procurement with no winner",
@@ -2365,7 +2580,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
@@ -2408,7 +2623,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Foulventour 400 kV line connection",
@@ -2450,7 +2665,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Boucles de la Seine grid transition",
@@ -2492,7 +2707,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "A-Nord",
@@ -2535,7 +2750,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Rhein-Main-Link",
@@ -2578,7 +2793,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ultranet",
@@ -2621,7 +2836,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "BalWin1 & BalWin2",
@@ -2663,7 +2878,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "BalWin4 & LanWin1",
@@ -2706,7 +2921,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ostniedersachsenleitung",
@@ -2748,7 +2963,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Unterweser–Conneforde",
@@ -2790,7 +3005,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Bommersheim–Eschborn",
@@ -2832,7 +3047,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Amprion launches tender for decentralised grid booster projects",
@@ -2874,7 +3089,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Raigarh–Pugalur ±800 kV, 6000 MW HVDC system upgradation",
@@ -2916,7 +3131,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "RECPDCL tender for 765 kV intrastate transmission project in Maharashtra",
@@ -2958,7 +3173,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Transmission system for Offshore Wind Zone Phase-I (500 MW) off Gujarat coast",
@@ -3001,7 +3216,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Sumatra–Java HVDC interconnection",
@@ -3044,7 +3259,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Green Energy Corridor Sulawesi (South) project",
@@ -3086,7 +3301,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Iraq Ministry of Electricity to procure 4,026 locally-made transformers",
@@ -3128,7 +3343,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Hokkaido–Honshu 2 GW HVDC interconnection",
@@ -3171,7 +3386,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Kuwait MEW transformer substations package",
@@ -3213,7 +3428,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Sarawak–Peninsular Malaysia interconnection",
@@ -3255,7 +3470,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "CFE Plan de Fortalecimiento y Expansión de la Red Nacional de Transmisión 2025-2030",
@@ -3299,7 +3514,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "La Alegría Solar",
@@ -3343,7 +3558,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Xlinks Morocco–UK 3.6 GW power link",
@@ -3385,7 +3600,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Beverwijk–Vijfhuizen 380 kV transformer station",
@@ -3427,7 +3642,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Central North Island 220 kV Capacity Project",
@@ -3469,7 +3684,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ōtāhuhu–Whakamaru A and B Lines Reconductoring Project",
@@ -3512,7 +3727,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "ADB $330 million clean energy transmission expansion",
@@ -3554,7 +3769,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Parque Eólico Urani (Ocucaje, Ica) – 112.2 MW con subestación elevadora 33/220 kV y dos líneas de transmisión 220 kV",
@@ -3597,7 +3812,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Terra Solar",
@@ -3640,7 +3855,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "NGCP Milaor 500 kV substation",
@@ -3683,7 +3898,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Harmony Link",
@@ -3725,7 +3940,136 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
+    },
+    {
+      "title": "ENEA Operator closes task II of its compact MV/LV transformer-substation procurement with no winner",
+      "full_title": "ENEA Operator closes task II of its compact MV/LV transformer-substation procurement with no winner",
+      "buyer": "ENEA Operator Sp. z o.o.",
+      "utility": "",
+      "epc": "",
+      "country": "Poland",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "task II",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/734559-2026",
+      "source": "TED · 23 Oct 2026 [pl]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/734559-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED award notice 734559-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task II. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The result fields say no winner was chosen and the competition is closed. The non-award justification on the notice is Other. The fields retrieved do not spell out what that means. The notice reports 4 tenders, 4 electronic submissions, 2 from SMEs, 0 from other EEA countries and 0 from non-EEA countries. The fields retrieved do not state a contract value. The buyer city on the notice is Poznań. Original notice in Polish.",
+      "snippet": "TED award notice 734559-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task II. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The result fields say no winner was chosen and the competition is closed. The non-award justification on the notice is Other. The fields retrieved do not spell out what that means. The notice reports 4 tenders, 4 electronic submissions, 2 from SMEs, 0 from other EEA countries and 0 from non-EEA countries. The fields retrieved do not state a contract value. The buyer city on the notice is Poznań. Original notice in Polish.",
+      "tender_id": "T-enea-operator-closes-task-ii-of",
+      "project_country": "Poland",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "UNDATED",
+      "statusLabel": "Tendering (deadline not stated)",
+      "statusGroup": "Pre-award",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
+    },
+    {
+      "title": "ENEA Operator awards compact MV/LV transformer substations and MV joints, tasks III and IV",
+      "full_title": "ENEA Operator awards compact MV/LV transformer substations and MV joints, tasks III and IV",
+      "buyer": "ENEA Operator Sp. z o.o.",
+      "utility": "",
+      "epc": "",
+      "country": "Poland",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "PLN 50,599,990",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/734768-2026",
+      "source": "TED · 23 Oct 2026 [pl]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/734768-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "ENEA Serwis sp. z o.o.; LAMEL ROZDZIELNICE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+      "award_basis": "TED award notice 734768-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task III and task IV. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The notice names ENEA Serwis sp. z o.o. of Lipno and LAMEL ROZDZIELNICE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ of Pępowo. It states a notice result value of PLN 50,599,990 and tender values of PLN 22,999,990 and PLN 27,600,000. The fields retrieved do not label which tender value or which winner belongs to which task. The notice reports 3 tenders, 3 electronic submissions and 1 SME for one lot, and 3 tenders, 3 electronic submissions and 2 SMEs for the other. The fields retrieved do not label which count belongs to task III or task IV. Both lots report 0 for the other-EEA and non-EEA counts. The contract conclusion dates on the notice are 12 December 2024 and 21 January 2025. The fields retrieved do not include a separate award-decision date, and they do not label which contract date belongs to which task. The buyer city on the notice is Poznań. 23 October 2026 is the publication date of this award notice. Original notice in Polish.",
+      "snippet": "TED award notice 734768-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task III and task IV. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The notice names ENEA Serwis sp. z o.o. of Lipno and LAMEL ROZDZIELNICE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ of Pępowo. It states a notice result value of PLN 50,599,990 and tender values of PLN 22,999,990 and PLN 27,600,000. The fields retrieved do not label which tender value or which winner belongs to which task. The notice reports 3 tenders, 3 electronic submissions and 1 SME for one lot, and 3 tenders, 3 electronic submissions and 2 SMEs for the other. The fields retrieved do not label which count belongs to task III or task IV. Both lots report 0 for the other-EEA and non-EEA counts. The contract conclusion dates on the notice are 12 December 2024 and 21 January 2025. The fields retrieved do not include a separate award-decision date, and they do not label which contract date belongs to which task. The buyer city on the notice is Poznań. 23 October 2026 is the publication date of this award notice. Original notice in Polish.",
+      "tender_id": "T-enea-operator-awards-compact-mv",
+      "project_country": "Poland",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "UNDATED",
+      "statusLabel": "Tendering (deadline not stated)",
+      "statusGroup": "Pre-award",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
+    },
+    {
+      "title": "ENEA Operator closes task I of its compact MV/LV transformer-substation procurement for insufficient funds",
+      "full_title": "ENEA Operator closes task I of its compact MV/LV transformer-substation procurement for insufficient funds",
+      "buyer": "ENEA Operator Sp. z o.o.",
+      "utility": "",
+      "epc": "",
+      "country": "Poland",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "task I",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/735203-2026",
+      "source": "TED · 23 Oct 2026 [pl]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/735203-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "tendering",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED award notice 735203-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task I. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The result fields say no winner was chosen and the competition is closed. The non-award justification on the notice is a decision of the buyer because of insufficient funds. The notice reports 2 tenders, 2 electronic submissions, 1 from an SME, 0 from other EEA countries and 0 from non-EEA countries. The fields retrieved do not state a contract value. The buyer city on the notice is Poznań. Original notice in Polish.",
+      "snippet": "TED award notice 735203-2026, published 23 October 2026, is from ENEA Operator Sp. z o.o. The procedure title is supply of compact MV/LV transformer substations and MV joints for ENEA Operator, in four tasks. This notice covers task I. The description says the detailed specification is in the contract documents on ezamowienia.gov.pl. The result fields say no winner was chosen and the competition is closed. The non-award justification on the notice is a decision of the buyer because of insufficient funds. The notice reports 2 tenders, 2 electronic submissions, 1 from an SME, 0 from other EEA countries and 0 from non-EEA countries. The fields retrieved do not state a contract value. The buyer city on the notice is Poznań. Original notice in Polish.",
+      "tender_id": "T-enea-operator-closes-task-i-of-i",
+      "project_country": "Poland",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "UNDATED",
+      "statusLabel": "Tendering (deadline not stated)",
+      "statusGroup": "Pre-award",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "Ras Laffan substation",
@@ -3767,12 +4111,12 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
       "full_title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
-      "buyer": "",
+      "buyer": "Saudi Power Procurement Company",
       "utility": "",
       "epc": "",
       "country": "Saudi",
@@ -3809,7 +4153,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-13"
     },
     {
@@ -3852,7 +4196,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "GCCIA Saudi-Kuwait interconnection",
@@ -3895,7 +4239,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "PIF–Google Cloud AI hub",
@@ -3937,7 +4281,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Saudi Arabia–South Africa power interconnection",
@@ -3979,7 +4323,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Gamma–Perseus 2nd 765 kV powerline",
@@ -4021,7 +4365,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Independent Transmission Projects (ITP) procurement programme – first phase",
@@ -4063,7 +4407,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "La Serna–Magallón 400 kV line",
@@ -4105,7 +4449,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ekhyddan–Nybro 400 kV line",
@@ -4148,7 +4492,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Uganda–Tanzania 400 kV interconnector project",
@@ -4190,7 +4534,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "EGAT 500 kV border transmission line supply & construction",
@@ -4232,7 +4576,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "EGAT 230 kV Srinagarind 2 substation supply & construction",
@@ -4274,7 +4618,7 @@
       "statusLabel": "Tendering (deadline not stated)",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Scotland–England Green Link",
@@ -4316,7 +4660,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2034",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "LionLink",
@@ -4359,7 +4703,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Bramford–Twinstead 400 kV reinforcement",
@@ -4402,7 +4746,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Norwich–Tilbury 400 kV reinforcement",
@@ -4445,7 +4789,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Mankato–Mississippi River 345 kV Transmission Project",
@@ -4489,7 +4833,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Big Stone South to Alexandria 345 kV Transmission Line",
@@ -4533,7 +4877,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "SOO Green HVDC Link",
@@ -4577,7 +4921,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Maryland Piedmont Reliability Project",
@@ -4621,7 +4965,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2028",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Manning–Metcalf 500 kV Transmission Line Project",
@@ -4665,7 +5009,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Southline Transmission Project",
@@ -4709,7 +5053,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "AEP Ohio New Albany Data Center Substation",
@@ -4751,7 +5095,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Jamestown–Ellendale",
@@ -4795,7 +5139,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "North Plains Connector",
@@ -4839,7 +5183,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Bahrain EWA Sitra 400 kV grid substation",
@@ -4881,7 +5225,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Kuwait MEW main 132/300/400 kV substation maintenance & repair",
@@ -4923,7 +5267,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "DEWA Tawimura 33/11 kV substation",
@@ -4966,7 +5310,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "EWEC 400 MW BESS power project",
@@ -5009,7 +5353,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "KAHRAMAA 2026 plan: 198 tenders worth QR21.4bn ($5.9bn); QR8.9bn for transmission",
@@ -5051,7 +5395,7 @@
       "statusLabel": "Procurement plan",
       "statusGroup": "Procurement plan",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "CEA tenders a framework for equipment of HV/LV transformer substations",
@@ -5093,8 +5437,51 @@
       "statusLabel": "Framework",
       "statusGroup": "Framework",
       "deadline": "2026-11-17",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
+    },
+    {
+      "title": "e-netz Südhessen tenders a framework for fluorine-free outdoor 123 kV circuit breakers",
+      "full_title": "e-netz Südhessen tenders a framework for fluorine-free outdoor 123 kV circuit breakers",
+      "buyer": "e-netz Südhessen AG",
+      "utility": "",
+      "epc": "",
+      "country": "Germany",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "123 kV · 5 years",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736087-2026",
+      "source": "TED · 23 Oct 2026 [de]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/736087-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-11-10",
+      "deadline_raw": "2026-11-10",
+      "stage": "framework",
+      "cls": "",
+      "awardee": "",
+      "award_basis": "TED contract notice 736087-2026, published 23 October 2026, is from e-netz Südhessen AG. The description says the company, as network operator, intends over the next five to eight years to renew existing substations and to build new substations in its area within about 70 kilometres of Darmstadt, and that circuit breakers are needed for that work. The framework covers delivery and commissioning of gas-insulated, fluorine-free, outdoor 123 kV circuit breakers. It says the framework runs for five years with an option of at most three extensions. Requests to participate are due 10 November 2026 at 09:00 (UTC+1). A change note says the participation deadline moves from 9 November 2026 at 09:00 to 10 November 2026 at 09:00 (UTC+1), and that questions are answered only if they arrive by 2 November 2026 at 09:00. The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Darmstadt. The fields retrieved do not state a unit count or a contract value. The notice does not name a transformer. Original notice in German.",
+      "snippet": "TED contract notice 736087-2026, published 23 October 2026, is from e-netz Südhessen AG. The description says the company, as network operator, intends over the next five to eight years to renew existing substations and to build new substations in its area within about 70 kilometres of Darmstadt, and that circuit breakers are needed for that work. The framework covers delivery and commissioning of gas-insulated, fluorine-free, outdoor 123 kV circuit breakers. It says the framework runs for five years with an option of at most three extensions. Requests to participate are due 10 November 2026 at 09:00 (UTC+1). A change note says the participation deadline moves from 9 November 2026 at 09:00 to 10 November 2026 at 09:00 (UTC+1), and that questions are answered only if they arrive by 2 November 2026 at 09:00. The procedure is a negotiated procedure with a call for competition. The buyer city on the notice is Darmstadt. The fields retrieved do not state a unit count or a contract value. The notice does not name a transformer. Original notice in German.",
+      "tender_id": "T-e-netz-sudhessen-tenders-a-frame",
+      "project_country": "Germany",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "FRAMEWORK",
+      "statusLabel": "Framework",
+      "statusGroup": "Framework",
+      "deadline": "2026-11-10",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "Sadales tīkls awards MARITEC a framework that includes 6–20/0.4 kV transformer substations and 110 kV voltage-transformer replacement",
@@ -5136,7 +5523,7 @@
       "statusLabel": "Framework",
       "statusGroup": "Framework",
       "deadline": "",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
     },
     {
@@ -5179,7 +5566,7 @@
       "statusLabel": "Framework",
       "statusGroup": "Framework",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Marinus Link",
@@ -5222,7 +5609,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Lower Wonga Hybrid Connection",
@@ -5265,7 +5652,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Clean Energy Link – North",
@@ -5308,7 +5695,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Vorarlberger Energienetze awards 123 kV oil regulating transformers to Kolektor ETRA",
@@ -5350,8 +5737,51 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-22",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-22"
+    },
+    {
+      "title": "Austrian Power Grid awards substation civil and structural site supervision to AFRY Austria",
+      "full_title": "Austrian Power Grid awards substation civil and structural site supervision to AFRY Austria",
+      "buyer": "Austrian Power Grid AG",
+      "utility": "",
+      "epc": "",
+      "country": "Austria",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "EUR 4,686,350",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736208-2026",
+      "source": "TED · 23 Oct 2026 [de]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/736208-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "awarded",
+      "cls": "",
+      "awardee": "AFRY Austria GmbH",
+      "award_basis": "TED award notice 736208-2026, published 23 October 2026, records that Austrian Power Grid AG awarded local site supervision for civil and structural works for new-build and rebuild of substations. The notice names AFRY Austria GmbH of Salzburg. It states a notice result value and a tender value of EUR 4,686,350. The notice reports 3 electronic submissions. The fields retrieved do not include a separate tenders-received total. The award-decision date on the notice is 14 August 2026 and the contract conclusion date is 2 September 2026. The buyer city on the notice is Wien. The notice does not name a transformer or switchgear. 23 October is the publication date of this award notice. Original notice in German.",
+      "snippet": "TED award notice 736208-2026, published 23 October 2026, records that Austrian Power Grid AG awarded local site supervision for civil and structural works for new-build and rebuild of substations. The notice names AFRY Austria GmbH of Salzburg. It states a notice result value and a tender value of EUR 4,686,350. The notice reports 3 electronic submissions. The fields retrieved do not include a separate tenders-received total. The award-decision date on the notice is 14 August 2026 and the contract conclusion date is 2 September 2026. The buyer city on the notice is Wien. The notice does not name a transformer or switchgear. 23 October is the publication date of this award notice. Original notice in German.",
+      "tender_id": "T-austrian-power-grid-awards-subst",
+      "project_country": "Austria",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "AWARDED",
+      "statusLabel": "Awarded",
+      "statusGroup": "Awarded",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "400 kV substation contract",
@@ -5394,7 +5824,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Energisa Lote 12 – ANEEL Transmission Auction 01/2024",
@@ -5437,7 +5867,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "ISA Energia Brasil Projeto Itatiaia",
@@ -5480,7 +5910,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2029",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Nueva Subestación Margarita y Línea 2x110 kV Margarita – Agua Santa",
@@ -5524,7 +5954,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "China XD wins CNY 4.13bn in SGCC third-batch UHV & transmission equipment tenders",
@@ -5566,7 +5996,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "SGCC 8th-batch UHV equipment tender: CNY 1.7bn of reactors split among 7 firms",
@@ -5608,7 +6038,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "中国西电 China XD Electric: 14 subsidiaries win CNY 1.447bn of State Grid procurement",
@@ -5650,7 +6080,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "中国西电 China XD Electric: 6 subsidiaries win CNY 1.899bn of State Grid UHV project procurement",
@@ -5692,7 +6122,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
@@ -5734,7 +6164,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Subestación Magangué 500/110 kV y líneas de transmisión asociadas",
@@ -5778,7 +6208,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Segundo circuito 500 kV Cerromatoso-Sahagún-Chinú y ampliación Subestación Sahagún 500 kV",
@@ -5821,7 +6251,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2026",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "EG.D awards 110/23 kV oil power transformers to ETD Transformátory a.s. and KONČAR D&ST",
@@ -5863,7 +6293,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -5906,7 +6336,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -5949,7 +6379,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -5992,7 +6422,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -6035,7 +6465,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
     },
     {
@@ -6085,7 +6515,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Vestforbrænding awards 50 kV switchgear and a 50/10 kV transformer to Kemp & Lauritzen",
@@ -6127,7 +6557,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
     },
     {
@@ -6171,7 +6601,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Nefertiti 500 MW/1,000 MWh BESS project",
@@ -6214,7 +6644,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ostwind 4",
@@ -6256,7 +6686,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2031",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "North Sea Connector 2",
@@ -6298,7 +6728,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2034",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Stadtwerke Saarbrücken Netz awards a 10 kV switchgear for substation BBH to NATUS",
@@ -6340,7 +6770,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-16"
     },
     {
@@ -6383,8 +6813,51 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
+    },
+    {
+      "title": "BEW Berliner Energie und Wärme awards the Klingenberg high-voltage connection, including new high-voltage transformers, to Paralos Energy",
+      "full_title": "BEW Berliner Energie und Wärme awards the Klingenberg high-voltage connection, including new high-voltage transformers, to Paralos Energy",
+      "buyer": "BEW Berliner Energie und Wärme",
+      "utility": "",
+      "epc": "",
+      "country": "Germany",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "EUR 79,958,226.40",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/734822-2026",
+      "source": "TED · 23 Oct 2026 [en]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/734822-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "awarded",
+      "cls": "",
+      "awardee": "Paralos Energy PC",
+      "award_basis": "TED award notice 734822-2026, published 23 October 2026, records that BEW Berliner Energie und Wärme GmbH awarded the Klingenberg Backbone electrical scope. The description says the buyer is refurbishing the combined heat and power plant at the Klingenberg site in Berlin and plans a new 110 kV and medium-voltage connection next to the current grid connection. The scope it names is installation of new high-voltage transformers and stands, SF6-free switchgear, and construction of a new grid-connection building, including technical building equipment and auxiliaries. The notice names Paralos Energy PC of Athens. It states a notice result value of EUR 79,958,226.40. The tender-value field retrieved is EUR 1, and the estimated-value fields retrieved are EUR 1.00. The fields retrieved do not explain those figures. The notice reports 1 tender and 1 electronic submission, and 0 for the SME, other-EEA and non-EEA counts. The award-decision date on the notice is 19 October 2026 and the contract conclusion date is 21 October 2026. The buyer city on the notice is Berlin. Original notice in English.",
+      "snippet": "TED award notice 734822-2026, published 23 October 2026, records that BEW Berliner Energie und Wärme GmbH awarded the Klingenberg Backbone electrical scope. The description says the buyer is refurbishing the combined heat and power plant at the Klingenberg site in Berlin and plans a new 110 kV and medium-voltage connection next to the current grid connection. The scope it names is installation of new high-voltage transformers and stands, SF6-free switchgear, and construction of a new grid-connection building, including technical building equipment and auxiliaries. The notice names Paralos Energy PC of Athens. It states a notice result value of EUR 79,958,226.40. The tender-value field retrieved is EUR 1, and the estimated-value fields retrieved are EUR 1.00. The fields retrieved do not explain those figures. The notice reports 1 tender and 1 electronic submission, and 0 for the SME, other-EEA and non-EEA counts. The award-decision date on the notice is 19 October 2026 and the contract conclusion date is 21 October 2026. The buyer city on the notice is Berlin. Original notice in English.",
+      "tender_id": "T-bew-berliner-energie-und-warme-a",
+      "project_country": "Germany",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "AWARDED",
+      "statusLabel": "Awarded",
+      "statusGroup": "Awarded",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "Bhadla–Fatehpur ±800 kV HVDC transmission project",
@@ -6428,7 +6901,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Khavda–Nagpur ±800 kV HVDC link",
@@ -6471,7 +6944,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "KPS III HVDC transmission",
@@ -6515,7 +6988,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "AESL 7 GW Renewable Energy Evacuation Transmission Network",
@@ -6557,7 +7030,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "PGCIL bulk order for 765 kV power transformers",
@@ -6600,7 +7073,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "GE Vernova extra high-voltage transformers and shunt reactors for POWERGRID renewable energy corridors",
@@ -6643,7 +7116,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "POWERGRID ISTS project for pumped-storage evacuation in Uttar Pradesh",
@@ -6685,7 +7158,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "AESL ~Rs 2,800 crore transmission project for green hydrogen/ammonia manufacturing",
@@ -6728,7 +7201,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Three substation projects in Sumatra",
@@ -6770,7 +7243,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Adriatic Link",
@@ -6813,7 +7286,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Hokkaido–Honshu HVDC interconnection (Kitahon) Pole 1 renewal",
@@ -6856,7 +7329,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "KETRACO PPP energy transmission infrastructure project",
@@ -6899,7 +7372,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Ignitis awards five 110/10 kV, 16 MVA power transformers to UAB AUSGA and KONČAR D&ST",
@@ -6908,7 +7381,7 @@
       "utility": "",
       "epc": "",
       "country": "Lithuania",
-      "region": "Other",
+      "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
       "voltage": "",
@@ -6941,8 +7414,51 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-21"
+    },
+    {
+      "title": "Ignitis awards four 110/35/10 kV, 25 MVA power transformers to UAB Ekobana",
+      "full_title": "Ignitis awards four 110/35/10 kV, 25 MVA power transformers to UAB Ekobana",
+      "buyer": "UAB Ignitis grupės paslaugų centras (PV)",
+      "utility": "",
+      "epc": "",
+      "country": "Lithuania",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "EUR 6,238,760 · 4 × 25 MVA",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/733953-2026",
+      "source": "TED · 23 Oct 2026 [lt]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/733953-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "awarded",
+      "cls": "",
+      "awardee": "UAB \"Ekobana\"",
+      "award_basis": "TED award notice 733953-2026, published 23 October 2026, records that UAB Ignitis grupės paslaugų centras (PV) awarded the supply titled 2026-ESO-549, four 110/35/10 kV, 25 MVA power transformers. The notice names UAB \"Ekobana\" of Vilnius. It states a notice result value of EUR 6,238,760 and a tender value of EUR 5,156,000. The estimated-value fields retrieved are 0 EUR. The fields retrieved do not explain the difference between the result value and the tender value. The notice reports 4 electronic submissions. The fields retrieved do not include a separate tenders-received total. The contract conclusion date on the notice is 19 October 2026. The fields retrieved do not include a separate award-decision date. The buyer city on the notice is Vilnius. 23 October is the publication date of this award notice. Original notice in Lithuanian.",
+      "snippet": "TED award notice 733953-2026, published 23 October 2026, records that UAB Ignitis grupės paslaugų centras (PV) awarded the supply titled 2026-ESO-549, four 110/35/10 kV, 25 MVA power transformers. The notice names UAB \"Ekobana\" of Vilnius. It states a notice result value of EUR 6,238,760 and a tender value of EUR 5,156,000. The estimated-value fields retrieved are 0 EUR. The fields retrieved do not explain the difference between the result value and the tender value. The notice reports 4 electronic submissions. The fields retrieved do not include a separate tenders-received total. The contract conclusion date on the notice is 19 October 2026. The fields retrieved do not include a separate award-decision date. The buyer city on the notice is Vilnius. 23 October is the publication date of this award notice. Original notice in Lithuanian.",
+      "tender_id": "T-ignitis-awards-four-110-35-10-kv",
+      "project_country": "Lithuania",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "AWARDED",
+      "statusLabel": "Awarded",
+      "statusGroup": "Awarded",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "TNB Jelutong switching station",
@@ -6985,7 +7501,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Central Fotovoltaica Puerto Peñasco Secuencia III",
@@ -7030,7 +7546,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "IJmuiden Ver Alpha",
@@ -7072,7 +7588,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Cook Strait HVDC link upgrade",
@@ -7114,7 +7630,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "GCCIA UAE–Oman 400 kV power interconnection",
@@ -7157,7 +7673,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Proyectos de transmisión Grupo 1 – Nueva SE 'Hub' Poroma 500 kV y Enlace 500 kV Hub Poroma-Colectora; Nueva SE 'Hub' San José 220 kV; Nueva SE Marcona II 138 kV",
@@ -7201,7 +7717,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2028",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Proyectos de transmisión Grupo 2 – Línea 500 kV Chilca CTM-Carabayllo (tercer circuito); Nueva Subestación Bicentenario 500/220 kV; Reconfiguración 220 kV Chavarría-Santa Rosa-Carapongo; Nueva SE Muyurina 220 kV y SE Ayacucho; Ampliación sistema Ica",
@@ -7245,7 +7761,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Cuatro proyectos de transmisión – Línea 500 kV Miguel Grau-Pariñas; Líneas 220 kV Felam-Tierras, Nuevas-Salitral y Muyurina-Mollepata; Nueva Subestación Palián 220/60 kV",
@@ -7289,7 +7805,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2031",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "ENEA Wytwarzanie awards a 400/30/30 kV, 280/140/140 MVA transformer to EthosEnergy Poland",
@@ -7331,8 +7847,51 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-20"
+    },
+    {
+      "title": "Południowy Koncern Węglowy awards a 6 kV switchgear for the Sobieski mine to OPA-ROW",
+      "full_title": "Południowy Koncern Węglowy awards a 6 kV switchgear for the Sobieski mine to OPA-ROW",
+      "buyer": "Południowy Koncern Węglowy",
+      "utility": "",
+      "epc": "",
+      "country": "Poland",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "PLN 11,791,869.92",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736006-2026",
+      "source": "TED · 23 Oct 2026 [pl]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/736006-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "awarded",
+      "cls": "",
+      "awardee": "OPA-ROW Sp. z o.o.",
+      "award_basis": "TED award notice 736006-2026, published 23 October 2026, records that Południowy Koncern Węglowy S.A. awarded supply, installation and commissioning of a 6 kV switchgear for Zakład Górniczy Sobieski. The notice names OPA-ROW Sp. z o.o. The winner city on the notice is Rybinik. It states a notice result value and a tender value of PLN 11,791,869.92. The notice reports 3 tenders, 1 electronic submission, 1 from an SME, 0 from other EEA countries and 0 from non-EEA countries. The contract conclusion date on the notice is 6 October 2026. The fields retrieved do not include a separate award-decision date. Additional information says the performance period is 24 months from the contract date. The description says the detailed scope is in annex 5 to the contract documents. The notice does not name a transformer. The buyer city on the notice is Jaworzno. 23 October is the publication date of this award notice. Original notice in Polish.",
+      "snippet": "TED award notice 736006-2026, published 23 October 2026, records that Południowy Koncern Węglowy S.A. awarded supply, installation and commissioning of a 6 kV switchgear for Zakład Górniczy Sobieski. The notice names OPA-ROW Sp. z o.o. The winner city on the notice is Rybinik. It states a notice result value and a tender value of PLN 11,791,869.92. The notice reports 3 tenders, 1 electronic submission, 1 from an SME, 0 from other EEA countries and 0 from non-EEA countries. The contract conclusion date on the notice is 6 October 2026. The fields retrieved do not include a separate award-decision date. Additional information says the performance period is 24 months from the contract date. The description says the detailed scope is in annex 5 to the contract documents. The notice does not name a transformer. The buyer city on the notice is Jaworzno. 23 October is the publication date of this award notice. Original notice in Polish.",
+      "tender_id": "T-po-udniowy-koncern-weglowy-award",
+      "project_country": "Poland",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "AWARDED",
+      "statusLabel": "Awarded",
+      "statusGroup": "Awarded",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "Dukhan solar 2 GW project grid connection",
@@ -7375,7 +7934,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "DEER awards oil-immersed distribution transformers to Eximprod Power Systems",
@@ -7417,7 +7976,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-19"
     },
     {
@@ -7461,7 +8020,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "TBEA 380/132kV GIS substation project",
@@ -7504,7 +8063,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "380/230 kV Amiral substation",
@@ -7546,7 +8105,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "380 kV Taibah power plant substation",
@@ -7588,7 +8147,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "NEOM substation order",
@@ -7630,7 +8189,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "132/13.8kV substation at Expo 2030 Riyadh",
@@ -7672,7 +8231,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "East Coast–East Seoul 500 kV HVDC (Donghae–East Seoul) network",
@@ -7716,7 +8275,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Shinan Ui offshore wind power project – offshore substation",
@@ -7759,7 +8318,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Red Eléctrica awards a 400 kV GIS bay at Santa María de Grado to Siemens Energy",
@@ -7801,7 +8360,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -7844,8 +8403,51 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
+    },
+    {
+      "title": "ADIF awards traction-transformer inspection and repair on the high-speed network to Siemens Energy",
+      "full_title": "ADIF awards traction-transformer inspection and repair on the high-speed network to Siemens Energy",
+      "buyer": "Administrador de Infraestructuras Ferroviarias",
+      "utility": "",
+      "epc": "",
+      "country": "Spain",
+      "region": "Europe",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "EUR 9,933,538.66",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://ted.europa.eu/en/notice/-/detail/736516-2026",
+      "source": "TED · 23 Oct 2026 [es]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/736516-2026"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "deadline_raw": "",
+      "stage": "awarded",
+      "cls": "",
+      "awardee": "Siemens Energy SA",
+      "award_basis": "TED award notice 736516-2026, published 23 October 2026, records that Administrador de Infraestructuras Ferroviarias awarded inspection, testing and specialised repair of traction transformers in substations of the high-speed network. The notice names Siemens Energy SA of Tres Cantos. It states a notice result value and a tender value of EUR 9,933,538.66. The estimated value on the notice is EUR 10,000,000. The notice reports 2 tenders, 2 electronic submissions, 0 from SMEs, 0 from other EEA countries and 0 from non-EEA countries. The contract conclusion date on the notice is 21 October 2026. The fields retrieved do not include a separate award-decision date. Additional information says the performance period is 48 months. The buyer city on the notice is Madrid. 23 October is the publication date of this award notice. Original notice in Spanish.",
+      "snippet": "TED award notice 736516-2026, published 23 October 2026, records that Administrador de Infraestructuras Ferroviarias awarded inspection, testing and specialised repair of traction transformers in substations of the high-speed network. The notice names Siemens Energy SA of Tres Cantos. It states a notice result value and a tender value of EUR 9,933,538.66. The estimated value on the notice is EUR 10,000,000. The notice reports 2 tenders, 2 electronic submissions, 0 from SMEs, 0 from other EEA countries and 0 from non-EEA countries. The contract conclusion date on the notice is 21 October 2026. The fields retrieved do not include a separate award-decision date. Additional information says the performance period is 48 months. The buyer city on the notice is Madrid. 23 October is the publication date of this award notice. Original notice in Spanish.",
+      "tender_id": "T-adif-awards-traction-transformer",
+      "project_country": "Spain",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "AWARDED",
+      "statusLabel": "Awarded",
+      "statusGroup": "Awarded",
+      "deadline": "",
+      "last_verified": "2026-10-23",
+      "publication_date": "2026-10-23"
     },
     {
       "title": "GUNKUL–EGAT 500 kV transmission line",
@@ -7887,7 +8489,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "400 kV grid station for Industrial City of Abu Dhabi",
@@ -7929,7 +8531,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Eastern Green Link 3",
@@ -7971,7 +8573,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Eastern Green Link 4",
@@ -8014,7 +8616,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2033",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Beckham County–Potter 345 kV Project",
@@ -8058,7 +8660,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "SouthCoast Wind",
@@ -8102,7 +8704,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Pansulu–Mansa 330 kV transmission and transformation project",
@@ -8144,7 +8746,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
@@ -8201,7 +8803,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-09-20",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-08-28"
     },
     {
@@ -8244,7 +8846,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-10-21",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -8287,7 +8889,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-10-16",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-10-15"
     },
     {
@@ -8331,7 +8933,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-04-28",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Oman (Nama) floats international tender for 800–1,000 MW green-hydrogen power plant",
@@ -8373,7 +8975,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-06-21",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "KAHRAMAA 2026 transmission expansion EPC",
@@ -8415,7 +9017,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-05-14",
-      "last_verified": "2026-10-21"
+      "last_verified": "2026-10-23"
     },
     {
       "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
@@ -8467,7 +9069,7 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026-09-02",
-      "last_verified": "2026-10-21",
+      "last_verified": "2026-10-23",
       "publication_date": "2026-08-18"
     }
   ]
