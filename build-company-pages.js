@@ -12,9 +12,10 @@
  *     ownership/affiliation; the official URL is referenced, not claimed)
  *   - RFQ + "claim your profile" conversion loop
  *
- * Indexability tier (protects domain quality):
- *   Tier A/B (index,follow) — has a real website URL.  Tier C (noindex,follow) —
- *   no URL, i.e. a directory row with no externally corroborating web presence.
+ * Indexability (lib/listing-richness.js):
+ *   index,follow — public website, and multiple sourced fields (intel score
+ *   60+, a sourced tier dossier, or a city plus three product-type codes).
+ *   noindex,follow — no website, or a thin listing. The page is still written.
  * Run: node build-company-pages.js  (part of the Netlify build command, BEFORE build-seo).
  */
 'use strict';
@@ -42,6 +43,7 @@ const SPEC_BY_SLUG = {};
 (manufacturerSpecs.load(__dirname).companies || []).forEach(function (c) { if (c && c.slug) SPEC_BY_SLUG[c.slug] = c; });
 const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
+const listingRichness = require('./lib/listing-richness');
 const paidListings = require('./lib/paid-listings');
 const claimListing = require('./lib/claim-listing');
 const availability = require('./lib/availability');
@@ -518,8 +520,8 @@ const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', 
 
 function page(r, slug) {
   const tier = r.tierFile;
-  const indexable = !!r.url;
-  const robots = indexable ? 'index,follow' : 'noindex,follow';
+  const indexable = listingRichness.manufacturerIndexable(r);
+  const robots = listingRichness.robots(indexable);
   const url = 'https://transformerpath.com/manufacturers/' + slug + '/';
   // capabilities: union of type + tier fields
   const typeList = r.types.length ? r.types : [];
@@ -706,7 +708,7 @@ list.forEach(function (r) {
 list.forEach(function (r) {
   fs.mkdirSync('manufacturers/' + r.slug, { recursive: true });
   fs.writeFileSync('manufacturers/' + r.slug + '/index.html', page(r, r.slug));
-  if (r.url) { indexed++; if (r.tierFile) rich++; } else noindexed++;
+  if (listingRichness.manufacturerIndexable(r)) { indexed++; if (r.tierFile) rich++; } else noindexed++;
 });
 console.log('company pages:', list.length, '| indexed:', indexed, '(rich tier:', rich + ')', '| noindex(follow):', noindexed);
 // Historical / short-name slugs that alias onto a canonical company must remain
@@ -788,4 +790,4 @@ Object.keys(aliasRedirectSlugs).forEach(function (s) { currentSlugs.add(s); });
 })('manufacturers');
 // Slug manifest so other builders can link a maker -> its company entity page,
 // and know which company pages are indexable (vs noindex,follow).
-fs.writeFileSync('data/company-slugs.json', JSON.stringify(Object.keys(records).map(function (k) { const r = records[k]; return { name: r.name, slug: r.slug, country: r.country, indexable: !!r.url }; }), null, 2));
+fs.writeFileSync('data/company-slugs.json', JSON.stringify(Object.keys(records).map(function (k) { const r = records[k]; return { name: r.name, slug: r.slug, country: r.country, indexable: listingRichness.manufacturerIndexable(r) }; }), null, 2));

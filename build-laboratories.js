@@ -9,6 +9,7 @@
  */
 'use strict';
 const fs = require('fs');
+const listingRichness = require('./lib/listing-richness');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const CSSV = (JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets || {}).css || 14;
@@ -465,7 +466,7 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
       '<title>' + esc(lab.name) + ' — Unclaimed laboratory listing | TransformerPath</title>' +
       '<meta name="description" content="' + esc((lab.description || lab.name).slice(0, 180)) + '">' +
       '<link rel="canonical" href="' + url + '">' +
-      '<meta name="robots" content="index,follow">' +
+      '<meta name="robots" content="' + listingRichness.robots(listingRichness.stubProfileIndexable()) + '">' +
       '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
       '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
       '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../laboratories.html">Laboratories</a> › ' + esc(lab.name) + '</nav>' +
