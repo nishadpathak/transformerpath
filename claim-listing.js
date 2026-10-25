@@ -73,11 +73,71 @@
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(s);
   }
 
+  // Payment Link strings stay in lib/paid-listings.js. The browser reads
+  // the copy written to /data/claim-pay-plans.json and navigates on click.
+  var payMap = null;
+
+  function primePayPlans(plans) {
+    payMap = plans && typeof plans === 'object' ? plans : {};
+    return payMap;
+  }
+
+  function ensurePlans() {
+    if (payMap) return Promise.resolve(payMap);
+    if (typeof fetch !== 'function') return Promise.resolve({});
+    return fetch('/data/claim-pay-plans.json', { credentials: 'same-origin' })
+      .then(function (res) { return res.ok ? res.json() : {}; })
+      .then(function (doc) {
+        payMap = doc && doc.plans && typeof doc.plans === 'object' ? doc.plans : {};
+        return payMap;
+      })
+      .catch(function () { payMap = {}; return payMap; });
+  }
+
+  function checkoutUrl(plan, slug, plans) {
+    var map = plans || payMap || {};
+    var base = map[plan];
+    if (!base) return '';
+    return payHref(base, slug);
+  }
+
+  function slugFor(btn) {
+    var input = null;
+    try { input = document.getElementById('claim-slug'); } catch (e) { input = null; }
+    if (input && String(input.value || '').trim()) return input.value;
+    return btn && btn.getAttribute ? (btn.getAttribute('data-pay-slug') || '') : '';
+  }
+
+  function go(url) {
+    if (!url || typeof window === 'undefined' || !window.location) return url || '';
+    if (typeof window.location.assign === 'function') window.location.assign(url);
+    else window.location.href = url;
+    return url;
+  }
+
+  function onPayClick(e) {
+    var btn = e && e.target && e.target.closest ? e.target.closest('[data-pay-plan]') : null;
+    if (!btn) return Promise.resolve('');
+    var plan = btn.getAttribute('data-pay-plan') || '';
+    var slug = slugFor(btn);
+    if (payMap) return Promise.resolve(go(checkoutUrl(plan, slug, payMap)));
+    return ensurePlans().then(function (plans) { return go(checkoutUrl(plan, slug, plans)); });
+  }
+
+  function bindPayClicks() {
+    if (typeof document === 'undefined' || !document.addEventListener) return;
+    var rootEl = document.documentElement;
+    if (rootEl && rootEl.getAttribute && rootEl.getAttribute('data-pay-bound') === '1') return;
+    if (rootEl && rootEl.setAttribute) rootEl.setAttribute('data-pay-bound', '1');
+    document.addEventListener('click', onPayClick);
+  }
+
   function linkHtml(slug) {
     return '<a class="btn btn-outline btn-sm claim-listing-link" href="' + esc(href(slug)) + '" data-claim-listing="1">Claim this listing</a>';
   }
 
   function boot() {
+    bindPayClicks();
     var form = document.getElementById('claimListingForm');
     if (!form || form.getAttribute('data-claim-ready') === '1') return;
     form.setAttribute('data-claim-ready', '1');
@@ -115,11 +175,13 @@
     }
 
     function stampPays(slug) {
+      var clean = String(slug || '').trim().toLowerCase();
+      if (!SLUG_RE.test(clean)) clean = '';
       var nodes = document.querySelectorAll
-        ? document.querySelectorAll('[data-verified-manufacturer-pay="1"],[data-featured-listing-pay="1"],[data-featured-verified-pay="1"]')
+        ? document.querySelectorAll('[data-pay-plan]')
         : [];
       Array.prototype.forEach.call(nodes, function (pay) {
-        pay.setAttribute('href', payHref(pay.getAttribute('href') || '', slug));
+        if (pay && pay.setAttribute) pay.setAttribute('data-pay-slug', clean);
       });
     }
 
@@ -141,10 +203,14 @@
 
     form.addEventListener('submit', applyFlag);
     if (emailInput) emailInput.addEventListener('input', applyFlag);
-    if (slugInput) slugInput.addEventListener('change', function () {
-      listing = { name: companyInput ? companyInput.value : '', website: '' };
-      loadIndex();
-    });
+    if (slugInput) {
+      slugInput.addEventListener('input', function () { stampPays(currentSlug()); });
+      slugInput.addEventListener('change', function () {
+        stampPays(currentSlug());
+        listing = { name: companyInput ? companyInput.value : '', website: '' };
+        loadIndex();
+      });
+    }
 
     function loadIndex() {
       var slug = currentSlug();
@@ -178,6 +244,9 @@
     reviewFlag: reviewFlag,
     href: href,
     payHref: payHref,
+    primePayPlans: primePayPlans,
+    checkoutUrl: checkoutUrl,
+    onPayClick: onPayClick,
     linkHtml: linkHtml,
     boot: boot
   };
