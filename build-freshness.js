@@ -25,7 +25,7 @@ function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated
 const { computeIntelStatus } = require('./lib/intel-status');
 function surfaceHealth(label) {
   if (label === 'DATA STALE') return 'STALE';
-  if (label === 'DATA CURRENT' || label === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(label || '')) return 'HEALTHY';
+  if (label === 'DATA CURRENT' || /^updated \d{1,2} [A-Za-z]{3} \d{4}$/i.test(label || '')) return 'HEALTHY';
   return 'AGING';
 }
 const NOW = new Date().toISOString();
@@ -189,7 +189,7 @@ const freshness = {
   public_intel_status: intelStatus.statusLabel,
   public_intel_status_reason: intelStatus.reason,
   data_current_claim_allowed: intelStatus.data_current_claim_allowed,
-  honest_note: 'Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads UPDATED with that date, or Updated today. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.',
+  honest_note: 'Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads Updated with that calendar day. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.',
   surfaces,
   sources,
   clocks: intelStatus

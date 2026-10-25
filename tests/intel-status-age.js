@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* The public Intel label must follow the sourced calendar day on the day
- * someone opens the page. A build may stamp "Updated today"; that label
- * has to age with lib/intel-freshness.js and the same clock in tp-freshness.js.
+ * someone opens the page. A same-day source reads "Updated <date>".
+ * That label has to age with lib/intel-freshness.js and tp-freshness.js.
  */
 'use strict';
 const fs = require('fs');
@@ -36,7 +36,7 @@ check('browser clock is installed', !!(clock && clock.classify && clock.dot));
 
 const now = new Date('2026-10-19T12:00:00Z');
 const cases = [
-  ['2026-10-19', 'Updated today'],
+  ['2026-10-19', 'Updated 19 Oct 2026'],
   ['2026-10-18', 'UPDATED 18 Oct 2026'],
   ['2026-10-17', 'DATA CURRENT'],
   ['2026-10-16', 'DATA CURRENT'],
@@ -63,7 +63,8 @@ check('homepage does not bake a coverage-delayed fallback', home.indexOf('COVERA
 const status = JSON.parse(fs.readFileSync('data/intel-status.json', 'utf8'));
 const aged = classifyIntelStatus({ latestSourceIso: status.latest_source_iso, now: new Date() });
 if (aged.ageDays > 0) {
-  check('stored source day is no longer Updated today', aged.statusLabel !== 'Updated today', aged.statusLabel + ' age ' + aged.ageDays);
+  check('stored source day is not the words Updated today', aged.statusLabel !== 'Updated today', aged.statusLabel + ' age ' + aged.ageDays);
+  check('stored source label names its calendar day when it says Updated', !/^updated /i.test(aged.statusLabel) || aged.statusLabel.slice(8) === aged.latest_source_date, aged.statusLabel);
   check('browser agrees for the stored source day', clock.classify({
     latestSourceIso: status.latest_source_iso,
     now: new Date()

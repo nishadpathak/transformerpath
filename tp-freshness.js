@@ -69,9 +69,9 @@
   window.TP_FRESHNESS = { cadence: CADENCE, cadenceLong: CADENCE_LONG };
 
   /* Mirror of lib/intel-freshness.js classifyIntelStatus.
-     A build stamps "Updated today" on the day it runs. Visitors arriving
-     later must see the age of latest_source_iso, not that frozen label.
-     tests/intel-status-age.js fails if this drifts from the node clock. */
+     A same-day source reads "Updated" plus that calendar day. Visitors
+     arriving later must see the age of latest_source_iso, not a frozen
+     "Updated today". tests/intel-status-age.js fails if this drifts. */
   var COVERAGE_LAG_DAYS = 10;
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -102,7 +102,7 @@
         statusLabel = 'INTEL COVERAGE DELAYED';
         reason = 'future_source_date_rejected';
       } else if (ageDays === 0 && dayOk) {
-        statusLabel = 'Updated today';
+        statusLabel = 'Updated ' + dayLabel;
         reason = 'source_within_1d';
       } else if (ageDays === 1 && dayOk) {
         statusLabel = 'UPDATED ' + dayLabel;
@@ -142,7 +142,7 @@
   }
 
   function dot(label) {
-    if (label === 'DATA CURRENT' || label === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(label || '')) return '#1a9d4a';
+    if (label === 'DATA CURRENT' || /^updated \d{1,2} [A-Za-z]{3} \d{4}$/i.test(label || '')) return '#1a9d4a';
     if (label === 'REFRESH DELAYED' || label === 'INTEL COVERAGE DELAYED') return '#e0a800';
     return '#94a3b8';
   }

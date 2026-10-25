@@ -47,10 +47,9 @@ check('status file has a source day', /^\d{4}-\d{2}-\d{2}$/.test(status.latest_s
 check('status file has a source-check day', /^\d{4}-\d{2}-\d{2}$/.test(status.latest_source_checked_at || ''), status.latest_source_checked_at);
 check('status file has display labels', !!String(status.latest_source_date || '').trim() && !!String(status.latest_source_checked_label || '').trim());
 check('sourced display date is never blank', /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(String(status.latest_source_date || '').trim()), JSON.stringify(status.latest_source_date));
-if (status.status === 'Updated today') {
-  check('Updated today still names the sourced calendar day', /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(status.latest_source_date));
-} else if (/^UPDATED /.test(status.status || '')) {
-  const updatedDay = String(status.status).slice('UPDATED '.length);
+check('status label is not the words Updated today', status.status !== 'Updated today', status.status);
+if (/^updated /i.test(status.status || '')) {
+  const updatedDay = String(status.status).replace(/^updated /i, '');
   check('UPDATED date is never blank', /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(updatedDay), JSON.stringify(updatedDay));
   check('UPDATED date is the sourced item', updatedDay === status.latest_source_date, updatedDay + ' vs ' + status.latest_source_date);
 }

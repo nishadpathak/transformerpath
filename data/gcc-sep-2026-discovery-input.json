@@ -18,17 +18,17 @@
         { "state": "OPEN", "at": "2026-09-24" }
       ],
       "tender_float_date": "2026-09-24",
-      "tender_close_date": "2026-10-27",
+      "tender_close_date": "2026-11-10",
       "publication_date": "2026-09-24",
       "event_date": "2026-09-24",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-25",
       "transformer_category": "distribution / package-kiosk related works",
       "transformer_relevant": true,
       "classifications": ["TENDER", "UTILITY_PROCUREMENT", "MAINTENANCE", "TRANSFORMER_REPLACEMENT"],
       "key_values_extracted": {
         "tender_id": "2122600155",
         "float": "2026-09-24",
-        "close": "2026-10-27",
+        "close": "2026-11-10",
         "scope": "installation/testing/commissioning of distribution substations & kiosks; disconnection/recovery/replacement"
       },
       "sources": [
@@ -38,7 +38,7 @@
           "source_type": "UTILITY",
           "role": "PRIMARY",
           "authority_class": "OFFICIAL",
-          "note": "Authoritative DEWA open-tenders portal. Live automated scrape of tender ID not yet wired (JS/session portal); title family confirmed on DEWA tender-opening-results pages historically."
+          "note": "DEWA open-tender list. Row 2122600155 was on the page on 2026-10-25: status Extended, floating date 24 Sep 2026, closing date 10 Nov 2026."
         }
       ],
       "confidence": "MEDIUM",
@@ -46,7 +46,7 @@
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Intel discovery had no DEWA procurement-portal adapter. Pipeline over-relied on English trade press / MEED / curated RSS (no GCC utility portals). Tender 2122600155 never entered discovery.",
       "published_to_intel": true,
-      "notes": "Product spot-check asserts official DEWA visibility for 2122600155 float 24 Sep / close 27 Oct. Automated portal fetch of this ID timed out / not adaptered in this run → SUPPORTED not CONFIRMED until adapter returns the row."
+      "notes": "Product spot-check asserts official DEWA visibility for 2122600155 float 24 Sep / close 27 Oct. Automated portal fetch of this ID timed out / not adaptered in this run → SUPPORTED not CONFIRMED until adapter returns the row. DEWA open-tender list checked 2026-10-25: status Extended, floating date 2026-09-24, closing date 2026-11-10."
     },
     {
       "candidate_id": "sa-swa-rabigh-2p5mva",

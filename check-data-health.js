@@ -372,14 +372,14 @@ function checkAnnualMvaAsUnit() {
 const VALID_EVIDENCE = new Set(['CONFIRMED', 'SUPPORTED', 'REVIEW_REQUIRED', 'REJECTED']);
 const VALID_PUBLIC_STATUS = new Set([
   'DATA CURRENT', 'REFRESH DELAYED', 'DATA STALE', 'INTEL COVERAGE DELAYED',
-  'Updated today', 'HEALTHY', 'AGING', 'STALE'
+  'HEALTHY', 'AGING', 'STALE'
 ]);
 
 function isPublicIntelStatus(pub) {
   const s = String(pub || '');
-  if (!s.trim()) return false;
+  if (!s.trim() || s === 'Updated today') return false;
   if (VALID_PUBLIC_STATUS.has(s)) return true;
-  return /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(s);
+  return /^updated \d{1,2} [A-Za-z]{3} \d{4}$/i.test(s);
 }
 
 function checkIntelSources() {

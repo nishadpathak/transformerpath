@@ -52,25 +52,43 @@ try {
     console.log('GCC adapters: skipped (TP_SKIP_ADAPTER_PROBES=1)');
   } else {
   adapterReport = await adapters.probeP0Sources(registry);
-  writeJson('data/gcc-adapter-report.json', adapterReport);
   writeJson('data/gcc-source-registry.json', registry);
   console.log('GCC adapters: probed ' + adapterReport.probed + ', live ' + adapterReport.live);
   }
 } catch (e) {
-  console.warn('GCC adapters: probe failed — ' + (e && e.message));
+  console.error('GCC adapters: probe failed — ' + (e && e.message));
   adapterReport = {
     generated_at: NOW,
     probed: 0,
     live: 0,
     reports: [],
     error: String(e && e.message || e),
-    honesty: 'Adapter probe threw; discovery continues with registry-only validation.'
+    honesty: 'Adapter probe threw. This run did not update GCC coverage.'
   };
   writeJson('data/gcc-adapter-report.json', adapterReport);
+  process.exitCode = 1;
 }
 
+const rawCandidates = (discoveryInput.candidates || []).concat(octoberInput.candidates || []);
+const dewaReport = (adapterReport.reports || []).find(function (r) { return r && r.source_id === 'dewa-open-tenders'; });
+if (dewaReport && dewaReport.notices) {
+  const applied = adapters.applyListedDates(rawCandidates, dewaReport.notices, TODAY);
+  adapterReport.dewa_list = { parsed: applied.parsed, changes: applied.changes };
+  delete dewaReport.notices;
+  if (applied.changes.length) {
+    writeJson('data/gcc-sep-2026-discovery-input.json', discoveryInput);
+    console.log('DEWA list updated ' + applied.changes.length + ' closing date(s).');
+  }
+}
+if (dewaReport && dewaReport.parse_error && process.env.TP_SKIP_ADAPTER_PROBES !== '1') {
+  console.error('GCC adapters: ' + dewaReport.parse_error + '. The DEWA list page was reached and not parsed. Failing this run.');
+  process.exitCode = 1;
+}
+if (process.env.TP_SKIP_ADAPTER_PROBES !== '1') {
+  writeJson('data/gcc-adapter-report.json', adapterReport);
+}
 const result = gcc.runPipeline(
-  (discoveryInput.candidates || []).concat(octoberInput.candidates || []),
+  rawCandidates,
   registry.sources || [],
   { checkedAt: TODAY }
 );
@@ -357,15 +375,13 @@ var gccSurface = {
   last_build: NOW,
   last_data_refresh: null,
   last_attempted_refresh: TODAY,
-  last_successful_refresh: result.freshness.latest_confirmed_event_date
-    ? (result.freshness.latest_confirmed_event_date + 'T12:00:00.000Z')
-    : null,
+  last_successful_refresh: null,
   latest_source_observation: result.freshness.latest_confirmed_event_date,
   records_added: result.counts.candidates,
-  records_updated: null,
+  records_updated: (adapterReport.dewa_list && adapterReport.dewa_list.changes) ? adapterReport.dewa_list.changes.length : 0,
   source_count: (registry.sources || []).length,
-  source_failures: adapterReport.probed - adapterReport.live,
-  status: adapterReport.live > 0 ? 'HEALTHY' : 'MANUAL_REVIEW',
+  source_failures: Math.max(0, (adapterReport.probed || 0) - (adapterReport.live || 0)),
+  status: 'MANUAL_REVIEW',
   source_health: result.freshness.statement,
   records: result.counts.candidates
 };

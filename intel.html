@@ -268,7 +268,7 @@ a.plain:hover { text-decoration:underline; }
         el.setAttribute('data-intel-status', statusLabel);
         el.setAttribute('data-intel-source', st.latest_source_iso || '');
         el.setAttribute('data-intel-checked', st.latest_source_checked_at || '');
-        var freshLabel = statusLabel === 'DATA CURRENT' || statusLabel === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(statusLabel);
+        var freshLabel = statusLabel === 'DATA CURRENT' || /^updated \d{1,2} [A-Za-z]{3} \d{4}$/i.test(statusLabel);
         var badgeColor = st.dot || (freshLabel ? '#1a9d4a' : (statusLabel === 'DATA STALE' ? '#94a3b8' : '#e0a800'));
         el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Latest sourced item: <b style="color:#e5e7eb">' + sourceLabel + '</b>' +
           (checkedLabel ? ' &middot; source checked ' + checkedLabel : '') +

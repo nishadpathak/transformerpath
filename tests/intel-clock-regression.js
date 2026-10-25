@@ -124,7 +124,8 @@ const sameDay = classifyIntelStatus({
   dataCurrentClaimAllowed: false,
   now: NOW
 });
-check('same-day source reads Updated today', sameDay.statusLabel === 'Updated today', sameDay.statusLabel);
+check('same-day source reads Updated plus that calendar day', sameDay.statusLabel === 'Updated ' + formatDayUTC(daysAgoIso(0, NOW)), sameDay.statusLabel);
+check('same-day label is not the words Updated today', sameDay.statusLabel !== 'Updated today');
 check('same-day source does not mint DATA CURRENT', sameDay.statusLabel !== 'DATA CURRENT');
 check('same-day source still has a calendar day', /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sameDay.latest_source_date), sameDay.latest_source_date);
 check('GCC disallow flag does not force coverage delayed on a fresh source', sameDay.reason !== 'discovery_claim_disallowed', sameDay.reason);

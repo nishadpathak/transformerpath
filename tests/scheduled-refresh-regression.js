@@ -29,6 +29,20 @@ check('missing hook does not set ok true', !/ok:\s*true,\s*\n\s*triggered:\s*fal
 const refresh = fs.readFileSync('functions/refresh-data.js', 'utf8');
 check('refresh-data uses the shared intel source', /require\('\.\/lib\/intel-source'\)/.test(refresh) && /buildFeed\(/.test(refresh));
 check('a fetch with no articles is not HTTP 200', /statusCode:\s*res\.success\s*\?\s*200\s*:\s*503/.test(refresh));
+check('a repeat of the cached URLs is not a successful update', /no_new_items/.test(refresh));
+const refreshMod = require('../functions/refresh-data');
+const same = refreshMod.evaluateRefresh(
+  { intel: [{ label: 'Europe', items: [{ url: 'https://example.com/a' }] }] },
+  { articles: [{ label: 'Europe', items: [{ url: 'https://example.com/a' }] }] }
+);
+check('evaluateRefresh rejects an unchanged URL set', same.success === false && same.updated === false && same.reason === 'no_new_items', JSON.stringify(same));
+const empty = refreshMod.evaluateRefresh({ intel: null }, {});
+check('evaluateRefresh rejects an empty fetch', empty.success === false && empty.reason === 'no_articles');
+const dailyHooks = require('../functions/daily-rebuild');
+const htmlHook = dailyHooks.interpretHookResponse(200, 'text/html', '<html>ok</html>');
+check('an HTML hook response is not a successful rebuild', htmlHook.ok === false && htmlHook.updated === false, JSON.stringify(htmlHook));
+const jsonHook = dailyHooks.interpretHookResponse(200, 'application/json', '{"message":"Build request accepted"}');
+check('a JSON hook acceptance is a successful trigger', jsonHook.ok === true && jsonHook.updated === true, JSON.stringify(jsonHook));
 
 const dailyMod = require('../functions/daily-rebuild');
 delete process.env.TP_BUILD_HOOK_URL;
