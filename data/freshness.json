@@ -4,10 +4,10 @@
   "build_at": "2026-10-16T07:39:29.126Z",
   "latest_source_date": "2026-10-16",
   "latest_source_checked_at": "2026-10-16",
-  "public_intel_status": "Updated today",
+  "public_intel_status": "Updated 16 Oct 2026",
   "public_intel_status_reason": "source_within_1d",
   "data_current_claim_allowed": false,
-  "honest_note": "Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads UPDATED with that date, or Updated today. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.",
+  "honest_note": "Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads Updated with that calendar day. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.",
   "surfaces": [
     {
       "id": "daily_intel",
@@ -22,7 +22,7 @@
       "latest_source_observation": "2026-10-16T07:39:29.126Z",
       "latest_source_date": "2026-10-16",
       "latest_source_checked_at": "2026-10-16",
-      "public_status": "Updated today",
+      "public_status": "Updated 16 Oct 2026",
       "public_status_reason": "source_within_1d",
       "data_current_claim_allowed": false,
       "records_added": null,
@@ -286,7 +286,7 @@
               "event_date": "2026-09-24",
               "publication_date": "2026-09-24",
               "tender_float_date": "2026-09-24",
-              "tender_close_date": "2026-10-27",
+              "tender_close_date": "2026-11-10",
               "date_iso": "2026-09-24",
               "classifications": [
                 "TENDER",
@@ -2888,9 +2888,9 @@
   ],
   "clocks": {
     "latest_source_iso": "2026-10-16",
-    "statusLabel": "Updated today",
+    "statusLabel": "Updated 16 Oct 2026",
     "reason": "source_within_1d",
     "data_current_claim_allowed": false,
-    "honesty": "Status follows latest_source_date, not build_at and not the GCC discovery gate. Desk rebuild alone never yields UPDATED or DATA CURRENT."
+    "honesty": "Status follows latest_source_date, not build_at and not the GCC discovery gate. A sourced item no more than 1 day old reads Updated with that calendar day. Desk rebuild alone never yields UPDATED or DATA CURRENT."
   }
 }

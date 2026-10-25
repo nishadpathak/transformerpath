@@ -36,6 +36,8 @@
 const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
+const { sendKind } = require('./lib/verified-mail');
+const flow = require('../lib/verified-flow');
 const paidListings = require('../lib/paid-listings');
 const digitalProducts = require('../lib/digital-products');
 const { listingProduct, companySlugFromReference, componentFromSession } = paidListings;
@@ -176,7 +178,22 @@ function persistence() {
     eventProcessed: eventProcessed,
     markProcessed: markProcessed,
     writeEntitlement: writeEntitlement,
-    writePaidListing: writePaidListing
+    writePaidListing: writePaidListing,
+    updatePaidListingStatus: updatePaidListingStatus
+  };
+}
+
+function listingRefundFromCharge(charge) {
+  const meta = charge && charge.metadata ? charge.metadata : {};
+  if (!PAID_LISTING_PRODUCTS[meta.product]) return null;
+  const sessionId = String(meta.session_id || meta.checkout_session_id || '').trim();
+  if (!sessionId) return null;
+  const billing = charge.billing_details || {};
+  return {
+    session_id: sessionId,
+    product: meta.product,
+    email: charge.receipt_email || billing.email || meta.email || null,
+    company_slug: meta.company_slug || null
   };
 }
 
@@ -186,6 +203,32 @@ async function handle(ev) {
   // Idempotency: processed-event store (Supabase `webhook_events` keyed by event.id).
   // If the event id is already recorded, return success without re-writing.
   if (await store.eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+
+  if (flow.serverEnabled() && type === 'checkout.session.expired') {
+    try { await store.markProcessed(ev.id, type); } catch (markErr) { /* abandoned checkout has no row */ }
+    return respond(200, { received: true, abandoned: true, stored: false });
+  }
+
+  if (flow.serverEnabled() && type === 'charge.refunded') {
+    const refund = listingRefundFromCharge(ev.data && ev.data.object);
+    if (refund) {
+      if (typeof store.updatePaidListingStatus !== 'function') {
+        return respond(500, { error: 'paid listing not stored' });
+      }
+      try {
+        await store.updatePaidListingStatus(refund.session_id, 'refunded');
+      } catch (err) {
+        console.warn('paid listing refund failed');
+        return respond(500, { error: 'paid listing not stored' });
+      }
+      if (refund.product === 'verified_manufacturer') {
+        const notice = await sendKind('refund', refund);
+        if (notice && notice.retry) return respond(500, { error: 'receipt failed' });
+      }
+      await store.markProcessed(ev.id, type);
+      return respond(200, { received: true, refunded: true });
+    }
+  }
 
   if (type === 'checkout.session.completed' && digitalProduct(ev.data && ev.data.object)) {
     const session = ev.data.object;
@@ -316,6 +359,17 @@ async function writePaidListing(row) {
   };
   const { error } = await supabase.from('paid_listings').upsert(payload, { onConflict: 'session_id' });
   if (error) throw new Error('paid_listings upsert failed');
+}
+
+async function updatePaidListingStatus(sessionId, status) {
+  if (!isConfigured()) {
+    const err = new Error('paid_listings store not configured');
+    err.code = 'not_configured';
+    throw err;
+  }
+  const supabase = client();
+  const { error } = await supabase.from('paid_listings').update({ status: status }).eq('session_id', sessionId);
+  if (error) throw new Error('paid_listings update failed');
 }
 
 async function markProcessed(id, type) {

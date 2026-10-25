@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* 14 Oct 2026 multilingual intel: only fetched items. GCC discovery still
  * refuses a DATA CURRENT claim in its own coverage report. Global status
- * follows the sourced-item date: a same-day item reads Updated today.
+ * follows the sourced-item date: a same-day item reads Updated plus that date.
  */
 'use strict';
 const fs = require('fs');
@@ -60,7 +60,7 @@ const status = classifyIntelStatus({
   dataCurrentClaimAllowed: false,
   now: now
 });
-check('same-day source reads Updated today', status.statusLabel === 'Updated today', status.statusLabel + ' ' + status.reason);
+check('same-day source reads Updated 14 Oct 2026', status.statusLabel === 'Updated 14 Oct 2026', status.statusLabel + ' ' + status.reason);
 check('same-day source does not mint DATA CURRENT', status.statusLabel !== 'DATA CURRENT');
 check('GCC disallow flag is not the global reason', status.reason !== 'discovery_claim_disallowed', status.reason);
 

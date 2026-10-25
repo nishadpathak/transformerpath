@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verified review queue — TransformerPath</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+  .wrap { max-width: 880px; margin: 28px auto 64px; padding: 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 0 0 14px; }
+  input, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+  button { margin-top: 8px; }
+  .muted { color: var(--muted); font-size: .88rem; }
+</style>
+</head>
+<body>
+<main class="wrap" id="main">
+  <p class="muted"><a href="../admin.html">Admin</a> · <a href="verified-revenue.html">Revenue</a></p>
+  <h1>Verified Manufacturer review</h1>
+  <p class="muted">Internal queue. The badge is not shown until a row is approved with evidence. Identity and contact checked, not a product certification. $499 one-time payment · covers 12 months. No auto-renewal.</p>
+  <div class="card" id="unlock">
+    <label for="token">Review token</label>
+    <input id="token" type="password" autocomplete="current-password">
+    <p><button class="btn btn-amber" type="button" id="open">Open queue</button></p>
+    <p class="muted" id="msg"></p>
+  </div>
+  <div id="queue"></div>
+</main>
+<script>
+(function () {
+  var tokenEl = document.getElementById('token');
+  var msg = document.getElementById('msg');
+  var queue = document.getElementById('queue');
+
+  function headers() {
+    return { 'Authorization': 'Bearer ' + tokenEl.value, 'Content-Type': 'application/json' };
+  }
+
+  function paint(rows) {
+    queue.textContent = '';
+    if (!rows.length) {
+      var empty = document.createElement('p');
+      empty.className = 'muted';
+      empty.textContent = 'No Verified Manufacturer payments on file.';
+      queue.appendChild(empty);
+      return;
+    }
+    rows.forEach(function (row) {
+      var card = document.createElement('article');
+      card.className = 'card';
+      var title = document.createElement('h2');
+      title.textContent = row.claim_company || row.company_slug || row.session_id;
+      card.appendChild(title);
+      var meta = document.createElement('p');
+      meta.className = 'muted';
+      meta.textContent = row.status + ' · documents ' + row.document_status + ' · ' + (row.email || 'no email') + ' · badge ' + (row.badge ? 'yes' : 'no');
+      card.appendChild(meta);
+      var evidence = document.createElement('textarea');
+      evidence.rows = 3;
+      evidence.placeholder = 'What was checked. Identity and contact only.';
+      card.appendChild(evidence);
+      function act(action) {
+        fetch('/.netlify/functions/verified-review', {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify({
+            action: action,
+            session_id: row.session_id,
+            verification_evidence: evidence.value
+          })
+        }).then(function (r) { return r.json(); }).then(function (body) {
+          msg.textContent = body && body.status ? ('Saved ' + body.status + (body.badge ? ', badge allowed' : ', badge not shown')) : (body && (body.reason || body.error) || 'Not saved');
+          if (body && body.publish_row) {
+            var pre = document.createElement('pre');
+            pre.textContent = JSON.stringify(body.publish_row, null, 2);
+            card.appendChild(pre);
+          }
+          load();
+        }).catch(function () { msg.textContent = 'The queue could not be saved.'; });
+      }
+      var approve = document.createElement('button');
+      approve.className = 'btn btn-amber';
+      approve.type = 'button';
+      approve.textContent = 'Approve';
+      approve.addEventListener('click', function () { act('approve'); });
+      var reject = document.createElement('button');
+      reject.className = 'btn btn-outline';
+      reject.type = 'button';
+      reject.textContent = 'Reject';
+      reject.addEventListener('click', function () { act('reject'); });
+      card.appendChild(approve);
+      card.appendChild(document.createTextNode(' '));
+      card.appendChild(reject);
+      queue.appendChild(card);
+    });
+  }
+
+  function load() {
+    fetch('/.netlify/functions/verified-review', { headers: headers() })
+      .then(function (r) { return r.json().then(function (body) { return { status: r.status, body: body }; }); })
+      .then(function (res) {
+        if (res.status === 503) { msg.textContent = 'Review access is not configured. Set VERIFIED_REVIEW_TOKEN, SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY.'; return; }
+        if (res.status === 401) { msg.textContent = 'That token was not accepted.'; return; }
+        msg.textContent = '';
+        paint(res.body && res.body.queue || []);
+      })
+      .catch(function () { msg.textContent = 'The queue could not be loaded.'; });
+  }
+
+  document.getElementById('open').addEventListener('click', load);
+})();
+</script>
+</body>
+</html>

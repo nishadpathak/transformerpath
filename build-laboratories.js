@@ -95,6 +95,49 @@ function accreditationVerified(lab) {
   return true;
 }
 
+/* A published note is not an accreditation object, so it does not
+ * increase the verified ISO/IEC 17025 count. */
+function publicNote(lab) {
+  const rec = lab && lab.public_record;
+  if (!rec || !rec.card_note) return '';
+  return '<div class="accred-box"><div style="font-size:.76rem"><b>Published accreditation:</b> ' + esc(rec.card_note) + '</div></div>';
+}
+
+function profileRecord(lab) {
+  const rec = lab.public_record;
+  const loc = esc([lab.city, lab.country].filter(Boolean).join(', '));
+  const web = lab.website ? ' · <a href="' + esc(lab.website) + '">Official website</a>' : '';
+  if (!rec) {
+    return '<p>Unclaimed listing. Accreditation is not claimed.</p>' +
+      '<p>' + esc(lab.description || '') + '</p>' +
+      '<p>' + loc + web + '</p>';
+  }
+  let html = '<p>Unclaimed directory listing. The facts below are copied from the company\'s public website. Checked ' + esc(rec.checked || lab.last_verified || '') + '.</p>';
+  html += '<p>' + esc(lab.description || '') + '</p>';
+  html += '<p>' + loc + web + '</p>';
+  (rec.sections || []).forEach(function (section) {
+    html += '<h2 style="font-size:1.15rem;margin:22px 0 8px">' + esc(section.heading || '') + '</h2>';
+    (section.paragraphs || []).forEach(function (p) {
+      html += '<p>' + esc(p) + '</p>';
+    });
+    if (section.items && section.items.length) {
+      html += '<ul>';
+      section.items.forEach(function (item) { html += '<li>' + esc(item) + '</li>'; });
+      html += '</ul>';
+    }
+  });
+  if (rec.sources && rec.sources.length) {
+    html += '<h2 style="font-size:1.15rem;margin:22px 0 8px">Sources</h2><ul>';
+    rec.sources.forEach(function (src) {
+      const url = safeUrl(src.url);
+      const label = esc(src.label || src.url || '');
+      html += '<li>' + (url ? '<a href="' + url + '">' + label + '</a>' : label) + '</li>';
+    });
+    html += '</ul>';
+  }
+  return html;
+}
+
 function independentVerified(lab) {
   return lab.third_party_independent === true && !scopeUnsourced(lab);
 }
@@ -119,6 +162,7 @@ function renderCardServer(lab) {
   } else if (lab.short_circuit_capacity) {
     accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
   }
+  accredHtml += publicNote(lab);
 
   return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
     '<div class="lab-top">' +
@@ -228,7 +272,7 @@ ${HEAD}
   <div class="lab-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › Testing Laboratories</nav>
     <h1>Transformer <span style="color:var(--accent)">Testing Laboratories</span> Directory</h1>
-    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them.</p>
+    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them. <a href="/knowledge/standard-transformer-oil-tests.html">Standard transformer oil tests</a> explains what each routine oil test is for and what the results indicate.</p>
   </div>
 
   <div class="stats-bar">
@@ -396,6 +440,9 @@ function renderCards() {
     } else if (lab.short_circuit_capacity) {
       accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
     }
+    if (lab.public_record && lab.public_record.card_note) {
+      accredHtml += '<div class="accred-box"><div style="font-size:.76rem"><b>Published accreditation:</b> ' + esc(lab.public_record.card_note) + '</div></div>';
+    }
 
     var labSlug = String(lab.id || '').replace(/^lab:/, '');
     var eventBadge = (typeof TPEventBadges !== 'undefined' && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: labSlug, name: lab.name }) : '';
@@ -472,9 +519,7 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
       '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../laboratories.html">Laboratories</a> › ' + esc(lab.name) + '</nav>' +
       '<h1>' + esc(lab.name) + (badge ? ' ' + badge : '') + '</h1>' +
       (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
-      '<p>Unclaimed listing. Accreditation is not claimed.</p>' +
-      '<p>' + esc(lab.description || '') + '</p>' +
-      '<p>' + esc([lab.city, lab.country].filter(Boolean).join(', ')) + (lab.website ? ' · <a href="' + esc(lab.website) + '">Official website</a>' : '') + '</p>' +
+      profileRecord(lab) +
       '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
     fs.mkdirSync('laboratories/' + slug, { recursive: true });
     fs.writeFileSync('laboratories/' + slug + '/index.html', htmlPage);

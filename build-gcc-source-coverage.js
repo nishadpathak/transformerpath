@@ -49,15 +49,20 @@ function statusFor(iso) {
   return 'STALE';
 }
 
-// "Last sourced" = when we actually observed/sourced the item, not a future
-// tender close/award date. Use publication/update/source-checked dates <= today.
-function lastSourcedOf(cand) {
+// Content date only. source_checked_at is the probe/review clock (the 14 Oct
+// 2026 review stamped every country on that day and froze coverage there).
+// tender_close_date is not coverage: a future close made a September float
+// look current.
+function contentDate(cand, today) {
   const d = cand.dates || {};
-  const cands = [d.publication_date, d.update_date, d.source_checked_at, d.event_date]
-    .filter(Boolean)
-    .filter((x) => x <= todayIso);
+  const cands = [d.publication_date, d.update_date, d.event_date]
+    .map(function (x) { return x ? String(x).slice(0, 10) : ''; })
+    .filter(function (x) { return /^\d{4}-\d{2}-\d{2}$/.test(x) && x <= today; });
   cands.sort();
   return cands[cands.length - 1] || null;
+}
+function lastSourcedOf(cand) {
+  return contentDate(cand, todayIso);
 }
 
 function main() {
@@ -147,7 +152,23 @@ function main() {
   }
   console.log('  totals: candidates=' + totals.candidates + ' published=' + totals.published + ' held=' + totals.held_for_review);
   if (out.publish_funnel_note) console.log('  ⚠ ' + out.publish_funnel_note);
+  const stale = GCC.filter(function (g) {
+    const st = perCountry[g].coverage_status;
+    return st === 'DELAYED' || st === 'STALE' || st === 'NO_COVERAGE';
+  });
+  if (stale.length === GCC.length) {
+    console.error('GCC coverage was not updated. Newest content date is ' +
+      (latestOverall || 'none') +
+      '. A review stamp or a close date is not a new sourced item. ' +
+      stale.join(', ') + ' are ' + stale.map(function (g) { return perCountry[g].coverage_status; }).join(', ') + '.');
+    if (process.env.TP_FAIL_ON_STALE_GCC === '1') {
+      console.error('TP_FAIL_ON_STALE_GCC=1: failing this run.');
+      process.exitCode = 1;
+    }
+  }
   console.log('build-gcc-source-coverage.js wrote data/gcc-source-coverage.json');
 }
 
-main();
+module.exports = { contentDate: contentDate };
+
+if (require.main === module) main();

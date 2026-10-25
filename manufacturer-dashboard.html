@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manufacturer dashboard — TransformerPath</title>
+<meta name="description" content="Payment, document, RFQ, and expiry status for a Verified Manufacturer claim. Identity and contact checked, not a product certification.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://transformerpath.com/manufacturer-dashboard.html">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+  .dash { max-width: 820px; margin: 28px auto 64px; padding: 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin: 0 0 16px; }
+  .card h2 { margin: 0 0 8px; font-size: 1.15rem; color: var(--ink); }
+  .muted { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  [hidden] { display: none !important; }
+  .row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .row:last-child { border-bottom: 0; }
+  button.linkish { background: none; border: 0; color: var(--accent); font: inherit; cursor: pointer; padding: 0; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<main id="main" class="dash" tabindex="-1">
+  <p class="muted"><a href="index.html">TransformerPath</a> · <a href="claim-profile.html">Claim</a> · <a href="workspace.html">Account</a></p>
+  <h1>Manufacturer dashboard</h1>
+  <p class="muted">Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Identity and contact checked, not a product certification. The badge appears only after approval.</p>
+  <div class="card" id="gate">
+    <h2>Sign in</h2>
+    <p class="muted" id="gateText">Checking the existing account session.</p>
+    <p><a class="btn btn-amber" href="workspace.html">Open account</a></p>
+  </div>
+  <div id="board" hidden>
+    <div class="card"><h2>Profile</h2><div id="profile"></div></div>
+    <div class="card"><h2>Payment and expiry</h2><div id="payments"></div></div>
+    <div class="card"><h2>Documents</h2><div id="documents"></div></div>
+    <div class="card"><h2>Enquiries</h2><div id="enquiries"></div></div>
+    <div class="card"><h2>RFQs</h2><p class="muted">RFQ routing is coming soon. This list is empty until a lead is on file for your company.</p><div id="rfqs"></div></div>
+    <div class="card"><h2>Analytics</h2><div id="analytics"></div></div>
+  </div>
+</main>
+<p class="dash muted">Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a></p>
+<script src="supabase-config.js"></script>
+<script src="supabase.js"></script>
+<script>
+(function () {
+  var gate = document.getElementById('gate');
+  var gateText = document.getElementById('gateText');
+  var board = document.getElementById('board');
+
+  function line(label, value) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var a = document.createElement('span');
+    a.textContent = label;
+    var b = document.createElement('span');
+    b.textContent = value == null || value === '' ? '—' : String(value);
+    row.appendChild(a);
+    row.appendChild(b);
+    return row;
+  }
+
+  function fill(el, node) {
+    el.textContent = '';
+    el.appendChild(node);
+  }
+
+  function show(data) {
+    gate.hidden = true;
+    board.hidden = false;
+    var profile = document.getElementById('profile');
+    profile.textContent = '';
+    profile.appendChild(line('Email', data.profile && data.profile.email));
+    profile.appendChild(line('Price', data.price));
+    profile.appendChild(line('Auto-renewal', 'no'));
+    var payments = document.getElementById('payments');
+    var documents = document.getElementById('documents');
+    var enquiries = document.getElementById('enquiries');
+    payments.textContent = '';
+    documents.textContent = '';
+    enquiries.textContent = '';
+    var listings = data.listings || [];
+    if (!listings.length) payments.appendChild(line('Payment', 'No Verified Manufacturer payment on this email'));
+    listings.forEach(function (row) {
+      payments.appendChild(line('Status', row.payment_status));
+      payments.appendChild(line('Expires', row.expires_at));
+      payments.appendChild(line('Days remaining', row.days_remaining));
+      payments.appendChild(line('Badge', row.badge ? 'shown after approval' : 'not shown'));
+      documents.appendChild(line(row.claim_company || row.company_slug || 'Claim', row.document_status));
+    });
+    (data.enquiries || []).forEach(function (row) {
+      enquiries.appendChild(line(row.company || 'Claim', row.document_status));
+    });
+    if (!(data.enquiries || []).length) enquiries.appendChild(line('Enquiries', 'None on this account'));
+    var rfqs = document.getElementById('rfqs');
+    rfqs.textContent = '';
+    if (!(data.rfqs || []).length) rfqs.appendChild(line('RFQs', 'None'));
+    (data.rfqs || []).forEach(function (row) { rfqs.appendChild(line(row.title, row.status)); });
+    var analytics = document.getElementById('analytics');
+    var stats = data.analytics || {};
+    analytics.textContent = '';
+    analytics.appendChild(line('Verified profiles', stats.verified_profiles));
+    analytics.appendChild(line('Pending review', stats.pending_review));
+    analytics.appendChild(line('Profile views', stats.note));
+  }
+
+  function fail(res) {
+    board.hidden = true;
+    gate.hidden = false;
+    if (res && res.reason === 'not_configured') {
+      gateText.textContent = 'Accounts are not configured yet. Sign-in uses the existing workspace account. TransformerPath has not added a second login.';
+    } else {
+      gateText.textContent = 'Sign in with the existing account. This page does not show another customer’s payment.';
+    }
+  }
+
+  function load(token) {
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers.Authorization = 'Bearer ' + token;
+    return fetch('/.netlify/functions/verified-dashboard', { headers: headers, credentials: 'include' })
+      .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
+      .then(function (res) {
+        if (res.ok && res.body && res.body.signedIn) show(res.body);
+        else fail(res.body);
+      })
+      .catch(function () { fail(null); });
+  }
+
+  var sessionPromise = (window.TP && TP.getSession) ? TP.getSession() : Promise.resolve(null);
+  sessionPromise.then(function (session) {
+    var token = session && session.data && session.data.session && session.data.session.access_token;
+    return load(token || '');
+  }).catch(function () { return load(''); });
+})();
+</script>
+</body>
+</html>
