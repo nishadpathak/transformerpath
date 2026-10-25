@@ -95,7 +95,9 @@ function buildHub(topic) {
   return { html: head, aggreg: { topic: topic.key, label: topic.label, manufacturers: manufacturers.length, intel: intel.length, projects: projects.length, tenders: tenders.length, events: events.length, knowledge: knowledge.length, materials: materials.length, technology: tech.length } };
 }
 
-function footer() { return '<footer><div class="container"><p style="margin:0;color:var(--muted);font-size:.85rem">&#169; 2026 TransformerPath. All rights reserved.</p></div></footer>'; }
+function footer() {
+  return '<footer><div class="container"><nav class="tp-legal" aria-label="Policies"><a href="/privacy.html">Privacy</a> <a href="/terms.html">Terms</a> <a href="/contact.html">Contact</a></nav><p style="margin:8px 0 0;color:var(--muted);font-size:.85rem">&#169; 2026 TransformerPath. All rights reserved.</p></div></footer>';
+}
 
 fs.mkdirSync('topics', { recursive: true });
 const index = [];

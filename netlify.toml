@@ -74,6 +74,25 @@
   status = 404
   force = true
 
+# AdSense and older links still request /privacy-policy. The policy lives at /privacy.
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy-policy/"
+  to = "/privacy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy-policy.html"
+  to = "/privacy"
+  status = 301
+  force = true
+
 # The class-and-region summary owns /lead-times/. The older row tracker
 # stays published at /factory-capacity/.
 [[redirects]]

@@ -16,5 +16,7 @@ jobs:
           node-version: '20'
       - name: Fail when a page repeats the site footer
         run: node check-site-footer.js
+      - name: Privacy, Terms and Contact are in every footer
+        run: node tests/legal-footer.test.js
       - name: Grid Lab scripts are on the publish allowlist
         run: node tests/grid-lab-publish.test.js
