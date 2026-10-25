@@ -264,9 +264,11 @@
         "evidence_grade": "SUPPORTED",
         "candidate_id": "uae-dewa-2122600155",
         "tender_id": "2122600155",
-        "age_tier": "RECENT",
+        "age_tier": "BACKGROUND",
         "date_label": "24 Sep 2026",
-        "evidence_note": "Evidence: SUPPORTED — not yet fully verified. No live portal adapter has confirmed this item."
+        "evidence_note": "Evidence: SUPPORTED — not yet fully verified. No live portal adapter has confirmed this item.",
+        "is_active": true,
+        "current_relevance": "Project under active procurement/construction or multi-year grid framework."
       },
       {
         "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
@@ -1141,6 +1143,26 @@
         "age_tier": "UNKNOWN",
         "date_iso": null,
         "date_label": ""
+      },
+      {
+        "title": "KEC International wins Rs 2,872 crore of 765 kV transmission-line orders from Power Grid Corporation of India Limited",
+        "snippet": "KEC International Ltd. press release, datelined Mumbai, 24 October 2026, says the company has secured turnkey orders of Rs 2,872 crore in its transmission and distribution business for design, supply and installation of 765 kV transmission lines from Power Grid Corporation of India Limited (PGCIL). Original release in English. The release quotes the managing director and chief executive as saying the orders include the largest-ever order for the India transmission and distribution business, and that these 765 kV projects are associated with evacuation of 8.5 GW of renewable energy from Gujarat, with year-to-date order intake crossing Rs 13,500 crore, including about Rs 9,500 crore from the transmission and distribution business.",
+        "value": "Rs 2,872 crore",
+        "src": "KEC International · 24 Oct 2026 [en]",
+        "url": "https://www.kecrpg.com/press-release/orders/kec-wins-substantial-orders-of-rs.-2,872-crores-from-pgcil-24-10-26",
+        "lang": "en",
+        "buyer": "Power Grid Corporation of India Limited (PGCIL)",
+        "awardee": "KEC International Ltd.",
+        "country": "India",
+        "isNew": true,
+        "cls": "CONFIRMED",
+        "date_iso": "2026-10-24",
+        "publication_date": "2026-10-24",
+        "evidence_grade": "CONFIRMED",
+        "equipment_scope": "general-substation",
+        "transformer_scope_confirmed": false,
+        "age_tier": "FRESH",
+        "date_label": "24 Oct 2026"
       }
     ]
   },
@@ -1699,7 +1721,7 @@
         "date_iso": "2026-10-16",
         "publication_date": "2026-10-16",
         "evidence_grade": "CONFIRMED",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "16 Oct 2026"
       },
       {
@@ -1714,7 +1736,7 @@
         "date_iso": "2026-10-16",
         "publication_date": "2026-10-16",
         "evidence_grade": "CONFIRMED",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "16 Oct 2026"
       },
       {
@@ -1730,7 +1752,7 @@
         "date_iso": "2026-10-16",
         "publication_date": "2026-10-16",
         "evidence_grade": "CONFIRMED",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "16 Oct 2026"
       },
       {
@@ -3630,7 +3652,7 @@
         "publication_date": "2026-10-16",
         "event_date": "2026-10-16",
         "evidence_grade": "CONFIRMED",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "16 Oct 2026"
       },
       {
@@ -3646,7 +3668,7 @@
         "publication_date": "2026-10-16",
         "event_date": "2026-10-15",
         "evidence_grade": "SUPPORTED",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "16 Oct 2026"
       },
       {
@@ -3800,14 +3822,76 @@
         "equipment_scope": "transformer",
         "age_tier": "FRESH",
         "date_label": "22 Oct 2026"
+      },
+      {
+        "title": "Guizhou Power Grid awards station-service low-voltage AC distribution switchboards to Guangdong Mingyang Electric",
+        "snippet": "China Southern Power Grid supply-chain award notice, published 24 October 2026 at 13:33, records the awarded result for Guizhou Power Grid's 2026–2027 main-grid primary-equipment framework, package 1-1. The procurement number on the notice is CG0600022002332099. The buyer on the notice is 贵州电网有限责任公司 and the agent is 南方电网供应链（贵州）有限公司. The notice is dated 24 October 2026 and does not state a contract value. Original notice in Chinese. It names the material as station-service low-voltage AC distribution switchboards (站用低压交流配电屏), with Guangdong Mingyang Electric (广东明阳电气股份有限公司) at 55 percent and 伊发控股集团有限公司 at 45 percent.",
+        "value": "55% / 45%",
+        "src": "南方电网供应链统一服务平台 · 24 Oct 2026 [zh]",
+        "url": "https://www.bidding.csg.cn/zbhxrgs/1200446981.jhtml",
+        "lang": "zh",
+        "buyer": "贵州电网有限责任公司",
+        "awardee": "Guangdong Mingyang Electric; 伊发控股集团有限公司",
+        "country": "China",
+        "isNew": true,
+        "cls": "CONFIRMED",
+        "date_iso": "2026-10-24",
+        "publication_date": "2026-10-24",
+        "evidence_grade": "CONFIRMED",
+        "equipment_scope": "switchgear-only",
+        "transformer_scope_confirmed": false,
+        "tender_watch": false,
+        "age_tier": "FRESH",
+        "date_label": "24 Oct 2026"
+      },
+      {
+        "title": "State Grid Hunan lists the generator excitation-transformer package as failed",
+        "snippet": "A Data电力 archive of State Grid Hunan's award-winner list for the fourth 2026 materials public tender, with a stated publish time of 24 October 2026 at 10:08:43, reproduces the notice text. The notice title is 国网湖南电力2026年第四次物资公开招标采购中标人名单公告（一）, number 162604, from 国网湖南省电力有限公司. The reproduced table lists package 162604-1001015-0001, package 1, 发电机励磁变压器 (generator excitation transformer), with the winner column marked 采购失败. The same table lists package 162604-1015003-0001, 组合电器, package 1, to 许继（厦门）智能电力设备股份有限公司, and package 162604-1008003-0001, 柱上断路器 (pole-mounted circuit breaker), package 1, as 采购失败. The archive states that the award notice does not list amounts separately. The reproduced notice is dated 24 October 2026 and names 国网湖南省电力有限公司招投标管理中心 and 湖南湘能创业项目管理有限公司. The State Grid e-commerce platform page was not the page retrieved. Original notice in Chinese.",
+        "value": "",
+        "src": "Data电力公告存档 · 24 Oct 2026 [zh]",
+        "url": "http://www.datadianli.com/calendar/archive/89d9802fd6359b2e6958da739bceff85b1371fde1f6f7f8995e4a41d083b60b7",
+        "lang": "zh",
+        "buyer": "国网湖南省电力有限公司",
+        "country": "China",
+        "isNew": true,
+        "cls": "SUPPORTED",
+        "date_iso": "2026-10-24",
+        "publication_date": "2026-10-24",
+        "evidence_grade": "SUPPORTED",
+        "evidence_note": "Evidence: SUPPORTED. The fetched page is a Data电力 archive that reproduces the award-list text and states a publish time of 24 October 2026. The State Grid e-commerce platform page was not the page retrieved. Amounts are not stated.",
+        "equipment_scope": "transformer",
+        "transformer_scope_confirmed": true,
+        "tender_watch": false,
+        "age_tier": "FRESH",
+        "date_label": "24 Oct 2026"
+      },
+      {
+        "title": "Corpoelec installs 50 kVA transformers in Portuguesa, Bolívar and Amazonas and a two-unit 25 kVA bank in Bolívar",
+        "snippet": "VTV, dated 24 October 2026, reports vegetation control in Táchira and maintenance on the Acarigua II – San Rafael de Onoto 115 kV line corridor. This page is a news report. The Corpoelec site was not the page retrieved. Original in Spanish. The same report says Corporación Eléctrica Nacional (Corpoelec) installed a 50 kVA transformer in Campo Lindo, Páez, Portuguesa, and a 50 kVA transformer in Barrio La Pista, Ospino; adjusted components on a 3×75 kVA bank at the Alto Chama / La Parroquia distribution kiosk in Libertador, Mérida; corrected a hot spot at the arrival portal of transformer 2 at the Santa Teresa III substation in Independencia, Miranda; replaced a 50 kVA transformer on Calle Suecia, Los Olivos, Puerto Ordaz; and installed a bank of two 25 kVA transformers on Calle Apure, Lomas de Santa Rosa, Unare, Caroní. The report says Corpoelec installed 50 kVA transformers in Portuguesa, Puerto Ordaz and Amazonas, a two-unit 25 kVA bank in Caroní, and worked on a 3×75 kVA bank in Mérida.",
+        "value": "50 kVA · 2 × 25 kVA · 3 × 75 kVA",
+        "src": "VTV · 24 Oct 2026 [es]",
+        "url": "https://vtv.com.ve/corpoelec-optimizacion-servicio-electrico-interior-pais/",
+        "lang": "es",
+        "country": "Venezuela",
+        "isNew": true,
+        "cls": "SUPPORTED",
+        "date_iso": "2026-10-24",
+        "publication_date": "2026-10-24",
+        "evidence_grade": "SUPPORTED",
+        "evidence_note": "Evidence: SUPPORTED. The fetched page is a VTV news report dated 24 October 2026. The Corpoelec site was not the page retrieved.",
+        "equipment_scope": "transformer",
+        "transformer_scope_confirmed": true,
+        "tender_watch": false,
+        "age_tier": "FRESH",
+        "date_label": "24 Oct 2026"
       }
     ]
   },
-  "updated": "2026-10-23T12:00:00.000Z",
+  "updated": "2026-10-24T12:00:00.000Z",
   "refresh_meta": {
     "cadence": "once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set",
     "refreshed_at_build": true,
-    "newest_validated_content_date": "2026-10-23",
+    "newest_validated_content_date": "2026-10-24",
     "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Publication requires gcc-intel-review.json decision=PUBLISH with reviewer and reviewed_at. Held candidates are not auto-published.",
     "gcc_published": [
       "uae-dewa-2122600155",
