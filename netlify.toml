@@ -53,6 +53,14 @@
 [functions."watchlist-alerts"]
   schedule = "30 6,18 * * *"
 
+# Verified Manufacturer expiry and renewal notes. No charge. Off unless
+# TP_VERIFIED_SERVER=1. Supabase keys alone do not run it.
+[functions."verified-reminders"]
+  schedule = "0 7 * * *"
+
+[functions."verified-dashboard"]
+  included_files = ["data/rfq-public.json", "data/supplier-inbox.json"]
+
 # ── Keep internal docs off the public site ──────────────────────────────
 # publish = "." deploys the whole folder, so the internal strategy/setup
 # markdown and the stale archive/ copies would otherwise be fetchable
