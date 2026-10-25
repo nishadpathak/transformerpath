@@ -21,6 +21,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
+const listingRichness = require('./lib/listing-richness');
 function slugify(s) {
   const base = String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
   if (base) return base;
@@ -88,7 +89,7 @@ function page(s) {
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(s.name) + ' — Transformer Accessories Supplier"><meta property="og:url" content="' + url + '">' +
-    '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
+    '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + listingRichness.robots(listingRichness.accessoryIndexable(s)) + '">' +
     '<link rel="stylesheet" href="../../style.css?v=5"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: s.name, url: s.website || url, description: (s.description || '').slice(0, 200), address: { '@type': 'PostalAddress', addressLocality: s.city, addressRegion: s.state, addressCountry: s.country } }) + '</script>' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap ul{padding-left:20px;line-height:1.7}.c-wrap table{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap table th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:38%}.c-wrap table td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}</style>' +
@@ -137,17 +138,19 @@ function page(s) {
 // This builder only generates the per-supplier entity pages.
 // Generate a small meta file for the index page to consume.
 fs.mkdirSync('accessories', { recursive: true });
-let built = 0, indexable = 0;
+let built = 0, indexable = 0, rich = 0;
 SUPPLIERS.forEach((s) => {
   try {
     if (/^(Inactive|Unverified)$/i.test(s.verification_status || '')) return; // don't generate pages for inactive/unverified
     const slug = slugify(s.name);
     fs.mkdirSync('accessories/' + slug, { recursive: true });
     fs.writeFileSync('accessories/' + slug + '/index.html', page(s));
-    built++; if (!/^(Inactive|Unverified)$/i.test(s.verification_status || '')) indexable++;
+    built++;
+    indexable++;
+    if (listingRichness.accessoryIndexable(s)) rich++;
   } catch (e) { console.error('!! ' + s.name + ' failed: ' + e.message); }
 });
-console.log('accessory supplier entity pages:', built, '| verified (index,follow):', indexable);
+console.log('accessory supplier entity pages:', built, '| index,follow:', rich, '| noindex,follow:', built - rich);
 
 fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable, categories: CATEGORIES }, null, 2));
 

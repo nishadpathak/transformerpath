@@ -16,6 +16,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
+const listingRichness = require('./lib/listing-richness');
 const eventBadges = require('./event-badges');
 function tpmFor(slug) {
   try {
@@ -261,7 +262,7 @@ ${eventBadges.mountHtml()}
       '<title>' + esc(row.company_name) + ' — Unclaimed service listing | TransformerPath</title>' +
       '<meta name="description" content="' + esc((row.description || row.company_name).slice(0, 180)) + '">' +
       '<link rel="canonical" href="' + url + '">' +
-      '<meta name="robots" content="index,follow">' +
+      '<meta name="robots" content="' + listingRichness.robots(listingRichness.stubProfileIndexable()) + '">' +
       '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
       '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
       '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../services.html">Services</a> › ' + esc(row.company_name) + '</nav>' +
