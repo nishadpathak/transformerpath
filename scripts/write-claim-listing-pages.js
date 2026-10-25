@@ -10,6 +10,7 @@ const root = path.join(__dirname, '..');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync(path.join(root, '_partials/header.html'), 'utf8').trim());
 const FOOT = abs(fs.readFileSync(path.join(root, '_partials/footer.html'), 'utf8').trim());
+const paid = require(path.join(root, 'lib/paid-listings'));
 const declaredOrigin = require(path.join(root, 'lib/declared-origin'));
 
 const CONFIRM = 'We review claims manually; corrected data appears once verified.';
@@ -234,4 +235,10 @@ if (start >= 0 && stop > start) {
   toml = toml.replace(anchor, '  to = "/directory/country/turkiye/"\n  status = 301\n  force = true\n\n' + block + '\n[[redirects]]\n  from = "/manufacturers/czech-republic.html"');
 }
 fs.writeFileSync(tomlPath, toml);
+const payPlans = {
+  verified_manufacturer: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
+  featured_listing: paid.PAYMENT_LINKS.featured_listing.url,
+  featured_verified: paid.PAYMENT_LINKS.featured_verified.url
+};
+fs.writeFileSync(path.join(root, 'data/claim-pay-plans.json'), JSON.stringify({ plans: payPlans }, null, 2) + '\n');
 console.log('wrote claim-listing pages for ' + slugs.length + ' listings');

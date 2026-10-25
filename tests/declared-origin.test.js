@@ -47,7 +47,7 @@ check('pricing keeps the existing $699 checkout', pricing.indexOf('href="https:/
 const claim = fs.readFileSync(path.join(root, 'claim-listing/bhel/index.html'), 'utf8');
 const claimJs = require('../claim-listing');
 check('claim page lists the check under $699', claim.indexOf('>Featured+Verified $699/yr<') >= 0 && claim.indexOf('declared-origin check') >= 0);
-check('claim page keeps the existing checkout', claim.indexOf('buy.stripe.com') < 0 && claim.indexOf('data-pay-plan="featured_verified"') >= 0 && claim.indexOf('data-pay-slug="bhel"') >= 0 && claimJs.checkoutUrl('featured_verified', 'bhel') === 'https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q?client_reference_id=bhel');
+check('claim page keeps the existing checkout', claim.indexOf('buy.stripe.com') < 0 && claim.indexOf('data-pay-plan="featured_verified"') >= 0 && claim.indexOf('data-pay-slug="bhel"') >= 0 && claimJs.checkoutUrl('featured_verified', 'bhel', JSON.parse(fs.readFileSync(path.join(root, 'data/claim-pay-plans.json'), 'utf8')).plans) === 'https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q?client_reference_id=bhel');
 
 const profile = fs.readFileSync(path.join(root, 'manufacturers/bhel/index.html'), 'utf8');
 const plain = fs.readFileSync(path.join(root, 'manufacturers/weg/index.html'), 'utf8');

@@ -24,9 +24,16 @@ check('a lookalike host is not a match', claim.reviewFlag('a@notbemag.ca', 'http
 check('a missing website is manual review', claim.reviewFlag('sales@bemag.ca', '') === 'manual_review');
 check('claim link carries the slug', claim.href('bemag-transformer') === '/claim-listing/bemag-transformer/');
 check('upgrade links keep the existing price url and add the slug', claim.payHref(paid.PAYMENT_LINKS.featured_listing.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.payHref(paid.PAYMENT_LINKS.featured_verified.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
-check('pay buttons use the existing payment links', claim.PAY_URLS.verified_manufacturer === paid.VERIFIED_MANUFACTURER_PAYMENT_LINK && claim.PAY_URLS.featured_listing === paid.PAYMENT_LINKS.featured_listing.url && claim.PAY_URLS.featured_verified === paid.PAYMENT_LINKS.featured_verified.url);
-check('a click target keeps client_reference_id on the existing link', claim.checkoutUrl('verified_manufacturer', 'bemag-transformer') === paid.VERIFIED_MANUFACTURER_PAYMENT_LINK + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_listing', 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
-check('an empty slug keeps the bare payment link', claim.checkoutUrl('featured_verified', '') === paid.PAYMENT_LINKS.featured_verified.url && claim.checkoutUrl('no-such-plan', 'bemag-transformer') === '');
+const payPlans = {
+  verified_manufacturer: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
+  featured_listing: paid.PAYMENT_LINKS.featured_listing.url,
+  featured_verified: paid.PAYMENT_LINKS.featured_verified.url
+};
+const payPlanFile = JSON.parse(fs.readFileSync(path.join(root, 'data/claim-pay-plans.json'), 'utf8'));
+check('pay plan file copies the existing payment links', payPlanFile.plans.verified_manufacturer === payPlans.verified_manufacturer && payPlanFile.plans.featured_listing === payPlans.featured_listing && payPlanFile.plans.featured_verified === payPlans.featured_verified);
+check('claim script does not embed a payment link', fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8').indexOf('buy.stripe.com') < 0 && fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8').indexOf('/data/claim-pay-plans.json') >= 0);
+check('a click target keeps client_reference_id on the existing link', claim.checkoutUrl('verified_manufacturer', 'bemag-transformer', payPlans) === payPlans.verified_manufacturer + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_listing', 'bemag-transformer', payPlans) === payPlans.featured_listing + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', 'bemag-transformer', payPlans) === payPlans.featured_verified + '?client_reference_id=bemag-transformer');
+check('an empty slug keeps the bare payment link', claim.checkoutUrl('featured_verified', '', payPlans) === payPlans.featured_verified && claim.checkoutUrl('no-such-plan', 'bemag-transformer', payPlans) === '');
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 check('robots.txt disallows the claim pages', /^Disallow:\s*\/claim-listing\/\s*$/m.test(robots));
 const analytics = fs.readFileSync(path.join(root, 'analytics.js'), 'utf8');
@@ -188,8 +195,8 @@ setTimeout(function () {
   emailBox.value = 'sales@bemag.ca';
   listeners['email-input']();
   check('a matching email is stored as domain_match', flagBox.value === 'domain_match' && siteBox.value === 'https://www.bemag.ca/', flagBox.value + ' ' + siteBox.value);
-  check('verified checkout keeps the existing link and the maker slug', payLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('verified_manufacturer', payLink.getAttribute('data-pay-slug')) === verified + '?client_reference_id=bemag-transformer', payLink.getAttribute('data-pay-slug'));
-  check('featured checkouts keep the existing links and the maker slug', featuredLink.getAttribute('data-pay-slug') === 'bemag-transformer' && bothLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('featured_listing', featuredLink.getAttribute('data-pay-slug')) === featured + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', bothLink.getAttribute('data-pay-slug')) === both + '?client_reference_id=bemag-transformer');
+  check('verified checkout keeps the existing link and the maker slug', payLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('verified_manufacturer', payLink.getAttribute('data-pay-slug'), payPlans) === verified + '?client_reference_id=bemag-transformer', payLink.getAttribute('data-pay-slug'));
+  check('featured checkouts keep the existing links and the maker slug', featuredLink.getAttribute('data-pay-slug') === 'bemag-transformer' && bothLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('featured_listing', featuredLink.getAttribute('data-pay-slug'), payPlans) === featured + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', bothLink.getAttribute('data-pay-slug'), payPlans) === both + '?client_reference_id=bemag-transformer');
   emailBox.value = 'sales@gmail.com';
   listeners['email-input']();
   check('a different email stays on manual review', flagBox.value === 'manual_review', flagBox.value);
@@ -203,6 +210,7 @@ setTimeout(function () {
   const clicked = { href: '' };
   const savedWindow = global.window;
   global.window = { location: { search: '', assign: function (url) { clicked.href = url; } } };
+  claim.primePayPlans(payPlans);
   const payEvent = { target: { closest: function () { return { getAttribute: function (k) { return k === 'data-pay-plan' ? 'featured_verified' : 'bemag-transformer'; } }; } } };
   claim.onPayClick(payEvent);
   check('a click opens the existing payment link', clicked.href === both + '?client_reference_id=bemag-transformer', clicked.href);

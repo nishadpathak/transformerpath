@@ -73,16 +73,30 @@
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(s);
   }
 
-  // The existing Payment Links. Same strings as lib/paid-listings.js.
-  // They are not written into the claim page HTML.
-  var PAY_URLS = {
-    verified_manufacturer: 'https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05',
-    featured_listing: 'https://buy.stripe.com/fZu4gsaSkbFHfEsghQfYY0P',
-    featured_verified: 'https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q'
-  };
+  // Payment Link strings stay in lib/paid-listings.js. The browser reads
+  // the copy written to /data/claim-pay-plans.json and navigates on click.
+  var payMap = null;
 
-  function checkoutUrl(plan, slug) {
-    var base = PAY_URLS[plan];
+  function primePayPlans(plans) {
+    payMap = plans && typeof plans === 'object' ? plans : {};
+    return payMap;
+  }
+
+  function ensurePlans() {
+    if (payMap) return Promise.resolve(payMap);
+    if (typeof fetch !== 'function') return Promise.resolve({});
+    return fetch('/data/claim-pay-plans.json', { credentials: 'same-origin' })
+      .then(function (res) { return res.ok ? res.json() : {}; })
+      .then(function (doc) {
+        payMap = doc && doc.plans && typeof doc.plans === 'object' ? doc.plans : {};
+        return payMap;
+      })
+      .catch(function () { payMap = {}; return payMap; });
+  }
+
+  function checkoutUrl(plan, slug, plans) {
+    var map = plans || payMap || {};
+    var base = map[plan];
     if (!base) return '';
     return payHref(base, slug);
   }
@@ -94,14 +108,20 @@
     return btn && btn.getAttribute ? (btn.getAttribute('data-pay-slug') || '') : '';
   }
 
-  function onPayClick(e) {
-    var btn = e && e.target && e.target.closest ? e.target.closest('[data-pay-plan]') : null;
-    if (!btn) return '';
-    var url = checkoutUrl(btn.getAttribute('data-pay-plan') || '', slugFor(btn));
-    if (!url || typeof window === 'undefined' || !window.location) return url;
+  function go(url) {
+    if (!url || typeof window === 'undefined' || !window.location) return url || '';
     if (typeof window.location.assign === 'function') window.location.assign(url);
     else window.location.href = url;
     return url;
+  }
+
+  function onPayClick(e) {
+    var btn = e && e.target && e.target.closest ? e.target.closest('[data-pay-plan]') : null;
+    if (!btn) return Promise.resolve('');
+    var plan = btn.getAttribute('data-pay-plan') || '';
+    var slug = slugFor(btn);
+    if (payMap) return Promise.resolve(go(checkoutUrl(plan, slug, payMap)));
+    return ensurePlans().then(function (plans) { return go(checkoutUrl(plan, slug, plans)); });
   }
 
   function bindPayClicks() {
@@ -224,7 +244,7 @@
     reviewFlag: reviewFlag,
     href: href,
     payHref: payHref,
-    PAY_URLS: PAY_URLS,
+    primePayPlans: primePayPlans,
     checkoutUrl: checkoutUrl,
     onPayClick: onPayClick,
     linkHtml: linkHtml,
