@@ -9,6 +9,10 @@
  *   meta and Open Graph descriptions of non-listing pages,
  *   llms.txt, web manifests, email templates, and README-style public text,
  *   and the site's own refresh schedule copy.
+ *   The homepage ticker is brand chrome. Its string is scanned even though
+ *   it sits inside a script, including the unpublished transformerpath copy
+ *   and a generated dist/ page. A DEWA tender line may stay. Dubai, UAE,
+ *   U.A.E., and United Arab Emirates in that string may not.
  *
  * Inline scripts, and JS that can be published, are scanned for the word
  * Dubai outside string and regex literals. A city, venue, tender or company
@@ -255,6 +259,17 @@ function scanInlineScripts(rel, html) {
   }
 }
 
+/* The ticker is painted into the homepage. The place name is inside a
+ * string, so the script scan above treats it as data. This scan does not. */
+function scanTicker(rel, html) {
+  const re = /const\s+TICKER\s*=\s*(["'`])([\s\S]*?)\1/g;
+  let m;
+  while ((m = re.exec(html))) {
+    const value = decode(m[2]);
+    if (hit(value)) report(rel, 'homepage ticker', value);
+  }
+}
+
 function scanPublishedJs(rel, code) {
   const visible = outsideData(code);
   if (mentionsDubai(visible)) report(rel, 'script', visible);
@@ -413,6 +428,21 @@ function selfCheck() {
   expect(!mentionsDubai(outsideData("const fmt = { timeZone: 'Asia/Dubai' };")), 'a timezone string is data');
   expect(!mentionsDubai(outsideData('if (/\\b(Dubai|DEWA)\\b/.test(t)) return;')), 'a place-matching regex is data');
   expect(mentionsDubai(outsideData('const label = `offset ${dubai}`;')), 'an identifier inside a template is not data');
+  const uaeTicker = '<script>const TICKER = "<b>UK</b> grid works &nbsp; <b>UAE</b> six DEWA tenders";</script>';
+  const dubaiTicker = '<script>const TICKER = "<b>Dubai</b> World Trade Centre hosts an event";</script>';
+  const fullTicker = '<script>const TICKER = "Based in the United Arab Emirates";</script>';
+  const dewaTicker = '<script>const TICKER = "<b>DEWA</b> six transformer-adjacent tenders — closed 25 Aug – 17 Sep 2026";</script>';
+  scanTicker('fixture-ticker-uae.html', uaeTicker);
+  expect(problems.length === before + 1, 'a homepage ticker that names the UAE fails');
+  problems.length = before;
+  scanTicker('fixture-ticker-dubai.html', dubaiTicker);
+  expect(problems.length === before + 1, 'a homepage ticker that names Dubai fails');
+  problems.length = before;
+  scanTicker('fixture-ticker-full.html', fullTicker);
+  expect(problems.length === before + 1, 'a homepage ticker that names the United Arab Emirates fails');
+  problems.length = before;
+  scanTicker('fixture-ticker-dewa.html', dewaTicker);
+  expect(problems.length === before, 'a DEWA tender line without a place name stays');
   expect(isPublishedJs('lib/event-search.js'), 'published lib JS is scanned');
   expect(!isPublishedJs('lib/event-status.js'), 'build-only lib JS is not a public script');
   expect(!isPublishedJs('build_ssr.js'), 'build scripts are not a public script');
@@ -435,6 +465,7 @@ walk(root, []).forEach(function (file) {
     scanBrandOrg(rel, html);
     scanMeta(rel, html);
     scanInlineScripts(rel, html);
+    scanTicker(rel, html);
     if (rel === 'about.html' || rel === 'contact.html') scanPageText(rel, html);
     const alert = html.match(/<p\b[^>]*\bid=["']tp-alert-status["'][^>]*>[\s\S]*?<\/p>/i);
     if (alert && hit(alert[0])) report(rel, 'schedule copy', alert[0]);
@@ -451,6 +482,19 @@ walk(root, []).forEach(function (file) {
     const text = fs.readFileSync(file, 'utf8');
     if (hit(text)) report(rel, 'public text', text);
   }
+});
+
+/* Unpublished and generated copies are not the listing walk above.
+ * A ticker there is still the homepage a visitor can be served. */
+['transformerpath', 'transformerpath-site', 'dist'].forEach(function (dir) {
+  walk(path.join(root, dir), []).forEach(function (file) {
+    if (!file.endsWith('.html')) return;
+    let html;
+    try { html = fs.readFileSync(file, 'utf8'); }
+    catch (e) { return; }
+    if (html.indexOf('TICKER') < 0) return;
+    scanTicker(relOf(file), html);
+  });
 });
 
 ['_partials/footer.html', '_partials/header.html', '_partials/header-standalone.html'].forEach(function (rel) {
