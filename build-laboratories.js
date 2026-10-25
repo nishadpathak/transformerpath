@@ -271,7 +271,7 @@ ${HEAD}
   <div class="lab-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › Testing Laboratories</nav>
     <h1>Transformer <span style="color:var(--accent)">Testing Laboratories</span> Directory</h1>
-    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them.</p>
+    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them. <a href="/knowledge/standard-transformer-oil-tests.html">Standard transformer oil tests</a> explains what each routine oil test is for and what the results indicate.</p>
   </div>
 
   <div class="stats-bar">
