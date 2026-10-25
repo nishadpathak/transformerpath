@@ -9,6 +9,7 @@ const { json, readBody } = require('./lib/verified-auth');
 
 exports.handler = async function (event) {
   if (!event || event.httpMethod !== 'POST') return json(405, { stored: false, error: 'method' });
+  if (!flow.serverEnabled()) return json(503, { stored: false, enabled: false, reason: 'flag_off' });
   if (!store.configured()) return json(503, { stored: false, configured: false, reason: 'not_configured' });
   const body = readBody(event);
   if (!body) return json(400, { stored: false, error: 'invalid json' });

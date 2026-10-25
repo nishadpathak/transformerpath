@@ -30,6 +30,7 @@ Set these on the Netlify site (Site → Environment variables). Server-only. Do 
 | `RESEND_FROM` | Verified sender, for example `TransformerPath <noreply@transformerpath.com>`. |
 | `NOTIFY_TO` | Internal paid-listing notice. Defaults to `hello@transformerpath.com`. |
 | `VERIFIED_REVIEW_TOKEN` | Server-only token for `functions/verified-review.js` and `functions/verified-revenue.js`. At least 24 characters. Never put it in a page or a commit. If it is unset, both functions return `503` and change nothing. |
+| `TP_VERIFIED_SERVER` | Set to `1` to turn on claim, review, revenue, the customer dashboard, reminders, the abandoned-checkout webhook branch, listing-refund updates, and the Verified Manufacturer row in `entitle.js`. Unset or any other value leaves those paths off, even when the Stripe and Netlify secrets below are already set. The public Payment Link does not read this flag. |
 
 Engineer Payment Links on `pricing.html` are unchanged and do not use these price ids.
 

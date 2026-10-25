@@ -78,6 +78,7 @@ exports.handler = async function (event) {
   if (!event || (event.httpMethod !== 'GET' && event.httpMethod !== 'POST')) {
     return json(405, { error: 'method' });
   }
+  if (!flow.serverEnabled()) return json(503, { enabled: false, reason: 'flag_off' });
   const now = Date.now();
   let viewer = viewerOverride ? await viewerOverride(event) : sessionViewer(event, process.env, now);
   if (!viewer) {

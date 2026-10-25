@@ -10,6 +10,7 @@ const mail = require('./lib/verified-mail');
 const { json } = require('./lib/verified-auth');
 
 exports.handler = async function () {
+  if (!flow.serverEnabled()) return json(200, { ok: true, skipped: true, reason: 'flag_off', sent: 0 });
   if (!store.configured()) {
     return json(200, { ok: true, skipped: true, reason: 'not_configured', sent: 0 });
   }

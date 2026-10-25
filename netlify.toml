@@ -53,8 +53,8 @@
 [functions."watchlist-alerts"]
   schedule = "30 6,18 * * *"
 
-# Verified Manufacturer expiry and renewal notes. No charge. No-op until
-# SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.
+# Verified Manufacturer expiry and renewal notes. No charge. Off unless
+# TP_VERIFIED_SERVER=1. Supabase keys alone do not run it.
 [functions."verified-reminders"]
   schedule = "0 7 * * *"
 

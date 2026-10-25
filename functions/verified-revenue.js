@@ -7,6 +7,7 @@ const { json, reviewAuth } = require('./lib/verified-auth');
 
 exports.handler = async function (event) {
   if (!event || event.httpMethod !== 'GET') return json(405, { error: 'method' });
+  if (!flow.serverEnabled()) return json(503, { enabled: false, reason: 'flag_off' });
   const auth = reviewAuth(event);
   if (!auth.configured) return json(503, { configured: false, reason: 'not_configured' });
   if (!auth.ok) return json(401, { configured: true, error: 'unauthorized' });

@@ -99,6 +99,10 @@ async function main() {
   check('entitle upserts entitlements on user_id, product', entitleSrc.indexOf("onConflict: 'user_id,product'") >= 0 && entitleSrc.indexOf('email,product') < 0);
 
   console.log('payment success, duplicate webhook, bad signature, abandoned checkout');
+  delete process.env.TP_VERIFIED_SERVER;
+  check('verified server flag defaults off', flow.serverEnabled() === false);
+  const claimOff = await require('../functions/verified-claim').handler({ httpMethod: 'POST', body: '{}' });
+  check('claim stays off without the server flag', claimOff.statusCode === 503 && JSON.parse(claimOff.body).reason === 'flag_off', claimOff.body);
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_unit_test_secret';
   const wh = require('../functions/stripe-webhook');
   const events = new Map();
@@ -121,6 +125,13 @@ async function main() {
     }
   });
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  const expiredOff = await postWebhook(wh.handler, secret, {
+    id: 'evt_verified_expired_off',
+    type: 'checkout.session.expired',
+    data: { object: paidSession('cs_test_expired_off') }
+  });
+  check('expired checkout does not change the webhook while the flag is off', expiredOff.statusCode === 200 && JSON.parse(expiredOff.body).ignored === 'checkout.session.expired' && paidWrites === 0, expiredOff.body);
+  process.env.TP_VERIFIED_SERVER = '1';
   const bad = await wh.handler({
     httpMethod: 'POST',
     headers: { 'stripe-signature': 't=' + Math.floor(Date.now() / 1000) + ',v1=' + 'ab'.repeat(32) },
@@ -475,6 +486,7 @@ async function main() {
   delete process.env.STRIPE_WEBHOOK_SECRET;
   delete process.env.STRIPE_SECRET_KEY;
   delete process.env.VERIFIED_REVIEW_TOKEN;
+  delete process.env.TP_VERIFIED_SERVER;
 
   if (failed) {
     console.error('\nverified manufacturer flow: ' + failed + ' failed');

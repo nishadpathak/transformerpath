@@ -141,6 +141,9 @@ exports.handler = async (event) => {
     }
 
     const decision = decide(session, userId);
+    if (decision.kind === 'listing' && decision.listing && decision.listing.product === flow.PRODUCT && !flow.serverEnabled()) {
+      return json(200, { valid: true, paid: true, stored: false, reason: 'flag_off', product: flow.PRODUCT, listing: null });
+    }
     if (decision.kind === 'unclassified') {
       return json(200, { valid: false, paid: true, reason: 'unclassified', stored: false });
     }

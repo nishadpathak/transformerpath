@@ -37,6 +37,7 @@ const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
 const { sendKind } = require('./lib/verified-mail');
+const flow = require('../lib/verified-flow');
 const paidListings = require('../lib/paid-listings');
 const digitalProducts = require('../lib/digital-products');
 const { listingProduct, companySlugFromReference, componentFromSession } = paidListings;
@@ -203,12 +204,12 @@ async function handle(ev) {
   // If the event id is already recorded, return success without re-writing.
   if (await store.eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
 
-  if (type === 'checkout.session.expired') {
+  if (flow.serverEnabled() && type === 'checkout.session.expired') {
     try { await store.markProcessed(ev.id, type); } catch (markErr) { /* abandoned checkout has no row */ }
     return respond(200, { received: true, abandoned: true, stored: false });
   }
 
-  if (type === 'charge.refunded') {
+  if (flow.serverEnabled() && type === 'charge.refunded') {
     const refund = listingRefundFromCharge(ev.data && ev.data.object);
     if (refund) {
       if (typeof store.updatePaidListingStatus !== 'function') {
