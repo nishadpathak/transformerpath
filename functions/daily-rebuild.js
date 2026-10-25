@@ -5,6 +5,20 @@
 //
 // Schedule: once daily — 06:00 UTC. See netlify.toml.
 // No-op unless TP_BUILD_HOOK_URL is set.
+function interpretHookResponse(status, contentType, text) {
+  const ctype = String(contentType || '').toLowerCase();
+  let body = null;
+  if (text) {
+    try { body = JSON.parse(text); } catch (e) { body = null; }
+  }
+  if (!(status >= 200 && status < 300) || /text\/html/.test(ctype) || (body && (body.error || body.ok === false))) {
+    return { ok: false, triggered: true, updated: false, reason: 'build_hook_rejected', status: status };
+  }
+  return { ok: true, triggered: true, updated: true, reason: 'build_accepted', status: status };
+}
+
+exports.interpretHookResponse = interpretHookResponse;
+
 exports.handler = async function () {
   const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
   if (!hook) {
@@ -27,9 +41,11 @@ exports.handler = async function () {
         at: new Date().toISOString()
       })
     });
+    const text = await res.text();
+    const verdict = interpretHookResponse(res.status, res.headers && res.headers.get && res.headers.get('content-type'), text);
     return {
-      statusCode: res.ok ? 200 : 502,
-      body: JSON.stringify({ ok: res.ok, triggered: true, status: res.status })
+      statusCode: verdict.ok ? 200 : 502,
+      body: JSON.stringify(verdict)
     };
   } catch (e) {
     return {

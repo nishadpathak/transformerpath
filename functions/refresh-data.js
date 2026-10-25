@@ -61,6 +61,45 @@ async function fetchIntel() {
   return { intel: intel, count: count };
 }
 
+function itemUrls(rows) {
+  const out = [];
+  (rows || []).forEach(function (row) {
+    (row && row.items || []).forEach(function (it) {
+      if (it && it.url) out.push(String(it.url));
+    });
+  });
+  return out;
+}
+
+// A run with no articles, or the same URLs as the last good cache, is not
+// an update. Callers must not report HTTP 200 for that outcome.
+function evaluateRefresh(result, prev) {
+  const urls = itemUrls(result && result.intel);
+  if (!result || !result.intel || !urls.length) {
+    return { success: false, updated: false, reason: 'no_articles', count: 0 };
+  }
+  const prevUrls = itemUrls(prev && prev.articles);
+  if (prevUrls.length) {
+    const seen = {};
+    prevUrls.forEach(function (u) { seen[u] = true; });
+    const added = urls.filter(function (u) { return !seen[u]; });
+    if (!added.length) {
+      return { success: false, updated: false, reason: 'no_new_items', count: urls.length };
+    }
+  }
+  return { success: true, updated: true, reason: 'new_items', count: urls.length };
+}
+
+function isRefreshRun(event) {
+  if (!event || !event.httpMethod) return true;
+  if (event.httpMethod === 'POST') return true;
+  const q = event.queryStringParameters || {};
+  if (q.run === '1') return true;
+  const headers = event.headers || {};
+  const ua = String(headers['user-agent'] || headers['User-Agent'] || '');
+  return /scheduled/i.test(ua) && /netlify/i.test(ua);
+}
+
 async function refresh() {
   const result = await fetchIntel();
   const prev = readCached() || {};
@@ -73,13 +112,26 @@ async function refresh() {
     stale: prev.lastSuccessfulFetch ? (Date.now() - new Date(prev.lastSuccessfulFetch).getTime() > STALE_AFTER_MS) : true,
   };
 
-  if (!result.intel) {
+  const verdict = evaluateRefresh(result, prev);
+  if (!verdict.success) {
     // Failed-source isolation: keep the last good cache, mark it (possibly) stale.
+    // Do not move lastSuccessfulFetch. An empty fetch or a repeat of the
+    // cached URLs is not a successful update.
     meta.failureCount = (prev.failureCount || 0) + 1;
     if (prev.briefing) {
       writeCache(Object.assign({}, prev, meta));
     }
-    return { success: false, stale: meta.stale, lastSuccessfulFetch: meta.lastSuccessfulFetch, note: 'No articles fetched from EventRegistry or RSS. Last good cache kept when one exists.' };
+    return {
+      success: false,
+      updated: false,
+      stale: meta.stale,
+      reason: verdict.reason,
+      count: verdict.count,
+      lastSuccessfulFetch: meta.lastSuccessfulFetch,
+      note: verdict.reason === 'no_new_items'
+        ? 'Fetched articles match the last cache. No new item. Last successful fetch was not moved.'
+        : 'No articles fetched from EventRegistry or RSS. Last good cache kept when one exists.'
+    };
   }
 
   const briefing = result.intel.autoBriefing;
@@ -89,7 +141,7 @@ async function refresh() {
   meta.stale = false;
   const cache = Object.assign({ briefing, timestamp: meta.lastSuccessfulFetch, articles: intelData }, meta);
   writeCache(cache);
-  return { success: true, stale: false, count: result.count, lastSuccessfulFetch: meta.lastSuccessfulFetch };
+  return { success: true, updated: true, stale: false, reason: verdict.reason, count: result.count, lastSuccessfulFetch: meta.lastSuccessfulFetch };
 }
 
 function articleCount(cache) {
@@ -97,9 +149,11 @@ function articleCount(cache) {
   return cache.articles.reduce((s, r) => s + (r.items ? r.items.length : 0), 0);
 }
 
+exports.evaluateRefresh = evaluateRefresh;
+exports.isRefreshRun = isRefreshRun;
+
 exports.handler = async (event) => {
-  const method = event.httpMethod || 'GET';
-  const isRun = method === 'POST' || (event.queryStringParameters && event.queryStringParameters.run === '1');
+  const isRun = isRefreshRun(event);
 
   // Manual / scheduled refresh -> background report (admin control panel).
   if (isRun) {
@@ -108,11 +162,7 @@ exports.handler = async (event) => {
     return {
       statusCode: res.success ? 200 : 503,
       body: JSON.stringify(Object.assign({ timestamp: nowIso() }, res, {
-        updated: articleCount(cached),
-        cachedArticleCount: articleCount(cached),
-        note: res.success
-          ? 'Fetched via EventRegistry when EVENTREGISTRY_KEY is set, otherwise public RSS.'
-          : 'Refresh fetched no articles. EVENTREGISTRY_KEY is optional; RSS is the fallback.',
+        cachedArticleCount: articleCount(cached)
       })),
     };
   }
@@ -130,10 +180,17 @@ exports.handler = async (event) => {
   }
 
   const fresh = await refresh();
-  const out = fresh.success ? readCached() : null;
+  if (!fresh.success) {
+    return {
+      statusCode: 503,
+      headers: { 'Cache-Control': 'no-cache' },
+      body: JSON.stringify(Object.assign({ timestamp: nowIso(), updated: false }, fresh))
+    };
+  }
+  const out = readCached();
   return {
     statusCode: 200,
     headers: { 'Cache-Control': 'no-cache' },
-    body: JSON.stringify(out || { briefing: '(Briefing loading...) EventRegistry refresh pending.', timestamp: nowIso() }),
+    body: JSON.stringify(out),
   };
 };
