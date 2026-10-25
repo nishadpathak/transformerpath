@@ -37,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { stampHtml } = require('./adsense-inject');
+const { ensureLegalFooter } = require('./lib/legal-footer');
 
 const DIST = 'dist';
 
@@ -264,7 +265,7 @@ let stampErrors = 0;
     try { html = fs.readFileSync(p, 'utf8'); }
     catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
     let next;
-    try { next = stampHtml(html, rel); }
+    try { next = ensureLegalFooter(stampHtml(html, rel)); }
     catch (err) {
       console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
       stampErrors++;
