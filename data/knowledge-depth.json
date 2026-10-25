@@ -20,11 +20,11 @@
     },
     "thinness_order": "Lowest score, then fewest words, then slug. The thinnest pages are the ones this audit flags for a later depth pass."
   },
-  "article_count": 165,
+  "article_count": 166,
   "grade_counts": {
     "THIN": 29,
     "OK": 126,
-    "DEEP": 10
+    "DEEP": 11
   },
   "articles": {
     "aromatic-paper-insulation": {
@@ -587,6 +587,18 @@
       "has_worked_example": true,
       "has_checklist": false,
       "references_count": 4,
+      "faq_count": 1,
+      "score": 4,
+      "grade": "DEEP"
+    },
+    "standard-transformer-oil-tests": {
+      "words": 1473,
+      "h2": 17,
+      "tables": 0,
+      "equations": 0,
+      "has_worked_example": false,
+      "has_checklist": false,
+      "references_count": 19,
       "faq_count": 1,
       "score": 4,
       "grade": "DEEP"
