@@ -80,9 +80,9 @@ check('old html URL redirects to the factory tracker', (function () {
   return toml.indexOf('from = "/lead-times.html"') !== -1 && toml.indexOf('to = "/factory-capacity/"') !== -1;
 })());
 
-check('in-content slot uses the existing marker', inject.wantsInContentSlot('lead-times/index.html') === true);
+check('lead-times is not an ad page', inject.wantsInContentSlot('lead-times/index.html') === false);
 const stamped = inject.stampHtml(html, 'lead-times/index.html');
-check('marker is replaced', stamped.indexOf('<!--tp-ad-slot-->') === -1 && stamped.indexOf('data-tp-ad="in-content"') !== -1);
+check('marker stays and no slot is stamped', stamped.indexOf('<!--tp-ad-slot-->') !== -1 && stamped.indexOf('data-tp-ad="in-content"') === -1 && stamped.indexOf(inject.cfg.LOADER) === -1);
 
 const cat = catalog.create();
 const source = fs.readFileSync('lead-times/index.html', 'utf8');

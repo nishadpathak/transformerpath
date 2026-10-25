@@ -1,43 +1,20 @@
 /* TransformerPath cookie consent banner.
-   Google Analytics loads only after Accept. The AdSense loader itself is
-   stamped into <head> by build-dist.js so Auto ads and the AdSense crawler
-   can see ca-pub-5646978915498298 without a click. Personalized ads for
-   EEA, UK and Switzerland visitors are gated by Google's certified CMP
-   (AdSense → Privacy & messaging / Funding Choices), not by this banner.
-   This banner is not a certified CMP and must not be the only AdSense gate.
+   Google Analytics loads only after Accept (analytics.js listens for
+   tp-consent-changed). The AdSense loader is stamped into <head> by
+   build-dist.js on article and learn pages only, so the AdSense crawler
+   can see it there without a click. This file does not inject that script
+   on any page. Personalized ads for EEA, UK and Switzerland visitors are
+   gated by Google's certified CMP (AdSense → Privacy & messaging /
+   Funding Choices), not by this banner.
 
    State (localStorage['tp-cookie-consent']):
-     - 'accepted'  -> allow GA4; AdSense tag is already on the page
+     - 'accepted'  -> allow GA4
      - 'essential' -> never load GA4
      - null        -> not decided; show the banner
-
-   If a published page is missing the head tag, Accept still injects it once. */
+ */
 (function () {
-  var PUB = 'ca-pub-5646978915498298';
   var KEY = 'tp-cookie-consent';
   var started = false;
-
-  function loadAdSense() {
-    if (window.__TP_ADSENSE_LOADING__ || window.__TP_ADSENSE_LOADED__) return;
-    if (document.querySelector('script[src*="adsbygoogle.js"]')) {
-      window.__TP_ADSENSE_LOADED__ = true;
-      return;
-    }
-    window.__TP_ADSENSE_LOADING__ = true;
-    var s = document.createElement('script');
-    // Fallback only. The published head tag is already deferred. Wait for
-    // load so this copy does not compete with the first paint, and do not
-    // put data-* attributes on the AdSense element.
-    s.defer = true;
-    s.async = false;
-    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + PUB;
-    s.crossOrigin = 'anonymous';
-    s.onload = function () { window.__TP_ADSENSE_LOADED__ = true; window.__TP_ADSENSE_LOADING__ = false; };
-    s.onerror = function () { window.__TP_ADSENSE_LOADING__ = false; };
-    function mount() { document.head.appendChild(s); }
-    if (document.readyState === 'complete') mount();
-    else window.addEventListener('load', mount, { once: true });
-  }
 
   function getConsent() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function setConsent(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
@@ -97,7 +74,6 @@
       document.body.style.paddingBottom = '';
       document.documentElement.style.removeProperty('--tp-consent-pad');
       if (b.parentNode) b.parentNode.removeChild(b);
-      if (value === 'accepted') loadAdSense();
       notify(value);
     });
   }
@@ -106,7 +82,7 @@
     if (started) return;
     started = true;
     var c = getConsent();
-    if (c === 'accepted') { loadAdSense(); return; }
+    if (c === 'accepted') return;
     if (c === 'essential') { return; }
     showBanner();
   }

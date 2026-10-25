@@ -84,8 +84,8 @@ check('page has no other brand and no CSV product', page.indexOf('ELIN') === -1 
 check('tools hub links the interpreter', fs.readFileSync('tools.html', 'utf8').indexOf('/tools/dga/') !== -1);
 
 const stamped = inject.stampHtml(page, 'tools/dga/index.html');
-check('AdSense loader is stamped once', stamped.split(inject.cfg.LOADER).length === 2);
-check('DGA page gets one in-content slot below the hero', inject.wantsInContentSlot('tools/dga/index.html') === true && stamped.split('data-tp-ad="in-content"').length === 2 && stamped.indexOf('data-tp-ad="in-content"') > stamped.indexOf('</section>'));
+check('DGA tool does not get the AdSense loader', stamped.indexOf(inject.cfg.LOADER) === -1 && stamped.indexOf('adsbygoogle') === -1);
+check('DGA tool does not get an in-content slot', inject.wantsInContentSlot('tools/dga/index.html') === false && stamped.indexOf('data-tp-ad="in-content"') === -1);
 
 check('$19 alone is not a DGA purchase', paid.listingProduct({ amount_total: 1900, metadata: {} }) == null);
 check('metadata product=dga_report is the DGA PDF', paid.listingProduct({ metadata: { product: 'dga_report' }, amount_total: 1900 }) === 'dga_report');

@@ -2,7 +2,7 @@
 /* tests/homepage-lcp-regression.js
  * Mobile LCP was the 510KB hero poster, faded in from opacity 0, while a
  * second hero image was preloaded and an infinite blurred aurora kept the
- * main thread busy. The AdSense loader must still stamp onto the homepage.
+ * main thread busy. The homepage stays free of the AdSense loader.
  * Run: node tests/homepage-lcp-regression.js
  */
 'use strict';
@@ -34,7 +34,7 @@ check('the LCP poster is preloaded and decoded on the critical path', /rel="prel
 check('aurora blur does not animate forever', !/animation: aurora /.test(html) && !/animation: aurora /.test(fs.readFileSync('style.css', 'utf8')));
 
 const stamped = inject.stampHtml(html, 'index.html');
-check('AdSense loader is still stamped on the homepage', stamped.indexOf(inject.cfg.LOADER) !== -1 && stamped.split(inject.cfg.LOADER).length === 2);
+check('AdSense loader is not stamped on the homepage', stamped.indexOf(inject.cfg.LOADER) === -1 && stamped.indexOf('adsbygoogle') === -1);
 check('homepage still has no manual ad slot', stamped.indexOf('data-tp-ad="in-content"') === -1);
 
 if (failures.length) {
