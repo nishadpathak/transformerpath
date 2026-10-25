@@ -19,9 +19,10 @@ const PUBLISHER = 'pub-5646978915498298';
 /** Replace with the numeric ad unit id (Ads → By ad unit). */
 const INCONTENT_SLOT = 'placeholder';
 
-/* defer, not async: the tag stays in <head> for the AdSense crawler, and
- * adsbygoogle.push in the in-content slot still queues until this file runs.
- * consent.js only injects a second copy when this tag is missing. */
+/* defer, not async: on article and learn pages the tag stays in <head> for
+ * the AdSense crawler, and adsbygoogle.push in the in-content slot still
+ * queues until this file runs. Other pages do not get this tag. consent.js
+ * does not inject a copy. */
 const LOADER = '<script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
   CLIENT + '" crossorigin="anonymous"></script>';
 

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-/* check-adsense.js — every published HTML page carries the AdSense loader.
+/* check-adsense.js — AdSense script and slots only on article and learn pages.
  *
  * Runs after build-dist.js. Fails the build when:
  *   - dist/ads.txt is missing the publisher line
- *   - any published HTML page lacks the async loader, or names another pub id
- *   - the loader is outside <head> or appears more than once
- *   - a knowledge article, the intel list, or a directory list lacks exactly
- *     one in-content slot (below the hero / title) labelled Advertisement
- *   - checkout, pricing, admin or login pages contain a manual slot
+ *   - an article or learn page lacks the deferred loader, or names another pub id
+ *   - the loader is outside <head> or appears more than once on those pages
+ *   - an article or learn page lacks exactly one in-content slot
+ *     (below the hero / title) labelled Advertisement
+ *   - any other page contains the loader, a publisher id, or a manual slot
  *
  * Run: node check-adsense.js
  */
@@ -62,29 +62,31 @@ for (const file of files) {
   const loaderCount = html.split(cfg.LOADER).length - 1;
   const headCount = head.split(cfg.LOADER).length - 1;
 
+  const pubs = html.match(/ca-pub-\d+/g) || [];
+  const wrong = pubs.filter(function (id) { return id !== cfg.CLIENT; });
+  if (wrong.length) problems.push(rel + ' :: wrong pub id ' + wrong.join(','));
+
+  const slotCount = html.split('data-tp-ad="in-content"').length - 1;
+  const wanted = inject.wantsAds(rel);
+
+  if (!wanted) {
+    if (loaderCount || headCount) {
+      problems.push(rel + ' :: AdSense loader on a non-article, non-learn page (' + loaderCount + ')');
+    }
+    if (slotCount) problems.push(rel + ' :: manual slot on a non-article, non-learn page');
+    if (pubs.length) problems.push(rel + ' :: publisher id on a non-article, non-learn page');
+    continue;
+  }
+
   if (loaderCount !== 1 || headCount !== 1) {
     problems.push(rel + ' :: loader count ' + loaderCount + ' (in <head> ' + headCount + '), expected 1');
   } else {
     loaders++;
   }
-
-  const pubs = html.match(/ca-pub-\d+/g) || [];
-  const wrong = pubs.filter(function (id) { return id !== cfg.CLIENT; });
-  if (wrong.length) problems.push(rel + ' :: wrong pub id ' + wrong.join(','));
   if (!pubs.length) problems.push(rel + ' :: missing ' + cfg.CLIENT);
 
-  const slotCount = html.split('data-tp-ad="in-content"').length - 1;
-  const excluded = inject.isSlotExcluded(rel);
-  const wanted = inject.wantsInContentSlot(rel);
-
-  if (excluded && slotCount) {
-    problems.push(rel + ' :: manual slot on a checkout/pricing/admin/login page');
-  }
-  if (wanted && slotCount !== 1) {
+  if (slotCount !== 1) {
     problems.push(rel + ' :: expected exactly one in-content slot, found ' + slotCount);
-  }
-  if (!wanted && slotCount) {
-    problems.push(rel + ' :: unexpected manual slot (' + slotCount + ')');
   }
   if (wanted && slotCount === 1) {
     slots++;

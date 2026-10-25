@@ -28,8 +28,8 @@
  * served as a static file. That closes the 210 KB paid-content exposure.
  *
  * This runs LAST, after every generator. It copies, then stamps the AdSense
- * loader (and at most one in-content slot) into every published HTML page.
- * Source files stay untouched so the next generator run cannot drop the tag.
+ * loader and one in-content slot onto article and learn pages only. Every
+ * other published page has those tags removed. Source files stay untouched.
  *
  * Run: node build-dist.js
  */
@@ -250,8 +250,8 @@ if (dataMissing.length) {
   dataMissing.slice(0, 12).forEach(function (r) { console.warn('      data/' + r); });
 }
 
-// 6. AdSense loader on every published page, plus one collapsed in-content
-//    slot on knowledge articles, the intel list and the directory lists.
+// 6. AdSense loader and one collapsed in-content slot on article and learn
+//    pages. Every other published page has the loader and manual slots removed.
 let stamped = 0;
 let stampErrors = 0;
 (function stampWalk(dir) {

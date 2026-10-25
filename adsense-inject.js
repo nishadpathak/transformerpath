@@ -1,14 +1,26 @@
-/* Stamp the AdSense loader, and at most one in-content slot, onto published HTML.
+/* Stamp the AdSense loader and one in-content slot onto article and learn pages.
  *
  * build-dist.js calls stampHtml() while assembling dist/. Source templates are
- * left alone so the next generator run cannot drop the tag. check-adsense.js
- * reads the same rules.
+ * left alone so the next generator run cannot drop the tag. Every other
+ * published page has the loader and any manual slot removed. check-adsense.js
+ * reads the same rules. consent.js does not inject a second loader.
+ *
+ * Article pages:
+ *   knowledge/<slug>.html  — TechArticle pages from build-knowledge.js
+ *   guides/<slug>/index.html — long-form buyer guides
+ * Learn pages:
+ *   learn.html — design course
+ *   engineer-track.html — Design Engineer Track
+ *   construction-guide.html — construction walkthrough linked from the course
+ * Hubs, directories, tools, book stubs, pricing and checkout stay ad-free.
  */
 'use strict';
 
 const cfg = require('./adsense-config');
 
 const SLOT_RE = /^\d{8,12}$/;
+const LOADER_RE = /<script\b[^>]*\bsrc=["'][^"']*pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js[^"']*["'][^>]*>\s*<\/script>/gi;
+const SLOT_RE_HTML = /<aside\b[^>]*\bdata-tp-ad="in-content"[\s\S]*?<\/aside>(?:\s*<script>[\s\S]*?<\/script>)?/gi;
 
 function norm(rel) {
   return String(rel || '').split('\\').join('/');
@@ -25,17 +37,28 @@ function isSlotExcluded(rel) {
   return false;
 }
 
-/** Knowledge articles, the intel list, and the directory lists. */
-function wantsInContentSlot(rel) {
+/** Knowledge articles and long-form guides. */
+function isArticlePage(rel) {
   const n = norm(rel);
-  if (isSlotExcluded(n)) return false;
   if (/^knowledge\/[^/]+\.html$/.test(n)) return true;
-  if (n === 'intel.html') return true;
-  if (n === 'directory.html' || n === 'manufacturers.html') return true;
-  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html') return true;
-  if (/^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) return true;
-  if (n === 'tools/dga/index.html') return true;
+  if (/^guides\/[^/]+\/index\.html$/.test(n)) return true;
   return false;
+}
+
+/** Course, engineer track, and the construction walkthrough. */
+function isLearnPage(rel) {
+  const n = norm(rel);
+  return n === 'learn.html' || n === 'engineer-track.html' || n === 'construction-guide.html';
+}
+
+function wantsAds(rel) {
+  if (isSlotExcluded(rel)) return false;
+  return isArticlePage(rel) || isLearnPage(rel);
+}
+
+/** One manual slot, and only where the loader is allowed. */
+function wantsInContentSlot(rel) {
+  return wantsAds(rel);
 }
 
 function slotConfigured() {
@@ -94,55 +117,35 @@ function insertAt(html, index, snippet) {
   return html.slice(0, index) + snippet + html.slice(index);
 }
 
+function stripAds(html) {
+  return String(html || '').replace(LOADER_RE, '').replace(SLOT_RE_HTML, '');
+}
+
 function placeSlot(html, rel) {
   if (html.indexOf('data-tp-ad="in-content"') !== -1) return html;
   const slot = slotMarkup();
   const n = norm(rel);
 
-  if (n.indexOf('knowledge/') === 0) {
-    const m = html.match(/<h2\b[^>]*>[\s\S]*?<\/h2>\s*<p>[\s\S]*?<\/p>/);
-    if (!m) throw new Error('knowledge article has no in-content anchor: ' + n);
-    return insertAt(html, m.index + m[0].length, slot);
+  const marker = '<!--tp-ad-slot-->';
+  const markerAt = html.indexOf(marker);
+  if (markerAt >= 0) {
+    return html.slice(0, markerAt) + slot + html.slice(markerAt + marker.length);
   }
 
-  if (n === 'intel.html') {
-    // Outside #intel-timeline. intel-feed-ui.js replaces that node's innerHTML.
-    const timeline = html.indexOf('<div id="intel-timeline"');
-    if (timeline < 0) throw new Error('intel list has no #intel-timeline');
-    return insertAt(html, timeline, slot);
-  }
+  const section = html.match(/<h2\b[^>]*>[\s\S]*?<\/h2>\s*<p>[\s\S]*?<\/p>/);
+  if (section) return insertAt(html, section.index + section[0].length, slot);
 
-  if (n === 'directory.html') {
-    const root = html.indexOf('<div id="directoryRoot">');
-    if (root < 0) throw new Error('directory list has no #directoryRoot');
-    return insertAt(html, root, slot);
-  }
-
-  if (n === 'tools/dga/index.html') {
-    const hero = html.search(/<section[^>]*class="[^"]*\bhero\b/);
-    if (hero < 0) throw new Error('DGA tool has no hero');
+  const hero = html.search(/<section[^>]*class="[^"]*\bhero\b/);
+  if (hero >= 0) {
     const heroEnd = html.indexOf('</section>', hero);
-    if (heroEnd < 0) throw new Error('DGA tool hero is unclosed');
+    if (heroEnd < 0) throw new Error(n + ' hero is unclosed');
     return insertAt(html, heroEnd + '</section>'.length, slot);
   }
 
-  if (n === 'manufacturers.html') {
-    const marker = '<!--/SSR:mfg-count-->';
-    const i = html.indexOf(marker);
-    if (i < 0) throw new Error('manufacturer directory has no count marker');
-    const end = html.indexOf('</p>', i);
-    if (end < 0) throw new Error('manufacturer directory count is unclosed');
-    return insertAt(html, end + 4, slot);
-  }
+  const h1 = html.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/);
+  if (h1) return insertAt(html, h1.index + h1[0].length, slot);
 
-  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html' || /^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) {
-    const marker = '<!--tp-ad-slot-->';
-    const i = html.indexOf(marker);
-    if (i < 0) throw new Error(n + ' has no in-content ad marker');
-    return html.slice(0, i) + slot + html.slice(i + marker.length);
-  }
-
-  return html;
+  throw new Error('ad page has no in-content anchor: ' + n);
 }
 
 function headInner(html) {
@@ -159,21 +162,29 @@ function headInner(html) {
  */
 function stampHtml(html, rel) {
   let out = html;
-  if (headInner(out).indexOf(cfg.LOADER) === -1) {
-    out = injectBeforeHeadClose(out, cfg.LOADER);
+  if (!wantsAds(rel)) {
+    out = stripAds(out);
+  } else {
+    if (headInner(out).indexOf(cfg.LOADER) === -1) {
+      out = injectBeforeHeadClose(out, cfg.LOADER);
+    }
+    if (wantsInContentSlot(rel)) out = placeSlot(out, rel);
   }
   if (!/consent\.js/.test(out)) {
     out = injectBeforeHeadClose(out, '<script src="/consent.js" defer></script>');
   }
-  if (wantsInContentSlot(rel)) out = placeSlot(out, rel);
   return out;
 }
 
 module.exports = {
   cfg: cfg,
   isSlotExcluded: isSlotExcluded,
+  isArticlePage: isArticlePage,
+  isLearnPage: isLearnPage,
+  wantsAds: wantsAds,
   wantsInContentSlot: wantsInContentSlot,
   slotConfigured: slotConfigured,
+  stripAds: stripAds,
   stampHtml: stampHtml,
   headInner: headInner,
 };
