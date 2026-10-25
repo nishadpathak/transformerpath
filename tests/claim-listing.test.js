@@ -24,6 +24,13 @@ check('a lookalike host is not a match', claim.reviewFlag('a@notbemag.ca', 'http
 check('a missing website is manual review', claim.reviewFlag('sales@bemag.ca', '') === 'manual_review');
 check('claim link carries the slug', claim.href('bemag-transformer') === '/claim-listing/bemag-transformer/');
 check('upgrade links keep the existing price url and add the slug', claim.payHref(paid.PAYMENT_LINKS.featured_listing.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.payHref(paid.PAYMENT_LINKS.featured_verified.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
+check('pay buttons use the existing payment links', claim.PAY_URLS.verified_manufacturer === paid.VERIFIED_MANUFACTURER_PAYMENT_LINK && claim.PAY_URLS.featured_listing === paid.PAYMENT_LINKS.featured_listing.url && claim.PAY_URLS.featured_verified === paid.PAYMENT_LINKS.featured_verified.url);
+check('a click target keeps client_reference_id on the existing link', claim.checkoutUrl('verified_manufacturer', 'bemag-transformer') === paid.VERIFIED_MANUFACTURER_PAYMENT_LINK + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_listing', 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
+check('an empty slug keeps the bare payment link', claim.checkoutUrl('featured_verified', '') === paid.PAYMENT_LINKS.featured_verified.url && claim.checkoutUrl('no-such-plan', 'bemag-transformer') === '');
+const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
+check('robots.txt disallows the claim pages', /^Disallow:\s*\/claim-listing\/\s*$/m.test(robots));
+const analytics = fs.readFileSync(path.join(root, 'analytics.js'), 'utf8');
+check('analytics tracks pay buttons and existing stripe anchors', analytics.indexOf('[data-pay-plan]') >= 0 && analytics.indexOf('a[href*="buy.stripe.com"]') >= 0 && analytics.indexOf('checkout_start') >= 0);
 check('a bad slug still opens the form', claim.href('..//') === '/claim-listing/');
 
 const index = JSON.parse(fs.readFileSync(path.join(root, 'data/claim-listing-index.json'), 'utf8'));
@@ -63,10 +70,13 @@ const featured = paid.PAYMENT_LINKS.featured_listing.url;
 const both = paid.PAYMENT_LINKS.featured_verified.url;
 [form, received].forEach(function (html, i) {
   const name = i === 0 ? 'form' : 'received';
-  check(name + ' uses the existing verified link', html.indexOf('href="' + verified + '"') >= 0 && html.indexOf('>Get Verified $499 one-time payment · covers 12 months<') >= 0);
-  check(name + ' uses the existing featured link', html.indexOf('href="' + featured + '"') >= 0 && html.indexOf('>Featured $299/yr<') >= 0);
-  check(name + ' uses the existing featured plus verified link', html.indexOf('href="' + both + '"') >= 0 && html.indexOf('>Featured+Verified $699/yr<') >= 0);
+  check(name + ' has no crawlable stripe href', html.indexOf('buy.stripe.com') < 0 && html.indexOf('href="https://buy.stripe.com') < 0);
+  check(name + ' uses a verified pay button', html.indexOf('data-pay-plan="verified_manufacturer"') >= 0 && html.indexOf('>Get Verified $499 one-time payment · covers 12 months<') >= 0);
+  check(name + ' uses a featured pay button', html.indexOf('data-pay-plan="featured_listing"') >= 0 && html.indexOf('>Featured $299/yr<') >= 0);
+  check(name + ' uses a featured plus verified pay button', html.indexOf('data-pay-plan="featured_verified"') >= 0 && html.indexOf('>Featured+Verified $699/yr<') >= 0);
+  check(name + ' noscript names hello@', /<noscript>[\s\S]*mailto:hello@transformerpath\.com[\s\S]*<\/noscript>/.test(html));
 });
+check('received page loads the click handler', received.indexOf('/claim-listing.js') >= 0);
 check('upgrade copy keeps featured yearly prices and the one-time verified price', form.indexOf('$499 one-time payment · covers 12 months') >= 0 && form.indexOf('with no auto-renewal') >= 0 && form.indexOf('$499/yr') < 0 && form.indexOf('$299/yr') >= 0 && form.indexOf('$699/yr') >= 0 && form.indexOf('Identity and contact details checked. Not a product certification.') >= 0);
 const mailtos = (form + received).match(/mailto:[^"'\s>]+/gi) || [];
 check('contact is hello@transformerpath.com only', mailtos.length > 0 && mailtos.every(function (m) { return m === 'mailto:hello@transformerpath.com'; }));
@@ -146,12 +156,16 @@ const nodes = {
   'claim-email': emailBox,
   'claim-domain-status': { textContent: '' }
 };
-function payBox(href) {
-  return { href: href, getAttribute: function () { return this.href; }, setAttribute: function (k, v) { this.href = v; } };
+function payBox(plan) {
+  return {
+    attrs: { 'data-pay-plan': plan, 'data-pay-slug': '' },
+    getAttribute: function (k) { return this.attrs[k] || ''; },
+    setAttribute: function (k, v) { this.attrs[k] = v; }
+  };
 }
-const payLink = payBox(paid.VERIFIED_MANUFACTURER_PAYMENT_LINK);
-const featuredLink = payBox(paid.PAYMENT_LINKS.featured_listing.url);
-const bothLink = payBox(paid.PAYMENT_LINKS.featured_verified.url);
+const payLink = payBox('verified_manufacturer');
+const featuredLink = payBox('featured_listing');
+const bothLink = payBox('featured_verified');
 global.document = {
   getElementById: function (id) { return nodes[id] || null; },
   querySelector: function () { return null; },
@@ -174,8 +188,8 @@ setTimeout(function () {
   emailBox.value = 'sales@bemag.ca';
   listeners['email-input']();
   check('a matching email is stored as domain_match', flagBox.value === 'domain_match' && siteBox.value === 'https://www.bemag.ca/', flagBox.value + ' ' + siteBox.value);
-  check('verified checkout keeps the existing link and the maker slug', payLink.href.indexOf(verified) === 0 && payLink.href.indexOf('client_reference_id=bemag-transformer') >= 0, payLink.href);
-  check('featured checkouts keep the existing links and the maker slug', featuredLink.href === featured + '?client_reference_id=bemag-transformer' && bothLink.href === both + '?client_reference_id=bemag-transformer', featuredLink.href + ' ' + bothLink.href);
+  check('verified checkout keeps the existing link and the maker slug', payLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('verified_manufacturer', payLink.getAttribute('data-pay-slug')) === verified + '?client_reference_id=bemag-transformer', payLink.getAttribute('data-pay-slug'));
+  check('featured checkouts keep the existing links and the maker slug', featuredLink.getAttribute('data-pay-slug') === 'bemag-transformer' && bothLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('featured_listing', featuredLink.getAttribute('data-pay-slug')) === featured + '?client_reference_id=bemag-transformer' && claim.checkoutUrl('featured_verified', bothLink.getAttribute('data-pay-slug')) === both + '?client_reference_id=bemag-transformer');
   emailBox.value = 'sales@gmail.com';
   listeners['email-input']();
   check('a different email stays on manual review', flagBox.value === 'manual_review', flagBox.value);
@@ -185,7 +199,14 @@ setTimeout(function () {
   check('an unknown slug says listing not found and clears the slug', slugBox.value === '' && nodes['claim-domain-status'].textContent === 'Listing not found', slugBox.value + ' / ' + nodes['claim-domain-status'].textContent);
   const bemagPage = fs.readFileSync(path.join(root, 'claim-listing/bemag-transformer/index.html'), 'utf8');
   check('a prerendered claim page is noindex and prefilled', /noindex,follow/.test(bemagPage) && bemagPage.indexOf('value="Bemag Transformer"') >= 0 && bemagPage.indexOf('value="bemag-transformer"') >= 0);
-  check('a prerendered page carries the slug on every upgrade link', bemagPage.indexOf(featured + '?client_reference_id=bemag-transformer') >= 0 && bemagPage.indexOf(both + '?client_reference_id=bemag-transformer') >= 0 && bemagPage.indexOf(verified + '?client_reference_id=bemag-transformer') >= 0);
+  check('a prerendered page carries the slug on every pay button', bemagPage.indexOf('buy.stripe.com') < 0 && (bemagPage.match(/data-pay-slug="bemag-transformer"/g) || []).length === 3 && bemagPage.indexOf('data-pay-plan="verified_manufacturer"') >= 0 && bemagPage.indexOf('data-pay-plan="featured_listing"') >= 0 && bemagPage.indexOf('data-pay-plan="featured_verified"') >= 0);
+  const clicked = { href: '' };
+  const savedWindow = global.window;
+  global.window = { location: { search: '', assign: function (url) { clicked.href = url; } } };
+  const payEvent = { target: { closest: function () { return { getAttribute: function (k) { return k === 'data-pay-plan' ? 'featured_verified' : 'bemag-transformer'; } }; } } };
+  claim.onPayClick(payEvent);
+  check('a click opens the existing payment link', clicked.href === both + '?client_reference_id=bemag-transformer', clicked.href);
+  global.window = savedWindow;
   check('the prerendered page stays out of the sitemap', sitemap.indexOf('claim-listing') === -1);
   const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
   const bemagAt = toml.indexOf('query = {slug = "bemag-transformer"}');

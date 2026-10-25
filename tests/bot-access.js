@@ -17,6 +17,7 @@ const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 check(/^User-agent:\s*\*/m.test(robots), 'robots.txt has a wildcard user-agent');
 check(/^Allow:\s*\/\s*$/m.test(robots), 'robots.txt allows /');
 check(!/Disallow:\s*\/manufacturers/i.test(robots), 'robots.txt does not disallow /manufacturers');
+check(/^Disallow:\s*\/claim-listing\/\s*$/m.test(robots), 'robots.txt disallows /claim-listing/');
 check(!/Googlebot|Bingbot/i.test(robots), 'robots.txt does not name Googlebot or Bingbot');
 check(/Sitemap:\s*https:\/\/transformerpath\.com\/sitemap\.xml/.test(robots), 'robots.txt points at the sitemap');
 

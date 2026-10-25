@@ -10,12 +10,8 @@ const root = path.join(__dirname, '..');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync(path.join(root, '_partials/header.html'), 'utf8').trim());
 const FOOT = abs(fs.readFileSync(path.join(root, '_partials/footer.html'), 'utf8').trim());
-const paid = require(path.join(root, 'lib/paid-listings'));
 const declaredOrigin = require(path.join(root, 'lib/declared-origin'));
 
-const VERIFIED = paid.VERIFIED_MANUFACTURER_PAYMENT_LINK;
-const FEATURED = paid.PAYMENT_LINKS.featured_listing.url;
-const BOTH = paid.PAYMENT_LINKS.featured_verified.url;
 const CONFIRM = 'We review claims manually; corrected data appears once verified.';
 
 function esc(s) {
@@ -23,20 +19,20 @@ function esc(s) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function payHref(base, slug) {
-  if (!slug) return base;
-  return base + '?client_reference_id=' + encodeURIComponent(slug);
+function payButton(plan, slug, cls, label) {
+  return '<button type="button" class="' + cls + '" data-pay-plan="' + plan + '" data-pay-slug="' + esc(slug) + '">' + label + '</button>';
 }
 
 function upgrades(slug) {
   return '<section class="claim-upgrades" aria-label="Upgrade options">'
     + '<h2>Upgrade options</h2>'
     + '<p>Claiming a listing is free. These paid options use the existing checkout links. Payment does not publish a listing before review. Verified Manufacturer is a $499 one-time payment that covers 12 months, with no auto-renewal. Identity and contact details checked. Not a product certification.</p>'
-    + '<a class="btn btn-amber" href="' + payHref(VERIFIED, slug) + '" data-verified-manufacturer-pay="1">Get Verified $499 one-time payment · covers 12 months</a>'
-    + '<a class="btn btn-outline" href="' + payHref(FEATURED, slug) + '" data-featured-listing-pay="1">Featured $299/yr</a>'
-    + '<a class="btn btn-outline" href="' + payHref(BOTH, slug) + '" data-featured-verified-pay="1">Featured+Verified $699/yr</a>'
+    + payButton('verified_manufacturer', slug, 'btn btn-amber', 'Get Verified $499 one-time payment · covers 12 months')
+    + payButton('featured_listing', slug, 'btn btn-outline', 'Featured $299/yr')
+    + payButton('featured_verified', slug, 'btn btn-outline', 'Featured+Verified $699/yr')
     + '<ul class="claim-inclusions"><li>Featured directory slot</li><li>Reviewed Verified Manufacturer badge</li><li>declared-origin check</li></ul>'
     + '<p class="declared-origin-note">' + declaredOrigin.NOTE + '</p>'
+    + '<noscript><p class="claim-note">Checkout needs JavaScript. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>'
     + '</section>';
 }
 
@@ -57,7 +53,7 @@ const css = '<style>'
   + '.claim-checks input{width:auto;margin-top:3px}'
   + '.claim-hp{position:absolute;left:-9999px;height:0;overflow:hidden}'
   + '.claim-upgrades{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:22px}'
-  + '.claim-upgrades a{width:100%;max-width:100%;text-align:center;white-space:normal}'
+  + '.claim-upgrades a,.claim-upgrades button{width:100%;max-width:100%;text-align:center;white-space:normal;font:inherit}'
   + '.claim-page .btn{max-width:100%}'
   + '@media (max-width:390px){.claim-page{padding:20px 12px 48px}.claim-form input[type="text"],.claim-form input[type="email"],.claim-form select,.claim-form textarea{font-size:16px}}'
   + '</style>';
@@ -157,7 +153,8 @@ const receivedHtml = page({
   title: 'Claim received — TransformerPath',
   description: 'TransformerPath reviews listing claims manually. Corrected data appears once verified.',
   canonical: 'https://transformerpath.com/claim-listing/received/',
-  main: receivedMain
+  main: receivedMain,
+  extra: '<script src="/claim-listing.js" defer></script>\n'
 });
 
 const notFoundHtml = page({

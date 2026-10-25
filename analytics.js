@@ -159,10 +159,24 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
        Anchors whose href points at a Stripe Payment Link. Captures intent
        even when the payment is later abandoned, which is the number you need
        to judge whether ad traffic is converting or just bouncing. */
-    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function (a) {
+    // Existing prices on the claim-listing buttons. Not a new price list.
+    var PAY_PLAN_VALUE = { verified_manufacturer: 499, featured_listing: 299, featured_verified: 699 };
+    document.querySelectorAll('a[href*="buy.stripe.com"], [data-pay-plan]').forEach(function (a) {
       a.addEventListener('click', function () {
-        var id = (a.id || '').replace(/^cta/, '').toLowerCase();
-        track('checkout_start', { tier: id || 'unknown', value: TIER_VALUE[id] || 0 });
+        var plan = a.getAttribute ? (a.getAttribute('data-pay-plan') || '') : '';
+        var id = plan || (a.id || '').replace(/^cta/, '').toLowerCase();
+        var value = plan ? (PAY_PLAN_VALUE[plan] || 0) : (TIER_VALUE[id] || 0);
+        var props = { tier: id || 'unknown', value: value };
+        if (plan) {
+          props.plan = plan;
+          var slug = a.getAttribute('data-pay-slug') || '';
+          if (!slug) {
+            var slugInput = document.getElementById('claim-slug');
+            slug = slugInput ? String(slugInput.value || '').trim() : '';
+          }
+          if (slug) props.client_reference_id = slug;
+        }
+        track('checkout_start', props);
       });
     });
 
