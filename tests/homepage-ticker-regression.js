@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* tests/homepage-ticker-regression.js
  * The homepage ticker must not present the Aug–Sep 2026 DEWA close window as
- * still open, and the hero CTA must not call a delayed briefing "today's".
+ * still open, must not name Dubai or the UAE, and the hero CTA must not call
+ * a delayed briefing "today's".
  * Run: node tests/homepage-ticker-regression.js
  */
 'use strict';
@@ -15,6 +16,7 @@ function check(label, pass, detail) {
 const ticker = (html.match(/const TICKER = "([\s\S]*?)";/) || [])[1] || '';
 check('ticker dates the DEWA tenders and marks them closed', /closed 25 Aug – 17 Sep 2026/.test(ticker));
 check('ticker does not leave that close window undated', !/tenders close 25 Aug/.test(ticker));
+check('ticker does not name Dubai, the UAE, or the United Arab Emirates', !/\bDubai\b|\bUAE\b|United Arab Emirates|\bU\.A\.E\.?\b/i.test(ticker));
 check('static hero CTA does not say today’s briefing', !/Read today’s briefing/.test(html) && /Open the latest sourced briefing/.test(html));
 check('a lagging source rewrites the hero CTA from the status reason', /Coverage is behind — open the latest briefing/.test(html) && /source_lag_/.test(html) && /hero-intel-cta/.test(html));
 if (failures.length) {
