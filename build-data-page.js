@@ -76,20 +76,20 @@ function render(model) {
   const awards = model.previews.awards;
   const directoryBody =
     '<p>' + esc(model.directoryScope) + '</p>' +
-    '<p>Source date on the directory index: ' + esc(model.directoryGenerated) + '. ' + esc(model.evidenceNotes) + '</p>' +
+    '<p>The directory index <code>generated</code> field is the time that file was built: ' + esc(model.directoryGenerated) + '. It is not a check date for each row. ' + esc(model.evidenceNotes) + '</p>' +
     '<p>Rows in this file: ' + directory.total.toLocaleString('en-US') + '.</p>' +
     fieldList(directory.headers) +
     '<p>A row whose evidence, claim, or research status is INFERRED or unverified shows an em dash for <code>last_verified</code>.</p>' +
     sampleTable(directory);
   const tenderBody =
     '<p>' + esc(model.tenderComment) + '</p>' +
-    '<p>Source date on the tender register: ' + esc(model.tenderUpdated) + '. Rows in this file: ' + tenders.total.toLocaleString('en-US') + '.</p>' +
+    '<p>The tender register <code>updated</code> field is the day that file was built: ' + esc(model.tenderUpdated) + '. It is not a check date for each row. Rows in this file: ' + tenders.total.toLocaleString('en-US') + '.</p>' +
     fieldList(tenders.headers) +
     '<p>A row whose status or transformer scope is INFERRED or unverified shows an em dash for <code>last_verified</code>.</p>' +
     sampleTable(tenders);
   const awardBody =
     '<p>' + esc(model.awardComment) + '</p>' +
-    '<p>Source date on the award register: ' + esc(model.awardUpdated) + '. Rows in this file: ' + awards.total.toLocaleString('en-US') + '.</p>' +
+    '<p>The award register <code>updated</code> field is the day that file was built: ' + esc(model.awardUpdated) + '. It is not a check date for each row. Rows in this file: ' + awards.total.toLocaleString('en-US') + '.</p>' +
     fieldList(awards.headers) +
     '<p>A row whose award status, transformer scope, claim, or confidence is INFERRED or unverified shows an em dash for <code>last_verified</code>.</p>' +
     sampleTable(awards);
