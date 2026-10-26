@@ -23,7 +23,7 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, showSoonBadge } = require('./lib/event-status');
 const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
@@ -207,7 +207,6 @@ function renderEvents(html) {
     return g.getUTCFullYear() + '-' + p(g.getUTCMonth() + 1) + '-' + p(g.getUTCDate());
   })();
   const todayUTC = Date.parse(TODAY + 'T00:00:00Z');
-  const now = new Date(TODAY + 'T00:00:00Z');
 
   /* Normal upcoming discovery. A record whose organiser calendar was checked and
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
@@ -286,7 +285,7 @@ function renderEvents(html) {
   }).join('\n');
 
   function eventCard(ev) {
-    const soon = allowsCalendar(ev) && ev.s && new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
+    const soon = allowsCalendar(ev) && showSoonBadge(ev, TODAY);
     const trav = travelable(ev);
     const dateLbl = dateLine(ev);
     const venueLbl = `${esc(ev.v) || 'Not yet published by organiser'} — ${esc(ev.c) || 'Not yet published by organiser'}, ${esc(ev.co)}`;

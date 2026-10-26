@@ -3618,7 +3618,6 @@ function eventMapHref(ev) {
 }
 
 function render() {
-  const now = new Date(new Date().toDateString());
   let list = EVENTS.filter(ev => isUpcomingEvent(ev));
   if (yearF !== "all") list = list.filter(ev => ev.s.startsWith(yearF));
   if (monthF !== "all") list = list.filter(ev => new Date(ev.s).getMonth() === +monthF);
@@ -3650,7 +3649,7 @@ function render() {
   const upcoming = list.filter(ev => !isLiveNow(ev));
   function eventCard(ev) {
     const open = !datesNotConfirmed(ev);
-    const soon = open && new Date(ev.s) > now && (new Date(ev.s) - now)/86400000 <= 31;
+    const soon = open && !isLiveNow(ev) && relDays(ev.s) > 0 && relDays(ev.s) <= 31;
     return `<div class="intel-item event-card" data-event-kind="${listingGroup(ev)}">
       <h3>${ev.n}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLabel(ev)}${relLabel(ev)}</div>
@@ -3770,6 +3769,9 @@ fetch('https://ipapi.co/json/')
       } else if (startMs <= todayMs && todayMs <= endMs) {
         el.textContent = 'Live now';
         el.classList.add('rel-today');
+        el.classList.remove('rel-soon');
+        var liveCard = el.closest('.event-card, .up-next-card');
+        if (liveCard) liveCard.querySelectorAll('.badge-soon').forEach(function (badge) { badge.remove(); });
       } else if (dt === 1) {
         el.textContent = 'Tomorrow';
         el.classList.add('rel-soon');
