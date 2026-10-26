@@ -41,6 +41,9 @@ Transformer Radiators/
 # or committed. Blocked at the Netlify layer too (see netlify.toml).
 _private/
 *.pdf
+# The redacted example test report is the one public PDF. It is copied to dist
+# by name. Every other PDF stays ignored and fails the dist gate.
+!/test-report-sample.pdf
 *.sql
 !supabase/migrations/*.sql
 *.xlsx

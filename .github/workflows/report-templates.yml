@@ -13,3 +13,4 @@ jobs:
         node-version: '22'
     - run: npm ci
     - run: node tests/report-templates.test.js
+    - run: node tests/test-report-sample.test.js
