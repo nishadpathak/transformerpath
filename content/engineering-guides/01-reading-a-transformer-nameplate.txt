@@ -1,0 +1,44 @@
+# How to read a power transformer nameplate
+description: What each line on a power transformer nameplate means before you buy, test, or load the unit, and which IEC and IEEE standards define those lines.
+
+## Start with the identity, not the rating
+
+A nameplate is the manufacturer's statement of the rating the transformer was designed and tested to. It is not a certificate that the unit is suitable for every site, and it is not a promise about remaining life. IEC 60076-1 sets out the information a power transformer nameplate carries. IEEE C57.12.00 does the same job for liquid-immersed distribution, power, and regulating transformers built to IEEE practice. Read the plate against the standard named in the contract. A plate that mixes an IEC vector-group symbol with an IEEE temperature-rise class is readable only if the inquiry said that mix was intended.
+
+Record the manufacturer, the works serial number, the year, and the number of phases before you record the kilovolt-amperes. Those four items are how a factory test report, a transport record, and a later dissolved-gas sample are tied to this tank and not to a sister unit. If the plate has been repainted or a replacement plate has been fitted, ask for the original routine-test report and match the serial number. Do not treat a brochure rating as the nameplate rating.
+
+## Rated power is tied to a cooling stage
+
+Rated power is the continuous power the transformer can deliver at rated voltage and rated frequency under the cooling method printed next to that power. A plate often shows more than one power, for example an ONAN value and a higher ONAF value. Each value belongs to the cooling stage beside it. The higher number is not available with the pumps or fans stopped, and it is not available at an ambient temperature above the one the temperature-rise test assumed.
+
+IEC 60076-1 and IEC 60076-2 treat the cooling designation as part of the rating. IEEE C57.12.00 does the same with its own letter code and its own rise limits. When a plate shows two or three powers, write down the cooling equipment that must be running for each power: natural, fans, pumps, or both. A specification that says "the transformer is 40 MVA" without the cooling stage is incomplete. The inquiry guide on this site sets out how to ask for those stages before a price is given.
+
+## Voltages, tappings, and frequency
+
+Rated voltage is the voltage the winding is designed for at rated power, not the highest system voltage and not the lightning-impulse level. Those insulation levels may appear on the plate or only in the test report. IEC 60076-3 defines how insulation levels are specified and tested. Do not read an impulse withstand from a system voltage by memory. Ask for the lightning-impulse, switching-impulse where it applies, and the separate-source and induced-voltage levels that were actually tested.
+
+Tappings change the turns ratio. A de-energized tap changer has a finite set of positions that are used only with the transformer isolated. An on-load tap changer moves between positions while the transformer is in service, within the range and the step printed on the plate. The rated power may be constant across the range, or it may be constant-flux over part of the range and variable-flux over the rest, which means the current or the voltage limit changes. IEC 60076-1 describes those tapping regimes. If the plate does not say which regime applies, the test report and the tapping diagram must.
+
+Rated frequency is 50 Hz or 60 Hz for ordinary power transformers. A unit built and tested at one frequency is not automatically rated at the other. Flux is voltage divided by frequency and by turns. Operating a 50 Hz design at 60 Hz at the same voltage reduces flux. Operating a 60 Hz design at 50 Hz at the same voltage increases flux and can saturate the core. No-load loss, noise, and temperature rise all move. If the site frequency is not the nameplate frequency, that is a design question, not a field adjustment.
+
+## Vector group and impedance
+
+The vector-group symbol, such as Dyn11 or YNd1, states the winding connections and the phase displacement between windings. IEC 60076-1 defines the notation: a capital letter for the high-voltage winding, a lowercase letter for the lower-voltage winding, n when the neutral is brought out, and a clock number. The clock number times 30 degrees is the angle by which the lower-voltage voltage lags the high-voltage voltage. Clock 11 is therefore 330 degrees of lag, which is the same as 30 degrees of lead. IEEE nameplates often show a connection diagram and an angular displacement in degrees instead of a clock number. Do not convert one into the other without the diagram.
+
+Impedance voltage, sometimes called short-circuit impedance, is the voltage that must be applied to one winding, with the other winding shorted, to circulate rated current. It is stated as a percent of rated voltage at a stated power and a reference temperature. IEC 60076-1 and IEEE C57.12.90 set out how it is measured. The percent on the plate is the value for the tapping it was measured on, usually the principal tapping. It is the number used for fault-current calculations and for deciding whether two units can share load. A higher impedance limits fault current and increases regulation. It is not a quality score.
+
+## Temperature rise, mass, and oil
+
+The temperature-rise lines state the guaranteed rise of the windings and of the insulating liquid above the cooling-medium temperature, for the cooling stage they belong to. IEC 60076-2 and IEEE C57.12.00 do not use the same top-liquid limit for a conventional mineral-oil unit. Name the standard. A plate that says 65 °C rise is not, by itself, a statement of which document was used. The rise is a type-test result or a guarantee referred to a type test, not a measurement you can repeat with a clip-on thermometer on the tank wall.
+
+Mass of the core and windings, mass of oil, and total mass matter for the crane, the trailer, and the foundation. Oil volume matters for the spill plan and for ordering liquid. These figures are nameplate facts. They are not a measure of how much oil has been lost in service. If the unit was drained for transport, the filling instruction and the oil volume in the manual govern the refill, not a guess from the tank dimensions.
+
+## What the plate does not say
+
+The plate does not state remaining insulation life, the condition of the oil, or whether the windings moved in transport. Those questions are answered by tests: dissolved-gas analysis under IEC 60599 or IEEE C57.104, liquid tests under IEC 60422 or IEEE C57.106, and frequency-response comparison under IEC 60076-18 and IEEE C57.149. The plate also does not authorize loading above the rated power. Loading above nameplate is covered by IEC 60076-7 and IEEE C57.91, and it depends on ambient temperature, load shape, and cooling in service.
+
+Sound power or sound pressure, if it appears, refers to a stated measurement condition in IEC 60076-10 or the IEEE sound-level practice named in the contract. A site reading next to a wall, with fans running or not running, is a different measurement. Do not reject or accept a unit on a single site sound reading unless the contract said how that reading would be taken.
+
+## What to copy into the file before award
+
+Copy the serial number, the rated powers with their cooling stages, the rated voltages, the frequency, the vector group or the connection diagram, the impedance and the power it refers to, the tapping range and whether the changer is on-load or off-circuit, the temperature-rise standard, and the insulation levels if they are on the plate. Ask for the routine-test report that matches the serial number. The report is the evidence that those nameplate values were measured. The plate alone is the label. Together they are the record you compare with the inquiry and, later, with site tests after transport.

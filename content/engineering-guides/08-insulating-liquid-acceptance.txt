@@ -1,0 +1,42 @@
+# Accepting new and in-service insulating liquid
+description: How to specify and accept mineral oil and esters in a transformer, and why the voltage class changes the limit in IEC 60422 and IEEE C57.106.
+
+## Name the liquid before you name a limit
+
+Unused mineral insulating oil for transformers is specified in IEC 60296. Unused natural esters are specified in IEC 62770. Unused synthetic organic esters are specified in IEC 61099. IEEE C57.106 is the IEEE guide for acceptance and maintenance of insulating oil in equipment. An inquiry that says "transformer oil" has not chosen among these documents. The cooling code follows the choice. IEC 60076-2 uses O for mineral oil and for synthetic liquids with a fire point at or below 300 °C, and K for a liquid with a fire point above 300 °C. An ester specified for fire behaviour is a K liquid only when its fire point meets that definition. Do not change the letter on the drawing without the liquid data sheet.
+
+The liquid is part of the insulation system, together with the cellulose or other solid insulation. A change from mineral oil to ester changes the dielectric behaviour, the cooling, the seal materials, and the dissolved-gas picture. It is a design change. It is not a maintenance substitution on a unit that was built and tested with the other liquid, unless the manufacturer agrees in writing and the tests are repeated to the extent the manufacturer requires.
+
+## New liquid and liquid in the transformer are different samples
+
+A batch of unused oil can meet IEC 60296 in the drum and fail to meet the equipment acceptance values after it has been pumped through hoses into a tank that was open. IEEE C57.106 and IEC 60422 distinguish unused liquid from liquid in new equipment and from liquid in service. The sample that matters for energization is the sample from the transformer, after filling, circulation, and the standing time the manufacturer requires. Identity on the bottle should include the transformer serial number, the valve, and the time.
+
+Breakdown voltage is measured by IEC 60156. Water content, acidity, dielectric dissipation factor, and interfacial tension are the other properties owners most often specify for mineral oil. Particle content matters at higher voltages. The numerical limits depend on the equipment voltage. IEC 60422 tabulates supervision limits by voltage class. IEEE C57.106 does the same kind of split. A breakdown voltage or a water content that is acceptable for a low-voltage distribution transformer can be the wrong limit for a transmission transformer. Copy the row for the highest voltage of this unit. Do not copy a single number from a wallet card onto every specification.
+
+## In service, trends sit beside absolute values
+
+IEC 60422 is the supervision and maintenance guide for mineral insulating oils in electrical equipment. It classifies results into ranges that lead to continued service, more frequent sampling, or action. A result in a middle range is not a failure and is not a clean bill. It is an instruction about the next sample. Acidity and dissipation factor that rise together over years point at ageing of the oil. Water content is interpreted with the oil temperature at the time of sampling, because water moves between the paper and the oil as the temperature changes. A sample taken cold and a sample taken at full load will not match. Record the top-oil temperature with the sample.
+
+Reconditioning, reclaiming, and replacing oil are different operations. Reconditioning typically removes water and particles. Reclaiming addresses acidity and ageing products. Replacing the oil does not by itself dry the cellulose. The water that matters for dielectric strength and for ageing is also in the paper. A dry oil sample the day after a fill can be followed by a wetter sample once the paper and the oil have exchanged moisture. The manufacturer and IEC 60422 describe that. Do not declare the insulation dry on one oil-water number.
+
+## Esters need their own sheet
+
+Natural ester and synthetic ester specifications are not a subset of IEC 60296. Their water saturation is higher, so a water content that would be alarming in mineral oil can be ordinary in an ester, and the other way around is also a mistake. Oxidation, pour point, and material compatibility differ. Gaskets and paints that are suitable for mineral oil are not automatically suitable for an ester. IEC 62770 and IEC 61099 are the unused-liquid specifications. In-service limits should come from the equipment manufacturer and from the ester supervision guidance you name, not from the mineral-oil column of IEC 60422.
+
+Fire point is the reason many owners choose an ester. The fire point on the data sheet is a property of the liquid. It is not a statement that the installation meets a fire code. The fire code, the separation distance, and the containment are a site question. The transformer standard does not answer it. Do not write "fireproof" in a specification. Write the liquid standard and the fire-point requirement.
+
+## What to attach to the contract and to the commissioning record
+
+In the contract, name the liquid standard, the voltage class for the acceptance table, the test methods, and whether an inhibited mineral oil is required. Ask for the unused-liquid certificate for the batch and for the sample results from the filled transformer. In the commissioning record, keep both. A later dissolved-gas sample under IEC 60599 or IEEE C57.104 is interpreted on the liquid that is actually in the tank. If the liquid was changed, the gas history starts again, with a note of the change. The old limits and the old baseline do not carry across without a thought.
+
+Corrosive sulphur and related oil-chemistry problems have their own tests in the oil standards and in the equipment specifications that grew out of those failures. If the owner requires a non-corrosive oil, cite the test method in the edition you use. Do not add the words "non-corrosive" without a method. A pass on that test is a statement about the sample. It is not a lifetime guarantee, and it does not replace the ordinary acceptance tests for water, breakdown voltage, and particles.
+
+## A short acceptance sequence
+
+Check the delivery certificate against IEC 60296, IEC 62770, or IEC 61099, whichever the contract named. Check the filling procedure, the hoses, and the vacuum or the dry-air practice the manufacturer required. Stand the time required. Sample the transformer, not only the tanker. Test breakdown voltage to IEC 60156 and the other properties on the sheet for this voltage class in IEC 60422 or IEEE C57.106. Compare with the limits for that class. File the top-oil temperature, the serial number, and the date next to the numbers. Energization uses that file. A later sample uses it as the first point of the trend.
+
+## Sampling practice that keeps the numbers meaningful
+
+Use a clean sample vessel of the type the test method requires. IEC 60422 and the laboratory's own method are stricter about moisture samples than a casual bottle. Flush the valve. Do not take the sample from a hose that has been open to air if the property you care about is water. Label the vessel before you leave the transformer, not back in the office, because two units filled on the same day are easily swapped on a bench. Record whether the unit was under vacuum, just filled, or had been in service, and record the top-oil temperature.
+
+When a result fails, resample before you order a full reprocess. A single dirty bottle is common. Two failing samples from a known valve are a reason to stop energization or to plan treatment, depending on which property failed and which voltage class you are in. Treatment should name the property it is meant to restore. Circulating oil to "improve the numbers" without a target property wastes a day and can air the oil. After treatment, stand, resample, and file the new result next to the failed one. The failed sheet stays in the record. It is the reason the treatment happened.

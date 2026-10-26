@@ -1,0 +1,48 @@
+# What belongs in a transformer inquiry
+description: The ratings, insulation levels, cooling, losses, and tests to state in a power transformer inquiry before a manufacturer is asked for a price.
+
+## The inquiry is the rating, not a brochure request
+
+A manufacturer cannot price a power transformer from a system voltage and a megavolt-ampere figure alone. IEC 60076-1 is the general requirement for power transformers. IEEE C57.12.00 is the general requirement used for many liquid-immersed units in IEEE practice. The inquiry should name one of those documents, and the edition, as the base. It should then list the departures. A sentence that says "in accordance with IEC and IEEE" names neither document and leaves the temperature-rise limit, the test code, and the tolerance ambiguous.
+
+Say what the unit is for: generator step-up, transmission autotransformer, distribution, rectifier, furnace, earthing, or a tertiary loaded with a reactor or a station service transformer. The duty changes the current, the impedance, and the tests. An earthing transformer is not specified as if it were a generator step-up transformer. State the number of phases, the rated frequency, and whether the installation is indoor or outdoor.
+
+## Power, voltages, and the tapping range
+
+State rated power for each cooling stage, not a single number with the fans assumed. State the high-voltage, low-voltage, and any tertiary or stabilizing-winding voltages. State which winding the tap changer is on, whether it operates on load or only off circuit, the number of steps, the step size, and whether rated power is held across the whole range. IEC 60076-1 distinguishes constant-flux, variable-flux, and combined regulation. If you need full power on the extreme tap, say so. If you do not, the manufacturer may reduce the power on that tap, which is allowed only when the inquiry permits it.
+
+State the system highest voltage for equipment for each winding. That voltage, not the rated voltage, is what IEC 60076-3 uses to select insulation levels. State the required lightning-impulse withstand, the switching-impulse withstand where the voltage calls for it, and the short-duration power-frequency withstand. If you want the standard levels in IEC 60076-3 or the IEEE levels in the document you named, say "the standard level for this highest voltage" and cite the table's document. Do not invent a level by scaling from another project.
+
+## Impedance, losses, and short circuit
+
+State the impedance voltage at the principal tapping, at rated power, and say the tolerance you will accept. IEC 60076-1 gives tolerances unless the contract replaces them. A parallel application needs a tighter match than a single transformer feeding a radial bus. Say whether the unit must parallel with an existing transformer, and give that unit's impedance, ratio, and vector group. The vector-group guide explains why the clock number has to match.
+
+If losses are capitalized, state the capitalization rates for no-load loss and load loss, the reference temperature for load loss, and whether the evaluation is at the principal tapping. If losses are not capitalized, still ask for guaranteed no-load loss, load loss, and total loss, because those guarantees are what the factory test is judged against. IEC 60076-1 and IEEE C57.12.90 measure them differently in detail. Name the test code.
+
+State the short-circuit duty. IEC 60076-5 covers the ability to withstand short circuit. A system with a high fault level, a low impedance, and frequent faults is not the same duty as a unit on a weak grid. Give the system short-circuit power or the required withstand current and duration. If a short-circuit test is required rather than a calculation, say so. A short-circuit test is a special test. It is not included because the inquiry said "full tests".
+
+## Cooling, ambient, and altitude
+
+State the cooling codes you will accept, such as ONAN/ONAF or ONAF/ODAF, and the power of each stage. IEC 60076-2 defines the letter code. State the maximum and minimum ambient temperatures, the average temperature over the period the loading guide will use, and whether the cooling air is salty, dusty, or restricted by a sound enclosure. State the altitude. Above 1 000 m, external insulation clearances and temperature rise are both affected. IEC 60076-2 and IEC 60076-3 give the correction methods. Do not leave altitude as "site conditions later".
+
+If the insulating liquid is not mineral oil, say so. Natural esters are specified in IEC 62770. Synthetic esters are specified in IEC 61099. Unused mineral oil is specified in IEC 60296. The cooling letter and the temperature-rise guarantee both change when the liquid and the solid insulation change. A K-class liquid is not a drop-in line on a mineral-oil nameplate.
+
+## Sound, bushings, and accessories
+
+If the site has a sound limit, state whether it is sound power or sound pressure, the distance, the fans and pumps running or not, and the standard. IEC 60076-10 is the IEC measurement method. A limit copied from a datasheet without the measurement surface will not be testable.
+
+State bushing rated voltage and current, creepage for the pollution level, and whether the bushings are oil-filled, resin, or gas. Drawings of the terminal boxes, current transformers, and the cooler bank are part of the design review, not of the first inquiry, but the inquiry should say that approval drawings are required before manufacture. State the on-load tap-changer duties if the changer is in the scope: number of operations, the range, and whether a vacuum or oil-interrupting type is required. Do not specify a brand unless the utility standard truly requires it.
+
+## Tests and documents to name before the price
+
+List the routine tests. For an IEC unit they are the routine tests in IEC 60076-1, carried out by the methods in the relevant part, including dielectric tests in IEC 60076-3. For an IEEE unit they are the routine tests in IEEE C57.12.00, carried out to IEEE C57.12.90. Say which tests are type tests to be performed on this unit and which may be covered by a type test on a similar unit. Say whether a temperature-rise test is required on this serial number. Say whether lightning impulse is routine for this voltage, which it often is, rather than assuming it.
+
+Ask for the factory frequency-response trace under IEC 60076-18 so the site has a baseline. IEEE C57.149 is the interpretation guide used with that kind of measurement in IEEE practice. Ask for the oil quality at filling, referred to IEC 60296 for unused mineral oil or the ester standard you named. Ask for the outline drawing, the mass and oil volume, the tapping diagram, the connection diagram, and the routine-test report tied to the serial number.
+
+## What not to put in the inquiry
+
+Do not ask the manufacturer to "meet all IEC and IEEE standards". Do not set a loss figure you copied from a different rating. Do not set an impulse level below the system standard unless an insulation coordination study says so, and attach the study. Do not require a short-circuit test, a heat run, and a sound test on every unit without deciding who pays and how long the test bay is needed. Those tests are legitimate. They are not free accessories to a routine test list.
+
+Do not ask for a guarantee of a particular dissolved-gas result in service, or of a service life in years, as if it were a factory routine test. Service life depends on loading, moisture, and faults. IEC 60076-7 and IEEE C57.91 are loading guides, not product certificates. The inquiry can require that the thermal design data needed to run those guides be delivered: gradients, time constants, and the cooler rating. That data is a document. It is not a promise that the unit will be overloaded.
+
+Ask for the factory frequency-response files, the liquid certificate, and the routine-test report as deliverables with the same status as the outline drawing. A price that omits them will reappear as a variation later, or the records will not exist when the unit arrives. State the language of the report and the file format of the frequency-response record. State the warranty period you require and what a warranty repair does not cover, such as loading outside the guide or liquid left open to air, without turning the warranty into a condition assessment. The inquiry is finished when a test engineer can write the factory and site procedures from it without phoning to ask which standard applies.

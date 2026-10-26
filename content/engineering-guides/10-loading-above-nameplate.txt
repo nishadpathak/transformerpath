@@ -1,0 +1,44 @@
+# Loading a transformer above its nameplate rating
+description: How IEC 60076-7 and IEEE C57.91 treat hot-spot temperature, insulation aging, and loading above the nameplate power.
+
+## The nameplate is a continuous rating at stated conditions
+
+The nameplate power is the power the transformer can deliver continuously at rated voltage and rated frequency, with the cooling stage that belongs to that power, in the ambient conditions the standard or the contract assumed. IEC 60076-1 and IEC 60076-2 define that rating and the temperature rises. IEEE C57.12.00 defines the IEEE form of the same idea. Loading above that power, or loading at that power in a hotter ambient or with cooling restricted, is outside the nameplate. It is not forbidden by physics. It is governed by a loading guide, and it spends insulation life.
+
+IEC 60076-7 is the loading guide for oil-immersed power transformers. IEEE C57.91 is the IEEE guide for loading mineral-oil-immersed transformers. Use the one that matches the unit and the oil. An ester-filled unit, or a dry-type unit, is outside the mineral-oil assumptions of those two guides. Dry-type loading is a different document. Do not paste an oil-immersed chart onto a cast-resin transformer.
+
+## Hot-spot temperature is the quantity that ages the insulation
+
+The average winding temperature is what a factory heat run measures by resistance. The insulation ages according to the hottest spot, which is hotter than the average by a gradient. Both guides calculate a hot-spot temperature from the load, the ambient temperature, the top-oil rise, and exponents and time constants that describe the unit. Those thermal parameters come from the manufacturer, from a temperature-rise test, or from the guide's default values when the guide allows defaults and you accept the uncertainty. A default is not the same as a test on this serial number. The factory-acceptance guide explains why the heat run, when you paid for it, should deliver the gradients you will later use.
+
+Aging is strongly dependent on temperature. Both guides use a relative aging rate or an aging acceleration factor that rises quickly as the hot spot rises. They do not use a fixed percentage of nameplate as a safe overload. One hour at a high hot-spot temperature can use as much life as many hours at the normal hot spot. The familiar rule of thumb that insulation life changes sharply for a small temperature change is the reason the guides exist. The calculation you are entitled to use is the one in the edition you cite, not a rule of thumb written into an operating instruction as if it were the standard.
+
+## What you may and may not plan for
+
+The guides distinguish normal life expectancy loading, planned loading beyond nameplate, and long-time or short-time emergency loading. The names and the temperature limits differ between IEC 60076-7 and IEEE C57.91. Read the edition. In all of them, emergency loading accepts a higher hot-spot temperature and a loss of life in exchange for keeping supply. It assumes the insulation was in normal condition to start with, the cooling is the cooling in the calculation, and the temperatures in the guide are not exceeded. It does not assume wet insulation, a blocked radiator, or a fan that has already failed.
+
+Current-carrying parts other than the winding insulation have their own limits. Bushings, tap changers, leads, and cable connections may reach their limit before the winding hot-spot calculation says the paper has reached its limit. IEEE C57.91 and IEC 60076-7 tell you to check those components. A winding calculation that says four hours are acceptable is wrong if the bushing is only rated for the nameplate current. The on-load tap changer has a current rating and a temperature rating in its own documentation. Include it.
+
+Moisture and oxygen change the aging picture. A wet transformer ages faster and has a lower dielectric margin at the same temperature. The guides' thermal tables are not a licence to overload a unit that has just failed an oil test or that is producing acetylene. Dissolved-gas interpretation is IEC 60599 or IEEE C57.104. Liquid condition is IEC 60422 or IEEE C57.106. Do those readings first. A loading study on a unit in distress is a way to finish the unit.
+
+## Ambient temperature, load shape, and cooling stage
+
+The same megavolt-amperes on a cold night and on a hot afternoon are different hot-spot temperatures. The guides integrate the load over time. A short peak on a light base load is not the same as a flat overload that lasts all day. The pre-load matters, because the oil is already hot or still cool. A calculation that starts from a cold tank when the unit has been at full load for a day is not conservative. Put the real load shape in, including the cooling stage that will actually be running. If the fans are off, the rating in the calculation is the ONAN rating, not the ONAF rating from the nameplate.
+
+Altitude, a sound enclosure, and solar heating on the tank change the cooling. If they were not in the original temperature-rise test, they are not in the nameplate. The loading study has to say so, or it overstates the capability. Auxiliary power lost when a fan supply fails is an operating case. Write the reduced rating next to the alarm, from the nameplate stage that remains, and use that stage in the guide if the reduced condition will last.
+
+## How to write an operating instruction that follows the guide
+
+State which document and which edition the instruction follows. State the normal hot-spot and top-oil limits the edition gives for normal life, and the higher limits it gives for the emergency category you are willing to use. State that those limits are temperatures, not percentages of nameplate. Give the operator the nameplate powers for each cooling stage, the fan and pump logic, and the instruction to reduce load if a cooler fails. Give the engineer the thermal parameters used, and say whether they came from a test on this serial number or from a guide default.
+
+Do not write "the transformer may be loaded to 120 percent" or any other fixed percent, unless that sentence is the output of a calculation for a stated ambient, a stated duration, a stated pre-load, and a stated cooling stage, and the sentence includes those conditions. A fixed percent copied from another utility's instruction is how bushings and paper get overheated on a different transformer. If you publish a percent for a particular substation, attach the calculation and the edition, and review it when the load shape or the coolers change.
+
+## What a loading guide is not
+
+IEC 60076-7 and IEEE C57.91 do not certify the transformer. They do not replace the nameplate. They do not measure the condition of the oil or the windings. They do not tell you the probability of a failure. They give a thermal method for judging loss of insulation life and the temperature limits the industry documents have accepted for defined categories of loading. Used with the right thermal data, the right cooling stage, and a unit that is in normal condition, they are the established way to decide a planned overload. Used as a slogan on a control-room wall, they are not.
+
+## Data to collect before the first planned overload
+
+Collect the nameplate powers and cooling stages, the tested or calculated winding gradient and oil time constant, the bushing and tap-changer current ratings, the ambient temperature the unit actually sees, and the recent oil and dissolved-gas results. If any of those are missing, say so in the study rather than filling the gap with a number from a different transformer. A gradient copied from a sister design is a stated assumption. A gradient presented as a test on this serial number, when the heat run was done on another unit, is not.
+
+After a planned overload, take the temperatures the instruction said to watch and, where the duty was near the emergency limit, schedule a dissolved-gas sample. The sample does not prove the paper is undamaged. It does show whether the event produced the gases associated with an overheated insulation system. File it with the load duration and the cooling stage that was running. That is how the next planned overload starts from evidence instead of from the same generic chart.

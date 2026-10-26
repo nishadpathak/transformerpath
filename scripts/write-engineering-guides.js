@@ -141,10 +141,10 @@ function indexPage(guides) {
     '</main>\n' + FOOTER;
 }
 
-const files = fs.readdirSync(SRC).filter(function (name) { return name.endsWith('.md'); }).sort();
+const files = fs.readdirSync(SRC).filter(function (name) { return name.endsWith('.txt'); }).sort();
 const guides = files.map(function (name) {
   const md = fs.readFileSync(path.join(SRC, name), 'utf8');
-  const slug = name.replace(/^\d+-/, '').replace(/\.md$/, '');
+  const slug = name.replace(/^\d+-/, '').replace(/\.txt$/, '');
   const info = meta(md);
   return { slug: slug, title: info.title, description: info.description, md: md };
 });
