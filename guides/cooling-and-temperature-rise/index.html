@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooling codes and temperature rise | TransformerPath</title>
+<meta name="description" content="How the four-letter transformer cooling code works, and why IEC 60076-2 and IEEE C57.12.00 temperature-rise limits must not be mixed.">
+<link rel="canonical" href="https://transformerpath.com/guides/cooling-and-temperature-rise/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Cooling codes and temperature rise">
+<meta property="og:description" content="How the four-letter transformer cooling code works, and why IEC 60076-2 and IEEE C57.12.00 temperature-rise limits must not be mixed.">
+<meta property="og:url" content="https://transformerpath.com/guides/cooling-and-temperature-rise/">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="stylesheet" href="/tp-nav.css?v=14">
+<link rel="stylesheet" href="/tp-feedback.css?v=14">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.guide-wrap{max-width:820px;margin:0 auto;padding:8px 20px 72px}
+.guide-wrap h2{font-size:1.2rem;margin:28px 0 8px;color:var(--ink)}
+.guide-wrap p,.guide-wrap li{line-height:1.6}
+.guide-wrap ul{margin:8px 0 16px;padding-left:1.2rem}
+.guide-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.guide-note{background:rgba(245,166,35,.12);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0}
+.guide-sources{font-size:.92rem}
+.guide-sources li{margin:0 0 10px}
+</style>
+<script src="/consent.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/buy-early/">Buy early</a>
+          <a href="/spare-capacity/">Mid-tier makers</a>
+          <a href="/lead-times/">Lead times</a>
+          <a href="/bottlenecks/">Bottlenecks</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/guides/">Guides</a>
+      <a href="/rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="/tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          <a href="/standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="/google-auth-config.js" defer></script>
+  <script src="/tp-auth.js?v=1" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:48px 0 28px"><div class="container"><p style="margin:0 0 8px"><a href="/guides/" style="color:var(--accent);font-weight:700">Practical guides</a></p><h1 style="font-size:2.05rem">Cooling codes and temperature rise</h1><p>How the four-letter transformer cooling code works, and why IEC 60076-2 and IEEE C57.12.00 temperature-rise limits must not be mixed.</p></div></section>
+<main id="main" class="guide-wrap">
+<p class="guide-note"><strong>Engineering practice, not a certification.</strong> This page states established practice and names the public standards to obtain. It does not certify a product, a factory, or a supplier, and it is not a test report. Use the edition named in the contract. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+<p>IEC 60076-2 assigns a four-letter code to the cooling method of a liquid-immersed transformer. The first letter is the internal cooling medium. O is mineral oil or an equivalent synthetic liquid with a fire point at or below 300 °C. K is an insulating liquid with a fire point above 300 °C. L is an insulating liquid with no measurable fire point. The second letter is how that liquid moves: N for natural thermosiphon, F for forced circulation, D for forced and directed circulation through the windings. The third letter is the external medium, A for air or W for water. The fourth letter is how that external medium moves, N natural or F forced.</p>
+<p>ONAN is oil, natural internal flow, air, natural external flow. ONAF adds fans on the radiators. OFAF uses an oil pump and fans, without claiming that the oil is directed through the windings. ODAF directs the pumped oil through the windings. OFWF and ODWF use water as the external medium. A water cooler needs a water supply, a leak strategy, and a different maintenance plan from a radiator bank. The code on the nameplate is the code the temperature-rise guarantee belongs to. A transformer with an ONAN/ONAF plate has two ratings. The ONAF rating is not available with the fans off.</p>
+<p>IEEE practice uses a closely related letter code on nameplates built to IEEE C57.12.00. Read the code in the document the contract names. Do not translate an IEEE code into an IEC code by swapping letters from memory when the inquiry will be tested to a different document.</p>
+<p>A temperature-rise test holds the transformer at the losses that correspond to the rated current and the rated excitation, by the method in IEC 60076-2 or IEEE C57.12.90, until the top liquid and the windings reach a steady rise above the cooling-medium temperature. The result is a rise, in kelvin, not the absolute temperature of the tank wall on a hot afternoon. The cooling-medium temperature during the test is measured by the method in the standard. A thermometer on the shade side of the tank is not that method.</p>
+<p>For a conventional mineral-oil transformer with cellulose insulation, buyers commonly specify an average winding rise of 65 K and a top-liquid rise of 60 K when the contract is IEC 60076-2. IEEE C57.12.00 practice for the 65 °C rise class uses a 65 °C average winding rise and a 65 °C top-oil rise. Those pairs are not interchangeable. An inquiry that asks for a 65 K winding rise and a 60 K top-oil rise has named the IEC pair. An inquiry that asks for 65/65 has named the IEEE pair. Write the document next to the numbers. Confirm them against the edition you cite, because a table can move and a special insulation system can be specified to a different rise.</p>
+<p>Directed-flow designs and high-temperature insulation systems are specified on purpose. IEC 60076-14 covers liquid-immersed transformers that use high-temperature insulation. Do not apply the mineral-oil cellulose rises to an aramid or ester design unless the manufacturer has guaranteed those rises for that insulation system. The cooling letter K or L is a warning that the liquid is not ordinary mineral oil. The temperature rise still has to be stated.</p>
+<p>The rise is added to the ambient temperature of the cooling medium. A 65 K winding rise in a 40 °C ambient is a different hot-spot situation from the same rise in a 20 °C ambient. The loading guides, IEC 60076-7 and IEEE C57.91, start from this relationship. The nameplate rating assumes the ambient and the cooling stated in the standard or in the contract. A transformer installed in a basement, against a wall, or inside a sound enclosure may not see the air flow the rise test assumed. If the installation restricts cooling, say so in the inquiry. Do not discover it at the heat run of the site.</p>
+<p>Altitude above 1 000 m reduces air density. External clearances and the cooling of air-side surfaces are both affected. IEC 60076-2 and IEC 60076-3 provide correction methods. A unit tested at a sea-level factory and installed at high altitude needs the correction applied in the specification, not after the bushings have been ordered.</p>
+<p>Each cooling stage has auxiliaries. Fans and pumps have a rated supply voltage, a starting current, and a failure mode. The transformer rating at that stage is valid only when those auxiliaries are running in the right direction and the oil valves are open. A site acceptance check includes rotation, flow indication where it exists, and the alarm that says a fan or a pump has stopped. Losing a fan group does not make the transformer unusable. It returns the transformer to the next lower cooling stage. The operator needs that lower rating written down, from the nameplate, before the day the fan fails.</p>
+<p>Controls that start fans on oil temperature or on winding temperature are part of the thermal design. The settings should match the rises that were guaranteed. A fan that starts too late lets the liquid rise past the guarantee while the nameplate still claims the forced rating. A fan that runs continuously changes the sound level and the auxiliary loss. IEC 60076-1 treats auxiliary loss as part of the total loss picture when the contract says so. Ask for the auxiliary power at each stage if losses are capitalized.</p>
+<p>The average winding rise measured by resistance is not the hottest conductor. The hot-spot rise is higher by a gradient that the manufacturer calculates and that a temperature-rise test can support with additional measurements. IEC 60076-2 and IEC 60076-7 use that gradient. IEEE C57.91 uses a hot-spot model for loading. The nameplate does not usually print the hot-spot temperature. The thermal data sheet should. Without the gradient, the oil exponent, and the winding exponent, a loading study is a guess. Ask for those values with the drawings. They are design data for the unit you bought, not a generic curve from a textbook.</p>
+<p>Fibre-optic probes, where they are fitted, measure selected spots. They do not replace the average-winding measurement in the factory test. They are useful in service if they were calibrated and if the locations are documented. A probe reading that disagrees with the winding-temperature indicator is a maintenance question. It is not, by itself, a failed temperature-rise test.</p>
+<p>Write the code, the power, and the rise for each stage on one line. Example of the form, not a recommendation of these ratings: ONAN 20 MVA, average winding rise 65 K, top liquid 60 K, to IEC 60076-2; ONAF 30 MVA, same rises, fans in service. Add the ambient temperature range, the altitude, the sound condition with fans on and off, and the test code. Say whether a temperature-rise test is required on this unit or whether a test on a sister design is acceptable. A sister test is only relevant if the contract defines what counts as similar: same winding arrangement, same cooling, same current density class. If that definition is missing, require the test on the unit you will receive.</p>
+<p>Keep the IEC pair of rises with IEC 60076-2, and the IEEE pair with IEEE C57.12.00. Do not take the winding rise from one document and the top-liquid rise from the other to obtain a stricter unit by arithmetic. The two documents define the guarantee, the measurement, and the correction differently. A manufacturer can be asked to meet a stricter rise. The inquiry should say it is a special guarantee, state both numbers, and state which test code will be used to judge them.</p>
+<h2>Other guides</h2>
+<ul>
+<li><a href="/guides/reading-a-transformer-nameplate/">How to read a power transformer nameplate</a></li>
+<li><a href="/guides/transformer-inquiry/">What belongs in a transformer inquiry</a></li>
+<li><a href="/guides/vector-group-and-paralleling/">Vector group, clock number, and paralleling</a></li>
+<li><a href="/guides/factory-acceptance-tests/">Factory acceptance tests to name in the contract</a></li>
+</ul>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/guides/">Practical guides</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

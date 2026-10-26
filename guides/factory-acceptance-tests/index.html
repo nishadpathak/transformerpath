@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factory acceptance tests to name in the contract | TransformerPath</title>
+<meta name="description" content="Which routine, type, and special tests IEC 60076-1 and IEEE C57.12.90 cover, and which records to take away from the factory.">
+<link rel="canonical" href="https://transformerpath.com/guides/factory-acceptance-tests/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Factory acceptance tests to name in the contract">
+<meta property="og:description" content="Which routine, type, and special tests IEC 60076-1 and IEEE C57.12.90 cover, and which records to take away from the factory.">
+<meta property="og:url" content="https://transformerpath.com/guides/factory-acceptance-tests/">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="stylesheet" href="/tp-nav.css?v=14">
+<link rel="stylesheet" href="/tp-feedback.css?v=14">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.guide-wrap{max-width:820px;margin:0 auto;padding:8px 20px 72px}
+.guide-wrap h2{font-size:1.2rem;margin:28px 0 8px;color:var(--ink)}
+.guide-wrap p,.guide-wrap li{line-height:1.6}
+.guide-wrap ul{margin:8px 0 16px;padding-left:1.2rem}
+.guide-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.guide-note{background:rgba(245,166,35,.12);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0}
+.guide-sources{font-size:.92rem}
+.guide-sources li{margin:0 0 10px}
+</style>
+<script src="/consent.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/buy-early/">Buy early</a>
+          <a href="/spare-capacity/">Mid-tier makers</a>
+          <a href="/lead-times/">Lead times</a>
+          <a href="/bottlenecks/">Bottlenecks</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/guides/">Guides</a>
+      <a href="/rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="/tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          <a href="/standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="/google-auth-config.js" defer></script>
+  <script src="/tp-auth.js?v=1" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:48px 0 28px"><div class="container"><p style="margin:0 0 8px"><a href="/guides/" style="color:var(--accent);font-weight:700">Practical guides</a></p><h1 style="font-size:2.05rem">Factory acceptance tests to name in the contract</h1><p>Which routine, type, and special tests IEC 60076-1 and IEEE C57.12.90 cover, and which records to take away from the factory.</p></div></section>
+<main id="main" class="guide-wrap">
+<p class="guide-note"><strong>Engineering practice, not a certification.</strong> This page states established practice and names the public standards to obtain. It does not certify a product, a factory, or a supplier, and it is not a test report. Use the edition named in the contract. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+<p>IEC 60076-1 divides tests into routine tests, done on every unit, type tests, done on one unit of a design to prove that design, and special tests, done only when the contract asks. IEEE C57.12.00 and the test code IEEE C57.12.90 make the same kind of split for IEEE practice. An inquiry that says &quot;full FAT&quot; does not say which list applies. Name the document and then name any test you want on this serial number that the document would otherwise treat as a type or special test.</p>
+<p>A temperature-rise test, a lightning-impulse test on a small distribution unit, a sound-level test, and a short-circuit test are the items most often assumed to be included and most often not included. For higher-voltage power transformers, lightning impulse is commonly routine under IEC 60076-3. Do not rely on &quot;commonly&quot;. Read the edition you named, at the highest voltage of this unit, and write the result into the test schedule.</p>
+<p>Winding resistance confirms the conductors, the joints, and the tap-changer contacts, and it supplies the resistance used to correct load loss to the reference temperature. It is measured on each tap the contract requires, with the oil temperature recorded, because resistance changes with temperature. Voltage ratio and phase displacement, or polarity, confirm the turns and the vector group on each tap that will be used. A ratio error outside the tolerance in IEC 60076-1 or the IEEE limit you named is a reason not to ship. It is not a value to average away.</p>
+<p>No-load loss and no-load current are measured at rated voltage and rated frequency, and often at other voltages so the curve is known. They are sensitive to the core and to the voltage. Load loss and short-circuit impedance are measured with one winding shorted, at rated current or at a reduced current corrected to rated current by the method in the test code. Impedance is reported at a stated power and a reference temperature. Those two numbers, loss and impedance, are the numbers the capitalisation and the fault study used. The report has to show the correction, not only the raw meter reading.</p>
+<p>Dielectric tests prove the insulation levels. IEC 60076-3 covers the separate-source AC test, the induced-voltage test, switching impulse where it applies, and lightning impulse. IEEE C57.12.90 is the corresponding IEEE code. Partial-discharge measurement during the induced test is routine above certain voltages in the IEC document. The acceptance level is the level in the standard or a tighter level the contract wrote down. A workshop limit from a different product is not the acceptance level.</p>
+<p>A witness does not repeat the measurement. A witness checks that the transformer on the floor is the serial number in the contract, that the tap position is the one in the procedure, that the instruments are in calibration, and that the connection matches the diagram. For an impulse test, the witness checks that the waveform and the voltage meet IEC 60076-3 or IEEE C57.12.90 and that a comparison trace was kept. For a heat run, the witness checks that the loss injected is the loss the standard requires, that the cooling stage is the one being guaranteed, and that shutdown resistance readings follow the cooling curve method rather than a single late reading.</p>
+<p>The report should contain the serial number, the list of tests, the standard, the measured values, the guarantees, the corrections, the instrument identity or the calibration status the quality system requires, and the diagram of connections for the dielectric tests. A one-page pass stamp without numbers is not a routine-test report. You cannot compare site results with a stamp.</p>
+<p>Ask for the factory frequency-response measurement under IEC 60076-18 on the taps and the connections the site will repeat. IEEE C57.149 explains how such traces are compared. The factory trace is the baseline. A trace taken for the first time after a transport incident has no baseline. The contract is the moment to require the baseline, not the moment the unit arrives.</p>
+<p>A temperature-rise test produces the rises discussed in the cooling guide and the thermal data the loading guide needs. It occupies the test bay for many hours. If the contract allows a type test on a similar transformer, define similar: same winding geometry class, same current density, same cooling code, same loss level within a band you state. A certificate for a unit with a different cooling code does not prove this cooler. If the band is missing, require the test on this serial number.</p>
+<p>Sound level under IEC 60076-10 is a type or special test unless you make it routine. State sound power or sound pressure, the surface, and whether fans and pumps run. A test with the coolers off does not represent the ONAF rating. Short-circuit withstand under IEC 60076-5 may be demonstrated by test or by calculation and design comparison, as the standard and the contract allow. A calculation is not a test. If you need a test, name it, name the laboratory, and accept the time.</p>
+<p>The liquid filled at the factory should meet the unused-liquid specification. Mineral oil is IEC 60296. Natural ester is IEC 62770. Synthetic ester is IEC 61099. A sample taken after filling, tested for breakdown voltage by IEC 60156 and for the other properties the contract lists, belongs in the dossier. IEEE C57.106 is the IEEE acceptance document when the contract is IEEE. The sample identity has to include the serial number and the date, or it is a sample from an unknown tank.</p>
+<p>On-load tap-changer operation is checked through the range at the voltage the changer standard and the contract require, with the motor drive and the limits. Current transformers in the bushings are checked for ratio and polarity. Cooler fans are checked for rotation and for the start signal. These checks are small next to an impulse test and are a common source of site delay when they were skipped. Put them on the factory schedule so the site schedule is a confirmation, not a first commissioning of the accessories.</p>
+<p>Read the report against the guarantees before you release the unit for transport. A loss overrun, an impedance outside tolerance, or a dielectric failure that was &quot;later repeated successfully&quot; needs a written disposition. A repeated test can be legitimate after a correction. The report should say what was corrected. Frequency-response and ratio traces should be copied to the owner in the format the site instrument can open, not only as a picture in a PDF.</p>
+<p>Transport locks, impact recorders, and the oil level for shipment are part of the shipping procedure, not of the dielectric test. Agree them before the unit leaves. Site tests, described in the site-test guide, compare the unit that arrives with the report you accepted. Factory acceptance is the moment the numbers exist. It is not the moment the transformer is proven to have survived the road.</p>
+<p>Leave with the serial number written on every sheet, not only on the cover. Keep the measured ratio on the principal tap and on the extreme taps, the resistance of each winding at the recorded oil temperature, the no-load loss and current at rated voltage, the load loss and impedance at the stated power and reference temperature, and the dielectric levels that were applied, including whether partial discharge was measured and what the acceptance level was. Keep the frequency-response files. A plot that cannot be overlaid later is a picture, not a baseline under IEC 60076-18.</p>
+<p>Write down the cooling stage that was heat-run, if a heat run was done, and the auxiliary power of the fans and pumps at that stage. Write down deviations and the disposition: accepted, corrected and retested, or still open. An open deviation is not closed by shipment. The same file is what the site crew uses before energization and what a later dissolved-gas or frequency-response comparison is judged against. Without the numbers, the factory acceptance proves only that someone attended.</p>
+<h2>Other guides</h2>
+<ul>
+<li><a href="/guides/reading-a-transformer-nameplate/">How to read a power transformer nameplate</a></li>
+<li><a href="/guides/transformer-inquiry/">What belongs in a transformer inquiry</a></li>
+<li><a href="/guides/cooling-and-temperature-rise/">Cooling codes and temperature rise</a></li>
+<li><a href="/guides/vector-group-and-paralleling/">Vector group, clock number, and paralleling</a></li>
+</ul>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/guides/">Practical guides</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
