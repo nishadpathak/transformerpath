@@ -13,4 +13,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: node tests/events-live-upcoming.js && node tests/past-events-regression.js
+      - run: node tests/events-live-upcoming.js && node tests/past-events-regression.js && node tests/events-soon-live.test.js
