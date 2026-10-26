@@ -95,6 +95,10 @@ const ROOT_OTHER = [
   '_redirects', '_headers',
 ];
 
+// The example test report is the one public PDF. Paid guides are built inside
+// functions and are not copied here. Any other PDF still fails the gate below.
+const PUBLIC_PDFS = new Set(['test-report-sample.pdf']);
+
 // Root stylesheets — small and fully enumerable.
 const ROOT_CSS_RE = /\.css$/;
 
@@ -185,6 +189,14 @@ for (const f of fs.readdirSync('.')) {
 for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+for (const f of PUBLIC_PDFS) {
+  if (!fs.existsSync(f)) {
+    console.error('DIST GATE FAILED — public PDF missing: ' + f);
+    process.exit(1);
+  }
+  copyFile(f, f);
+  count++;
 }
 
 // Partial sitemaps exist only after the URL or byte cap in lib/sitemap-split.js.
@@ -286,7 +298,8 @@ const offenders = [];
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) { scan(p); continue; }
-    const rel = path.relative(DIST, p);
+    const rel = path.relative(DIST, p).split(path.sep).join('/');
+    if (PUBLIC_PDFS.has(rel)) continue;
     if (FORBIDDEN_PATTERNS.some((re) => re.test(rel))) offenders.push(rel);
   }
 })(DIST);
