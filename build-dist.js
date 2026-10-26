@@ -90,7 +90,7 @@ const ROOT_JS = [
 
 // Everything else at the root that must ship.
 const ROOT_OTHER = [
-  'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
+  'robots.txt', 'llms.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
   '_redirects', '_headers',
 ];

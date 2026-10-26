@@ -15,3 +15,5 @@ jobs:
           node-version: '20'
       - name: Brand copy does not name Dubai or the UAE
         run: node scripts/check-brand-locale.js
+      - name: /llms.txt follows the llmstxt.org file
+        run: node tests/llms-txt.test.js
