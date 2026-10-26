@@ -1,0 +1,48 @@
+# Factory acceptance tests to name in the contract
+description: Which routine, type, and special tests IEC 60076-1 and IEEE C57.12.90 cover, and which records to take away from the factory.
+
+## Routine, type, and special are different promises
+
+IEC 60076-1 divides tests into routine tests, done on every unit, type tests, done on one unit of a design to prove that design, and special tests, done only when the contract asks. IEEE C57.12.00 and the test code IEEE C57.12.90 make the same kind of split for IEEE practice. An inquiry that says "full FAT" does not say which list applies. Name the document and then name any test you want on this serial number that the document would otherwise treat as a type or special test.
+
+A temperature-rise test, a lightning-impulse test on a small distribution unit, a sound-level test, and a short-circuit test are the items most often assumed to be included and most often not included. For higher-voltage power transformers, lightning impulse is commonly routine under IEC 60076-3. Do not rely on "commonly". Read the edition you named, at the highest voltage of this unit, and write the result into the test schedule.
+
+## The measurements that every unit should have
+
+Winding resistance confirms the conductors, the joints, and the tap-changer contacts, and it supplies the resistance used to correct load loss to the reference temperature. It is measured on each tap the contract requires, with the oil temperature recorded, because resistance changes with temperature. Voltage ratio and phase displacement, or polarity, confirm the turns and the vector group on each tap that will be used. A ratio error outside the tolerance in IEC 60076-1 or the IEEE limit you named is a reason not to ship. It is not a value to average away.
+
+No-load loss and no-load current are measured at rated voltage and rated frequency, and often at other voltages so the curve is known. They are sensitive to the core and to the voltage. Load loss and short-circuit impedance are measured with one winding shorted, at rated current or at a reduced current corrected to rated current by the method in the test code. Impedance is reported at a stated power and a reference temperature. Those two numbers, loss and impedance, are the numbers the capitalisation and the fault study used. The report has to show the correction, not only the raw meter reading.
+
+Dielectric tests prove the insulation levels. IEC 60076-3 covers the separate-source AC test, the induced-voltage test, switching impulse where it applies, and lightning impulse. IEEE C57.12.90 is the corresponding IEEE code. Partial-discharge measurement during the induced test is routine above certain voltages in the IEC document. The acceptance level is the level in the standard or a tighter level the contract wrote down. A workshop limit from a different product is not the acceptance level.
+
+## What a witness should watch, and what the report must contain
+
+A witness does not repeat the measurement. A witness checks that the transformer on the floor is the serial number in the contract, that the tap position is the one in the procedure, that the instruments are in calibration, and that the connection matches the diagram. For an impulse test, the witness checks that the waveform and the voltage meet IEC 60076-3 or IEEE C57.12.90 and that a comparison trace was kept. For a heat run, the witness checks that the loss injected is the loss the standard requires, that the cooling stage is the one being guaranteed, and that shutdown resistance readings follow the cooling curve method rather than a single late reading.
+
+The report should contain the serial number, the list of tests, the standard, the measured values, the guarantees, the corrections, the instrument identity or the calibration status the quality system requires, and the diagram of connections for the dielectric tests. A one-page pass stamp without numbers is not a routine-test report. You cannot compare site results with a stamp.
+
+Ask for the factory frequency-response measurement under IEC 60076-18 on the taps and the connections the site will repeat. IEEE C57.149 explains how such traces are compared. The factory trace is the baseline. A trace taken for the first time after a transport incident has no baseline. The contract is the moment to require the baseline, not the moment the unit arrives.
+
+## Type tests and when a sister certificate is enough
+
+A temperature-rise test produces the rises discussed in the cooling guide and the thermal data the loading guide needs. It occupies the test bay for many hours. If the contract allows a type test on a similar transformer, define similar: same winding geometry class, same current density, same cooling code, same loss level within a band you state. A certificate for a unit with a different cooling code does not prove this cooler. If the band is missing, require the test on this serial number.
+
+Sound level under IEC 60076-10 is a type or special test unless you make it routine. State sound power or sound pressure, the surface, and whether fans and pumps run. A test with the coolers off does not represent the ONAF rating. Short-circuit withstand under IEC 60076-5 may be demonstrated by test or by calculation and design comparison, as the standard and the contract allow. A calculation is not a test. If you need a test, name it, name the laboratory, and accept the time.
+
+## Oil, accessories, and the tests that are not dielectric tests
+
+The liquid filled at the factory should meet the unused-liquid specification. Mineral oil is IEC 60296. Natural ester is IEC 62770. Synthetic ester is IEC 61099. A sample taken after filling, tested for breakdown voltage by IEC 60156 and for the other properties the contract lists, belongs in the dossier. IEEE C57.106 is the IEEE acceptance document when the contract is IEEE. The sample identity has to include the serial number and the date, or it is a sample from an unknown tank.
+
+On-load tap-changer operation is checked through the range at the voltage the changer standard and the contract require, with the motor drive and the limits. Current transformers in the bushings are checked for ratio and polarity. Cooler fans are checked for rotation and for the start signal. These checks are small next to an impulse test and are a common source of site delay when they were skipped. Put them on the factory schedule so the site schedule is a confirmation, not a first commissioning of the accessories.
+
+## After the test, before shipment
+
+Read the report against the guarantees before you release the unit for transport. A loss overrun, an impedance outside tolerance, or a dielectric failure that was "later repeated successfully" needs a written disposition. A repeated test can be legitimate after a correction. The report should say what was corrected. Frequency-response and ratio traces should be copied to the owner in the format the site instrument can open, not only as a picture in a PDF.
+
+Transport locks, impact recorders, and the oil level for shipment are part of the shipping procedure, not of the dielectric test. Agree them before the unit leaves. Site tests, described in the site-test guide, compare the unit that arrives with the report you accepted. Factory acceptance is the moment the numbers exist. It is not the moment the transformer is proven to have survived the road.
+
+## Records that make the factory visit useful later
+
+Leave with the serial number written on every sheet, not only on the cover. Keep the measured ratio on the principal tap and on the extreme taps, the resistance of each winding at the recorded oil temperature, the no-load loss and current at rated voltage, the load loss and impedance at the stated power and reference temperature, and the dielectric levels that were applied, including whether partial discharge was measured and what the acceptance level was. Keep the frequency-response files. A plot that cannot be overlaid later is a picture, not a baseline under IEC 60076-18.
+
+Write down the cooling stage that was heat-run, if a heat run was done, and the auxiliary power of the fans and pumps at that stage. Write down deviations and the disposition: accepted, corrected and retested, or still open. An open deviation is not closed by shipment. The same file is what the site crew uses before energization and what a later dissolved-gas or frequency-response comparison is judged against. Without the numbers, the factory acceptance proves only that someone attended.

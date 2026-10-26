@@ -1,0 +1,42 @@
+# Cooling codes and temperature rise
+description: How the four-letter transformer cooling code works, and why IEC 60076-2 and IEEE C57.12.00 temperature-rise limits must not be mixed.
+
+## The four letters are a rating, not a marketing label
+
+IEC 60076-2 assigns a four-letter code to the cooling method of a liquid-immersed transformer. The first letter is the internal cooling medium. O is mineral oil or an equivalent synthetic liquid with a fire point at or below 300 °C. K is an insulating liquid with a fire point above 300 °C. L is an insulating liquid with no measurable fire point. The second letter is how that liquid moves: N for natural thermosiphon, F for forced circulation, D for forced and directed circulation through the windings. The third letter is the external medium, A for air or W for water. The fourth letter is how that external medium moves, N natural or F forced.
+
+ONAN is oil, natural internal flow, air, natural external flow. ONAF adds fans on the radiators. OFAF uses an oil pump and fans, without claiming that the oil is directed through the windings. ODAF directs the pumped oil through the windings. OFWF and ODWF use water as the external medium. A water cooler needs a water supply, a leak strategy, and a different maintenance plan from a radiator bank. The code on the nameplate is the code the temperature-rise guarantee belongs to. A transformer with an ONAN/ONAF plate has two ratings. The ONAF rating is not available with the fans off.
+
+IEEE practice uses a closely related letter code on nameplates built to IEEE C57.12.00. Read the code in the document the contract names. Do not translate an IEEE code into an IEC code by swapping letters from memory when the inquiry will be tested to a different document.
+
+## What the temperature-rise test actually measures
+
+A temperature-rise test holds the transformer at the losses that correspond to the rated current and the rated excitation, by the method in IEC 60076-2 or IEEE C57.12.90, until the top liquid and the windings reach a steady rise above the cooling-medium temperature. The result is a rise, in kelvin, not the absolute temperature of the tank wall on a hot afternoon. The cooling-medium temperature during the test is measured by the method in the standard. A thermometer on the shade side of the tank is not that method.
+
+For a conventional mineral-oil transformer with cellulose insulation, buyers commonly specify an average winding rise of 65 K and a top-liquid rise of 60 K when the contract is IEC 60076-2. IEEE C57.12.00 practice for the 65 °C rise class uses a 65 °C average winding rise and a 65 °C top-oil rise. Those pairs are not interchangeable. An inquiry that asks for a 65 K winding rise and a 60 K top-oil rise has named the IEC pair. An inquiry that asks for 65/65 has named the IEEE pair. Write the document next to the numbers. Confirm them against the edition you cite, because a table can move and a special insulation system can be specified to a different rise.
+
+Directed-flow designs and high-temperature insulation systems are specified on purpose. IEC 60076-14 covers liquid-immersed transformers that use high-temperature insulation. Do not apply the mineral-oil cellulose rises to an aramid or ester design unless the manufacturer has guaranteed those rises for that insulation system. The cooling letter K or L is a warning that the liquid is not ordinary mineral oil. The temperature rise still has to be stated.
+
+## Ambient temperature and altitude change the same plate
+
+The rise is added to the ambient temperature of the cooling medium. A 65 K winding rise in a 40 °C ambient is a different hot-spot situation from the same rise in a 20 °C ambient. The loading guides, IEC 60076-7 and IEEE C57.91, start from this relationship. The nameplate rating assumes the ambient and the cooling stated in the standard or in the contract. A transformer installed in a basement, against a wall, or inside a sound enclosure may not see the air flow the rise test assumed. If the installation restricts cooling, say so in the inquiry. Do not discover it at the heat run of the site.
+
+Altitude above 1 000 m reduces air density. External clearances and the cooling of air-side surfaces are both affected. IEC 60076-2 and IEC 60076-3 provide correction methods. A unit tested at a sea-level factory and installed at high altitude needs the correction applied in the specification, not after the bushings have been ordered.
+
+## Fans, pumps, and the power they belong to
+
+Each cooling stage has auxiliaries. Fans and pumps have a rated supply voltage, a starting current, and a failure mode. The transformer rating at that stage is valid only when those auxiliaries are running in the right direction and the oil valves are open. A site acceptance check includes rotation, flow indication where it exists, and the alarm that says a fan or a pump has stopped. Losing a fan group does not make the transformer unusable. It returns the transformer to the next lower cooling stage. The operator needs that lower rating written down, from the nameplate, before the day the fan fails.
+
+Controls that start fans on oil temperature or on winding temperature are part of the thermal design. The settings should match the rises that were guaranteed. A fan that starts too late lets the liquid rise past the guarantee while the nameplate still claims the forced rating. A fan that runs continuously changes the sound level and the auxiliary loss. IEC 60076-1 treats auxiliary loss as part of the total loss picture when the contract says so. Ask for the auxiliary power at each stage if losses are capitalized.
+
+## Hot spot is not the average winding rise
+
+The average winding rise measured by resistance is not the hottest conductor. The hot-spot rise is higher by a gradient that the manufacturer calculates and that a temperature-rise test can support with additional measurements. IEC 60076-2 and IEC 60076-7 use that gradient. IEEE C57.91 uses a hot-spot model for loading. The nameplate does not usually print the hot-spot temperature. The thermal data sheet should. Without the gradient, the oil exponent, and the winding exponent, a loading study is a guess. Ask for those values with the drawings. They are design data for the unit you bought, not a generic curve from a textbook.
+
+Fibre-optic probes, where they are fitted, measure selected spots. They do not replace the average-winding measurement in the factory test. They are useful in service if they were calibrated and if the locations are documented. A probe reading that disagrees with the winding-temperature indicator is a maintenance question. It is not, by itself, a failed temperature-rise test.
+
+## How to write the cooling lines in a specification
+
+Write the code, the power, and the rise for each stage on one line. Example of the form, not a recommendation of these ratings: ONAN 20 MVA, average winding rise 65 K, top liquid 60 K, to IEC 60076-2; ONAF 30 MVA, same rises, fans in service. Add the ambient temperature range, the altitude, the sound condition with fans on and off, and the test code. Say whether a temperature-rise test is required on this unit or whether a test on a sister design is acceptable. A sister test is only relevant if the contract defines what counts as similar: same winding arrangement, same cooling, same current density class. If that definition is missing, require the test on the unit you will receive.
+
+Keep the IEC pair of rises with IEC 60076-2, and the IEEE pair with IEEE C57.12.00. Do not take the winding rise from one document and the top-liquid rise from the other to obtain a stricter unit by arithmetic. The two documents define the guarantee, the measurement, and the correction differently. A manufacturer can be asked to meet a stricter rise. The inquiry should say it is a special guarantee, state both numbers, and state which test code will be used to judge them.

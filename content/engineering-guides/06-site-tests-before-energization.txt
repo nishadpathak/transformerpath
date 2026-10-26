@@ -1,0 +1,44 @@
+# Site tests before first energization
+description: The checks to make on a power transformer after transport and before the first voltage, using IEC and IEEE field-test practice.
+
+## The site test compares this unit with its factory report
+
+A transformer that passed its factory tests can be damaged, wet, or misconnected on the way to site. The purpose of site tests is to compare this serial number with the routine-test report and to confirm that the installation is ready for voltage. IEEE C57.152 is the IEEE guide for diagnostic field testing of power transformers. IEEE C57.93 covers installation and maintenance practice. IEC field practice uses the same measurements, with the factory methods of IEC 60076-1 and IEC 60076-18 as the reference for ratio, resistance, and frequency response. Name the documents in the commissioning procedure so the acceptance limits are the ones you already agreed.
+
+Do not energize to "see if it is fine" and treat a successful energization as a substitute for the tests. A unit can be energized with a wrong ratio tap, a reversed current transformer, or a wet bushing and still pick up for a short time. The damage shows up as a trip, a circulating current, or a failure on the first through-fault.
+
+## Before any electrical test
+
+Confirm the serial number, the impact-recorder record, and the transport locks. A recorder that shows an impact above the limit the manufacturer set is a reason to stop and to inspect, not a reason to test faster. Confirm the oil level, the breather, and that valves between the tank and the conservator and the coolers are in the position the drawing requires. A closed valve at the Buchholz relay is a known cause of a false healthy unit that is not protected.
+
+Confirm that fans and pumps, if they are installed, rotate in the direction marked, and that their overload alarms function. Confirm the earthing of the tank, the cores if a separate core earth is brought out, and the neutral connection the protection study requires. A core earth that is left open, or a second accidental core earth, is checked by the insulation test the manufacturer specified between core and tank. That test is in the factory report. Repeat it if the manual says it is a site test. Do not invent a megohm limit for it.
+
+## Ratio, resistance, and vector group
+
+Measure the voltage ratio on the tap the unit will be energized on, and on the other taps the procedure lists. Compare with the factory values for this serial number. IEC 60076-1 tolerances are the contractual reference unless the site procedure tightens them. A large difference means a wrong tap, a wrong lead, or damage. Measure winding resistance and compare the pattern, not only one number. Resistance depends on temperature. Correct to the same temperature as the factory sheet, or compare phase to phase, which should match closely on a sound winding. A single high phase can be a joint or a tap-changer contact.
+
+Confirm the vector group or the phase relation the same way the factory did. The vector-group guide on this site explains the clock number. The site result has to match the drawing the protection and the parallel breaker were built to. Terminal marking errors are still found at this step on units that were correct in the factory, because the bushing leads were removed for transport.
+
+## Insulation resistance is a comparison, not a universal limit
+
+Insulation resistance and polarization index are useful comparisons with the factory figure and between phases, corrected for temperature as far as the procedure allows. There is no single megohm value that means "pass" for every rating, every voltage, and every temperature. IEEE C57.152 discusses how to use the measurement. A very low value, or a value that collapses against the factory figure after correction, is a reason to investigate moisture, a bushing, or contamination before energization. It is not a number to average with a dryer hope.
+
+Bushing power factor, or dissipation factor, is compared with the bushing nameplate and with the factory reading. IEC and IEEE bushing standards set the factory requirement. A large change after transport points at that bushing. Do not add the bushing result to the winding result and call the sum a winding test. They are separate insulation systems.
+
+## Oil and frequency response
+
+Take a liquid sample after the unit has been filled and has stood for the time the manufacturer requires, so the sample represents the liquid in the tank rather than the bottom of a hose. Test breakdown voltage by the method in IEC 60156, and the other properties the acceptance sheet lists. IEC 60422 and IEEE C57.106 give in-service and acceptance guidance by voltage class. Use the row for this equipment voltage. A limit copied from a distribution transformer is the wrong row for an extra-high-voltage unit. The liquid guide on this site explains that split.
+
+Repeat the frequency-response measurement on the same taps and connections as the factory baseline taken under IEC 60076-18. Compare the traces with the method in IEEE C57.149 and with the manufacturer's comparison. A difference in the bands those documents associate with the winding, after a severe transport impact or a through-fault, is a reason to investigate before voltage is applied. A trace with no factory baseline is still worth keeping, as the first record, but it cannot prove that nothing moved on the road. It can only be the start of the record.
+
+## Protection, cooling, and the first energization
+
+Prove the Buchholz, the pressure-relief device, the winding and liquid temperature indicators, and the sudden-pressure device trip the breaker they are wired to, by the contact test the scheme requires. A device that only alarms in the drawing should not be found to trip, and a device that should trip should not be left on alarm. Prove the current-transformer ratio and polarity into the protection relay, not only at the marshalling box. A reversed current transformer on a differential scheme trips on load or, worse, restrains on a fault.
+
+Apply voltage with the procedure the owner uses: usually no-load from one side, with the other side open, for long enough to listen, to watch the current, and to confirm the voltage ratio with the system voltages. No-load current should be in the order of the factory no-load current, allowing for the system voltage. A large unbalance or a loud internal noise is a reason to switch off and investigate. Load is applied after the no-load check, the protection check, and the cooler check. Record the tap position, the oil temperature, and the time. That record is the start of the operating history the dissolved-gas samples will be compared with later.
+
+## What to file before the first load
+
+File the factory routine-test report next to the site sheets so a later reader can see the comparison without searching another folder. File the impact-recorder download, the oil sample identity and results, the frequency-response overlay, the ratio and resistance tables with the temperature you corrected to, and the list of protection contacts that were proven to trip or to alarm as designed. File the tap position at energization and the cooler mode. Those two lines decide which nameplate power the unit was actually using.
+
+If a result was accepted with a comment, write the comment in the same file. A verbal acceptance on the day does not survive a fault investigation a year later. IEEE C57.152 and IEEE C57.93 are useful because they give the crew a common list. They do not replace the manufacturer's site manual where that manual is stricter, for example on vacuum filling, standing time, or a core-earth test. Where the manual and the guide disagree, stop and resolve it before voltage is applied. The cost of a delayed energization is smaller than the cost of energizing a unit that was still on its transport locks or still open to the air.

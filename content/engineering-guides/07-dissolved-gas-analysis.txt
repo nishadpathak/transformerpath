@@ -1,0 +1,44 @@
+# How to read a dissolved-gas result
+description: What the common dissolved gases in transformer oil point to, and why IEC 60599 and IEEE C57.104 do not treat one sample as a diagnosis.
+
+## What the sample is
+
+Dissolved-gas analysis measures gases dissolved in the insulating liquid. The gases are produced by electrical or thermal stress on the oil and, in some cases, on the cellulose. IEC 60599 is the IEC guide to the interpretation of dissolved and free gases. IEEE C57.104 is the IEEE guide for the interpretation of gases generated in mineral-oil-immersed transformers. Both documents expect a history. A single report, read against a limit remembered from an older edition, is not the method in either guide.
+
+The sample has to be identified: serial number, date, where it was taken, whether the unit was on load, and whether it was taken after a known event such as a through-fault or a Buchholz alarm. A sample from the wrong valve, or from a unit that shares an oil line, answers a different question. Free gas from a Buchholz relay is not the same specimen as gas dissolved in the bulk oil. Record which one the laboratory received.
+
+## The gases and the stresses they are associated with
+
+Hydrogen is associated with partial discharge and with other low-energy electrical activity, and it can also rise for reasons the guides discuss that are not an active fault, including some reactions with galvanized steel or stray gassing of certain oils. Methane, ethane, and ethylene are associated with thermal faults, with ethylene becoming more prominent as the temperature of the fault rises. Acetylene is associated with high-energy arcing and with temperatures high enough to be taken seriously even at a low concentration. Carbon monoxide and carbon dioxide are associated with involvement of cellulose, not only with a fault in the oil. Oxygen and nitrogen say something about leaks and about how the sample was handled. They are not fault gases in the same sense.
+
+Those associations are the established qualitative picture in IEC 60599 and IEEE C57.104. They are not a code that turns one gas into a named failed part. Acetylene means a high-temperature event has occurred. It does not, by itself, name the lead, the changer, or the winding. The tap changer, if it is an oil-interrupting type in a separate compartment, produces gases that must not be read as if they came from the main tank. Confirm which compartment was sampled.
+
+## Rates and patterns matter more than one row of numbers
+
+IEEE C57.104 was revised so that interpretation uses the status of the transformer, the rates of change, and the combination of gases, rather than a single table of parts per million applied to every unit. IEC 60599 likewise uses ratios and typical values with explicit limits on when a ratio is meaningful. Do not apply a ratio when the concentrations are too low for the ratio to mean anything. The guides say when. If the laboratory report prints a ratio and a diagnosis in one line, read the guide before you accept the sentence.
+
+A result that is stable over several samples at a modest level is a different situation from the same number reached in a week. The operating record, load, through-faults, and tap-changer operations belong next to the table. A unit that has just been energized after a dry-out can show a rise that then flattens. A unit that shows acetylene after a relay trip needs the electrical investigation as well as another sample. Taking a second sample is part of the method. It checks that the first sample was not contaminated and it starts the rate.
+
+## What the result does not authorize
+
+A satisfactory gas result does not certify the transformer, the oil, or the manufacturer. It says that, in this liquid, at this time, the gases were at these levels. It does not measure moisture, acidity, or breakdown voltage. Those are liquid-quality tests under IEC 60422 and IEEE C57.106. It does not measure winding movement. That comparison is frequency response under IEC 60076-18 and IEEE C57.149. It does not authorize loading above nameplate. Loading is IEC 60076-7 and IEEE C57.91.
+
+Do not publish a pass threshold in a specification by copying a number from an old training slide. If the owner needs a contractual attention level, cite the edition of IEC 60599 or IEEE C57.104 and the table or the status definition in that edition. Levels differ by the way the guide is applied, and they have changed between editions. A number without the edition is not a requirement a laboratory can be held to.
+
+## Esters and online monitors
+
+Natural esters and synthetic esters are not mineral oil. Gas formation and the typical levels in IEC 60599 and IEEE C57.104 were developed primarily on mineral oil. An ester-filled unit needs the manufacturer's guidance and the standard that applies to that liquid. Do not paste a mineral-oil limit onto an ester report and declare a fault or a clean bill.
+
+Online gas monitors measure one gas or several, continuously or at intervals. They are useful for rate. They are not automatically equivalent to a laboratory chromatograph. When a monitor alarms, the usual next step is a laboratory sample from a known point, interpreted with the history. Calibrate and locate the monitor the way the manufacturer requires. A monitor on the cooler outlet and a laboratory sample from the bottom valve will not match number for number even on a healthy unit.
+
+## A practical reading order
+
+Read the identity of the sample first. Read acetylene and hydrogen next, then the hydrocarbon pattern, then carbon monoxide and carbon dioxide, then the rate against the previous sample on this serial number. Note the load and any switching, fault, or oil handling since the previous sample. Only then read the laboratory's suggested diagnosis, and check it against the clause of IEC 60599 or IEEE C57.104 that the suggestion relies on. If the suggestion is a device to replace, treat that as a hypothesis. Confirm it with the electrical tests that would find that device: ratio and resistance for a winding or a joint, changer inspection for a changer compartment, dielectric tests only when the guides and the manufacturer say energization or a factory test is the right next step.
+
+Keep the reports. A transformer file with three samples a year apart is interpretable. A file with one sample and a highlighted cell is not. The guide you named is the method. The laboratory table is the input.
+
+## How to ask the laboratory for a usable report
+
+Ask for the individual gas concentrations, the detection practice the laboratory uses, the sample date and the analysis date, and a statement of which compartment was sampled. Ask for the previous result on the same serial number to be printed beside the new one when the laboratory holds it. A diagnosis code without the concentrations is not reviewable against IEC 60599 or IEEE C57.104. If the laboratory applies a ratio method, the report should say which method and should leave the ratio blank when the guide says the concentrations are too low.
+
+State the load, the oil temperature, and any oil handling on the request form. A unit that was degassed, refilled, or fitted with a new tap-changer diverter will show a break in the history. The next sample is the start of a new trend, not a continuation that can be subtracted from the pre-work numbers without a note. Online monitor data, if you have it, goes in the same file so a later reader can see whether the laboratory confirmed the alarm. Treat the laboratory chromatograph as the reference when the two disagree, and then find out why the monitor disagreed, rather than averaging them.
