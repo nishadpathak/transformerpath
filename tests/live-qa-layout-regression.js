@@ -65,6 +65,7 @@ const intelPro = fs.readFileSync('intel-pro.html', 'utf8');
   check('intel pro ' + key + ' fallback matches site-stats', hit && Number(hit[1]) === STATS[key], hit && hit[1]);
 });
 check('intel pro loads the canonical counter script', intelPro.indexOf('site-stats.js') !== -1);
+check('intel pro fallbacks are rewritten from site-stats at build', /STAT_HTML = \[[^\]]*intel-pro\.html/.test(fs.readFileSync('build-site-stats.js', 'utf8')));
 check('intel pro does not call the award total confirmed', intelPro.indexOf('Confirmed awards') === -1);
 
 const intelPage = fs.readFileSync('intel.html', 'utf8');

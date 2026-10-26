@@ -207,11 +207,13 @@ try {
 } catch (e) { console.warn('site-stats: could not sync config.counters:', e.message); }
 
 /* No-JS [data-stat] fallbacks in HTML must match site-stats.json or
-   check-config.js / tests/verify-hero-integrity.js fail after counters move
+   check-config.js / tests/verify-hero-integrity.js /
+   tests/live-qa-layout-regression.js fail after counters move
    (e.g. build-tenders derives a new OPEN row from intel, or upcomingEvents
    drops when an event's start day passes). site-stats.js overwrites these at
-   runtime; keep the static digits in lockstep at build. */
-const STAT_HTML = ['index.html', 'directory.html', 'pricing.html', 'intel.html', 'tenders.html', 'awards.html'];
+   runtime; keep the static digits in lockstep at build. Intel Pro is in this
+   list so its project, tender and award fallbacks cannot stay on an old count. */
+const STAT_HTML = ['index.html', 'directory.html', 'pricing.html', 'intel.html', 'intel-pro.html', 'tenders.html', 'awards.html'];
 const stampAsOf = require('./lib/data-as-of').stampHtml;
 let htmlPatched = 0;
 for (let i = 0; i < STAT_HTML.length; i++) {
