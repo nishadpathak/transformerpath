@@ -2,3 +2,9 @@
 # netlify.toml. Either source wins, the header is the same, and preload is off.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+/data/csv-pay-plans.json
+  X-Robots-Tag: noindex, nofollow
+
+/data/download
+  X-Robots-Tag: noindex, nofollow
