@@ -21,3 +21,5 @@ jobs:
         run: node tests/calculator-examples.test.js
       - name: No personal service lines
         run: node tests/no-personal-services.test.js
+      - name: Engineer Track self-study modules
+        run: node tests/engineer-track-modules.test.js
