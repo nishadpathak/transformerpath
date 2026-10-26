@@ -23,6 +23,8 @@ jobs:
         run: node tests/seo-schema.test.js
       - name: Manufacturer pages omit a dash place
         run: node tests/manufacturer-placeholder-place.test.js
+      - name: Manufacturer descriptions do not repeat the sourced-fields sentence
+        run: node tests/manufacturer-description-repeat.test.js
       - name: Virginia Transformer sourced specs
         run: node tests/virginia-transformer-specs.js
       - name: Sourced manufacturer specifications
