@@ -609,7 +609,7 @@ function renderManufacturers(html) {
   const vbadge = (m, slug) => {
     if (m[4] === 'P') return '<span class="v-badge pro">★ Supplier Pro</span>';
     if (slug && paidListings.isVerifiedManufacturer(slug, paidDoc)) {
-      return '<span class="v-badge" data-paid-badge="verified-manufacturer" data-company-slug="' + paidListings.esc(slug) + '">✓ Verified</span>';
+      return paidListings.identityBadgeHtml('data-paid-badge="verified-manufacturer" data-company-slug="' + paidListings.esc(slug) + '"');
     }
     return '';
   };

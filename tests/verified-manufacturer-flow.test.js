@@ -288,8 +288,9 @@ async function main() {
   })).body);
   const approvedRow = store.rows.get(sessionId);
   check('approval grants the entitlement without an email column', approved.stored === true && approved.badge === true && store.entitlements.length === 1 && store.entitlements[0].status === 'active' && store.entitlements[0].product === 'verified_manufacturer' && !Object.prototype.hasOwnProperty.call(store.entitlements[0], 'email'));
-  check('approved badge uses the reviewed publish row', paid.manufacturerBadgeHtml('example-works', { listings: [approved.publish_row] }).indexOf('VERIFIED MANUFACTURER') >= 0);
-  check('badge copy does not claim a product certification', paid.manufacturerBadgeHtml('example-works', { listings: [approved.publish_row] }).toLowerCase().indexOf('not mean product certified') >= 0);
+  const approvedBadge = paid.manufacturerBadgeHtml('example-works', { listings: [approved.publish_row] });
+  check('approved badge uses the reviewed publish row', approvedBadge.indexOf('data-paid-badge="verified-manufacturer"') >= 0 && approvedBadge.indexOf(paid.IDENTITY_BADGE_HTML) >= 0);
+  check('badge copy does not claim a product certification', approvedBadge.toLowerCase().indexOf('not a product certification') >= 0 && approvedBadge.toLowerCase().indexOf('not mean product certified') >= 0);
   const later = Date.parse(approvedRow.expires_at) + 1000;
   check('expiry removes the badge', flow.termEnded(approvedRow, later) && paid.manufacturerBadgeHtml('example-works', { listings: [Object.assign({}, approvedRow, { reviewed_at: '2024-01-01T00:00:00.000Z', expires_at: '2025-01-01T00:00:00.000Z' })] }) === '');
 

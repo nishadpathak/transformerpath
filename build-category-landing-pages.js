@@ -47,6 +47,7 @@ function slugify(s) {
 }
 
 const paidListings = require('./lib/paid-listings');
+const paidDoc = paidListings.load();
 const SPONSOR_COMPONENT = {
   CMP_BUSHING: 'bushings',
   MAT_PRESSBOARD: 'pressboard',
@@ -81,10 +82,10 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /bushing/i.test(c)),
     additionalSuppliers: [
-      { name: 'Trench Group', country: 'Germany', city: 'Bamberg', website: 'https://www.trench-group.com/', verified: 'Verified', line: 'RIP & OIP high-voltage bushings up to 1,200 kV' },
-      { name: 'HSP Hochspannungsgeräte', country: 'Germany', city: 'Troisdorf', website: 'https://www.hsp-koeln.de/', verified: 'Verified', line: 'Dry-type RIP & RIS bushings for EHV/UHV' },
-      { name: 'Yash Highvoltage', country: 'India', city: 'Vadodara', website: 'https://yashhv.com/', verified: 'Verified', line: 'RIP & OIP bushings up to 765 kV' },
-      { name: 'Hitachi Energy Bushings', country: 'Switzerland', city: 'Zürich', website: 'https://www.hitachienergy.com/', verified: 'Verified', line: 'Complete RIP, RIS, and OIP bushing portfolio' }
+      { name: 'Trench Group', country: 'Germany', city: 'Bamberg', website: 'https://www.trench-group.com/', verified: 'Listed', line: 'RIP & OIP high-voltage bushings up to 1,200 kV' },
+      { name: 'HSP Hochspannungsgeräte', country: 'Germany', city: 'Troisdorf', website: 'https://www.hsp-koeln.de/', verified: 'Listed', line: 'Dry-type RIP & RIS bushings for EHV/UHV' },
+      { name: 'Yash Highvoltage', country: 'India', city: 'Vadodara', website: 'https://yashhv.com/', verified: 'Listed', line: 'RIP & OIP bushings up to 765 kV' },
+      { name: 'Hitachi Energy Bushings', country: 'Switzerland', city: 'Zürich', website: 'https://www.hitachienergy.com/', verified: 'Listed', line: 'Complete RIP, RIS, and OIP bushing portfolio' }
     ]
   },
   {
@@ -111,10 +112,10 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /tap changer|oltc/i.test(c)),
     additionalSuppliers: [
-      { name: 'Maschinenfabrik Reinhausen (MR)', country: 'Germany', city: 'Regensburg', website: 'https://www.reinhausen.com/', verified: 'Verified', line: 'VACUTAP vacuum OLTCs, ECOTAP, and ETOS digital automation' },
-      { name: 'Huaming Power Equipment (HM)', country: 'China', city: 'Shanghai', website: 'https://www.huaming.com/', verified: 'Verified', line: 'Full range of vacuum and conventional on-load tap changers' },
-      { name: 'Easun MR', country: 'India', city: 'Chennai', website: 'https://www.easunmr.com/', verified: 'Verified', line: 'Tap changers, motor drives and accessories for Indian & export markets' },
-      { name: 'CTR Manufacturing', country: 'India', city: 'Pune', website: 'https://www.ctr.in/', verified: 'Verified', line: 'On-load and off-circuit tap changers' }
+      { name: 'Maschinenfabrik Reinhausen (MR)', country: 'Germany', city: 'Regensburg', website: 'https://www.reinhausen.com/', verified: 'Listed', line: 'VACUTAP vacuum OLTCs, ECOTAP, and ETOS digital automation' },
+      { name: 'Huaming Power Equipment (HM)', country: 'China', city: 'Shanghai', website: 'https://www.huaming.com/', verified: 'Listed', line: 'Full range of vacuum and conventional on-load tap changers' },
+      { name: 'Easun MR', country: 'India', city: 'Chennai', website: 'https://www.easunmr.com/', verified: 'Listed', line: 'Tap changers, motor drives and accessories for Indian & export markets' },
+      { name: 'CTR Manufacturing', country: 'India', city: 'Pune', website: 'https://www.ctr.in/', verified: 'Listed', line: 'On-load and off-circuit tap changers' }
     ]
   },
   {
@@ -141,9 +142,9 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /radiator|cooling/i.test(c)),
     additionalSuppliers: [
-      { name: 'Menk Apparatebau', country: 'Germany', city: 'Bad Marienberg', website: 'https://www.menk-apparatebau.de/', verified: 'Verified', line: 'High-performance transformer radiators and corrugated tanks' },
-      { name: 'Kelvion', country: 'Germany', city: 'Bochum', website: 'https://www.kelvion.com/', verified: 'Verified', line: 'Transformer oil coolers and heat exchangers' },
-      { name: 'Trantech Radiators', country: 'USA', city: 'Edgefield, SC', website: 'https://www.trantechradiators.com/', verified: 'Verified', line: 'Heavy-duty panel radiators for North American power transformers' }
+      { name: 'Menk Apparatebau', country: 'Germany', city: 'Bad Marienberg', website: 'https://www.menk-apparatebau.de/', verified: 'Listed', line: 'High-performance transformer radiators and corrugated tanks' },
+      { name: 'Kelvion', country: 'Germany', city: 'Bochum', website: 'https://www.kelvion.com/', verified: 'Listed', line: 'Transformer oil coolers and heat exchangers' },
+      { name: 'Trantech Radiators', country: 'USA', city: 'Edgefield, SC', website: 'https://www.trantechradiators.com/', verified: 'Listed', line: 'Heavy-duty panel radiators for North American power transformers' }
     ]
   },
   {
@@ -170,10 +171,10 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /protection|monitoring|relay|indicator|pressure/i.test(c)),
     additionalSuppliers: [
-      { name: 'EMB Elektromotoren und Gerätebau', country: 'Germany', city: 'Barleben', website: 'https://www.emb-online.de/', verified: 'Verified', line: 'Industry-standard Buchholz relays and gas monitoring devices' },
-      { name: 'Qualitrol Company', country: 'USA', city: 'Fairport, NY', website: 'https://www.qualitrolcorp.com/', verified: 'Verified', line: 'Pressure relief valves, temperature gauges, and multi-gas DGA' },
-      { name: 'Messko (Reinhausen Group)', country: 'Germany', city: 'Oberursel', website: 'https://www.reinhausen.com/messko', verified: 'Verified', line: 'Precision temperature indicators, oil level gauges, and breathers' },
-      { name: 'Comem', country: 'Italy', city: 'Montecchio Maggiore', website: 'https://www.comem.com/', verified: 'Verified', line: 'Complete transformer mechanical accessories and smart sensors' }
+      { name: 'EMB Elektromotoren und Gerätebau', country: 'Germany', city: 'Barleben', website: 'https://www.emb-online.de/', verified: 'Listed', line: 'Industry-standard Buchholz relays and gas monitoring devices' },
+      { name: 'Qualitrol Company', country: 'USA', city: 'Fairport, NY', website: 'https://www.qualitrolcorp.com/', verified: 'Listed', line: 'Pressure relief valves, temperature gauges, and multi-gas DGA' },
+      { name: 'Messko (Reinhausen Group)', country: 'Germany', city: 'Oberursel', website: 'https://www.reinhausen.com/messko', verified: 'Listed', line: 'Precision temperature indicators, oil level gauges, and breathers' },
+      { name: 'Comem', country: 'Italy', city: 'Montecchio Maggiore', website: 'https://www.comem.com/', verified: 'Listed', line: 'Complete transformer mechanical accessories and smart sensors' }
     ]
   },
   {
@@ -201,10 +202,10 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /pressboard|insulation|wood|paper/i.test(c)),
     additionalSuppliers: [
-      { name: 'Weidmann Electrical Technology', country: 'Switzerland', city: 'Rapperswil', website: 'https://www.weidmann-electrical.com/', verified: 'Verified', line: 'Global benchmark transformerboard, CNC insulation kits, and diagnostic services' },
-      { name: 'Krempel Group', country: 'Germany', city: 'Vaihingen', website: 'https://www.krempel.com/', verified: 'Verified', line: 'Pressboard, flex insulation, and composite materials' },
-      { name: 'PSP Pressspan', country: 'Germany', city: 'Zwönitz', website: 'https://www.pressspan.com/', verified: 'Verified', line: 'Calendered pressboard and precision stamped components' },
-      { name: 'Röchling Engineering Plastics', country: 'Germany', city: 'Haren', website: 'https://www.roechling.com/', verified: 'Verified', line: 'Lignostone transformerwood coil clamping rings and beams' }
+      { name: 'Weidmann Electrical Technology', country: 'Switzerland', city: 'Rapperswil', website: 'https://www.weidmann-electrical.com/', verified: 'Listed', line: 'Global benchmark transformerboard, CNC insulation kits, and diagnostic services' },
+      { name: 'Krempel Group', country: 'Germany', city: 'Vaihingen', website: 'https://www.krempel.com/', verified: 'Listed', line: 'Pressboard, flex insulation, and composite materials' },
+      { name: 'PSP Pressspan', country: 'Germany', city: 'Zwönitz', website: 'https://www.pressspan.com/', verified: 'Listed', line: 'Calendered pressboard and precision stamped components' },
+      { name: 'Röchling Engineering Plastics', country: 'Germany', city: 'Haren', website: 'https://www.roechling.com/', verified: 'Listed', line: 'Lignostone transformerwood coil clamping rings and beams' }
     ]
   },
   {
@@ -231,9 +232,9 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /ctc|conductor|copper/i.test(c)),
     additionalSuppliers: [
-      { name: 'ASTA Energy Transmission', country: 'Austria', city: 'Oed', website: 'https://www.asta.at/', verified: 'Verified', line: 'World-leading CTC and insulated copper conductors for energy transmission' },
-      { name: 'Samdong', country: 'South Korea', city: 'Seoul', website: 'http://www.samdong.co.kr/', verified: 'Verified', line: 'Continuously transposed cables and oxygen-free high conductivity copper' },
-      { name: 'Synflex Group', country: 'Germany', city: 'Blomberg', website: 'https://www.synflex.com/', verified: 'Verified', line: 'CTC conductors, winding wires, and insulating wrapping tapes' }
+      { name: 'ASTA Energy Transmission', country: 'Austria', city: 'Oed', website: 'https://www.asta.at/', verified: 'Listed', line: 'World-leading CTC and insulated copper conductors for energy transmission' },
+      { name: 'Samdong', country: 'South Korea', city: 'Seoul', website: 'http://www.samdong.co.kr/', verified: 'Listed', line: 'Continuously transposed cables and oxygen-free high conductivity copper' },
+      { name: 'Synflex Group', country: 'Germany', city: 'Blomberg', website: 'https://www.synflex.com/', verified: 'Listed', line: 'CTC conductors, winding wires, and insulating wrapping tapes' }
     ]
   },
   {
@@ -260,12 +261,12 @@ const CATEGORY_PAGES = [
     ],
     supplierFilter: (s) => (s.categories || []).some(c => /oil|fluid|ester/i.test(c)),
     additionalSuppliers: [
-      { name: 'Nynas AB', country: 'Sweden', city: 'Stockholm', website: 'https://www.nynas.com/', verified: 'Verified', line: 'NYTRO premium naphthenic transformer insulating oils' },
-      { name: 'Ergon Refining', country: 'USA', city: 'Jackson, MS', website: 'https://www.ergon.com/', verified: 'Verified', line: 'HyPrene dielectric mineral insulating oils' },
-      { name: 'Cargill (Envirotemp FR3)', country: 'USA', city: 'Wayzata, MN', website: 'https://www.envirotempfluids.com/', verified: 'Verified', line: 'Global market leader in natural ester dielectric liquids' },
-      { name: 'M&I Materials (MIDEL)', country: 'United Kingdom', city: 'Manchester', website: 'https://www.midel.com/', verified: 'Verified', line: 'Synthetic and natural ester transformer fluids' },
-      { name: 'Shell Lubricants (Diala)', country: 'Netherlands', city: 'The Hague', website: 'https://www.shell.com/', verified: 'Verified', line: 'Gas-to-liquids (GTL) high-purity transformer oil' },
-      { name: 'APAR Industries (POWEROIL)', country: 'India', city: 'Mumbai', website: 'https://apar.com/', verified: 'Verified', line: 'Largest transformer oil exporter from India across 140+ countries' }
+      { name: 'Nynas AB', country: 'Sweden', city: 'Stockholm', website: 'https://www.nynas.com/', verified: 'Listed', line: 'NYTRO premium naphthenic transformer insulating oils' },
+      { name: 'Ergon Refining', country: 'USA', city: 'Jackson, MS', website: 'https://www.ergon.com/', verified: 'Listed', line: 'HyPrene dielectric mineral insulating oils' },
+      { name: 'Cargill (Envirotemp FR3)', country: 'USA', city: 'Wayzata, MN', website: 'https://www.envirotempfluids.com/', verified: 'Listed', line: 'Global market leader in natural ester dielectric liquids' },
+      { name: 'M&I Materials (MIDEL)', country: 'United Kingdom', city: 'Manchester', website: 'https://www.midel.com/', verified: 'Listed', line: 'Synthetic and natural ester transformer fluids' },
+      { name: 'Shell Lubricants (Diala)', country: 'Netherlands', city: 'The Hague', website: 'https://www.shell.com/', verified: 'Listed', line: 'Gas-to-liquids (GTL) high-purity transformer oil' },
+      { name: 'APAR Industries (POWEROIL)', country: 'India', city: 'Mumbai', website: 'https://apar.com/', verified: 'Listed', line: 'Largest transformer oil exporter from India across 140+ countries' }
     ]
   }
 ];
@@ -322,9 +323,8 @@ CATEGORY_PAGES.forEach(function (cat) {
     const slug = slugify(s.name);
     const hasProfile = fs.existsSync(`accessories/${slug}/index.html`);
     const nameLink = hasProfile ? `<a href="../../accessories/${slug}/" style="color:var(--text);font-weight:700">${esc(s.name)}</a>` : `<b style="color:var(--text)">${esc(s.name)}</b>`;
-    const isV = String(s.verified || '').toLowerCase().includes('verified') && !String(s.verified || '').toLowerCase().includes('website');
-    const vBadge = isV
-      ? '<span class="vbadge" style="font-size:.72rem">✓ Verified</span>'
+    const vBadge = paidListings.isVerifiedManufacturer(slug, paidDoc)
+      ? paidListings.identityBadgeHtml('data-paid-badge="verified-manufacturer" data-company-slug="' + paidListings.esc(slug) + '"')
       : '<span style="font-size:.72rem;color:var(--muted)">Listed</span>';
 
     return `
@@ -447,8 +447,8 @@ ${HEAD}
   <h2>Subcategories &amp; Engineering Architectures</h2>
   ${subcatsCards}
 
-  <h2>Verified Global Suppliers &amp; Manufacturers (${suppliers.length})</h2>
-  <p style="font-size:.85rem;color:var(--muted)">Verified suppliers with independent factory documentation, technical capability certifications, and direct quotation channels.</p>
+  <h2>Suppliers in this category (${suppliers.length})</h2>
+  <p style="font-size:.85rem;color:var(--muted)">Companies listed for this category. A listing is not a product certification. The identity badge is shown only after TransformerPath checks the organization and a business contact.</p>
 
   <div class="tbl-responsive">
     <table class="hub-tbl">

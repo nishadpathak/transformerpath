@@ -158,7 +158,15 @@ const eventBadges = require('./event-badges');
 const AVAILABILITY = availability.load();
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[censusNameKey(c.name)] = c.slug; }); }catch(e){}
 
-const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
+const paidDoc = paidListings.load();
+const identityBadge = (slug) => ' ' + paidListings.identityBadgeHtml('data-paid-badge="verified-manufacturer" data-company-slug="' + paidListings.esc(slug) + '"');
+const vbadge2 = (m) => {
+  const f = m.length > 4 ? m[4] : null;
+  if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>';
+  const slug = CSMAP[censusNameKey(m[0])];
+  if (f === 'V' && slug && paidListings.isVerifiedManufacturer(slug, paidDoc)) return identityBadge(slug);
+  return '';
+};
 const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast', TX: 'Transformer', SR: 'Reactor', IT: 'Instrument' }; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => '<span class="tpill t-' + t + '">' + esc(T[t] || t) + '</span>').join(''); };
 fs.mkdirSync('manufacturers', { recursive: true });
 let countryIndex = [];
@@ -220,7 +228,7 @@ TYPE_HUBS.forEach(function (th) {
       const alias = resolveCompanyAlias(m.name);
       const cslug = alias.aliased ? alias.slug : CSMAP[censusNameKey(m.name)];
       const nameLink = (cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>') + eventBadges.htmlFor({ slug: cslug, name: m.name });
-      const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
+      const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' && cslug && paidListings.isVerifiedManufacturer(cslug, paidDoc) ? identityBadge(cslug) : '');
       const flag = availability.forSlug(cslug, AVAILABILITY);
       const siteLink = m.url ? '<a href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow" style="color:var(--muted);font-size:.78rem" data-track="official_website_click" data-track-manufacturer="' + esc(m.name) + '">Official website ↗</a>' : '';
       return '<div class="mk-row" style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem">' +
