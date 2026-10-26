@@ -21,6 +21,8 @@ jobs:
           node build-seo-pass.js
       - name: JSON-LD and title-window tests
         run: node tests/seo-schema.test.js
+      - name: Manufacturer pages omit a dash place
+        run: node tests/manufacturer-placeholder-place.test.js
       - name: Virginia Transformer sourced specs
         run: node tests/virginia-transformer-specs.js
       - name: Sourced manufacturer specifications

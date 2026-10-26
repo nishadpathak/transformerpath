@@ -38,6 +38,7 @@ const HEAD_OFFICES = headOffice.load(__dirname);
 const companyParents = require('./lib/company-parents');
 const manufacturerSpecs = require('./lib/manufacturer-specs');
 const declaredOrigin = require('./lib/declared-origin');
+const { statedPlace, listedWhere } = require('./lib/stated-place');
 const DECLARED_BY_SLUG = declaredOrigin.bySlug(declaredOrigin.load(__dirname));
 const SPEC_BY_SLUG = {};
 (manufacturerSpecs.load(__dirname).companies || []).forEach(function (c) { if (c && c.slug) SPEC_BY_SLUG[c.slug] = c; });
@@ -449,9 +450,8 @@ function highestSourcedKv(tier, provRec) {
   return maxKv;
 }
 function censusLead(r, tier, intelRec, sourcedKv) {
-  const place = [r.city, r.country].filter(Boolean).join(', ');
   const sentences = [];
-  sentences.push(r.name + ' is listed as a transformer manufacturer' + (place ? ' in ' + place : '') + '.');
+  sentences.push(r.name + ' is listed as a transformer manufacturer' + listedWhere(r.city, r.country) + '.');
   const products = phraseList((r.types || []).map(function (t) { return TYPE_PHRASE[t] || t; }));
   if (products) sentences.push('Products and scope on file: ' + products + '.');
   if (r.established) sentences.push('Year of establishment on file: ' + r.established + '.');
@@ -531,13 +531,15 @@ function page(r, slug) {
   const compLinks = comps.map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
   const apps = [...new Set(typeList.reduce(function (a, t) { return a.concat(TYPE_APPS[t] || []); }, []))];
   const appLinks = apps.map(function (a) { return '<a class="tpill" href="../../applications/' + a + '.html">' + esc(APPS[a] || a) + '</a>'; }).join(' ');
-  const marketSlug = COUNTRY_MARKET[ci(r.country)];
-  const marketLink = marketSlug ? '<a class="tpill" href="../../markets/' + marketSlug + '/">' + esc(r.country) + ' market</a>' : '';
-  const countrySlug = pageSlugFor(r.country);
+  const shownCountry = statedPlace(r.country);
+  const shownCity = statedPlace(r.city);
+  const marketSlug = COUNTRY_MARKET[ci(shownCountry)];
+  const marketLink = marketSlug ? '<a class="tpill" href="../../markets/' + marketSlug + '/">' + esc(shownCountry) + ' market</a>' : '';
+  const countrySlug = pageSlugFor(shownCountry);
   const countryPageExists = countrySlug && fs.existsSync('manufacturers/' + countrySlug + '.html');
-  const countryLink = countryPageExists ? '<a class="tpill" href="../../manufacturers/' + countrySlug + '.html">' + esc(r.country) + ' manufacturers</a>' : '';
-  const crumbCountry = countryPageExists ? '<a href="../../manufacturers/' + countrySlug + '.html" style="color:var(--accent)">' + esc(r.country) + '</a>' : esc(r.country);
-  const cityHtml = r.city ? '<span class="tpill">' + esc(r.city) + '</span>' : '';
+  const countryLink = countryPageExists ? '<a class="tpill" href="../../manufacturers/' + countrySlug + '.html">' + esc(shownCountry) + ' manufacturers</a>' : '';
+  const crumbCountry = !shownCountry ? '' : (countryPageExists ? '<a href="../../manufacturers/' + countrySlug + '.html" style="color:var(--accent)">' + esc(shownCountry) + '</a>' : esc(shownCountry));
+  const cityHtml = shownCity ? '<span class="tpill">' + esc(shownCity) + '</span>' : '';
   const evs = eventsFor(r);
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No confirmed events for this market yet.</li>';
   const intel = intelFor(r);
@@ -586,7 +588,12 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText };
+  if (shownCity || shownCountry) {
+    orgSchema.address = { '@type': 'PostalAddress' };
+    if (shownCountry) orgSchema.address.addressCountry = shownCountry;
+    if (shownCity) orgSchema.address.addressLocality = shownCity;
+  }
   if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
   const parentLink = companyParents.parentFor(r);
   if (parentLink) {
@@ -637,7 +644,7 @@ function page(r, slug) {
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' + schema +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 88px}.c-wrap h1{font-size:2rem;color:var(--ink)}.c-wrap h2{font-size:1.2rem;color:var(--ink);margin-top:26px}.c-wrap p{color:var(--text);line-height:1.7}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap .tbl{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap .tbl th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:40%}.c-wrap .tbl td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}.c-wrap ul{padding-left:20px;line-height:1.7}.vbadge{color:var(--green);font-weight:700;font-size:.8rem}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
-    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
+    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a>' + (crumbCountry ? ' › ' + crumbCountry : '') + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + (function () { const badge = eventBadges.htmlFor({ slug: slug, name: r.name }); return badge ? ' ' + badge : ''; })() + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
     (function () { const flag = availability.forSlug(slug, AVAILABILITY); return flag ? '<p style="margin:8px 0 0">' + availability.markHtml(flag, slug) + '</p>' : ''; })() +
     (tpmFor(r.slug) ? '<p style="margin:6px 0 0;font-size:.82rem;color:var(--muted)">Permanent company ID ' + copyIdBtn(tpmFor(r.slug)) + ' <span style="opacity:.75">(stable census identity — not a certification)</span></p>' : '') +
@@ -645,7 +652,7 @@ function page(r, slug) {
     listingMediaHtml(slug) +
     '<p class="lead">' + esc(leadText) + '</p>' +
     (tier && tier.tier === 2 ? buyerPageCopy.PROFILE_CROSSLINK : '') +
-    '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
+    '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + [r.flag || '', shownCountry ? '<b style="color:var(--text)">' + esc(shownCountry) + '</b>' : '', shownCity ? esc(shownCity) : '', '<span style="color:var(--accent)">' + verify + '</span>', r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : ''].filter(Boolean).join(' · ') + '</p>' +
     (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
     (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
     (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
@@ -685,7 +692,7 @@ function page(r, slug) {
     })) + '</div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
-    '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
+    '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching ' + (shownCountry ? 'across the ' + esc(shownCountry) + ' and regional manufacturing base' : 'across the regional manufacturing base') + '.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-manufacturer="' + esc(r.name) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../compare.html?m=' + esc(r.slug) + '" data-track="manufacturer_compare" data-track-manufacturer="' + esc(r.name) + '">Compare with others →</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n' +
     (eventBadges.htmlFor({ slug: slug, name: r.name }) ? eventBadges.deferScript() : '') +
