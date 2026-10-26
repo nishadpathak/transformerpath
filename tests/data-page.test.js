@@ -39,6 +39,7 @@ check('directory count is the live index', html.indexOf(directory.companies.leng
 check('tender count is the live register', html.indexOf((tenders.tenders || []).length.toLocaleString('en-US')) !== -1);
 check('award count is the live register', html.indexOf((awards.awards || []).length.toLocaleString('en-US')) !== -1);
 check('tender description is the register comment', tenders.$comment && html.indexOf(tenders.$comment) !== -1);
+check('register dates are file build stamps', html.indexOf('Source date') === -1 && html.indexOf('directory index <code>generated</code> field is the time that file was built: ' + String(directory.generated || '').slice(0, 10)) !== -1 && html.indexOf('not a check date for each row') !== -1);
 check('award description is the register comment', awards.$comment && html.indexOf(awards.$comment) !== -1);
 check('ten-row samples', previewCount(html, 'directory') === 10 && previewCount(html, 'tenders') === 10 && previewCount(html, 'awards') === 10);
 ['id', 'name', 'kind', 'country', 'tender_id', 'title', 'award_id', 'awardee', 'licence'].forEach(function (field) {
