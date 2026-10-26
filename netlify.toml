@@ -20400,6 +20400,13 @@
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
 
+# /llms.txt is plain text for agents (llmstxt.org). The charset matches
+# the other published text files.
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+
 # Security headers. The CSP stays permissive on purpose: pages use inline
 # scripts and styles, and the browser also calls Stripe, Supabase, Google
 # Analytics, fonts and ipapi. A tight allow-list would blank those calls.
