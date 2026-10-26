@@ -154,7 +154,8 @@ function session(product, where, status) {
     const ignored = require('child_process').spawnSync('git', ['check-ignore', '-q', 'data/csv-exports/directory.csv']);
     check('generated CSVs are gitignored', ignored.status === 0);
 
-    ['lib/csv-exports.js', 'functions/csv-download.js', 'build-csv-exports.js'].forEach(function (file) {
+    require('../build-data-page').build();
+    ['lib/csv-exports.js', 'functions/csv-download.js', 'build-csv-exports.js', 'data.html', 'data-checkout.js'].forEach(function (file) {
       const text = fs.readFileSync(file, 'utf8');
       check(file + ' has no buy.stripe.com link', text.indexOf('buy.stripe.com') === -1);
     });
@@ -162,9 +163,13 @@ function session(product, where, status) {
     const productRe = /csv_directory|csv_tenders|csv_awards|csv_bundle/;
     const allowedProductFiles = {
       'lib/csv-exports.js': true,
+      'lib/csv-pay.js': true,
       'functions/csv-download.js': true,
       'build-csv-exports.js': true,
-      'tests/csv-download.test.js': true
+      'build-data-page.js': true,
+      'data.html': true,
+      'tests/csv-download.test.js': true,
+      'tests/data-page.test.js': true
     };
     const productHits = [];
     function walkProductIds(dir) {
@@ -210,7 +215,16 @@ function session(product, where, status) {
     calls.length = 0;
     global.fetch = async function () { calls.push({ url: 'called' }); return jsonResponse(200, {}); };
     const unconfigured = await download.handler({ httpMethod: 'GET', queryStringParameters: { session_id: 'cs_test_nokey' } });
-    check('missing secret does not call Stripe', calls.length === 0 && unconfigured.body.indexOf(csv.VERIFY_FAILED) !== -1);
+    check('missing secret does not call Stripe or attach a file', calls.length === 0 && unconfigured.body.indexOf(csv.EMAIL_INSTEAD) !== -1 && unconfigured.body.indexOf(csv.VERIFY_FAILED) === -1 && !unconfigured.headers['Content-Disposition']);
+    const sneakExp = Date.now() + 60000;
+    const sneak = {
+      dl: 'directory',
+      sid: 'cs_test_csv_paid',
+      exp: String(sneakExp),
+      sig: csv.signDownload(SECRET, 'cs_test_csv_paid', 'directory', sneakExp)
+    };
+    const sneakRes = await download.handler({ httpMethod: 'GET', queryStringParameters: sneak });
+    check('missing secret does not serve a signed CSV', sneakRes.body.indexOf(csv.EMAIL_INSTEAD) !== -1 && !sneakRes.headers['Content-Disposition'] && sneakRes.body.length < csv.readStored(dest, 'directory').length);
     process.env.STRIPE_SECRET_KEY = SECRET;
 
     const unpaid = session('csv_directory', 'price', 'unpaid');
@@ -284,6 +298,17 @@ function session(product, where, status) {
     const fromSession = session('csv_tenders', 'session', 'paid');
     check('session metadata is a csv product when nothing earlier is set', csv.csvProductFromSession(fromSession) === 'csv_tenders');
     check('line items beat a later bundle tag', csv.csvProductFromSession(learning) === null);
+    const fromUrl = session('csv_directory', 'session', 'paid');
+    fromUrl.metadata = {};
+    fromUrl.payment_link = { id: 'plink_dir', url: 'https://buy.stripe.com/14AdR26C41131NC5DcfYY0r' };
+    check('an approved directory Payment Link url selects that file', csv.csvProductFromSession(fromUrl) === 'csv_directory');
+    const lookalike = session('csv_directory', 'session', 'paid');
+    lookalike.metadata = {};
+    lookalike.payment_link = { url: 'https://buy.stripe.com/14AdR26C41131NC5DcfYY0rEXTRA' };
+    check('a lookalike Payment Link url is not a CSV', csv.csvProductFromSession(lookalike) === null);
+    const blocked = session('learning', 'learning', 'paid');
+    blocked.payment_link = { url: 'https://buy.stripe.com/3cI28k7G8257dwke9IfYY0u' };
+    check('a non-csv line item does not fall through to a bundle url', csv.csvProductFromSession(blocked) === null);
 
     const empty = await download.handler({ httpMethod: 'GET', queryStringParameters: {} });
     check('a visit with no session is verify-failed', empty.statusCode === 200 && empty.body.indexOf(csv.VERIFY_FAILED) !== -1 && empty.statusCode !== 404);

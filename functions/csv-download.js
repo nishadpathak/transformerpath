@@ -9,6 +9,7 @@
  * A paid session gets 15-minute HMAC links. A link with dl, sid, exp, and
  * sig streams the matching build-time CSV. Anything else renders the
  * verify-failed page. This response never includes a Payment Link URL.
+ * If STRIPE_SECRET_KEY is unset, a CSV request does not attach a file.
  *
  * Dashboard success_url, not a site button:
  * https://transformerpath.com/data/download?session_id={CHECKOUT_SESSION_ID}
@@ -100,6 +101,10 @@ function failedPage() {
   return html(200, csv.renderPage(pageOpts({ verified: false })));
 }
 
+function emailPage() {
+  return html(200, csv.renderPage(pageOpts({ verified: false, emailInstead: true })));
+}
+
 function missingPage() {
   return html(200, csv.renderPage(pageOpts({
     verified: true,
@@ -172,12 +177,13 @@ async function handle(event) {
   const dl = String(q.dl || '').trim();
   const sig = String(q.sig || '').trim();
   const asked = String(q.product || body.product || '').trim();
+  const secret = stripeSecret();
   const signedDigital = digitalOf(dl);
-  if (signedDigital) return signedDigital.signedDownload(stripeSecret(), q);
+  if (signedDigital) return signedDigital.signedDownload(secret, q);
   if (dl || sig) {
-    const secret = stripeSecret();
+    if (!secret) return emailPage();
     const sid = String(q.sid || '').trim();
-    const ok = secret && csv.verifyDownload(secret, sid, dl, q.exp, sig);
+    const ok = csv.verifyDownload(secret, sid, dl, q.exp, sig);
     if (!ok) return failedPage();
     const text = csv.readStored(exportDir(), dl);
     if (!text) return missingPage();
@@ -187,10 +193,11 @@ async function handle(event) {
   const sid = String(q.session_id || body.session_id || '').trim();
   const askedHandler = digitalOf(asked);
   function denyDigital() {
-    return askedHandler ? askedHandler.failed() : failedPage();
+    if (askedHandler) return askedHandler.failed();
+    if (!secret) return emailPage();
+    return failedPage();
   }
   if (!acceptableSessionId(sid)) return denyDigital();
-  const secret = stripeSecret();
   if (!secret) return denyDigital();
 
   let session = null;
