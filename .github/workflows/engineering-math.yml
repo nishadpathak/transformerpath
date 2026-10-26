@@ -15,6 +15,8 @@ jobs:
           node-version: '20'
       - name: Autotransformer co-ratio sizing
         run: node tests/autotransformer-sizing.test.js
+      - name: Autotransformer winding ratio, current, plate and impedance
+        run: node tests/autotransformer-calculators.test.js
       - name: Nameplate short-circuit current in kA
         run: node tests/nameplate-short-circuit.test.js
       - name: Published calculator validation examples

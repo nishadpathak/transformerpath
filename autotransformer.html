@@ -19,9 +19,7 @@
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
-:root{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c}
-*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
-body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
+#stage{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c;position:relative;height:calc(100dvh - 64px);min-height:520px;overflow:hidden;background:#0a1624;color:#e8edf4}
 #c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
 #topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(10,22,36,.95),rgba(10,22,36,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
 #topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
@@ -39,9 +37,36 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 #help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(20,37,61,.85);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
 .lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.92);border:1px solid var(--line);color:#e8edf4;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
-@media(max-width:760px){#panel{width:min(248px,calc(100vw - 16px))}#topbar{height:auto;flex-wrap:wrap;align-items:center;row-gap:6px;padding-top:8px;padding-bottom:8px}#topbar h1{font-size:.78rem;white-space:normal;min-width:0}}
+@media(max-width:760px){#panel{width:min(248px,calc(100vw - 16px))}#topbar{height:auto;flex-wrap:wrap;align-items:center;row-gap:6px;padding-top:8px;padding-bottom:8px}#topbar h1{font-size:.78rem;white-space:normal;min-width:0}#stage{height:calc(100dvh - 64px);min-height:480px}}
+.autocalc{max-width:1100px;margin:0 auto;padding:36px 20px 72px}
+.autocalc h2{font-size:1.45rem;margin:0 0 8px;color:var(--ink)}
+.autocalc h3{font-size:1.02rem;margin:0 0 6px;color:var(--ink)}
+.autocalc .lead,.autocalc p{color:var(--text);line-height:1.65}
+.autocalc .lead{color:var(--muted)}
+.autocalc .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.autocalc label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.autocalc input,.autocalc select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit}
+.autocalc .actions{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 8px}
+.autocalc .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:16px}
+.autocalc .card{border:1px solid var(--border);border-radius:12px;background:var(--card);padding:14px 16px}
+.autocalc .card.wide{grid-column:1 / -1}
+.autocalc .formula{color:var(--muted);font-size:.84rem;line-height:1.5;margin:0 0 8px}
+.autocalc .row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--border);padding:7px 0;font-size:.92rem}
+.autocalc .row:last-child{border-bottom:0}
+.autocalc .row span{color:var(--muted)}
+.autocalc .row b{color:var(--ink);text-align:right}
+.autocalc table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
+.autocalc th,.autocalc td{border-bottom:1px solid var(--border);padding:7px 8px;text-align:left}
+.autocalc th{color:var(--muted);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.autocalc td.num,.autocalc th.num{text-align:right}
+.autocalc .check{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:10px;padding:12px 16px;margin-top:18px;line-height:1.55}
+.autocalc .check b{color:var(--accent)}
+.autocalc .err{color:#b91c1c;font-weight:700}
+.autocalc .contact{font-size:.92rem;color:var(--muted)}
+@media print{#stage,header,footer,.actions{display:none!important}.autocalc{max-width:none;padding:0}}
 </style>
 <script src="consent.js" defer></script>
+    <link rel="stylesheet" href="style.css?v=14">
     <link rel="stylesheet" href="tp-theme.css?v=6">
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -135,11 +160,14 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   <script src="tp-nav.js?v=8" defer></script>
   <script src="tp-pwa.js?v=8" defer></script>
 </header>
+<main id="main">
+<div id="stage">
 <div id="c3d"></div>
 <div id="topbar">
   <h1>🔗 Autotransformer</h1>
   <a href="academy.html">🏠 Hub</a>
   <a href="learn.html">← design course</a>
+  <a href="#calculators">Calculators</a>
   <a href="autotransformer-sizing.html">Sizing</a>
   <a href="gsu.html">GSU →</a>
 </div>
@@ -159,13 +187,17 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   <div id="info"><span class="hint">Click any part to identify it. An autotransformer shares one winding between HV and IV — that is why it is smaller and cheaper than a two-winding unit at close ratios, but offers no galvanic isolation.</span></div>
 </div>
 <div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>The IV terminal taps the junction of the <b>common</b> and <b>series</b> windings — HV = series + common in series.</div>
+</div>
 
 <script src="vendor/three.min.js"></script>
 <script src="tp-canvas-scroll.js"></script>
 <script>
 const container=document.getElementById('c3d');
+const stage=document.getElementById('stage');
+function viewSize(){const w=container.clientWidth||innerWidth;const h=container.clientHeight||innerHeight;return {w:w,h:h};}
+const view=viewSize();
 const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(view.w,view.h);
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.14;
 container.appendChild(renderer.domElement);
@@ -174,7 +206,7 @@ const scene=new THREE.Scene();
  const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#2b5a86');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
  g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
 scene.fog=new THREE.Fog(0x0d1f33,220,560);
-const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,0.4,900);
+const camera=new THREE.PerspectiveCamera(46,view.w/view.h,0.4,900);
 scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.92));
 const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(90,140,90);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
 const scam=sun.shadow.camera;scam.left=-110;scam.right=110;scam.top=140;scam.bottom=-30;scam.far=400;scene.add(sun);
@@ -281,12 +313,12 @@ TPCanvasScroll.bindTwoFinger(el, function (g) {
 });
 TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.parentElement);
 const ray=new THREE.Raycaster();const mouse=new THREE.Vector2();
-function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);
+function pick(e){const rect=el.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;ray.setFromCamera(mouse,camera);
   const hits=ray.intersectObjects(pickables,true);for(const h of hits){if(h.object.visible&&h.object.userData.key){selectPart(h.object.userData.key);return;}}}
 const info=document.getElementById('info');
 function selectPart(k){const p=PARTS[k];if(!p)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
 const labels=[];
-function mkLabel(text,pos,key){const e=document.createElement('div');e.className='lbl';e.textContent=text;if(key)e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({el:e,pos});}
+function mkLabel(text,pos,key){const e=document.createElement('div');e.className='lbl';e.textContent=text;if(key)e.addEventListener('click',()=>selectPart(key));stage.appendChild(e);labels.push({el:e,pos});}
 mkLabel('HV 400 kV',new THREE.Vector3(0,HV_Y+10,0),'term');
 mkLabel('Series',new THREE.Vector3(10,COMMON_Y0+COMMON_H+GAP+SERIES_H/2,0),'series');
 mkLabel('IV 220 kV (junction)',new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP/2,17),'junc');
@@ -301,65 +333,105 @@ let flow=true;document.getElementById('bFlow').onclick=function(){flow=!flow;thi
 function tick(){requestAnimationFrame(tick);
   if(rotating){sph.th+=0.0038;applyCam();}
   dots.forEach(o=>{o.m.visible=flow;if(!flow)return;o.t+=0.004;if(o.t>1)o.t-=1;o.m.position.copy(flowPath.getPoint(o.t));});
-  labels.forEach(L=>{if(!labelsOn){L.el.style.display='none';return;}const v=L.pos.clone();v.project(camera);
-    if(v.z>1){L.el.style.display='none';return;}L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  labels.forEach(L=>{if(!labelsOn){L.el.style.display='none';return;}const p=L.pos.clone();p.project(camera);
+    if(p.z>1){L.el.style.display='none';return;}const box=viewSize();L.el.style.display='block';L.el.style.left=((p.x*.5+.5)*box.w)+'px';L.el.style.top=((-p.y*.5+.5)*box.h)+'px';});
   renderer.render(scene,camera);
 }
 tick();
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+function fit(){const box=viewSize();if(!box.w||!box.h)return;camera.aspect=box.w/box.h;camera.updateProjectionMatrix();renderer.setSize(box.w,box.h);}
+addEventListener('resize',fit);
+fit();
 </script>
+<section class="autocalc" id="calculators">
+  <h2>Autotransformer calculators</h2>
+  <p class="lead">Winding ratio, common-winding current, rating plate and terminal impedance for a three-phase step-down autotransformer. The model above is the 400/220 kV reference. This form opens on the 100 MVA, 132/66 kV check. Equivalent rating without an impedance split is also on the <a href="autotransformer-sizing.html">sizing page</a>.</p>
+  <form id="at-form" action="autotransformer.html#calculators" method="get">
+    <div class="fields">
+      <div><label for="at-mva">Throughput S (MVA)</label><input id="at-mva" name="s" type="number" value="100" min="0" step="any" inputmode="decimal"></div>
+      <div><label for="at-hv">Primary HV (kV)</label><input id="at-hv" name="hv" type="number" value="132" min="0" step="any" inputmode="decimal"></div>
+      <div><label for="at-lv">Secondary LV (kV)</label><input id="at-lv" name="lv" type="number" value="66" min="0" step="any" inputmode="decimal"></div>
+      <div><label for="at-uk">uk% on the throughput base</label><input id="at-uk" name="uk" type="number" value="12.5" min="0" step="any" inputmode="decimal"></div>
+      <div><label for="at-pri">Primary connection</label><select id="at-pri" name="pri"><option value="D" selected>D · Delta</option><option value="Y">Y · Star</option><option value="Z">Z · Zigzag</option></select></div>
+      <div><label for="at-sec">Secondary connection</label><select id="at-sec" name="sec"><option value="D">D · Delta</option><option value="Y" selected>Y · Star</option><option value="Z">Z · Zigzag</option></select></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-amber" type="submit">Calculate</button>
+      <button class="btn btn-outline" type="button" onclick="window.print()">Print</button>
+    </div>
+  </form>
+  <p id="at-error" class="err" role="alert" hidden></p>
+  <div id="at-results" class="cards" aria-live="polite">
+    <article class="card" id="winding-ratio">
+      <h3>Winding ratio</h3>
+      <p class="formula">a = V<sub>HV</sub> / V<sub>LV</sub>. Series and common turns are (V<sub>HV</sub> − V<sub>LV</sub>) : V<sub>LV</sub>, which is (a − 1) : 1. The series section is the voltage between the two line terminals, not the HV terminal voltage.</p>
+      <div class="row"><span>Ratio a</span><b id="winding-ratio-a"></b></div>
+      <div class="row"><span>HV / LV</span><b id="winding-ratio-kv"></b></div>
+      <div class="row"><span>N<sub>series</sub> : N<sub>common</sub></span><b id="winding-ratio-turns"></b></div>
+      <div class="row"><span>Series-section voltage</span><b id="winding-ratio-series-kv"></b></div>
+    </article>
+    <article class="card" id="common-current">
+      <h3>Common-winding current</h3>
+      <p class="formula">I<sub>LV</sub> = S / (√3 · V<sub>LV</sub>). Series current is the HV line current, I<sub>LV</sub> / a. Common current is I<sub>LV</sub> − I<sub>HV</sub>.</p>
+      <div class="row"><span>I<sub>common</sub> / I<sub>LV</sub></span><b id="common-current-percent"></b></div>
+      <div class="row"><span>Less than the LV line current</span><b id="common-current-less"></b></div>
+      <div class="row"><span>I<sub>common</sub></span><b id="common-current-a"></b></div>
+      <div class="row"><span>I<sub>LV</sub></span><b id="common-current-through"></b></div>
+      <div class="row"><span>I<sub>series</sub> (HV)</span><b id="common-current-series"></b></div>
+    </article>
+    <article class="card wide" id="rating-plate">
+      <h3>Rating plate</h3>
+      <p class="formula">Throughput is the power through the terminals. The equivalent two-winding rating is S · (V<sub>HV</sub> − V<sub>LV</sub>) / V<sub>HV</sub>. Connection letters are printed as entered. They do not set a clock hour.</p>
+      <div class="row"><span>Throughput</span><b id="plate-mva"></b></div>
+      <div class="row"><span>Equivalent (self) rating</span><b id="plate-eq"></b></div>
+      <div class="row"><span>Connections</span><b id="plate-vector"></b></div>
+      <div class="row"><span>uk%</span><b id="plate-uk"></b></div>
+      <table>
+        <thead>
+          <tr><th>Section</th><th class="num">U (kV)</th><th class="num">I (A)</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>HV terminal</td><td class="num" id="plate-hv-kv"></td><td class="num" id="plate-hv-a"></td><td>Line</td></tr>
+          <tr><td>Series section</td><td class="num" id="plate-series-kv"></td><td class="num" id="plate-series-a"></td><td>Series</td></tr>
+          <tr><td>LV terminal</td><td class="num" id="plate-lv-kv"></td><td class="num" id="plate-lv-a"></td><td>Through</td></tr>
+          <tr><td>Common winding</td><td class="num" id="plate-common-kv"></td><td class="num" id="plate-common-a"></td><td>Common</td></tr>
+        </tbody>
+      </table>
+    </article>
+    <article class="card wide" id="impedance">
+      <h3>Impedance</h3>
+      <p class="formula">Percent impedance at this throughput is uk% on both terminals. Ohms are Z = (uk/100) · U² / S, so the ohmic value scales with U². One uk% is not split into a common-winding percent. Impedance voltage is uk% × U. Symmetrical short-circuit current is I / (uk/100). Short-circuit power is S / (uk/100), in MVA.</p>
+      <div class="row"><span>Z% · HV terminal</span><b id="z-hv-percent"></b></div>
+      <div class="row"><span>Z% · LV terminal</span><b id="z-lv-percent"></b></div>
+      <div class="row"><span>Z · common winding</span><b>Not derived from one uk%</b></div>
+      <div class="row"><span>Z ohms · HV</span><b id="z-hv-ohm"></b></div>
+      <div class="row"><span>Z ohms · LV</span><b id="z-lv-ohm"></b></div>
+      <div class="row"><span>Impedance voltage · HV</span><b id="z-hv-drop"></b></div>
+      <div class="row"><span>Impedance voltage · LV</span><b id="z-lv-drop"></b></div>
+      <div class="row"><span>Short-circuit current · HV</span><b id="z-hv-sc"></b></div>
+      <div class="row"><span>Short-circuit current · LV</span><b id="z-lv-sc"></b></div>
+      <div class="row"><span>Short-circuit power</span><b id="z-sc-mva"></b></div>
+    </article>
+  </div>
+  <div class="check" id="at-validation">
+    <b>Validation example.</b>
+    Inputs: throughput 100 MVA, HV 132 kV, LV 66 kV, uk 12.5%, connections D and Y.
+    Winding ratio a = 2. Series:common turns 1 : 1. Series-section voltage 66 kV.
+    LV line current 874.8 A, series current 437.4 A, common current 437.4 A.
+    Equivalent rating 50 MVA.
+    Percent impedance 12.5% on both terminals. Ohmic impedance 21.78 Ω on HV and 5.445 Ω on LV.
+    Impedance voltage 16.5 kV on HV and 8.25 kV on LV.
+    The plate prints D / Y and does not add a clock hour.
+    References: IEEE C57.12.10 uses the co-ratio for the equivalent rating. IEC 60076-1 rated current is I = S / (√3 · U). IEC 60076-5 clause 4.1 is the symmetrical short-circuit current. Percent impedance is not divided by the square of the voltage ratio.
+  </div>
+  <h2>Method</h2>
+  <p>Method (step-down autotransformer): series voltage = HV−LV, common = LV; series:common turns = (HV−LV):LV. Common-winding current I<sub>c</sub> = I<sub>LV</sub> − I<sub>HV</sub>. Self (transformer) rating = S·(HV−LV)/HV — the autotransformer only processes this fraction of throughput, which is why it is smaller.</p>
+  <p>Short-circuit currents use the entered terminal uk%. Percent impedance at the same throughput is not divided by a². Ohmic impedance does scale with voltage squared. One uk% is not split into a common-winding percent; that split needs the coupled-winding equivalent circuit. IEC 60076-5 Table 1 is a minimum for two-winding units, not a 4 to 15 percent cap, and clause 4.1 is the symmetrical short-circuit current. Treat these figures as a check, not a manufacturer test certificate.</p>
+  <p class="contact">Questions about a specific unit: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+</section>
+</main>
+<script src="viz/autotransformer-calculators.js" defer></script>
 <script src="tp-theme.js?v=1" defer></script>
 <script src="analytics.js?v=8" defer></script>
-<section class="autocalc" id="autocalc" style="max-width:960px;margin:0 auto;padding:30px 20px 50px">
-  <style>
-    .autocalc label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
-    .autocalc input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:.95rem;font-family:inherit}
-    .autocalc .arow{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--border);padding:8px 0;font-size:.92rem}
-    .autocalc .arow span{color:var(--muted)}
-    .autocalc .arow b{color:var(--ink);text-align:right}
-    @media print{ #topbar,#panel,#canvas,#help,header,footer{display:none!important} }
-  </style>
-  <h2 style="color:var(--ink);font-size:1.5rem;margin:0 0 4px">Autotransformer design check</h2>
-  <p style="color:var(--muted);font-size:.92rem;margin:0 0 16px">First-cut check for an autotransformer: series and common are parts of one winding, with no galvanic isolation. Tender / estimation grade — verify with the manufacturer. Equivalent rating and winding currents, without an impedance split, are on the <a href="autotransformer-sizing.html" style="color:var(--accent)">sizing page</a>.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px">
-    <div><label for="avh">HV (kV)</label><input id="avh" type="number" value="400" step="1"></div>
-    <div><label for="avl">LV (kV)</label><input id="avl" type="number" value="220" step="1"></div>
-    <div><label for="as">Rating (MVA)</label><input id="as" type="number" value="400" step="10"></div>
-    <div><label for="az">Assumed %Z</label><input id="az" type="number" value="12" step="0.1"></div>
-  </div>
-  <button class="btn btn-amber" type="button" onclick="autoCalc()">Calculate</button>
-  <button class="btn btn-outline" type="button" onclick="window.print()" style="margin-left:8px">Print / PDF report</button>
-  <div id="autoOut" style="margin-top:16px"></div>
-  <p class="note" style="font-size:.8rem;color:var(--muted);margin-top:14px;line-height:1.5">Method (step-down autotransformer): series voltage = HV−LV, common = LV; series:common turns = (HV−LV):LV. Common-winding current I<sub>c</sub> = I<sub>LV</sub> − I<sub>HV</sub>. Self (transformer) rating = S·(HV−LV)/HV — the autotransformer only processes this fraction of throughput, which is why it is smaller. Short-circuit currents use the assumed %Z; the autotransformer's actual %Z is lower than an equivalent two-winding, and the exact IEC 60076-5 value needs the coupled-winding equivalent circuit — treat the impedance figures as first-cut.</p>
-</section>
-<script>
-function autoCalc(){
-  var Vh=+document.getElementById('avh').value, Vl=+document.getElementById('avl').value,
-      S=+document.getElementById('as').value, z=+document.getElementById('az').value;
-  var out=document.getElementById('autoOut');
-  if(!(Vh>Vl&&Vh>0&&Vl>0&&S>0)){ out.innerHTML='<p style="color:#b91c1c">Enter HV &gt; LV &gt; 0 and a rating.</p>'; return; }
-  var k=Vh/Vl, VS=Vh-Vl, VC=Vl, r=VS/VC;
-  var Ih=S*1000/(Math.sqrt(3)*Vh), Il=S*1000/(Math.sqrt(3)*Vl), Ic=Il-Ih;
-  var St=S*(Vh-Vl)/Vh, econ=(1-Vl/Vh)*100;
-  var IscH=Ih/(z/100), IscL=Il/(z/100);
-  function f(x,d){return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toLocaleString('en-US',{maximumFractionDigits:d});}
-  function row(k,v){return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>';}
-  out.innerHTML=
-    row('HV / LV voltage', f(Vh,1)+' / '+f(Vl,1)+' kV')+
-    row('Ratio (HV : LV)', k.toFixed(3)+' : 1')+
-    row('Series : common voltage', f(VS,1)+' / '+f(VC,1)+' kV')+
-    row('Series : common turns', r.toFixed(2)+' : 1')+
-    row('HV line current', f(Ih,1)+' A')+
-    row('LV line current', f(Il,1)+' A')+
-    row('Common-winding current', f(Ic,1)+' A (I<sub>LV</sub> &minus; I<sub>HV</sub>)')+
-    row('Throughput rating', f(S,1)+' MVA')+
-    row('Self (transformer) rating', f(St,1)+' MVA = S · (HV−LV)/HV')+
-    row('Material vs two-winding', '≈ '+f(econ,1)+' % smaller')+
-    row('Short-circuit — HV', f(IscH,0)+' A (at '+f(z,1)+'&nbsp;%Z)')+
-    row('Short-circuit — LV', f(IscL,0)+' A');
-}
-document.addEventListener('DOMContentLoaded', autoCalc);
-</script>
 <footer>
   <div class="container">
     <div class="cols">
