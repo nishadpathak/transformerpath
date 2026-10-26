@@ -203,7 +203,7 @@ async function main() {
     })]
   };
   const badge = paid.manufacturerBadgeHtml('a-plus-power-solution', verifiedDoc);
-  check('verified row renders VERIFIED MANUFACTURER', badge.indexOf('>VERIFIED MANUFACTURER<') >= 0 && badge.indexOf('data-company-slug="a-plus-power-solution"') >= 0, badge);
+  check('verified row renders the identity badge', badge.indexOf(paid.IDENTITY_BADGE_HTML) >= 0 && badge.indexOf('data-company-slug="a-plus-power-solution"') >= 0 && badge.indexOf('>VERIFIED MANUFACTURER<') < 0, badge);
   check('badge includes commerce neutrality', badge.indexOf('does NOT mean product certified') >= 0);
 
   const company = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8')).companies

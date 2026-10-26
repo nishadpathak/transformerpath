@@ -41,6 +41,15 @@ function expectedHref(slug) {
   return LINK + '?client_reference_id=' + encodeURIComponent(slug);
 }
 
+function hasVerifiedLabel(html) {
+  const text = String(html || '');
+  return text.indexOf('>✓ Verified<') >= 0
+    || text.indexOf('>VERIFIED MANUFACTURER<') >= 0
+    || text.indexOf('>Verified</span>') >= 0
+    || text.indexOf('Identity &amp; contact checked') >= 0
+    || text.indexOf('Identity & contact checked') >= 0;
+}
+
 function hrefViolation(tag, slug, where) {
   const href = attr(tag, 'href');
   if (href !== expectedHref(slug)) {
@@ -87,8 +96,8 @@ function auditProfiles(doc) {
       payAnchors(html).forEach(function (tag) {
         violations.push(file + ': payment CTA still present on an earned profile');
       });
-      if (html.indexOf('>✓ Verified<') >= 0 || html.indexOf('>VERIFIED MANUFACTURER<') >= 0 || html.indexOf('>Verified</span>') >= 0) {
-        if (!earned) violations.push(file + ': verified label without a reviewed paid row');
+      if (hasVerifiedLabel(html) && !earned) {
+        violations.push(file + ': verified label without a reviewed paid row');
       }
       return;
     }
@@ -101,7 +110,7 @@ function auditProfiles(doc) {
     if (claimAt < 0 || noteAt < 0 || claimAt > noteAt) {
       violations.push(file + ': CTA is not at the top of the profile');
     }
-    if (html.indexOf('>✓ Verified<') >= 0 || html.indexOf('>VERIFIED MANUFACTURER<') >= 0 || html.indexOf('>Verified</span>') >= 0) {
+    if (hasVerifiedLabel(html)) {
       violations.push(file + ': verified label without a reviewed paid row');
     }
     payAnchors(html).forEach(function (tag) {
@@ -140,7 +149,7 @@ function auditBoard(board, map, earned) {
     if (kinds.indexOf('claim') < 0 || kinds.indexOf('get-verified') < 0) {
       violations.push('directory row ' + name + ': missing Get verified or Claim this profile CTA');
     }
-    if (part.indexOf('>✓ Verified<') >= 0 || part.indexOf('data-paid-badge="verified-manufacturer"') >= 0 || part.indexOf('data-earned-verified="1"') >= 0) {
+    if (hasVerifiedLabel(part) || part.indexOf('data-paid-badge="verified-manufacturer"') >= 0 || part.indexOf('data-earned-verified="1"') >= 0) {
       violations.push('directory row ' + name + ': verified label without a reviewed paid row');
     }
     ctas.forEach(function (tag) {

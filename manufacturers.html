@@ -80,6 +80,7 @@
 @media (max-width:640px){ .cat-tiles { grid-template-columns:1fr; } }
 /* verified badge + tiers */
 .v-badge { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#166534; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:2px 7px; border-radius:999px; margin-left:6px; }
+.v-badge.identity { text-transform:none; letter-spacing:0; font-size:.72rem; font-weight:650; white-space:normal; border-radius:8px; line-height:1.35; max-width:18rem; }
 .avail-chip{min-height:44px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--text);padding:8px 14px;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
 .avail-chip[aria-pressed="true"]{border-color:var(--amber);box-shadow:inset 0 0 0 1px var(--amber)}
 .avail-filters{margin:0 0 12px}
@@ -307,8 +308,8 @@ Showing 1011 companies across 90 countries
 
     <div class="tier-legend">
       <span class="lg"><span class="dot d-L">Listed</span> public-source entry</span>
-      <span class="lg"><span class="dot d-V">✓ Verified</span> company-confirmed</span>
-      <span class="lg"><span class="dot d-P">★ Supplier Pro</span> company documentation reviewed</span>
+      <span class="lg"><span class="dot d-V" style="text-transform:none;letter-spacing:0;font-size:.72rem;font-weight:700;white-space:normal">Identity &amp; contact checked — not a product certification</span></span>
+      <span class="lg"><span class="dot d-P">★ Supplier Pro</span> company documentation reviewed — not a product certification</span>
       <a href="verified-standards.html">How verification works →</a>
     </div>
 
@@ -654,7 +655,7 @@ async function loadData() {
 function tpills(types){ if(!types) return ''; return types.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tpill t-${t}">${TNAME[t]||t}</span>`).join(''); }
 // A maker tuple is [name, city, website, types, tierFlag?, established?].
 // m[4]: 'P' = Supplier Pro, 'V' = Verified, else Listed. m[5]: established year (optional).
-function vbadge(m){ if(m[4]==='P') return '<span class="v-badge pro">★ Supplier Pro</span>'; if(m[4]==='V' && EARNED_VERIFIED.has(paySlug(m[0]))) return '<span class="v-badge" data-earned-verified="1">✓ Verified</span>'; return ''; }
+function vbadge(m){ if(m[4]==='P') return '<span class="v-badge pro">★ Supplier Pro</span>'; if(m[4]==='V' && EARNED_VERIFIED.has(paySlug(m[0]))) return '<span class="v-badge identity" data-earned-verified="1">Identity &amp; contact checked — not a product certification</span>'; return ''; }
 
 // Category browse tiles (count makers offering each transformer type)
 const CATS=[{k:'PT',ico:'⚡',t:'Power Transformers',d:'HV / EHV power units'},{k:'DT',ico:'🔌',t:'Distribution',d:'MV/LV distribution'},{k:'DRY',ico:'🌀',t:'Dry-type / Cast Resin',d:'Cast-resin & VPI'}];
