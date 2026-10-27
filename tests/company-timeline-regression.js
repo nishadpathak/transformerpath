@@ -48,7 +48,8 @@ if (fs.existsSync(voltampPage)) {
 const intel = read('intelligence.html');
 const actAt = intel.indexOf('Latest company activity');
 check('intelligence has Latest company activity', actAt >= 0);
-const activity = actAt >= 0 ? intel.slice(actAt, actAt + 20000) : '';
+const nextAt = actAt >= 0 ? intel.indexOf('Companies with structured timelines', actAt) : -1;
+const activity = actAt >= 0 ? intel.slice(actAt, nextAt > actAt ? nextAt : actAt + 40000) : '';
 check('intelligence activity contains Barajevo', /Barajevo/.test(activity));
 
 const dates = activity.match(/20\d{2}-\d{2}-\d{2}/g) || [];

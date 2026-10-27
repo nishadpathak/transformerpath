@@ -239,6 +239,16 @@ publishableAll.forEach(function (it) {
     });
   }
 });
+// Curated feed days count. A GCC-only observation must not roll the
+// feed-wide content date backwards.
+['GCC', 'India', 'Europe', 'USA', 'RoW'].forEach(function (region) {
+  const items = intel[region] && intel[region].items;
+  (items || []).forEach(function (it) {
+    ['date_iso', 'publication_date', 'update_date', 'tender_float_date', 'event_date'].forEach(function (k) {
+      pushObs(it[k]);
+    });
+  });
+});
 dateCandidates.sort();
 const gccNewest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
 if (gccNewest) {
