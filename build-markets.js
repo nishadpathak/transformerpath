@@ -9,6 +9,8 @@
  * all counters are generated from central data (site-stats.json), never typed.
  *
  * Markets are created only where there is enough data (7 core markets first).
+ * The index at markets.html leads with MARKET_LEAD, then every other record
+ * in the MARKETS array (Gulf markets and India stay in that list).
  * Run: node build-markets.js  (part of the Netlify build command).
  */
 'use strict';
@@ -769,9 +771,31 @@ function marketPage(m) {
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
 }
 
+// Display order for /markets.html and the order pages are written.
+// Census records stay in MARKETS. This list only decides which hubs appear first.
+const MARKET_LEAD = ['usa', 'germany', 'united-kingdom', 'italy', 'poland', 'south-korea', 'japan'];
+function marketsInPageOrder(list) {
+  const rank = {};
+  MARKET_LEAD.forEach(function (slug, i) { rank[slug] = i; });
+  MARKET_LEAD.forEach(function (slug) {
+    if (!list.some(function (m) { return m.slug === slug; })) {
+      console.error('Market lead is not in the census: ' + slug);
+      process.exit(1);
+    }
+  });
+  const lead = [];
+  const rest = [];
+  list.forEach(function (m) {
+    if (Object.prototype.hasOwnProperty.call(rank, m.slug)) lead.push(m);
+    else rest.push(m);
+  });
+  lead.sort(function (a, b) { return rank[a.slug] - rank[b.slug]; });
+  return lead.concat(rest);
+}
+
 fs.mkdirSync('markets', { recursive: true });
 const links = [];
-MARKETS.forEach(function (m) {
+marketsInPageOrder(MARKETS).forEach(function (m) {
   const dir = 'markets/' + m.slug; fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(dir + '/index.html', marketPage(m));
   const mk = makersFor(m);
