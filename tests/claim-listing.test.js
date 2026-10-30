@@ -211,9 +211,23 @@ setTimeout(function () {
   const savedWindow = global.window;
   global.window = { location: { search: '', assign: function (url) { clicked.href = url; } } };
   claim.primePayPlans(payPlans);
-  const payEvent = { target: { closest: function () { return { getAttribute: function (k) { return k === 'data-pay-plan' ? 'featured_verified' : 'bemag-transformer'; } }; } } };
+  const emailInput = { value: '', reportValidity: function () { this.reported = true; } };
+  const payBtn = {
+    getAttribute: function (k) {
+      if (k === 'data-pay-plan') return 'featured_verified';
+      if (k === 'data-pay-slug') return 'bemag-transformer';
+      return '';
+    },
+    parentNode: {
+      querySelector: function (sel) { return sel.indexOf('email') >= 0 ? emailInput : null; }
+    }
+  };
+  const payEvent = { target: { closest: function () { return payBtn; } } };
   claim.onPayClick(payEvent);
-  check('a click opens the existing payment link', clicked.href === both + '?client_reference_id=bemag-transformer', clicked.href);
+  check('checkout waits for an email', clicked.href === '' && emailInput.reported === true, clicked.href);
+  emailInput.value = 'buyer@example.com';
+  claim.onPayClick(payEvent);
+  check('a click keeps client_reference_id and adds the email', clicked.href === both + '?client_reference_id=bemag-transformer&prefilled_email=' + encodeURIComponent('buyer@example.com'), clicked.href);
   global.window = savedWindow;
   check('the prerendered page stays out of the sitemap', sitemap.indexOf('claim-listing') === -1);
   const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
