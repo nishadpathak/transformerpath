@@ -170,7 +170,13 @@ const titleAll = homeHtml.match(/title="View (\d+) procurement tenders worldwide
 check('homepage tender tooltip matches the tender total', titleAll && Number(titleAll[1]) === rows.length, (titleAll && titleAll[1]) + ' vs ' + rows.length);
 
 const paid = JSON.parse(fs.readFileSync('data/paid-listings.json', 'utf8'));
-check('no paid verified listing is on file', !(paid.listings || []).some(function (row) { return row && row.status === 'verified'; }));
+const verifiedListings = (paid.listings || []).filter(function (row) { return row && row.status === 'verified'; });
+check('the only reviewed verified listing is Bey Trafo', verifiedListings.length === 1
+  && verifiedListings[0].product === 'verified_manufacturer'
+  && verifiedListings[0].company_slug === 'bey-trafo'
+  && verifiedListings[0].reviewer
+  && verifiedListings[0].reviewed_at
+  && verifiedListings[0].verification_evidence);
 
 const brasil = makers.find(function (c) { return c.slug === 'hitachi-energy-brasil'; });
 check('Hitachi Energy Brasil does not carry the 500,000 MVA group figure', brasil && !brasil.reported_mva, brasil && brasil.reported_mva);

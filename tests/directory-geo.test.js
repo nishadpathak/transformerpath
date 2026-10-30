@@ -90,7 +90,7 @@ function claimSlugFor(html, name) {
   const slug = claimSlugFor(europe.html, name);
   check('europe claim slug for ' + name + ' is a prerendered page', !!slug && !!claimIndex[slug], slug);
 });
-check('turkiye claim links all use prerendered slugs', (turkiye.html.match(/class="mk-row"/g) || []).length === 37 && (turkiye.html.match(/href="\/claim-listing\/[a-z0-9-]+\//g) || []).length === 37);
+check('turkiye claim links all use prerendered slugs', (turkiye.html.match(/class="mk-row"/g) || []).length === 38 && (turkiye.html.match(/href="\/claim-listing\/[a-z0-9-]+\//g) || []).length === 38);
 check('a blank website is an em dash', usa.html.indexOf('>R.E. Uptegraff Mfg</a>') !== -1 && usa.html.indexOf('<span class="site">—</span>') !== -1);
 
 const countryNames = model.countries.map(function (row) { return row.country; });

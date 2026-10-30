@@ -1,5 +1,17 @@
 {
-  "updated": "2026-10-14",
+  "updated": "2026-10-30",
   "note": "Admin-reviewed commercial listings. Render VERIFIED MANUFACTURER or FEATURED only when status is verified and the row has reviewer, reviewed_at, and verification_evidence. Stripe payments stay paid_pending_verification in Supabase until a reviewer adds a row here. Payment never changes capability, evidence, or ranking.",
-  "listings": []
+  "listings": [
+    {
+      "product": "verified_manufacturer",
+      "company_slug": "bey-trafo",
+      "company_name": "Bey Trafo",
+      "email": "satis@beytrafo.com.tr",
+      "status": "verified",
+      "reviewer": "TransformerPath",
+      "reviewed_at": "2026-10-30T12:00:00.000Z",
+      "expires_at": "2027-10-30T12:00:00.000Z",
+      "verification_evidence": "Identity and contact checked against https://www.beytrafo.com.tr on 2026-10-30. The site states power transformers up to 31.5 MVA and 66 kV, distribution transformers, and the Eyyübiye / Şanlıurfa address. satis@beytrafo.com.tr is the directory contact on the beytrafo.com.tr domain. Not a product certification."
+    }
+  ]
 }

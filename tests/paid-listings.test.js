@@ -526,11 +526,15 @@ async function main() {
   const profileDirs = fs.readdirSync('manufacturers').filter(function (d) {
     return fs.existsSync('manufacturers/' + d + '/index.html') && fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8').indexOf('>Claim this profile →</a>') >= 0;
   });
-  const linkedProfiles = profileDirs.filter(function (d) {
+  const reviewedDoc = paid.load();
+  const unpaidProfiles = profileDirs.filter(function (d) { return !paid.isVerifiedManufacturer(d, reviewedDoc); });
+  const linkedProfiles = unpaidProfiles.filter(function (d) {
     const html = fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8');
     return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 one-time — Get Verified') >= 0;
   });
-  check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 880, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
+  check('manufacturer profiles use the Get Verified payment link', unpaidProfiles.length === linkedProfiles.length && linkedProfiles.length > 880, 'profiles=' + profileDirs.length + ' unpaid=' + unpaidProfiles.length + ' linked=' + linkedProfiles.length);
+  const beyPage = fs.readFileSync('manufacturers/bey-trafo/index.html', 'utf8');
+  check('reviewed Bey Trafo profile omits the Get Verified payment link', paid.isVerifiedManufacturer('bey-trafo', reviewedDoc) && beyPage.indexOf('Pay $499 one-time — Get Verified') < 0 && beyPage.indexOf('data-paid-badge="verified-manufacturer"') >= 0);
   check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
   const sampleCtas = paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
   check('profile and directory ctas use the $499 link with the maker slug', sampleCtas.indexOf('href="' + mfrLink + '?client_reference_id=erea-energy-engineering"') >= 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);
