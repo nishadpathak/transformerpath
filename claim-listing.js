@@ -73,6 +73,108 @@
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(s);
   }
 
+  function validEmail(email) {
+    var s = String(email || '').trim();
+    if (!s || s.length > 160) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  }
+
+  function withPrefilledEmail(url, email) {
+    var raw = String(url || '');
+    var hash = '';
+    var hashAt = raw.indexOf('#');
+    if (hashAt >= 0) {
+      hash = raw.slice(hashAt);
+      raw = raw.slice(0, hashAt);
+    }
+    raw = raw.replace(/([?&])prefilled_email=[^&]*/g, '$1');
+    raw = raw.replace(/[?&]$/, '').replace(/\?&/g, '?').replace(/&&/g, '&');
+    var sep = raw.indexOf('?') >= 0 ? '&' : '?';
+    return raw + sep + 'prefilled_email=' + encodeURIComponent(String(email || '').trim()) + hash;
+  }
+
+  function emailTools() {
+    if (typeof window !== 'undefined' && window.tpCheckoutEmail && window.tpCheckoutEmail.withPrefilledEmail) return window.tpCheckoutEmail;
+    if (typeof require === 'function') {
+      try { return require('./checkout-email'); } catch (e) {}
+    }
+    return null;
+  }
+
+  var emailScriptPromise = null;
+
+  function whenTools() {
+    var tools = emailTools();
+    if (tools && tools.withPrefilledEmail) return tools;
+    if (typeof document === 'undefined' || !document.createElement) return tools;
+    if (emailScriptPromise) return emailScriptPromise;
+    emailScriptPromise = new Promise(function (resolve) {
+      var script = document.createElement('script');
+      script.src = '/checkout-email.js';
+      var done = false;
+      function finish() {
+        if (done) return;
+        done = true;
+        resolve(emailTools());
+      }
+      script.onload = finish;
+      script.onerror = finish;
+      setTimeout(finish, 1500);
+      var parent = document.head || document.documentElement;
+      if (!parent || !parent.appendChild) finish();
+      else parent.appendChild(script);
+    });
+    return emailScriptPromise;
+  }
+
+  function pagePath() {
+    try {
+      if (typeof location !== 'undefined' && location && location.pathname) return String(location.pathname);
+    } catch (e) {}
+    return '';
+  }
+
+  function fieldFor(btn) {
+    var parent = btn && btn.parentNode;
+    if (parent && parent.querySelector) return parent.querySelector('input[type="email"][data-checkout-email]');
+    return null;
+  }
+
+  function ensureCheckoutFields() {
+    if (typeof document === 'undefined' || !document.querySelectorAll || !document.createElement) return;
+    if (document.head && document.createElement && document.getElementById && !document.getElementById('tp-checkout-email-style')) {
+      var style = document.createElement('style');
+      style.id = 'tp-checkout-email-style';
+      style.textContent = '.tp-checkout-email{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;margin:0 0 8px}.tp-checkout-email input[type=email]{flex:1 1 160px;min-width:0;width:auto;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}.tp-checkout-email .btn,.tp-checkout-email button{flex:1 1 180px}';
+      document.head.appendChild(style);
+    }
+    var nodes = document.querySelectorAll('[data-pay-plan]');
+    Array.prototype.forEach.call(nodes, function (btn) {
+      if (!btn || !btn.parentNode || !btn.parentNode.insertBefore) return;
+      if (btn.getAttribute && btn.getAttribute('data-checkout-wrapped') === '1') return;
+      var parent = btn.parentNode;
+      if (parent.classList && parent.classList.contains('tp-checkout-email')) {
+        if (btn.setAttribute) btn.setAttribute('data-checkout-wrapped', '1');
+        return;
+      }
+      var wrap = document.createElement('div');
+      wrap.className = 'tp-checkout-email';
+      var input = document.createElement('input');
+      input.type = 'email';
+      input.required = true;
+      input.setAttribute('maxlength', '160');
+      input.setAttribute('autocomplete', 'email');
+      input.setAttribute('inputmode', 'email');
+      input.setAttribute('placeholder', 'Email');
+      input.setAttribute('aria-label', 'Email');
+      input.setAttribute('data-checkout-email', '1');
+      parent.insertBefore(wrap, btn);
+      wrap.appendChild(input);
+      wrap.appendChild(btn);
+      if (btn.setAttribute) btn.setAttribute('data-checkout-wrapped', '1');
+    });
+  }
+
   // Payment Link strings stay in lib/paid-listings.js. The browser reads
   // the copy written to /data/claim-pay-plans.json and navigates on click.
   var payMap = null;
@@ -115,13 +217,46 @@
     return url;
   }
 
+  function depart(plan, slug, email, input, plans, tools) {
+    var check = (tools && tools.validEmail) || validEmail;
+    var stamp = (tools && tools.withPrefilledEmail) || withPrefilledEmail;
+    if (!check(email)) {
+      if (input && typeof input.reportValidity === 'function') input.reportValidity();
+      return Promise.resolve('');
+    }
+    var url = checkoutUrl(plan, slug, plans);
+    if (!url) return Promise.resolve('');
+    url = stamp(url, email);
+    var row = {
+      email: email,
+      listingSlug: slug,
+      productName: plan,
+      priceId: tools && tools.priceIdFromUrl ? tools.priceIdFromUrl(url) : '',
+      pagePath: pagePath()
+    };
+    var lead = tools && tools.leadRow ? tools.leadRow(row) : null;
+    var save = tools && tools.rememberLead && lead ? tools.rememberLead(lead) : null;
+    function leave() { return go(url); }
+    if (save && typeof save.then === 'function') return save.then(leave, leave);
+    return Promise.resolve(leave());
+  }
+
   function onPayClick(e) {
     var btn = e && e.target && e.target.closest ? e.target.closest('[data-pay-plan]') : null;
     if (!btn) return Promise.resolve('');
     var plan = btn.getAttribute('data-pay-plan') || '';
     var slug = slugFor(btn);
-    if (payMap) return Promise.resolve(go(checkoutUrl(plan, slug, payMap)));
-    return ensurePlans().then(function (plans) { return go(checkoutUrl(plan, slug, plans)); });
+    var input = fieldFor(btn);
+    var email = input ? String(input.value || '').trim() : '';
+    function afterPlans(plans) {
+      var ready = whenTools();
+      if (ready && typeof ready.then === 'function') {
+        return ready.then(function (tools) { return depart(plan, slug, email, input, plans, tools); });
+      }
+      return depart(plan, slug, email, input, plans, ready);
+    }
+    if (payMap) return afterPlans(payMap);
+    return ensurePlans().then(afterPlans);
   }
 
   function bindPayClicks() {
@@ -137,6 +272,8 @@
   }
 
   function boot() {
+    ensureCheckoutFields();
+    whenTools();
     bindPayClicks();
     var form = document.getElementById('claimListingForm');
     if (!form || form.getAttribute('data-claim-ready') === '1') return;
@@ -244,6 +381,8 @@
     reviewFlag: reviewFlag,
     href: href,
     payHref: payHref,
+    validEmail: validEmail,
+    withPrefilledEmail: withPrefilledEmail,
     primePayPlans: primePayPlans,
     checkoutUrl: checkoutUrl,
     onPayClick: onPayClick,

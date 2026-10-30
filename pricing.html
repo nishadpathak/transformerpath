@@ -64,6 +64,9 @@ table.cmp .n { color:var(--border); }
 .faq summary { cursor:pointer; font-weight:700; color:var(--ink); font-size:.95rem; }
 .faq p { color:var(--muted); font-size:.88rem; margin:10px 0 0; line-height:1.6; }
 #unlockBanner { display:none; background:linear-gradient(135deg,#1e9e5a,#167a45); color:#fff; border-radius:12px; padding:18px 22px; margin:0 0 30px; text-align:center; font-weight:700; }
+.tp-checkout-email { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 8px; }
+.tp-checkout-email input[type="email"] { flex:1 1 160px; min-width:0; width:auto; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font:inherit; }
+.plan .tp-checkout-email .cta { flex:1 1 180px; margin:0; }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -218,7 +221,7 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> Course completion record for the Design Engineer Track</li>
           <li><span class="ok">✓</span> 1 engineer seat</li>
         </ul>
-        <a class="cta primary" id="ctaLearner" href="https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
+        <div class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="cta primary" id="ctaLearner" href="https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a></div>
         <div class="fine">Single payment · 12 months access · no auto-renewal</div>
       </div>
 
@@ -238,7 +241,7 @@ table.cmp .n { color:var(--border); }
           <li data-feature="country_adapter" data-delivery="built"><span class="plus">+</span> <b>Country Design Adapter</b> (auto-tune designs for 50/60 Hz, local standards &amp; grid codes)</li>
         </ul>
         <p class="roadmap">On the roadmap (not included yet): <span data-feature="saved_designs" data-delivery="coming_soon">Saved Designs &amp; Design History <span class="tp-soon">Coming soon</span></span>; <span data-feature="project_workspace" data-delivery="coming_soon">Project Workspace <span class="tp-soon">Coming soon</span></span>; <span data-feature="design_comparison" data-delivery="coming_soon">Side-by-Side Design Comparison <span class="tp-soon">Coming soon</span></span>.</p>
-        <a class="cta primary" id="ctaProfessional" href="https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Pro">Unlock Engineering Pro — $599 →</a>
+        <div class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="cta primary" id="ctaProfessional" href="https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Pro">Unlock Engineering Pro — $599 →</a></div>
         <div class="fine">Single payment · 12 months access · no auto-renewal · 1 engineer seat</div>
       </div>
 
@@ -252,7 +255,7 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> Everything in Engineering Pro workspace</li>
         </ul>
         <p class="roadmap">On the roadmap (not included yet): <span data-feature="engineering_team_seats" data-delivery="coming_soon">Up to 10 team members on one plan <span class="tp-soon">Coming soon</span></span>; <span data-feature="shared_design_library" data-delivery="coming_soon">Shared team project workspace &amp; design library <span class="tp-soon">Coming soon</span></span>; <span data-feature="shared_access_link" data-delivery="coming_soon">A shared team access link <span class="tp-soon">Coming soon</span></span>; <span data-feature="team_rollout" data-delivery="coming_soon">Written team rollout guide <span class="tp-soon">Coming soon</span></span>.</p>
-        <a class="cta primary" id="ctaEnterprise" href="https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Team">Unlock Engineering Team — $1,999 →</a>
+        <div class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="cta primary" id="ctaEnterprise" href="https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Team">Unlock Engineering Team — $1,999 →</a></div>
         <div class="fine">Single payment · 12 months access · no auto-renewal</div>
       </div>
 
@@ -291,7 +294,7 @@ table.cmp .n { color:var(--border); }
           <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$299 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ yr, plus tax</small></div>
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">A labelled Featured slot on the directory and country pages. The slot shows "Your company here" until a real buyer is reviewed. Featured is a paid placement, not a recommendation.</p>
         </div>
-        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/fZu4gsaSkbFHfEsghQfYY0P" data-featured-listing-pay="1" style="width:100%;text-align:center">Featured Listing — $299/yr plus tax</a></p>
+        <p style="margin:0 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/fZu4gsaSkbFHfEsghQfYY0P" data-featured-listing-pay="1" style="width:100%;text-align:center">Featured Listing — $299/yr plus tax</a></span></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
       </div>
 
@@ -306,7 +309,7 @@ table.cmp .n { color:var(--border); }
           </ul>
           <p class="roadmap">On the roadmap (not included yet): <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Direct procurement contact routing <span class="tp-soon">Coming soon</span></span>; <span data-feature="rfq_eligibility" data-delivery="coming_soon">RFQ routing is coming soon <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
-        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1" style="width:100%;text-align:center">Pay $499 one-time payment · covers 12 months</a></p>
+        <p style="margin:0 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1" style="width:100%;text-align:center">Pay $499 one-time payment · covers 12 months</a></span></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:var(--accent)">claim form</a>. The VERIFIED MANUFACTURER badge appears only after review.</p>
         <a href="verified.html" class="btn btn-outline btn-sm" style="text-align:center">Get Verified →</a>
       </div>
@@ -323,7 +326,7 @@ table.cmp .n { color:var(--border); }
           </ul>
           <p class="declared-origin-note" style="color:var(--muted);font-size:.8rem;line-height:1.5;margin:0 0 14px">Buyers may need origin information for grid equipment under upcoming rules in the United States and the European Union. Declared origin is the country of manufacture a supplier states on its own site or in a filing. Where no statement is on file, the field shows —. This is not legal advice.</p>
         </div>
-        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q" data-featured-verified-pay="1" style="width:100%;text-align:center">Featured + Verified — $699/yr plus tax</a></p>
+        <p style="margin:0 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q" data-featured-verified-pay="1" style="width:100%;text-align:center">Featured + Verified — $699/yr plus tax</a></span></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
       </div>
 
@@ -333,7 +336,7 @@ table.cmp .n { color:var(--border); }
           <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$199 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ month, plus tax</small></div>
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">One sponsor section on pressboard, core steel, copper, or bushings. Checkout asks for the component. Core steel is the label for the value coresteel. The section stays empty until a sponsor is reviewed.</p>
         </div>
-        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/bJedR2gcE257eAofdMfYY0R" data-component-sponsor-pay="1" style="width:100%;text-align:center">Sponsor this section, $199/mo</a></p>
+        <p style="margin:0 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/bJedR2gcE257eAofdMfYY0R" data-component-sponsor-pay="1" style="width:100%;text-align:center">Sponsor this section, $199/mo</a></span></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">plus tax. After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
       </div>
 
@@ -398,11 +401,11 @@ table.cmp .n { color:var(--border); }
     <div class="section-head" style="margin:22px 0 10px"><h3 style="font-size:1.02rem;color:var(--accent);margin:0">For Events &amp; Marketing</h3></div>
     <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
       <div class="card" style="padding:16px;border-radius:12px"><b>Featured Event</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$299 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0"><span data-feature="featured_event_label" data-delivery="built">Prominent, clearly-labelled FEATURED placement after review.</span> <span data-feature="featured_event_extras" data-delivery="coming_soon">Logo, banner, and event analytics <span class="tp-soon">Coming soon</span>.</span> FEATURED is promotional placement, not an editorial recommendation.</p>
-        <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></p>
+        <p style="margin:10px 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></span></p>
         <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit the event name, URL, and dates. The FEATURED label is shown only after review.</p>
         <a href="events.html#submit-event" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit event details &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Featured Exhibitor</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$399 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0"><span data-feature="featured_exhibitor_card" data-delivery="coming_soon">FEATURED exhibitor card with logo, booth number, brochure <span class="tp-soon">Coming soon</span>.</span> FEATURED never implies a recommendation.</p>
-        <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06" data-featured-exhibitor-pay="1" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Feature your exhibitor — $399</a></p>
+        <p style="margin:10px 0 8px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06" data-featured-exhibitor-pay="1" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Feature your exhibitor — $399</a></span></p>
         <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company and the event. The FEATURED label is shown only after review.</p>
         <a href="sponsor.html#contact" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit exhibitor details &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
@@ -660,6 +663,8 @@ table.cmp .n { color:var(--border); }
 })();
 </script>
 
+<script src="supabase-config.js"></script>
+<script src="checkout-email.js" defer></script>
 <script defer src="analytics.js?v=8"></script>
 <script src="tp-freshness.js?v=8" defer></script>
 <script src="tp-feedback.js?v=8" defer></script>

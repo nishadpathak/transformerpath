@@ -27,6 +27,8 @@ form input[type="text"],form input[type="email"],form input[type="url"],form sel
 form textarea { min-height:90px; }
 form input:focus,form textarea:focus,form select:focus { outline:2px solid var(--accent); border-color:transparent; }
 .claim-note { font-size:.82rem; color:var(--muted); margin-top:4px; line-height:1.45; }
+.tp-checkout-email { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 14px; }
+.tp-checkout-email input[type="email"] { flex:1 1 160px; min-width:0; width:auto; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font:inherit; }
 .claim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 @media (max-width:600px) { .claim-grid { grid-template-columns:1fr; } }
 </style>
@@ -144,6 +146,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       </div>
       <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">Claim the company, then send identity and authorization, then pay. After payment, return to this form. The badge appears only after review.</p>
 
+      <form id="verifiedCheckoutEmail" action="#" onsubmit="return false" hidden></form>
       <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
         <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
@@ -210,7 +213,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         </label>
 
         <p class="claim-note"><b>3. Payment.</b> Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Identity and contact checked, not a product certification.</p>
-        <p style="margin:0 0 14px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></p>
+        <p style="margin:0 0 14px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email form="verifiedCheckoutEmail"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></span></p>
 
         <button class="btn btn-amber" type="submit" style="width:100%;padding:12px;font-size:.96rem;font-weight:700">Submit Profile Claim &rarr;</button>
         <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">Our directory research team reviews claims within 1 business day. Profiles are never automatically transferred.</p>
@@ -313,6 +316,8 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
   </div>
 </footer>
 
+<script src="supabase-config.js"></script>
+<script src="checkout-email.js" defer></script>
 <script src="analytics.js?v=8" defer></script>
 <script src="tp-freshness.js?v=8" defer></script>
 <script src="tp-feedback.js?v=8" defer></script>
