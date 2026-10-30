@@ -200,7 +200,7 @@ const fresh = services.filter((row) => /Unclaimed directory listing\./.test(row.
 const shipped = JSON.stringify(fresh) + JSON.stringify(batch5);
 check('batch 5 ships no outreach fields or social sources', fresh.length === 38 && !/do_not_contact|linkedin\.com|transformers magazine|"phone"|"email"/.test(shipped));
 const publicCount = require('../lib/public-company-count').read(root);
-check('public manufacturer count is 1011', publicCount.publicCount === 1011 && publicCount.censusRows === 1018, String(publicCount.publicCount) + '/' + publicCount.censusRows);
+check('public manufacturer count is 1012', publicCount.publicCount === 1012 && publicCount.censusRows === 1019, String(publicCount.publicCount) + '/' + publicCount.censusRows);
 
 if (failed) {
   console.error('EVENT BATCH FAILED (' + failed + ')');
