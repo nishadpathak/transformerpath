@@ -5,10 +5,10 @@
  * public truth. Navigate/HTML is network-first; only the offline shell + static
  * brand assets are installed into the core cache.
  */
-const CACHE = 'transformerpath-v17';
+const CACHE = 'transformerpath-v18';
 const CORE = [
   'offline.html',
-  'style.css?v=14',
+  'style.css?v=15',
   'brand/favicon-32.png',
   'brand/icon-192.png',
   'manifest.webmanifest'

@@ -17,6 +17,23 @@
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  /* Keep in step with lib/x-share.js. Official intent URL only — no SDK. */
+  function intelCanonical(id) {
+    return 'https://transformerpath.com/intel.html#p-' + String(id || '');
+  }
+
+  function xPostHref(title, pageUrl) {
+    var text = String(title || '').replace(/\s+/g, ' ').trim();
+    if (text.length > 200) {
+      var cut = text.slice(0, 200);
+      var trimmed = cut.replace(/\s+\S*$/, '');
+      text = trimmed || cut;
+    }
+    return 'https://x.com/intent/post?text=' + encodeURIComponent(text) +
+      '&url=' + encodeURIComponent(pageUrl) +
+      '&via=transformerpath';
+  }
+
   function matches(p) {
     if (tab === 'latest') {
       if (p.desk === 'reference') return false;
@@ -84,6 +101,7 @@
       (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
       '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
       '<div class="intel-actions">' +
+      '<a class="tp-x-post" href="' + esc(xPostHref(p.headline, intelCanonical(p.id))) + '" target="_blank" rel="noopener">Post on X</a>' +
       '<a class="tp-li-share-inline" data-linkedin-share data-url="' + esc(href) + '" href="#" rel="noopener">LinkedIn</a>' +
       '<button type="button" class="intel-copy" data-copy="https://transformerpath.com/intel.html#p-' + esc(p.id) + '">Copy link</button>' +
       '<button type="button" class="follow-btn" data-follow-type="region" data-follow-subject="' + esc(p.region) + '" data-follow-label="' + esc(p.region) + '">Follow ' + esc(p.region) + '</button>' +
