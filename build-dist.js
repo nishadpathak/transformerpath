@@ -38,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { stampHtml } = require('./adsense-inject');
 const { ensureLegalFooter } = require('./lib/legal-footer');
+const { ensureSiteX, chromeGaps } = require('./lib/site-x');
 
 const DIST = 'dist';
 
@@ -277,13 +278,18 @@ let stampErrors = 0;
     try { html = fs.readFileSync(p, 'utf8'); }
     catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
     let next;
-    try { next = ensureLegalFooter(stampHtml(html, rel)); }
+    try { next = ensureSiteX(ensureLegalFooter(stampHtml(html, rel))); }
     catch (err) {
       console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
       stampErrors++;
       continue;
     }
     if (next !== html) { fs.writeFileSync(p, next); stamped++; }
+    const gaps = chromeGaps(next);
+    if (gaps.length) {
+      console.error('  ! X account link missing on ' + rel + ': ' + gaps.join(', '));
+      stampErrors++;
+    }
   }
 })(DIST);
 console.log('AdSense stamp: ' + stamped + ' HTML page(s) updated.');

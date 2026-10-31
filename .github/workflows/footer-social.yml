@@ -16,3 +16,5 @@ jobs:
           node-version: '20'
       - name: Fail when a footer repeats a social network
         run: node check-footer-social.js
+      - name: X account link and Intel post intent
+        run: node tests/x-share.test.js
