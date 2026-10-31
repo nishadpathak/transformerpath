@@ -51,6 +51,19 @@
     return '<p class="tp-data-as-of" style="color:#b8c4d4;font-size:.82rem;margin:8px 0 14px">data as of <time data-stat="updated"' + dt + '>' + date + '</time></p>';
   }
 
+  function publicCountLabel(n) {
+    n = Math.floor(Number(n));
+    if (!isFinite(n) || n < 0) return '—';
+    if (n < 1000) return String(n);
+    return (Math.floor(n / 1000) * 1000).toLocaleString('en-US') + '+';
+  }
+
+  function manufacturerHeadline() {
+    if (typeof STATS.manufacturersPublicLabel === 'string' && STATS.manufacturersPublicLabel) return STATS.manufacturersPublicLabel;
+    if (typeof STATS.manufacturers === 'number') return publicCountLabel(STATS.manufacturers);
+    return '—';
+  }
+
   function kpiValue(value) {
     return typeof value === 'number' ? value : '—';
   }
@@ -276,7 +289,7 @@
 
     var tabsConfig = [
       { key: '', label: '🌐 All Ecosystem', count: DATA.length },
-      { key: 'manufacturer', label: '⚡ Manufacturers', count: (typeof STATS.manufacturers === 'number' ? STATS.manufacturers : (facets.kinds.manufacturer || 0)) },
+      { key: 'manufacturer', label: '⚡ Manufacturers', count: (typeof STATS.manufacturers === 'number' ? STATS.manufacturers : (facets.kinds.manufacturer || 0)), headline: manufacturerHeadline() },
       { key: 'component_supplier', label: '🧩 Components & Materials', count: facets.kinds.component_supplier || 0 },
       { key: 'service_repair', label: '🛠️ Service & Repair', count: facets.kinds.service_repair || 0 },
       { key: 'transport_logistics', label: '🚢 Logistics', count: facets.kinds.transport_logistics || 0 },
@@ -363,7 +376,8 @@
     }
 
     var tabsHtml = tabsConfig.map(function (t) {
-      return '<button class="kg-tab-btn ' + (kind === t.key ? 'active' : '') + '" data-set-kind="' + esc(t.key) + '">' + t.label + ' <span class="badge-cnt">' + t.count + '</span></button>';
+      var badge = t.key === 'manufacturer' ? (t.headline || manufacturerHeadline()) : t.count;
+      return '<button class="kg-tab-btn ' + (kind === t.key ? 'active' : '') + '" data-set-kind="' + esc(t.key) + '">' + t.label + ' <span class="badge-cnt">' + badge + '</span></button>';
     }).join('');
 
     root.innerHTML =
@@ -374,7 +388,7 @@
         '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
         dataAsOfHtml(STATS.updated) +
         '<div class="kg-kpi-grid">' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturers">' + kpiValue(STATS.manufacturers) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturersPublicLabel">' + manufacturerHeadline() + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="factories">' + kpiValue(STATS.factories) + '</div><div class="kg-kpi-lbl">Sourced plants</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="capabilities">' + kpiValue(STATS.capabilities) + '</div><div class="kg-kpi-lbl">Capabilities</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturingCountries">' + kpiValue(STATS.manufacturingCountries) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +

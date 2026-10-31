@@ -11,6 +11,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { publicCountLabel } = require('../lib/public-count-label');
 
 let failures = [];
 function check(label, pass, detail) {
@@ -32,7 +33,7 @@ function dataStat(html, key) {
   return m ? +m[1] : null;
 }
 
-const homeMakers = dataStat(HOME, 'manufacturers');
+const homeMakersLabel = (HOME.match(/data-stat="manufacturersPublicLabel">([^<]+)/) || [])[1];
 const homeMkgCountries = dataStat(HOME, 'manufacturingCountries');
 const homeGrids = dataStat(HOME, 'countries');
 const homeProjects = dataStat(HOME, 'projects');
@@ -41,8 +42,9 @@ const homeOpenTenders = dataStat(HOME, 'openTenders');
 const homeAwards = dataStat(HOME, 'awards');
 const homeEvents = dataStat(HOME, 'upcomingEvents');
 
-check('Homepage manufacturers matches site-stats', homeMakers === STATS.manufacturers, homeMakers + ' vs ' + STATS.manufacturers);
-check('Homepage manufacturers matches config', homeMakers === CFG.counters.manufacturers, homeMakers + ' vs ' + CFG.counters.manufacturers);
+check('Homepage manufacturer public label matches site-stats', homeMakersLabel === publicCountLabel(STATS.manufacturers), homeMakersLabel + ' vs ' + publicCountLabel(STATS.manufacturers));
+check('Homepage manufacturer public label matches config', homeMakersLabel === publicCountLabel(CFG.counters.manufacturers), homeMakersLabel + ' vs ' + publicCountLabel(CFG.counters.manufacturers));
+check('Homepage does not print the raw manufacturer count', !new RegExp('(?:directory of |>)' + STATS.manufacturers + '(?:<| transformer)').test(HOME));
 check('Homepage manufacturingCountries matches site-stats', homeMkgCountries === STATS.manufacturingCountries, homeMkgCountries + ' vs ' + STATS.manufacturingCountries);
 check('Homepage manufacturingCountries matches config', homeMkgCountries === CFG.counters.manufacturingCountries, homeMkgCountries + ' vs ' + CFG.counters.manufacturingCountries);
 check('Homepage grids matches site-stats', homeGrids === STATS.countries, homeGrids + ' vs ' + STATS.countries);

@@ -156,7 +156,7 @@
 </div><div class="lbl">Listed organisations</div></div>
     <div class="stat-box"><div class="num" id="cntOem">
 <!--SSR:cntOem-->
-1053
+1,000+
 <!--/SSR:cntOem-->
 </div><div class="lbl">Transformer OEMs</div></div>
     <div class="stat-box"><div class="num" id="cntComp">
@@ -190,7 +190,7 @@ All categories (1777)
 </button>
       <button class="cat-pill" data-kind="manufacturer" id="pillOem">
 <!--SSR:pillOem-->
-Transformer OEMs (1053)
+Transformer OEMs (1,000+)
 <!--/SSR:pillOem-->
 </button>
       <button class="cat-pill" data-kind="component_supplier">🧩 Components &amp; Accessories</button>
@@ -454,8 +454,15 @@ Transformer OEMs (1053)
       DATA.forEach(function(c) {
         if (c.country) countries[c.country] = (countries[c.country] || 0) + 1;
       });
+      function publicCountLabel(n) {
+        n = Math.floor(Number(n));
+        if (!isFinite(n) || n < 0) return '—';
+        if (n < 1000) return String(n);
+        return (Math.floor(n / 1000) * 1000).toLocaleString('en-US') + '+';
+      }
+      var oemLabel = publicCountLabel(oem);
       var oemEl = document.getElementById('cntOem');
-      if (oemEl) oemEl.textContent = oem;
+      if (oemEl) oemEl.textContent = oemLabel;
       var compEl = document.getElementById('cntComp');
       if (compEl) compEl.textContent = comp;
       var ctryEl = document.getElementById('cntCountries');
@@ -463,7 +470,7 @@ Transformer OEMs (1053)
       var pillAll = document.getElementById('pillAll');
       if (pillAll) pillAll.textContent = 'All categories (' + DATA.length + ')';
       var pillOem = document.getElementById('pillOem');
-      if (pillOem) pillOem.textContent = 'Transformer OEMs (' + oem + ')';
+      if (pillOem) pillOem.textContent = 'Transformer OEMs (' + oemLabel + ')';
 
       var selCountry = document.getElementById('vndCountry');
       while (selCountry.options.length > 1) selCountry.remove(1);

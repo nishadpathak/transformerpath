@@ -26,6 +26,8 @@
           });
           return;
         }
+        /* manufacturersPublicLabel is the approved public copy ("1,000+").
+         * It is a string, so it must not be passed through toLocaleString. */
         var v = (typeof d[k] === 'number') ? d[k].toLocaleString('en-US') : d[k];
         document.querySelectorAll('[data-stat="' + k + '"]').forEach(function (el) {
           el.textContent = v;
