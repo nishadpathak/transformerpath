@@ -910,6 +910,7 @@ function renderBoard(){
   if (!list.length) {
     document.getElementById('board').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">No manufacturers match these filters. Clear search or change the region, country or type.</p>';
     document.getElementById('count').textContent='Showing 0 companies';
+    document.getElementById('count').setAttribute('data-listed-count', '0');
     stats(list, true);
     return;
   }
@@ -924,7 +925,9 @@ function renderBoard(){
         `<p style="margin:8px 0 0;font-size:.8rem"><a href="manufacturers/${countrySlug(c.country)}.html" style="color:var(--accent);font-weight:700">Country page →</a></p></div></div>`;
     }).join('')).join('')+pagerHtml(list.length);
   const countLabel = filtered ? String(makerCount) : publicCountLabel(makerCount);
-  document.getElementById('count').textContent=`Showing ${countLabel} listed companies across ${list.length} countries — sourced coverage, not a complete worldwide census.`;
+  const countEl = document.getElementById('count');
+  countEl.textContent=`Showing ${countLabel} listed companies across ${list.length} countries — sourced coverage, not a complete worldwide census.`;
+  countEl.setAttribute('data-listed-count', String(makerCount));
   stats(list, filtered);
 }
 document.getElementById('board').addEventListener('click',function(ev){

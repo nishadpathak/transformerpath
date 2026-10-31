@@ -618,6 +618,7 @@ function ageBadgeHtml(ageTier, isActive) {
 }
 
 const { intelBadge } = require('./lib/provenance-badge');
+const { xPostHref, intelCanonical } = require('./lib/x-share');
 function ssrCard(p) {
   const cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
   const evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
@@ -648,6 +649,7 @@ function ssrCard(p) {
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
+    '<div class="intel-actions"><a class="tp-x-post" href="' + esc(xPostHref(p.headline, intelCanonical(p.id))) + '" target="_blank" rel="noopener">Post on X</a></div>' +
     '</div></article>';
 }
 

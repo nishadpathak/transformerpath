@@ -31,7 +31,8 @@ function el(id) {
     dataset: {},
     children: [],
     classList: { toggle() {}, add() {}, remove() {}, contains() { return false; } },
-    setAttribute() {},
+    setAttribute(name, value) { this.attrs = this.attrs || {}; this.attrs[name] = String(value); },
+    getAttribute(name) { return (this.attrs && this.attrs[name]) || null; },
     appendChild(node) { this.children.push(node); return node; },
     addEventListener() {},
     scrollIntoView() {},
@@ -84,7 +85,13 @@ function run() {
   });
   const visibleCount = aliases.visibleMakerCount(census, slugMap);
   const publicCount = require('../lib/public-company-count').read(root).publicCount;
-  check('default view counts each company once', count.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === publicCount && stats.manufacturers === publicCount, count);
+  const publicLabel = require('../lib/public-count-label').publicCountLabel(publicCount);
+  check('default view counts each company once',
+    ui.nodes.count.getAttribute('data-listed-count') === String(visibleCount)
+    && count.indexOf('Showing ' + publicLabel + ' ') === 0
+    && visibleCount === publicCount
+    && stats.manufacturers === publicCount,
+    count + ' listed=' + ui.nodes.count.getAttribute('data-listed-count'));
   ui.nodes.fKv.value = '525';
   ui.context.page = 1;
   ui.context.render();

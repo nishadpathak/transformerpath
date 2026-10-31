@@ -136,6 +136,8 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   border-left: 1px solid rgba(255, 255, 255, .14);
   flex: none;
 }
+.tp-x-link { display: inline-flex; align-items: center; justify-content: center; }
+.tp-x-link svg { width: 15px; height: 15px; display: block; }
 
 /* ── Dropdown: for DIRECTORY ────────────────────────────────────────── */
 .tpnav-dropdown { position: relative; display: inline-flex; align-items: center; }

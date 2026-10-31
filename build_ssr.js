@@ -29,6 +29,7 @@ const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const { publicCountLabel } = require('./lib/public-count-label');
+const { xPostHref, intelCanonical } = require('./lib/x-share');
 const tpAff = require('./lib/travelpayouts');
 const directorySsr = require('./lib/directory-ssr');
 
@@ -793,7 +794,9 @@ function renderIntel(html) {
               (intelBadge(p) || '')
             ].filter(Boolean).join(' ') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
-            '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
+            '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div>' +
+            '<div class="intel-actions"><a class="tp-x-post" href="' + esc(xPostHref(p.headline, intelCanonical(p.id))) + '" target="_blank" rel="noopener">Post on X</a></div>' +
+            '</div></article>';
         }).join('');
         html = injectById(html, 'intel-timeline', cards);
         records += first.length;
