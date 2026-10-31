@@ -120,14 +120,14 @@ const af = (badges.events || []).find((event) => event.slug === 'power-and-elect
 check('Terrapinn shows use the Electric & Power and Power & Electricity names', ph && ph.past_name === 'Electric & Power Philippines 2026' && af && af.past_name === 'Power & Electricity World Africa 2026');
 
 const batch4 = {
-  'cwieme-berlin-2026': ['Previous exhibitors (2026)', 6],
+  'cwieme-berlin-2026': ['Previous exhibitors (2026)', 107],
   'coiltech-2026': ['Previous exhibitors (2026)', 1],
   'coiltech-italia-2026': ['Previous exhibitors (2026)', 1],
   'cigre-paris-2026': ['Previous exhibitors (2026)', 8],
   'hannover-messe-2026': ['Previous exhibitors (2026)', 2],
   'data-center-world-power-2026': ['Previous exhibitors (2026)', 1],
   'smrp-annual-conference-2026': ['Previous exhibitors (2026)', 1],
-  'middle-east-energy-2026': ['Previous exhibitors (2026)', 2],
+  'middle-east-energy-2026': ['Previous exhibitors (2026)', 118],
   'electra-mining-africa-2026': ['Previous exhibitors (2026)', 1],
   'wetex-2026': ['Exhibiting at WETEX 2026', 1]
 };
@@ -200,7 +200,7 @@ const fresh = services.filter((row) => /Unclaimed directory listing\./.test(row.
 const shipped = JSON.stringify(fresh) + JSON.stringify(batch5);
 check('batch 5 ships no outreach fields or social sources', fresh.length === 38 && !/do_not_contact|linkedin\.com|transformers magazine|"phone"|"email"/.test(shipped));
 const publicCount = require('../lib/public-company-count').read(root);
-check('public manufacturer count is 1012', publicCount.publicCount === 1012 && publicCount.censusRows === 1019, String(publicCount.publicCount) + '/' + publicCount.censusRows);
+check('public manufacturer count is 1053', publicCount.publicCount === 1053 && publicCount.censusRows === 1060, String(publicCount.publicCount) + '/' + publicCount.censusRows);
 
 if (failed) {
   console.error('EVENT BATCH FAILED (' + failed + ')');
