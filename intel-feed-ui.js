@@ -19,7 +19,7 @@
 
   /* Keep in step with lib/x-share.js. Official intent URL only — no SDK. */
   function intelCanonical(id) {
-    return 'https://transformerpath.com/intel.html#p-' + String(id || '');
+    return 'https://transformerpath.com/intel.html?utm_source=x&utm_medium=social&utm_campaign=intel_share#p-' + String(id || '');
   }
 
   function xPostHref(title, pageUrl) {

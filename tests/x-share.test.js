@@ -20,10 +20,17 @@ function check(label, fn) {
 
 const title = 'China News Service reports the first converter transformer has arrived';
 const id = 'news-www-chinanews-com-cn-cj-2026-10-31-10723734-shtm';
-const canonical = 'https://transformerpath.com/intel.html#p-' + id;
+const canonical = 'https://transformerpath.com/intel.html?utm_source=x&utm_medium=social&utm_campaign=intel_share#p-' + id;
 
 check('canonical item url is on transformerpath.com', function () {
   assert.strictEqual(x.intelCanonical(id), canonical);
+  const page = new URL(canonical);
+  assert.strictEqual(page.origin + page.pathname, 'https://transformerpath.com/intel.html');
+  assert.strictEqual(page.searchParams.get('utm_source'), 'x');
+  assert.strictEqual(page.searchParams.get('utm_medium'), 'social');
+  assert.strictEqual(page.searchParams.get('utm_campaign'), 'intel_share');
+  assert.strictEqual(page.hash, '#p-' + id);
+  assert.ok(canonical.indexOf('?utm_source=x&utm_medium=social&utm_campaign=intel_share#p-') !== -1);
 });
 
 check('intent url encodes the title, the item url, and via', function () {
@@ -35,6 +42,12 @@ check('intent url encodes the title, the item url, and via', function () {
   assert.strictEqual(parsed.searchParams.get('via'), 'transformerpath');
   assert.ok(href.indexOf('text=') < href.indexOf('&url='));
   assert.ok(href.indexOf('&url=') < href.indexOf('&via='));
+  assert.ok(href.indexOf('utm_source%3Dx%26utm_medium%3Dsocial%26utm_campaign%3Dintel_share%23p-' + id) !== -1);
+  const shared = new URL(parsed.searchParams.get('url'));
+  assert.strictEqual(shared.searchParams.get('utm_source'), 'x');
+  assert.strictEqual(shared.searchParams.get('utm_medium'), 'social');
+  assert.strictEqual(shared.searchParams.get('utm_campaign'), 'intel_share');
+  assert.strictEqual(shared.hash, '#p-' + id);
 });
 
 check('a long title is shortened before encoding', function () {
