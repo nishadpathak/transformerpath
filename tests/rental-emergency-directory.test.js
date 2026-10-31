@@ -60,6 +60,7 @@ check('nav links the hub from the homepage', fs.readFileSync(path.join(root, 'in
   fs.readFileSync(path.join(root, 'index.html'), 'utf8').indexOf('href="rental-emergency.html"') !== -1);
 check('directory index links the hub', fs.readFileSync(path.join(root, 'directory.html'), 'utf8').indexOf('rental-emergency.html') !== -1);
 check('header partial links the hub', fs.readFileSync(path.join(root, '_partials/header.html'), 'utf8').indexOf('rental-emergency.html') !== -1);
+check('hub has a prominent urgent request block', hub.indexOf('id="urgent-request"') !== -1 && hub.indexOf('Need a transformer fast?') !== -1 && hub.indexOf('class="btn btn-amber" href="/request-urgent.html"') !== -1);
 
 companies.forEach(function (row) {
   const html = profile(row);
@@ -83,6 +84,7 @@ companies.forEach(function (row) {
   if (row.phone) check(name + ' shows the source phone', text.indexOf(row.phone) !== -1, row.phone);
   else check(name + ' shows no invented phone', !/tel:/i.test(body));
   check(name + ' is in the sitemap', sitemap.indexOf('https://transformerpath.com/rental-emergency/' + slug(row) + '/') !== -1);
+  check(name + ' links the urgent request form', body.indexOf('/request-urgent.html?from=' + slug(row)) !== -1 && body.indexOf('Need a transformer fast?') !== -1);
   check(name + ' profile is indexable', /content="index,follow"/.test(html));
 });
 

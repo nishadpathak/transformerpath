@@ -45,6 +45,10 @@
 .rent-facts dd { margin: 0; color: var(--text); font-size: .92rem; overflow-wrap: anywhere; }
 .rent-links { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-size: .9rem; }
 .rent-links a { color: var(--accent); font-weight: 700; margin-right: 10px; }
+.urgent-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; background: var(--card); border: 2px solid var(--amber); border-radius: 14px; padding: 22px 24px; margin: 0 0 28px; }
+.urgent-banner h2 { margin: 0 0 6px; font-size: 1.55rem; color: var(--ink); }
+.urgent-banner p { margin: 0; color: var(--text); max-width: 640px; line-height: 1.45; }
+.urgent-banner .btn { flex: none; }
 </style>
 <script type="application/ld+json">
 {
@@ -154,6 +158,8 @@
     <h1>Rental &amp; <span style="color:var(--accent)">emergency providers</span></h1>
     <p class="lead">Companies that rent transformers or mobile substations, or do emergency replacement. Browse the 18 published listings by country and type. Each card links to the company website and the service page. A field the source list does not give is shown as —.</p>
   </div>
+
+  <aside class="urgent-banner" id="urgent-request"><div><h2>Need a transformer fast?</h2><p>Send the rating, voltages, type, and the city where it is needed. TransformerPath routes the request to matching providers.</p></div><a class="btn btn-amber" href="/request-urgent.html">Request an urgent replacement</a></aside>
 
   <div class="stats-bar">
     <div class="stat-box">

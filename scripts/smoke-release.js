@@ -133,7 +133,8 @@ const PAGES = [
   '/pricing.html',
   '/events.html',
   '/events',
-  '/events/middle-east-energy/'
+  '/events/middle-east-energy/',
+  '/request-urgent.html'
 ];
 
 // The census gate flags a line that has both a retired total and a
