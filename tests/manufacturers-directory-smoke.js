@@ -79,7 +79,12 @@ function el(id) {
     dataset: {},
     children: [],
     classList: { toggle() {}, add() {}, remove() {}, contains() { return false; } },
-    setAttribute(name) { if (name === 'data-dir-fallback') this._fallback = true; },
+    setAttribute(name, value) {
+      this.attrs = this.attrs || {};
+      this.attrs[name] = String(value);
+      if (name === 'data-dir-fallback') this._fallback = true;
+    },
+    getAttribute(name) { return (this.attrs && this.attrs[name]) || null; },
     appendChild(node) { this.children.push(node); return node; },
     insertBefore(node) { this.children.unshift(node); return node; },
     addEventListener() {},
@@ -140,7 +145,8 @@ function rows(htmlText) {
   const boardKeys = new Set(makerRows.map(function (row) { return row.name.toLowerCase(); }));
   const extra = [...boardKeys].filter(function (name) { return !censusKeys.has(name); });
   const missing = [...censusKeys].filter(function (name) { return !boardKeys.has(name); });
-  const shown = html.match(/Showing (\d+) companies across (\d+) countries/);
+  const shown = html.match(/Showing ([^<]*?) companies across (\d+) countries/);
+  const listed = (html.match(/<p\b[^>]*\bid="count"[^>]*>/) || [''])[0].match(/data-listed-count="(\d+)"/);
 
   const aliases = require('../lib/company-aliases');
   const slugRows = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
@@ -150,6 +156,7 @@ function rows(htmlText) {
   });
   const visibleCount = aliases.visibleMakerCount(census, slugMap);
   const publicCount = require('../lib/public-company-count').read(path.join(__dirname, '..')).publicCount;
+  const publicLabel = require('../lib/public-count-label').publicCountLabel(visibleCount);
   check('published board row count equals the visible companies', makerRows.length === visibleCount && stats.manufacturers === publicCount && visibleCount === publicCount && visibleCount === makers.length - 7, makerRows.length + ' board rows, ' + makers.length + ' census, ' + visibleCount + ' visible');
   check('published board has no note, duplicate, or unparsed rows', noteRows.length === 0 && unknownRows.length === 0 && duplicates.length === 0, 'notes ' + noteRows.map(function (row) { return row.name; }).join('; ') + ' unknown ' + unknownRows.length + ' duplicates ' + duplicates.join('; '));
   const hidden = makers.filter(function (name) { return aliases.aliasRowHidden(name, slugMap, aliases.ownedProfileSlugs(census, slugMap)); }).map(function (name) { return name.toLowerCase(); });
@@ -157,7 +164,8 @@ function rows(htmlText) {
   const missingSet = new Set(missing);
   const sameHidden = hidden.length === missing.length && hidden.every(function (name) { return missingSet.has(name); }) && missing.every(function (name) { return hiddenSet.has(name); });
   check('published board omits only the collapsed plant-alias rows', extra.length === 0 && sameHidden, 'extra ' + extra.join('; ') + ' missing ' + missing.slice(0, 8).join('; '));
-  check('directory count line equals the visible companies', !!shown && Number(shown[1]) === visibleCount, shown ? shown[0] : 'missing');
+  check('directory count line uses the public label', !!shown && shown[1] === publicLabel, shown ? shown[0] : 'missing');
+  check('directory count element keeps the exact visible total', !!listed && Number(listed[1]) === visibleCount, listed && listed[1]);
 
   const ssrRows = makerRows.length;
   check('server-rendered directory has more than 0 maker rows', ssrRows > 0, String(ssrRows));
@@ -178,7 +186,8 @@ function rows(htmlText) {
   const rendered = rows(board.innerHTML);
   check('live render produces more than 0 maker rows', rendered > 0, String(rendered));
   const liveCount = ok.ui.nodes.count ? ok.ui.nodes.count.textContent : '';
-  check('client count equals the visible companies', liveCount.indexOf('Showing ' + visibleCount + ' ') === 0, liveCount);
+  check('client count uses the public label', liveCount.indexOf('Showing ' + publicLabel + ' ') === 0, liveCount);
+  check('client listed count equals the visible companies', ok.ui.nodes.count.getAttribute('data-listed-count') === String(visibleCount), ok.ui.nodes.count.getAttribute('data-listed-count'));
   const countryLinks = board.innerHTML.match(/manufacturers\/[a-z0-9-]+\.html/g) || [];
   check('live render links countries to country pages', countryLinks.length > 0, String(countryLinks.length));
   check('countrySlug keeps the short USA / UAE / Türkiye files',

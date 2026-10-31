@@ -5,6 +5,7 @@
 'use strict';
 const fs = require('fs');
 const asOf = require('../lib/data-as-of');
+const { publicCountLabel } = require('../lib/public-count-label');
 
 let failed = 0;
 function check(label, pass, detail) {
@@ -54,8 +55,8 @@ function pageStat(html, key) {
 }
 
 const pages = {
-  'index.html': ['manufacturers', 'tenders', 'openTenders', 'awards', 'awardsConfirmed'],
-  'directory.html': ['manufacturers', 'factories', 'capabilities', 'manufacturingCountries', 'indexedEntities'],
+  'index.html': ['tenders', 'openTenders', 'awards', 'awardsConfirmed'],
+  'directory.html': ['factories', 'capabilities', 'manufacturingCountries', 'indexedEntities'],
   'tenders.html': ['tenders', 'openTenders', 'tendersPreAward', 'tendersAwarded', 'tendersCountries'],
   'awards.html': ['awards', 'awardsCountries', 'awardsRegions', 'awardsConfirmed']
 };
@@ -71,8 +72,11 @@ Object.keys(pages).forEach(function (file) {
 });
 
 const home = fs.readFileSync('index.html', 'utf8');
+const makerLabel = publicCountLabel(stats.manufacturers);
+check('homepage manufacturer copy is the public label', home.indexOf('data-stat="manufacturersPublicLabel">' + makerLabel) >= 0 && home.indexOf('directory of <span data-stat="manufacturersPublicLabel">' + makerLabel + '</span> transformer makers') >= 0, makerLabel);
+check('directory manufacturer headline is the public label', fs.readFileSync('directory.html', 'utf8').indexOf('data-stat="manufacturersPublicLabel">' + makerLabel) >= 0, makerLabel);
 if (stats.manufacturers !== 906) {
-  check('homepage manufacturer fallback is not the stale 906', !/data-stat="manufacturers">\s*906\b/.test(home));
+  check('homepage manufacturer fallback is not the stale 906', !/data-stat="manufacturers(?:PublicLabel)?">\s*906\b/.test(home));
 }
 const builder = fs.readFileSync('build-site-stats.js', 'utf8');
 check('builder publishes the tenders page Pre-award field', /tendersPreAward:/.test(builder) && /EVALUATION/.test(builder) && /UNDATED/.test(builder));

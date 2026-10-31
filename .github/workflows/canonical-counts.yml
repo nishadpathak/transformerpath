@@ -14,3 +14,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/canonical-counts-as-of.js
+      - run: node tests/public-manufacturer-label.js

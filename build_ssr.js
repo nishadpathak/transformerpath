@@ -28,6 +28,7 @@ const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href'
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
+const { publicCountLabel, stampListedCount } = require('./lib/public-count-label');
 const { xPostHref, intelCanonical } = require('./lib/x-share');
 const tpAff = require('./lib/travelpayouts');
 const directorySsr = require('./lib/directory-ssr');
@@ -679,7 +680,8 @@ function renderManufacturers(html) {
   } catch (e) {}
   const countryCount = require('./lib/public-company-count').namedCountryCount(DATA);
   const regionCount = new Set(DATA.map((c) => c.region).filter(Boolean)).size;
-  const stats = `<div class="s"><b>${makers}</b><small>Companies</small></div>
+  const makerLabel = publicCountLabel(makers);
+  const stats = `<div class="s"><b>${makerLabel}</b><small>Companies</small></div>
      <div class="s"><b>${countryCount}</b><small>Countries</small></div>
      <div class="s"><b>${regionCount}</b><small>Regions</small></div>
      <div class="s"><b>${completeness}%</b><small>Data completeness</small></div>`;
@@ -688,7 +690,8 @@ function renderManufacturers(html) {
   html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
   html = html.replace('<script>\nconst DATA_URL', eventBadges.mountHtml() + '<script>\nconst DATA_URL');
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
-    `Showing ${makers} companies across ${countryCount} countries`);
+    `Showing ${makerLabel} companies across ${countryCount} countries`);
+  html = stampListedCount(html, makers);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Quick-jump "By country" bar — regenerated from the census so it is
@@ -947,12 +950,12 @@ function renderVendors(html) {
   const eventBadges = require('./event-badges');
   const view = directorySsr.vendors(index.companies || []);
   html = replaceInnerById(html, 'cntTotal', String(view.total));
-  html = replaceInnerById(html, 'cntOem', String(view.oem));
+  html = replaceInnerById(html, 'cntOem', publicCountLabel(view.oem));
   html = replaceInnerById(html, 'cntComp', String(view.components));
   html = replaceInnerById(html, 'cntCountries', String(view.countries));
   html = replaceInnerById(html, 'vndVisibleCount', String(view.total));
   html = replaceInnerById(html, 'pillAll', 'All categories (' + view.total + ')');
-  html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
+  html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + publicCountLabel(view.oem) + ')');
   html = replaceInnerById(html, 'vndCountry', view.countryOptions);
   html = replaceInnerById(html, 'vndList', view.listHtml);
   html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');

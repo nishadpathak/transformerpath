@@ -257,9 +257,15 @@ async function main() {
       const statsRes = await fetchFollow(bust(base + '/data/site-stats.json'));
       let stats = {};
       try { stats = JSON.parse(statsRes.body); } catch (e) {}
-      const m = busted.body.match(/data-stat="manufacturers">\s*([\d,]+)/);
-      const shown = m ? Number(String(m[1]).replace(/,/g, '')) : NaN;
-      record('homepage maker count', shown === stats.manufacturers, shown + ' vs site-stats ' + stats.manufacturers);
+      const label = busted.body.match(/data-stat="manufacturersPublicLabel">\s*([^<]+)/);
+      const raw = busted.body.match(/data-stat="manufacturers">\s*([\d,]+)/);
+      if (label) {
+        const expected = require('../lib/public-count-label').publicCountLabel(stats.manufacturers);
+        record('homepage maker count', label[1].trim() === expected, label[1].trim() + ' vs ' + expected);
+      } else {
+        const shown = raw ? Number(String(raw[1]).replace(/,/g, '')) : NaN;
+        record('homepage maker count', shown === stats.manufacturers, shown + ' vs site-stats ' + stats.manufacturers);
+      }
     }
     if (p === '/manufacturers/cg-power/') {
       const kv = busted.body.match(/Highest sourced voltage evidence<\/th>\s*<td>(\d+)\s*kV/i);

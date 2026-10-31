@@ -11,6 +11,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { publicCountLabel } = require('./lib/public-count-label');
 
 const CFG = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
 
@@ -64,8 +65,10 @@ function dataStatFallback(html, key) {
   const m = html.match(new RegExp('data-stat="' + key + '">\\s*(\\d+)'));
   return m ? +m[1] : null;
 }
-check('index data-stat="manufacturers" fallback = config',
-  dataStatFallback(HOME, 'manufacturers') === CFG.counters.manufacturers);
+check('index manufacturer public label matches the census floor',
+  (HOME.match(/data-stat="manufacturersPublicLabel">([^<]+)/) || [])[1] === publicCountLabel(CFG.counters.manufacturers));
+check('index makers card uses the public label',
+  HOME.indexOf('A growing sourced directory of <span data-stat="manufacturersPublicLabel">' + publicCountLabel(CFG.counters.manufacturers) + '</span> transformer makers') >= 0);
 check('index data-stat="manufacturingCountries" fallback = config',
   dataStatFallback(HOME, 'manufacturingCountries') === CFG.counters.manufacturingCountries);
 check('index data-stat="countries" fallback = config',
@@ -398,7 +401,10 @@ routeCheck('pricing.html', ['Learning', 'Engineering Pro', 'Engineering Team', '
 // (audit regression: pricing said 709 while directory showed 911).
 {
   const pricing = pageContentMap.get('pricing.html') || '';
-  check('pricing manufacturer claim uses data-stat', /data-stat="manufacturers">\d+<\/span>/.test(pricing));
+  check('pricing manufacturer claim uses the public label',
+    pricing.indexOf('data-stat="manufacturersPublicLabel">' + publicCountLabel(STATS.manufacturers) + '</span>') >= 0
+    && !/data-stat="manufacturers">\s*\d/.test(pricing)
+    && !/\b\d[\d,]*-manufacturer\b/.test(pricing));
   check('pricing grid census uses data-stat', /data-stat="gridMarkets">\d+<\/span>/.test(pricing));
   if (/\b709-manufacturer|\bBrowse 709 manufacturers/.test(pricing)) {
     problems.push('route-stale pricing.html :: forbidden hardcoded 709-manufacturer claim');

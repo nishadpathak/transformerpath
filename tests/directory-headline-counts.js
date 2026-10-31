@@ -6,6 +6,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { publicCountLabel } = require('../lib/public-count-label');
 
 let failed = 0;
 function check(label, pass, detail) {
@@ -22,10 +23,11 @@ const stats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const cfg = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
 const html = fs.readFileSync('manufacturers.html', 'utf8');
 const statsBlock = html.match(/<!--SSR:mfg-stats-->([\s\S]*?)<!--\/SSR:mfg-stats-->/);
-const shown = html.match(/Showing (\d+) companies across (\d+) countries/);
+const shown = html.match(/Showing ([^<]*?) companies across (\d+) countries/);
 const size = html.match(/"size"\s*:\s*(\d+)/);
-const companiesB = statsBlock && statsBlock[1].match(/<b>(\d+)<\/b><small>Companies<\/small>/);
+const companiesB = statsBlock && statsBlock[1].match(/<b>([^<]+)<\/b><small>Companies<\/small>/);
 const countriesB = statsBlock && statsBlock[1].match(/<b>(\d+)<\/b><small>Countries<\/small>/);
+const makerLabel = publicCountLabel(rendered);
 
 console.log('=== DIRECTORY HEADLINE COUNTS ===');
 console.log('  public ' + rendered + ' companies / census rows ' + makers + ' / ' + countries + ' countries');
@@ -35,38 +37,45 @@ check('database headline leads with the public company count', stats.databaseHea
 check('config.counters.manufacturers equals the public company count', cfg.counters.manufacturers === rendered, String(cfg.counters.manufacturers));
 check('config.counters.manufacturingCountries equals the census', cfg.counters.manufacturingCountries === countries, String(cfg.counters.manufacturingCountries));
 check('rendered directory hides the plant-alias rows', rendered === makers - 7, String(rendered));
-check('SSR company count equals the rendered directory', !!companiesB && Number(companiesB[1]) === rendered, companiesB && companiesB[1]);
+check('SSR company headline uses the public label', !!companiesB && companiesB[1] === makerLabel, companiesB && companiesB[1]);
 check('SSR country count equals the census', !!countriesB && Number(countriesB[1]) === countries, countriesB && countriesB[1]);
-check('Showing line equals the rendered directory', !!shown && Number(shown[1]) === rendered && Number(shown[2]) === countries, shown && shown[0]);
+check('Showing line uses the public label', !!shown && shown[1] === makerLabel && Number(shown[2]) === countries, shown && shown[0]);
 check('Dataset size equals the rendered directory', !!size && Number(size[1]) === rendered, size && size[1]);
 check('builder rewrites the directory SSR block from the census', /SSR:mfg-stats/.test(fs.readFileSync('build-site-stats.js', 'utf8')));
 
 ['index.html', 'directory.html', 'pricing.html', 'intel.html'].forEach((file) => {
   const page = fs.readFileSync(file, 'utf8');
-  const hit = page.match(/data-stat="manufacturers">\s*(\d+)/);
-  check(file + ' manufacturer fallback equals the public company count', !!hit && Number(hit[1]) === rendered, hit && hit[1]);
+  check(file + ' manufacturer headline is the public label', page.indexOf('data-stat="manufacturersPublicLabel">' + makerLabel) >= 0, makerLabel);
+  check(file + ' does not publish the raw manufacturer count', !new RegExp('data-stat="manufacturers">\\s*' + rendered + '\\b').test(page));
 });
 
 const directory = fs.readFileSync('directory.html', 'utf8');
-const kpi = directory.match(/kg-kpi-val"[^>]*>\s*(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/);
-const badge = directory.match(/Manufacturers <span class="badge-cnt">(\d+)/);
-check('directory stat and filter tag use the public company count', !!kpi && Number(kpi[1]) === rendered && !!badge && Number(badge[1]) === rendered, (kpi && kpi[1]) + ' / ' + (badge && badge[1]));
+const kpi = directory.match(/kg-kpi-val"[^>]*>\s*([^<]+)<\/div><div class="kg-kpi-lbl">Manufacturers/);
+const badge = directory.match(/Manufacturers <span class="badge-cnt">([^<]+)/);
+check('directory stat and filter tag use the public label', !!kpi && kpi[1] === makerLabel && !!badge && badge[1] === makerLabel, (kpi && kpi[1]) + ' / ' + (badge && badge[1]));
 
-function countContexts(html) {
+function headlineCounts(html) {
   const found = [];
   const patterns = [
     /data-stat="manufacturers">\s*(\d+)/g,
-    /Browse all (\d+) transformer companies/g,
-    /directory of (\d+) transformer makers/g,
-    /Manufacturer census:\s*(\d+)/g,
-    /kg-kpi-val"[^>]*>\s*(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/g,
+    /Browse all (\d[\d,]*) transformer companies/g,
+    /directory of (\d[\d,]*) transformer makers/g,
+    /Manufacturer census:\s*(\d[\d,]*)/g,
+    /kg-kpi-val"[^>]*data-stat="manufacturers">\s*(\d+)/g,
     /Manufacturers <span class="badge-cnt">(\d+)/g,
-    /Transformer OEMs \((\d+)\)/g
+    /Transformer OEMs \((\d[\d,]*)\)/g,
+    /Showing (\d[\d,]*) companies across/g,
+    /<b>(\d+)<\/b><small>Companies<\/small>/g
   ];
   patterns.forEach(function (re) {
     let hit;
-    while ((hit = re.exec(html))) found.push(Number(hit[1]));
+    while ((hit = re.exec(html))) found.push(Number(String(hit[1]).replace(/,/g, '')));
   });
+  return found;
+}
+
+function countContexts(html) {
+  const found = headlineCounts(html);
   const metaRe = /<meta\b[^>]*(?:name|property)="(?:description|og:description|twitter:description)"[^>]*>/gi;
   let meta;
   while ((meta = metaRe.exec(html))) {
@@ -100,9 +109,10 @@ function walkPages(dir) {
 }
 walkPages(process.cwd());
 check('public pages do not mix the census row count into the company total', mixed.length === 0, mixed.slice(0, 12).join(', '));
-['index.html', 'directory.html', 'manufacturers.html', 'intelligence.html', 'vendors.html'].forEach(function (file) {
-  const nums = countContexts(fs.readFileSync(file, 'utf8'));
-  check(file + ' publishes the public company count', nums.indexOf(rendered) !== -1, nums.join(','));
+['index.html', 'directory.html', 'manufacturers.html', 'intelligence.html', 'vendors.html', 'pricing.html', 'intel.html'].forEach(function (file) {
+  const page = fs.readFileSync(file, 'utf8');
+  check(file + ' publishes the public manufacturer label', page.indexOf(makerLabel) >= 0, makerLabel);
+  check(file + ' does not publish the raw manufacturer total in a headline', headlineCounts(page).indexOf(rendered) === -1, headlineCounts(page).join(','));
 });
 
 if (failed) {
