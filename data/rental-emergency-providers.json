@@ -1,0 +1,395 @@
+{
+  "$schema": "https://transformerpath.com/rental-emergency.schema.json",
+  "directory_type": "rental-emergency",
+  "approved_date": "2026-10-31",
+  "note": "Companies that rent transformers or mobile substations, or do emergency replacement. Published from the 31 Oct 2026 source list. Two source rows for the same rental group are one listing. no_email_outreach is internal and must not be rendered.",
+  "excluded": [
+    "Hitachi Energy",
+    "Southern States LLC",
+    "Mahati Industries"
+  ],
+  "companies": [
+    {
+      "id": "rent:aggreko",
+      "company_name": "Aggreko",
+      "countries": ["USA", "Canada"],
+      "website": "https://www.aggreko.com",
+      "service_pages": [
+        {
+          "label": "United States service page",
+          "url": "https://www.aggreko.com/en-us/products/mobile-substation"
+        },
+        {
+          "label": "Canada service page",
+          "url": "https://www.aggreko.com/en-ca/products/electrical-distribution/transformers"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.aggreko.com/en-us/products/mobile-substation",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:crestchic-transformers",
+      "company_name": "Crestchic Transformers",
+      "countries": ["United Kingdom", "Belgium"],
+      "website": "https://crestchictransformers.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://crestchictransformers.com/transformer-rental/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation"],
+      "contact_email": "",
+      "phone": "+44 1283 531 645",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://crestchictransformers.com/transformer-rental/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:delta-service-location",
+      "company_name": "Delta Service Location",
+      "countries": ["France"],
+      "website": "https://www.dsl.fr",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.dsl.fr/en/temporary-energy/transformer-hire/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.dsl.fr/en/temporary-energy/transformer-hire/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:gbe-uk",
+      "company_name": "GBE UK",
+      "countries": ["United Kingdom"],
+      "website": "https://www.gbeuk.co.uk",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.gbeuk.co.uk/services/transformer-hire-service"
+        }
+      ],
+      "service_types": ["rental", "emergency replacement"],
+      "contact_email": "sales@gbeuk.co.uk",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.gbeuk.co.uk/services/transformer-hire-service",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:high-to-low-voltage",
+      "company_name": "High to Low Voltage",
+      "countries": ["USA"],
+      "website": "https://www.hightolowvoltage.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.hightolowvoltage.com/services/rentals"
+        }
+      ],
+      "service_types": ["rental", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.hightolowvoltage.com/services/rentals",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:horstmann-und-schwarz",
+      "company_name": "Horstmann und Schwarz",
+      "countries": ["Germany"],
+      "website": "https://horstmann-schwarz.de",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://horstmann-schwarz.de/en/transformer-station-rentals/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "info@horstmann-schwarz.de",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://horstmann-schwarz.de/en/transformer-station-rentals/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:indulf",
+      "company_name": "INDULF",
+      "countries": ["India"],
+      "website": "https://www.indulf.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.indulf.com/services/transformer-rental"
+        }
+      ],
+      "service_types": ["rental", "emergency replacement"],
+      "contact_email": "info@indulf.com",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.indulf.com/services/transformer-rental",
+      "no_email_outreach": true
+    },
+    {
+      "id": "rent:jcl-energy",
+      "company_name": "JCL Energy",
+      "countries": ["USA"],
+      "website": "https://www.jcl.energy",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.jcl.energy/rentals"
+        }
+      ],
+      "service_types": ["rental", "emergency replacement"],
+      "contact_email": "",
+      "phone": "866-983-1300",
+      "phone_context": "emergency line",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.jcl.energy/rentals",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:jeco-energies",
+      "company_name": "Jeco Energies",
+      "countries": ["Netherlands"],
+      "website": "https://jeco-energies.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://jeco-energies.com/en/expertises/rental/transformers/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://jeco-energies.com/en/expertises/rental/transformers/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:jtc-power-rental",
+      "company_name": "JTC Power Rental",
+      "countries": ["Kuwait", "Saudi Arabia", "Qatar"],
+      "website": "https://www.jtckw.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.jtckw.com/power-rental/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation"],
+      "contact_email": "info@jtckw.com",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.jtckw.com/power-rental/",
+      "no_email_outreach": true
+    },
+    {
+      "id": "rent:michigan-machines",
+      "company_name": "Michigan Machines",
+      "countries": ["USA"],
+      "website": "https://michiganmachines.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://michiganmachines.com/rentals"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "+1 313 674 4891",
+      "phone_context": "24/7",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://michiganmachines.com/rentals",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:power-distribution",
+      "company_name": "Power Distribution",
+      "countries": ["Australia"],
+      "website": "https://powerdistribution.au",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://powerdistribution.au/hire/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://powerdistribution.au/hire/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:production-power-corporation",
+      "company_name": "Production Power Corporation",
+      "countries": ["Canada"],
+      "website": "https://www.productionpower.ca",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.productionpower.ca/emergency.html"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "info@productionpower.ca",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.productionpower.ca/emergency.html",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:sudhir-rentals",
+      "company_name": "Sudhir Rentals",
+      "countries": ["Saudi Arabia", "UAE"],
+      "website": "https://sudhirrentals.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://sudhirrentals.com/electrical-power-distribution/"
+        }
+      ],
+      "service_types": ["rental"],
+      "contact_email": "enquiry@sudhirrentals.com",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://sudhirrentals.com/electrical-power-distribution/",
+      "no_email_outreach": true
+    },
+    {
+      "id": "rent:sunbelt-solomon",
+      "company_name": "Sunbelt Solomon",
+      "countries": ["USA"],
+      "website": "https://sunbeltsolomon.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://sunbeltsolomon.com/mobile-substations/"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://sunbeltsolomon.com/mobile-substations/",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:sustainco-pty-ltd",
+      "company_name": "SustainCO Pty Ltd",
+      "countries": ["Australia"],
+      "website": "https://www.sustainco.com.au",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.sustainco.com.au/22kv-transformer-rental-australia"
+        }
+      ],
+      "service_types": ["rental", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.sustainco.com.au/22kv-transformer-rental-australia",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:united-rentals",
+      "company_name": "United Rentals",
+      "countries": ["USA"],
+      "website": "https://www.unitedrentals.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://www.unitedrentals.com/solutions/industry-solutions/energy-utility/substation"
+        }
+      ],
+      "service_types": ["rental", "mobile substation"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://www.unitedrentals.com/solutions/industry-solutions/energy-utility/substation",
+      "no_email_outreach": false
+    },
+    {
+      "id": "rent:watts-rental",
+      "company_name": "WATTS Rental (Agile Power Group / Wilson Power Solutions JV)",
+      "countries": ["UAE"],
+      "website": "https://agilepowergroup.com",
+      "service_pages": [
+        {
+          "label": "Service page",
+          "url": "https://agilepowergroup.com/watts-rental"
+        }
+      ],
+      "service_types": ["rental", "mobile substation", "emergency replacement"],
+      "contact_email": "",
+      "phone": "",
+      "phone_context": "",
+      "verified": true,
+      "verification_status": "Official Website Checked",
+      "verification_date": "2026-10-31",
+      "verification_source": "https://agilepowergroup.com/watts-rental",
+      "no_email_outreach": true
+    }
+  ]
+}

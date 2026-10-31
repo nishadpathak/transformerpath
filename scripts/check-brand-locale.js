@@ -38,8 +38,8 @@ const SKIP_DIRS = new Set([
   'vendor'
 ]);
 
-const LISTING_DIR = /^(manufacturers|events|markets|tenders|projects|utilities|accessories|grids|knowledge|case-studies|topics|components|machinery|laboratories|services|logistics|media|applications|buyers|awards|directory)\//;
-const LISTING_FILE = /^(events|exhibitions|tenders|projects|manufacturers|markets|utilities|awards|jobs|grids|intel|archive|gcc-weekly-pack|buyers|components|standards|map|directory|accessories|machinery|laboratories|services|logistics|associations|education|books|rfq|search|intelligence|hydrogen)\.html$/;
+const LISTING_DIR = /^(manufacturers|events|markets|tenders|projects|utilities|accessories|grids|knowledge|case-studies|topics|components|machinery|laboratories|services|logistics|rental-emergency|media|applications|buyers|awards|directory)\//;
+const LISTING_FILE = /^(events|exhibitions|tenders|projects|manufacturers|markets|utilities|awards|jobs|grids|intel|archive|gcc-weekly-pack|buyers|components|standards|map|directory|accessories|machinery|laboratories|services|logistics|rental-emergency|associations|education|books|rfq|search|intelligence|hydrogen)\.html$/;
 
 const EMAIL_FILES = [
   'functions/watchlist-subscribe.js',

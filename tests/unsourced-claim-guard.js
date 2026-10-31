@@ -137,7 +137,8 @@ function checkDirectoryStats() {
     ['media.html', 'data/media.json', 'publications'],
     ['associations.html', 'data/associations.json', 'associations'],
     ['buyers.html', 'data/buyers.json', 'buyers'],
-    ['services.html', 'data/services.json', 'services']
+    ['services.html', 'data/services.json', 'services'],
+    ['rental-emergency.html', 'data/rental-emergency-providers.json', 'companies']
   ];
   pages.forEach(function (row) {
     const data = JSON.parse(fs.readFileSync(row[1], 'utf8'));
