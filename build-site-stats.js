@@ -15,7 +15,7 @@
  */
 'use strict';
 const fs = require('fs');
-const { publicCountLabel } = require('./lib/public-count-label');
+const { publicCountLabel, stampListedCount } = require('./lib/public-count-label');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function num(v, fb) { const n = typeof v === 'number' ? v : parseInt(v, 10); return isNaN(n) ? fb : n; }
 
@@ -298,6 +298,7 @@ if (fs.existsSync('manufacturers.html')) {
   html = html.replace(/<!--SSR:mfg-stats-->[\s\S]*?<!--\/SSR:mfg-stats-->/, statsBlock);
   html = html.replace(/Showing (?:[\d,]+\+|\d[\d,]*) companies across \d+ countries/,
     'Showing ' + makerLabel + ' companies across ' + current.manufacturingCountries + ' countries');
+  html = stampListedCount(html, renderedMakers);
   html = html.replace(/("size"\s*:\s*)\d+/, '$1' + renderedMakers);
   html = stampPublicManufacturerLabel(html, current.manufacturersPublicLabel);
   ['manufacturers', 'manufacturerProfiles', 'manufacturerNoindex', 'manufacturerDirectories', 'manufacturerRedirects', 'manufacturerHiddenAliases'].forEach(function (key) {

@@ -28,7 +28,7 @@ const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href'
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
-const { publicCountLabel } = require('./lib/public-count-label');
+const { publicCountLabel, stampListedCount } = require('./lib/public-count-label');
 const { xPostHref, intelCanonical } = require('./lib/x-share');
 const tpAff = require('./lib/travelpayouts');
 const directorySsr = require('./lib/directory-ssr');
@@ -691,6 +691,7 @@ function renderManufacturers(html) {
   html = html.replace('<script>\nconst DATA_URL', eventBadges.mountHtml() + '<script>\nconst DATA_URL');
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
     `Showing ${makerLabel} companies across ${countryCount} countries`);
+  html = stampListedCount(html, makers);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Quick-jump "By country" bar — regenerated from the census so it is
