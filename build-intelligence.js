@@ -220,7 +220,7 @@ function renderIntelligence() {
   const all = typed.concat(evts.filter(function (e) { return e.type === 'reference'; }));
   all.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
   const seen = {}; let feed = [];
-  all.slice(0, 40).forEach(function (e) {
+  all.slice(0, 48).forEach(function (e) {
     if (seen[e._co + '|' + e.title]) return; seen[e._co + '|' + e.title] = 1;
     const conf = e.confidence || 'LIMITED';
     feed.push('<div class="tl-row"><div class="tl-evt">' + esc(TYPE_LABEL2[e.type] || e.type) + ' <span class="conf conf-' + esc(conf) + '">' + esc(conf) + '</span></div>' +
