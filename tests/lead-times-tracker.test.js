@@ -36,7 +36,9 @@ check('undated four-year pv magazine figure is not a row', html.indexOf('128-wee
 check('Virginia capacity is the company figure', html.indexOf('67000 MVA/year') >= 0 && html.indexOf('Company-reported') >= 0);
 check('Virginia check day is 15 Oct 2026', html.indexOf('15 Oct 2026') >= 0);
 check('month rows say the day is not stated', /day not stated on the source label/.test(html));
-check('page day is the newest day-precision check', pageDay(selected.rows) === '2026-10-15');
+const newestDay = selected.rows.map(function (row) { return row.lastChecked; })
+  .filter(function (day) { return /^\d{4}-\d{2}-\d{2}$/.test(day); }).sort().pop();
+check('page day is the newest day-precision check', !!newestDay && pageDay(selected.rows) === newestDay, pageDay(selected.rows) + ' vs ' + newestDay);
 check('directory lead-time notes are named as left off', /Directory lead-time notes/.test(html));
 
 if (failed) {
