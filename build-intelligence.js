@@ -27,6 +27,7 @@
 const fs = require('fs');
 const { resolveCompanyAlias } = require('./lib/company-aliases');
 const { dateFromSrcUtc } = require('./lib/src-date');
+const { publicCountLabel } = require('./lib/public-count-label');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -214,13 +215,13 @@ function renderIntelligence() {
     '<div class="s"><b>' + (graph.awards || []).length + '</b><small>Recent awards</small></div>' +
     '<div class="s"><b>' + Object.keys(co).length + '</b><small>Companies in the event layer</small></div>' +
     '<div class="s"><b>' + (graph.factory_expansions || 0) + '</b><small>Factory expansion events</small></div></div>' +
-    '<p class="sub" style="margin:-12px 0 22px">These tiles count the event layer — sourced developments — not the manufacturer census. <a href="manufacturers.html" style="color:var(--accent);font-weight:700">Manufacturer census' + (censusN ? ': ' + censusN + ' companies' : '') + ' →</a></p>';
+    '<p class="sub" style="margin:-12px 0 22px">These tiles count the event layer — sourced developments — not the manufacturer census. <a href="manufacturers.html" style="color:var(--accent);font-weight:700">Manufacturer census' + (censusN ? ': ' + publicCountLabel(censusN) + ' companies' : '') + ' →</a></p>';
 
   // Activity feed: typed events first (date desc), then reference items. De-dupe by company+title.
   const all = typed.concat(evts.filter(function (e) { return e.type === 'reference'; }));
   all.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
   const seen = {}; let feed = [];
-  all.slice(0, 40).forEach(function (e) {
+  all.slice(0, 48).forEach(function (e) {
     if (seen[e._co + '|' + e.title]) return; seen[e._co + '|' + e.title] = 1;
     const conf = e.confidence || 'LIMITED';
     feed.push('<div class="tl-row"><div class="tl-evt">' + esc(TYPE_LABEL2[e.type] || e.type) + ' <span class="conf conf-' + esc(conf) + '">' + esc(conf) + '</span></div>' +
