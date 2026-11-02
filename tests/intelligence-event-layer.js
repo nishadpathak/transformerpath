@@ -16,8 +16,8 @@ function check(label, pass, detail) {
 check('company tile is labelled as the event layer', /Companies in the event layer/.test(html));
 check('factory tile is labelled as events', /Factory expansion events/.test(html));
 check('tiles are not labelled as the bare census', !/<small>Companies<\/small>/.test(html) && !/<small>Factory expansions<\/small>/.test(html));
-check('page links to the manufacturer census', /href="manufacturers\.html"/.test(html) && /Manufacturer census: \d+ companies/.test(html));
-check('census link uses the site-stats manufacturer count', html.indexOf('Manufacturer census: ' + stats.manufacturers + ' companies') !== -1, String(stats.manufacturers));
+check('page links to the manufacturer census', /href="manufacturers\.html"/.test(html) && /Manufacturer census: [\d,]+\+? companies/.test(html));
+check('census link uses the site-stats public manufacturer label', html.indexOf('Manufacturer census: ' + (stats.manufacturersPublicLabel || stats.manufacturers) + ' companies') !== -1, String(stats.manufacturersPublicLabel || stats.manufacturers));
 if (failures.length) {
   console.error('\n' + failures.length + ' intelligence tile check(s) failed');
   process.exit(1);
