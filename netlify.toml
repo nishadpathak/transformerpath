@@ -18643,6 +18643,20 @@
 
 [[redirects]]
   from = "/claim-listing/"
+  to = "/claim-listing/trafovia/"
+  status = 301
+  force = true
+  query = {slug = "trafovia"}
+
+[[redirects]]
+  from = "/claim-listing"
+  to = "/claim-listing/trafovia/"
+  status = 301
+  force = true
+  query = {slug = "trafovia"}
+
+[[redirects]]
+  from = "/claim-listing/"
   to = "/claim-listing/trafox/"
   status = 301
   force = true
