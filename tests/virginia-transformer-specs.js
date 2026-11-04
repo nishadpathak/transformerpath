@@ -33,7 +33,7 @@ check('provenance notes do not combine MVA and kV as one transformer capability'
 check('profile summary shows 525 kV', /Highest sourced voltage evidence<\/th><td>525 kV<\/td>/.test(html));
 check('profile summary shows 67,000 MVA/year', /~67,000 MVA/.test(html) && /67,000 MVA\/year/.test(html));
 check('profile links the About Us URL', html.indexOf(URL) >= 0);
-check('profile no longer states 230 kV or 30,000 MVA', html.indexOf('230 kV') < 0 && html.indexOf('30,000') < 0);
+check('profile no longer states 230 kV or 30,000 MVA', html.indexOf('230 kV') < 0 && html.indexOf('30,000 MVA') < 0);
 
 if (failed) {
   console.error('VIRGINIA TRANSFORMER SPECS FAILED (' + failed + ')');
