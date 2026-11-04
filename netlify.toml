@@ -92,10 +92,18 @@
   status = 200
   force = true
 
+# A 301 from /checkout to /checkout/ loops: pretty_urls is off, so
+# /checkout/?product=learning 301s to itself. Rewrite to the file instead.
 [[redirects]]
   from = "/checkout"
-  to = "/checkout/"
-  status = 301
+  to = "/checkout/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/checkout/"
+  to = "/checkout/index.html"
+  status = 200
   force = true
 
 # Pre-sprint data snapshot. Forced 404 even if a stale copy is still published.
