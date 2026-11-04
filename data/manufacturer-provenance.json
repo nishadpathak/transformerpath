@@ -159,5 +159,54 @@
     ],
     "source": "https://www.vatransformer.com/about-us/",
     "lastVerified": "2026-10-15"
+  },
+  {
+    "name": "Resolute Grid",
+    "facts": [
+      {
+        "field": "unit_rating_mva",
+        "value": "30–350",
+        "unit": "MVA",
+        "source_title": "Resolute Grid specs — Rating",
+        "source_url": "https://resolutegrid.com/",
+        "source_type": "company_website",
+        "source_date": "2026-11-04",
+        "confidence": "HIGH",
+        "claim_type": "COMPANY_REPORTED",
+        "note": "The specs block states Rating 30–350 MVA. 350 is the top of that stated range, not an audited figure beyond the page.",
+        "retrieved_at": "2026-11-04",
+        "last_verified": "2026-11-04"
+      },
+      {
+        "field": "voltage_class_evidence",
+        "value": 345,
+        "unit": "kV",
+        "source_title": "Resolute Grid specs — Voltage",
+        "source_url": "https://resolutegrid.com/",
+        "source_type": "company_website",
+        "source_date": "2026-11-04",
+        "confidence": "HIGH",
+        "claim_type": "COMPANY_REPORTED",
+        "note": "The specs block states Up to 345 kV. That is the voltage the page states, not an audited maximum for every unit.",
+        "retrieved_at": "2026-11-04",
+        "last_verified": "2026-11-04"
+      },
+      {
+        "field": "delivery_ready",
+        "value": "<6",
+        "unit": "months",
+        "source_title": "Resolute Grid specs — delivery-ready",
+        "source_url": "https://resolutegrid.com/",
+        "source_type": "company_website",
+        "source_date": "2026-11-04",
+        "confidence": "HIGH",
+        "claim_type": "COMPANY_REPORTED",
+        "note": "The specs block labels Resolute Grid “<6 months” and “Blank sheet to delivery-ready.” Source: https://resolutegrid.com/ checked 2026-11-04. The “2–4+ yrs” line on the same page is labeled “Typical large power transformer lead time,” not this company’s figure.",
+        "retrieved_at": "2026-11-04",
+        "last_verified": "2026-11-04"
+      }
+    ],
+    "source": "https://resolutegrid.com/",
+    "lastVerified": "2026-11-04"
   }
 ]

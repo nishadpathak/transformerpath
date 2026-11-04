@@ -1,7 +1,7 @@
 {
   "_comment": "Top 150 directory profiles. The first 36 follow the tier list onto canonical slugs. The rest are indexable profiles ordered by research completeness, then name. A null or empty field has no public source on file. verified is the day the linked page was read.",
   "checked": "2026-10-15",
-  "count": 150,
+  "count": 151,
   "companies": [
     {
       "slug": "hitachi-energy",
@@ -2022,6 +2022,38 @@
       "iso": [],
       "parent": null,
       "products": []
+    },
+    {
+      "slug": "resolute-grid",
+      "name": "Resolute Grid",
+      "country": "United States",
+      "max_voltage_kv": {
+        "value": 345,
+        "unit": "kV",
+        "source_url": "https://resolutegrid.com/",
+        "verified": "2026-11-04",
+        "quote": "up to 345 kV"
+      },
+      "mva": {
+        "min": 30,
+        "max": 350,
+        "unit": "MVA",
+        "basis": "unit_rating",
+        "source_url": "https://resolutegrid.com/",
+        "verified": "2026-11-04",
+        "quote": "30–350 MVA"
+      },
+      "plants": [],
+      "iso": [],
+      "parent": null,
+      "products": [
+        {
+          "code": "PT",
+          "source_url": "https://resolutegrid.com/",
+          "verified": "2026-11-04",
+          "quote": "American-made large power transformers."
+        }
+      ]
     }
   ]
 }

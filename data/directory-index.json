@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-10-31T13:06:11.620Z",
-  "count": 1777,
+  "generated": "2026-11-04T08:37:23.404Z",
+  "count": 1779,
   "counts": {
-    "manufacturers": 1053,
-    "component_suppliers": 462,
+    "manufacturers": 1054,
+    "component_suppliers": 463,
     "machinery_manufacturers": 20,
     "testing_laboratories": 141,
     "services": 71,
@@ -61024,6 +61024,89 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:resolute-grid",
+      "canonical_id": "cmp:resolute-grid",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Resolute Grid",
+      "slug": "resolute-grid",
+      "country": "USA",
+      "region": "North America",
+      "website": "https://resolutegrid.com",
+      "headquarters": "",
+      "product_codes": [
+        "PT"
+      ],
+      "capability_labels": [
+        "Power transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "345 kV",
+        "num": 345,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "30–350 MVA",
+        "num": 30,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [
+        {
+          "city": "Texas",
+          "country": "USA",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
+      },
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "https://resolutegrid.com/",
+        "source_type": "industry_publication",
+        "source_url": "https://resolutegrid.com"
+      },
+      "completeness_score": 70,
+      "missing_fields": [
+        "Headquarters address",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 6,
+      "research_status": "ACTIVE_LIMITED_DATA",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://resolutegrid.com",
+        "capability_source": "https://resolutegrid.com/",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:retrasib-s-a-sgb-smit-group",
       "canonical_id": "cmp:retrasib-s-a-sgb-smit-group",
       "roles": [
@@ -120109,6 +120192,71 @@
       "commercial_status": "",
       "sources": {
         "website": "https://lubricants.totalenergies.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:trafovia",
+      "canonical_id": "cmp:trafovia",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Trafovia",
+      "slug": "trafovia",
+      "country": "China",
+      "region": "Yunnan",
+      "website": "https://trafovia.com",
+      "headquarters": "Kunming, China",
+      "product_codes": [],
+      "capability_labels": [
+        "Bushings (HV, LV)",
+        "Radiators / cooling systems"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Source: https://trafovia.com",
+        "source_type": "company_documentation",
+        "source_url": "https://trafovia.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://trafovia.com"
       },
       "factory_count": 0,
       "featured": false,
