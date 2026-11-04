@@ -141,6 +141,7 @@ exports.handler = async function (event) {
 
   let opened;
   let usedPaymentLink = false;
+  let fallbackReason = '';
   try {
     opened = await openSession({
       product: product,
@@ -159,9 +160,11 @@ exports.handler = async function (event) {
     if (!fallback) return json(502, { error: 'checkout_failed' });
     opened = { url: fallback, priceId: gate.codeOf(fallback) };
     usedPaymentLink = true;
-    if (err && err.missing) {
-      console.warn('checkout session skipped; STRIPE_SECRET_KEY missing; using Payment Link');
-    }
+    if (err && err.missing) fallbackReason = 'missing_key';
+    else if (err && err.message === 'price') fallbackReason = 'no_price';
+    else if (err && err.status) fallbackReason = 'stripe_' + err.status;
+    else fallbackReason = 'stripe_error';
+    console.warn('checkout session skipped; using Payment Link; reason=' + fallbackReason);
   }
 
   const row = emailGate.leadRow({
@@ -175,7 +178,11 @@ exports.handler = async function (event) {
   try { saved = await insertLead(row); }
   catch (e) { saved = false; }
 
-  if (wantsJson(event)) return json(200, { url: opened.url, saved: saved, payment_link: usedPaymentLink });
+  if (wantsJson(event)) {
+    const payload = { url: opened.url, saved: saved, payment_link: usedPaymentLink };
+    if (fallbackReason) payload.fallback_reason = fallbackReason;
+    return json(200, payload);
+  }
   return {
     statusCode: 302,
     headers: { Location: opened.url, 'cache-control': 'no-store' },
