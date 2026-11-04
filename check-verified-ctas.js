@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/* CI gate: every Get verified / Claim this profile CTA href is the $499
- * Verified Manufacturer Payment Link, with client_reference_id set to the
- * maker slug. Profiles that already carry the earned verified badge omit it.
+/* CI gate: every Get verified / Claim this profile CTA href is the checkout
+ * gate for the $499 Verified Manufacturer Payment Link, with the maker slug.
+ * Profiles that already carry the earned verified badge omit it.
  * A verified label is rendered only for a reviewed paid listing.
  */
 'use strict';
@@ -38,7 +38,7 @@ function payAnchors(html) {
 }
 
 function expectedHref(slug) {
-  return LINK + '?client_reference_id=' + encodeURIComponent(slug);
+  return '/checkout/?product=verified_manufacturer&slug=' + encodeURIComponent(slug);
 }
 
 function hasVerifiedLabel(html) {
@@ -235,7 +235,10 @@ async function audit() {
   const map = slugMap();
   const profiles = auditProfiles(doc);
   const page = fs.readFileSync('manufacturers.html', 'utf8');
-  if (page.indexOf(LINK) < 0) profiles.violations.push('manufacturers.html: directory script is missing the $499 link');
+  if (LINK.indexOf('https://buy.stripe.com/') !== 0 || paid.PAYMENT_LINKS.verified_manufacturer.amountCents !== 49900) {
+    profiles.violations.push('manufacturers.html: $499 Payment Link constant changed');
+  }
+  if (page.indexOf('/checkout/?product=verified_manufacturer') < 0) profiles.violations.push('manufacturers.html: directory script is missing the checkout gate');
   const board = auditBoard(boardHtml(page), map, earned);
   const census = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
   const slugs = JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8'));

@@ -735,7 +735,7 @@ function verifyCtas(slug, name){
   var claim = claimListingLink(slug);
   var wrap = '<div class="mfr-verify-ctas" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%;min-width:0">';
   if (!slug || EARNED_VERIFIED.has(slug)) return wrap + claim + '</div>';
-  const href = VERIFIED_MANUFACTURER_PAY_URL + '?client_reference_id=' + encodeURIComponent(slug);
+  const href = VERIFIED_MANUFACTURER_PAY_URL + (VERIFIED_MANUFACTURER_PAY_URL.indexOf('?') >= 0 ? '&' : '?') + 'slug=' + encodeURIComponent(slug);
   const track = ' data-track="supplier_verify_started" data-track-manufacturer="' + escAttr(name) + '"';
   return wrap
     + claim
