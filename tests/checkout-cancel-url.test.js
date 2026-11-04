@@ -56,7 +56,8 @@ assert.ok(body.indexOf('automatic_tax%5Benabled%5D=true') !== -1);
 assert.ok(body.indexOf('allow_promotion_codes=false') !== -1);
 assert.ok(body.indexOf('prefilled_promo_code') === -1);
 assert.ok(body.indexOf('cancel_url=' + encodeURIComponent(profile)) !== -1);
-assert.ok(body.indexOf('success_url=' + encodeURIComponent('https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm')) !== -1);
+assert.ok(body.indexOf('success_url=' + encodeURIComponent('https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}')) !== -1);
+assert.ok(body.indexOf('%23claimForm') === -1);
 
 const featured = session.sessionFields({
   product: 'featured_listing',
@@ -95,6 +96,7 @@ const cont = require('../functions/checkout-continue');
   assert.strictEqual(missing.statusCode, 200);
   assert.strictEqual(called, false);
   assert.strictEqual(missingBody.payment_link, true);
+  assert.strictEqual(missingBody.fallback_reason, 'missing_key');
   assert.strictEqual(
     missingBody.url,
     paid.PAYMENT_LINKS.verified_manufacturer.url + '?client_reference_id=ormazabal&prefilled_email=' + encodeURIComponent('buyer@example.com')
