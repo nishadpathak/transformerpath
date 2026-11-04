@@ -140,6 +140,7 @@ exports.handler = async function (event) {
   if (!emailGate.validEmail(email)) return json(400, { error: 'email required' });
 
   let opened;
+  let usedPaymentLink = false;
   try {
     opened = await openSession({
       product: product,
@@ -150,8 +151,17 @@ exports.handler = async function (event) {
       from: from
     });
   } catch (err) {
-    if (err && err.missing) return json(503, { configured: false, missing: err.missing });
-    return json(502, { error: 'checkout_failed' });
+    const fallback = checkoutSession.paymentLinkFallback(product, {
+      slug: slug,
+      event: eventId,
+      email: email
+    });
+    if (!fallback) return json(502, { error: 'checkout_failed' });
+    opened = { url: fallback, priceId: gate.codeOf(fallback) };
+    usedPaymentLink = true;
+    if (err && err.missing) {
+      console.warn('checkout session skipped; STRIPE_SECRET_KEY missing; using Payment Link');
+    }
   }
 
   const row = emailGate.leadRow({
@@ -165,7 +175,7 @@ exports.handler = async function (event) {
   try { saved = await insertLead(row); }
   catch (e) { saved = false; }
 
-  if (wantsJson(event)) return json(200, { url: opened.url, saved: saved });
+  if (wantsJson(event)) return json(200, { url: opened.url, saved: saved, payment_link: usedPaymentLink });
   return {
     statusCode: 302,
     headers: { Location: opened.url, 'cache-control': 'no-store' },

@@ -92,9 +92,13 @@ const cont = require('../functions/checkout-continue');
     body: JSON.stringify({ product: 'verified_manufacturer', email: 'buyer@example.com', slug: 'ormazabal', from: profile })
   });
   const missingBody = JSON.parse(missing.body);
-  assert.strictEqual(missing.statusCode, 503);
-  assert.deepStrictEqual(missingBody.missing, ['STRIPE_SECRET_KEY']);
+  assert.strictEqual(missing.statusCode, 200);
   assert.strictEqual(called, false);
+  assert.strictEqual(missingBody.payment_link, true);
+  assert.strictEqual(
+    missingBody.url,
+    paid.PAYMENT_LINKS.verified_manufacturer.url + '?client_reference_id=ormazabal&prefilled_email=' + encodeURIComponent('buyer@example.com')
+  );
 
   process.env.STRIPE_SECRET_KEY = 'sk_test_fixture_not_a_real_key';
   let posted = '';
