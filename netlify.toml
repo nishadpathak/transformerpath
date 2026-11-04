@@ -14415,6 +14415,20 @@
 
 [[redirects]]
   from = "/claim-listing/"
+  to = "/claim-listing/resolute-grid/"
+  status = 301
+  force = true
+  query = {slug = "resolute-grid"}
+
+[[redirects]]
+  from = "/claim-listing"
+  to = "/claim-listing/resolute-grid/"
+  status = 301
+  force = true
+  query = {slug = "resolute-grid"}
+
+[[redirects]]
+  from = "/claim-listing/"
   to = "/claim-listing/retrasib-s-a-sgb-smit-group/"
   status = 301
   force = true
