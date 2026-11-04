@@ -39,6 +39,8 @@ check(toml.indexOf('from = "/privacy-policy/"\n  to = "/privacy"\n  status = 301
 check(redirects.indexOf('/privacy-policy     /privacy     301') !== -1, '_redirects 301s /privacy-policy');
 check(redirects.indexOf('/privacy-policy.html     /privacy     301') !== -1, '_redirects 301s /privacy-policy.html');
 check(fs.readFileSync('build-topic-hubs.js', 'utf8').indexOf('href="/privacy.html"') !== -1, 'topic hub builder keeps the Privacy link');
+const companyBuilder = fs.readFileSync('build-company-pages.js', 'utf8');
+check(companyBuilder.indexOf("require('./lib/legal-footer')") !== -1 && /ensureLegalFooter\(/.test(companyBuilder), 'company page builder keeps the legal footer on alias redirects');
 
 const SKIP = new Set(['.git', 'node_modules', 'dist', 'archive', '_private', 'transformerpath-site', 'transformerpath']);
 function walk(dir, out) {

@@ -31,6 +31,7 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm, slugify: censusSlug } = require('./lib/company-aliases');
+const { ensureLegalFooter } = require('./lib/legal-footer');
 const exhibitorTags = require('./lib/exhibitor-tags');
 const eventBadges = require('./event-badges');
 const headOffice = require('./lib/head-office');
@@ -721,6 +722,8 @@ console.log('company pages:', list.length, '| indexed:', indexed, '(rich tier:',
 // Historical / short-name slugs that alias onto a canonical company must remain
 // as lightweight redirect pages so internal links and indexed URLs do not 404
 // before Netlify 301s apply. Entity relationship: SAME company, not deletion.
+// ensureLegalFooter keeps Privacy, Terms and Contact on these stubs. A company
+// page rebuild rewrites every alias, so the footer has to be part of this write.
 const aliasRedirectSlugs = {};
 Object.keys(require('./lib/company-aliases').ALIASES).forEach(function (k) {
   const a = require('./lib/company-aliases').ALIASES[k];
@@ -764,13 +767,13 @@ Object.keys(aliasRedirectSlugs).forEach(function (src) {
     return;
   }
   const href = '/manufacturers/' + dest + '/';
-  const html = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8">' +
+  const html = ensureLegalFooter('<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8">' +
     '<meta http-equiv="refresh" content="0;url=' + href + '">' +
     '<link rel="canonical" href="https://transformerpath.com' + href + '">' +
     '<meta name="robots" content="noindex,follow">' +
     '<title>Redirecting…</title></head><body>' +
     '<p>This company identity redirects to the canonical profile: ' +
-    '<a href="' + href + '">' + href + '</a>.</p></body></html>\n';
+    '<a href="' + href + '">' + href + '</a>.</p></body></html>\n');
   fs.mkdirSync('manufacturers/' + src, { recursive: true });
   fs.writeFileSync('manufacturers/' + src + '/index.html', html);
   console.log('alias redirect page: manufacturers/' + src + ' → ' + dest);
