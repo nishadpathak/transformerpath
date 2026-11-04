@@ -126,6 +126,7 @@
       <input type="hidden" name="slug" id="f-slug" value="">
       <input type="hidden" name="event" id="f-event" value="">
       <input type="hidden" name="component" id="f-component" value="">
+      <input type="hidden" name="from" id="f-from" value="">
       <p class="tp-checkout-email"><input type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><button class="btn btn-amber" id="checkout-submit" type="submit">Continue to payment</button></p>
       <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is saved with this plan before payment opens. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
     </form>
@@ -165,11 +166,14 @@
   var slug = q.get('slug') || '';
   var eventId = q.get('event') || '';
   var component = q.get('component') || '';
+  var from = q.get('from') || '';
+  if (!from && document.referrer) from = document.referrer;
   var form = document.getElementById('checkout-gate');
   document.getElementById('f-product').value = product;
   document.getElementById('f-slug').value = slug;
   document.getElementById('f-event').value = eventId;
   document.getElementById('f-component').value = component;
+  document.getElementById('f-from').value = from;
   fetch('/data/checkout-plans.json', { credentials: 'same-origin' }).then(function (r) {
     return r.ok ? r.json() : {};
   }).then(function (doc) {
@@ -200,12 +204,12 @@
     fetch('/.netlify/functions/checkout-continue', {
       method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ product: product, email: email, slug: slug, event: eventId, component: component })
+      body: JSON.stringify({ product: product, email: email, slug: slug, event: eventId, component: component, from: document.getElementById('f-from').value || '' })
     }).then(function (r) {
       return r.json().then(function (body) { return { ok: r.ok, body: body }; });
     }).then(function (res) {
       if (!res.ok || !res.body || !res.body.url) {
-        if (status) status.textContent = 'Enter a valid email to continue.';
+        if (status) status.textContent = 'Checkout did not open. Email hello@transformerpath.com.';
         return;
       }
       function leave() { location.assign(res.body.url); }
