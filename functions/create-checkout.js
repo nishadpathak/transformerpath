@@ -104,7 +104,8 @@ exports.handler = async function (event) {
   const origin = siteOrigin();
   const linkSpec = paid.PAYMENT_LINKS[product];
   const success = origin + linkSpec.successPath;
-  const cancel = origin + paid.checkoutCancelPath(product);
+  // Payment Link cancel URLs live in Stripe. Checkout Sessions are site-side.
+  const cancel = origin + '/pricing/';
 
   const form = new URLSearchParams();
   form.set('mode', spec.mode || 'payment');

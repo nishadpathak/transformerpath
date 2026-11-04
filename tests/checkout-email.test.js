@@ -99,21 +99,18 @@ email.saveLead(row, {
   assert.strictEqual(/for delete/.test(sql), false);
   assert.ok(/revoke all on table public\.checkout_leads from public, anon, authenticated/.test(sql));
 
-  function hrefCount(file) {
+  function gateCount(file) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    const hrefs = html.match(/href="https:\/\/buy\.stripe\.com\/[^"]+"/g) || [];
-    const inputs = html.match(/<input type="email"[^>]*data-checkout-email/g) || [];
-    hrefs.forEach(function (href) {
-      assert.ok(html.indexOf(href) >= 0);
-    });
-    assert.strictEqual(inputs.length, hrefs.length, file + ' inputs ' + inputs.length + ' hrefs ' + hrefs.length);
-    inputs.forEach(function (tag) {
-      assert.ok(/required/.test(tag), tag);
-    });
+    const hrefs = html.match(/href="\/checkout\/\?product=[^"]+"/g) || [];
+    const raw = html.match(/href="https:\/\/buy\.stripe\.com\/[^"]+"/g) || [];
+    assert.strictEqual(raw.length, 0, file + ' raw stripe hrefs ' + raw.length);
     return hrefs.length;
   }
-  assert.ok(hrefCount('pricing.html') >= 9);
-  assert.strictEqual(hrefCount('claim-profile.html'), 1);
+  assert.ok(gateCount('pricing.html') >= 9);
+  assert.strictEqual(gateCount('claim-profile.html'), 1);
+  const gatePage = fs.readFileSync(path.join(root, 'checkout/index.html'), 'utf8');
+  assert.ok(/<input type="email"[^>]*data-checkout-email[^>]*required|required[^>]*data-checkout-email/.test(gatePage));
+  assert.strictEqual((gatePage.match(/href="https:\/\/buy\.stripe\.com/g) || []).length, 0);
   const privacy = fs.readFileSync(path.join(root, 'privacy.html'), 'utf8');
   assert.ok(privacy.indexOf('TransformerPath stores emails entered at checkout to follow up on incomplete purchases, and questions go to hello@transformerpath.com.') >= 0);
   assert.strictEqual(/dubai|uae/i.test(privacy.slice(privacy.indexOf('Payment processing'), privacy.indexOf('Payment processing') + 800)), false);

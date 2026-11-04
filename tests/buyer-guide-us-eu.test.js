@@ -19,7 +19,7 @@ function check(name, cond, detail) {
 const page = fs.readFileSync('guides/us-eu-grid-equipment/index.html', 'utf8');
 const link = paid.PAYMENT_LINKS.buyer_guide_us_eu;
 
-check('page shows the live $19 Payment Link', page.indexOf(link.url) !== -1 && page.indexOf('data-product="buyer_guide_us_eu"') !== -1 && page.indexOf('id="guide-buy"') !== -1);
+check('page shows the live $19 Payment Link', page.indexOf('href="/checkout/?product=buyer_guide_us_eu"') !== -1 && page.indexOf(link.url) === -1 && link.amountCents === 1900 && page.indexOf('data-product="buyer_guide_us_eu"') !== -1 && page.indexOf('id="guide-buy"') !== -1);
 check('buy control is not hidden', /id="guide-buy"[^>]*hidden/.test(page) === false);
 check('page is not legal advice and names the contact', page.indexOf('This is not legal advice.') !== -1 && page.indexOf('hello@transformerpath.com') !== -1);
 check('page states the 1 November 2026 date was not confirmed', page.indexOf('1 November 2026') !== -1 && /was not confirmed|do not state that date/.test(page));

@@ -42,7 +42,7 @@ check('pricing inclusions name the check', pricing.indexOf('declared-origin chec
 const noteStart = pricing.indexOf('class="declared-origin-note"');
 const priceNote = pricing.slice(noteStart, pricing.indexOf('</p>', noteStart));
 check('pricing note adds no link', noteStart >= 0 && priceNote.indexOf('href=') < 0);
-check('pricing keeps the existing $699 checkout', pricing.indexOf('href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q"') >= 0);
+check('pricing keeps the existing $699 checkout', pricing.indexOf('href="/checkout/?product=featured_verified"') >= 0 && pricing.indexOf('href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q"') < 0);
 
 const claim = fs.readFileSync(path.join(root, 'claim-listing/bhel/index.html'), 'utf8');
 const claimJs = require('../claim-listing');

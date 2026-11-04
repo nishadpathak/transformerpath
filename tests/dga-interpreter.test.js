@@ -76,11 +76,11 @@ check('PDF starts with the PDF header', bytes.slice(0, 5).toString() === '%PDF-'
 check('PDF contains the disclaimer and the contact address', bytes.toString('latin1').indexOf('not a substitute for expert diagnosis') !== -1 && bytes.toString('latin1').indexOf('hello@transformerpath.com') !== -1);
 
 const page = fs.readFileSync('tools/dga/index.html', 'utf8');
-check('page links the live $19 Payment Link', page.indexOf('https://buy.stripe.com/bJe7sE4tWh01ak8c1AfYY0V') !== -1 && page.indexOf('data-product="dga_report"') !== -1);
+check('page links the live $19 Payment Link', page.indexOf('href="/checkout/?product=dga_report"') !== -1 && page.indexOf('data-product="dga_report"') !== -1 && page.indexOf('href="https://buy.stripe.com/bJe7sE4tWh01ak8c1AfYY0V"') === -1);
 check('page names the seven gases', ['H2', 'CH4', 'C2H6', 'C2H4', 'C2H2', 'CO', 'CO2'].every(function (gas) { return page.indexOf(gas) !== -1; }));
 check('page cites the four methods and the disclaimer', /Duval Triangle 1/.test(page) && /Rogers ratios/.test(page) && /IEEE C57\.104-2019/.test(page) && /Annex D\.1/.test(page) && /IEC 60599/.test(page) && page.indexOf('This is not a substitute for expert diagnosis.') !== -1);
 check('page keeps the gas values for the download', page.indexOf('tp-dga-inputs') !== -1 && page.indexOf('localStorage') !== -1 && page.indexOf('/data/download?product=dga_report') !== -1);
-check('page has no other brand and no CSV product', page.indexOf('ELIN') === -1 && page.indexOf('csv_') === -1 && page.indexOf('buy.stripe.com/') === page.lastIndexOf('buy.stripe.com/') && page.indexOf('https://buy.stripe.com/bJe7sE4tWh01ak8c1AfYY0V') !== -1);
+check('page has no other brand and no CSV product', page.indexOf('ELIN') === -1 && page.indexOf('csv_') === -1 && page.indexOf('buy.stripe.com/') === -1 && page.indexOf('href="/checkout/?product=dga_report"') !== -1);
 check('tools hub links the interpreter', fs.readFileSync('tools.html', 'utf8').indexOf('/tools/dga/') !== -1);
 
 const stamped = inject.stampHtml(page, 'tools/dga/index.html');

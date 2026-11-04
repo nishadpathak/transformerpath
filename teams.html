@@ -175,7 +175,7 @@
           <li>Published model answers for every capstone</li>
           <li>Curriculum &amp; tool updates included</li>
         </ul>
-        <a href="#" data-checkout="team" class="btn btn-outline">Enrol your team →</a>
+        <a href="/pricing.html" data-checkout="team" class="btn btn-outline">Enrol your team →</a>
       </div>
       <div class="tier featured">
         <span class="tag">Most popular</span>
@@ -186,7 +186,7 @@
           <li>Everything in Team</li>
           <li>Early access to new content</li>
         </ul>
-        <a href="#" data-checkout="department" class="btn btn-amber">Enrol your team →</a>
+        <a href="/pricing.html" data-checkout="department" class="btn btn-amber">Enrol your team →</a>
       </div>
       <div class="tier">
         <h3>Enterprise</h3>
@@ -248,16 +248,12 @@
 </footer>
 
 <script>
-/* ── Team checkout ──────────────────────────────────────────────
-   Create each plan as a product on your course platform (Teachable /
-   Podia / Thinkific / Gumroad), then paste its checkout URL below.
-   Until a real URL is set, the button shows a "not connected yet" notice. */
+/* Team and Department do not have their own Payment Links.
+ * Both buttons go to pricing. Engineering Team on that page is the
+ * existing $1,999 checkout. Do not reuse the $199 Learning link here. */
 var CHECKOUT = {
-  // NOT the individual $199 Engineer link — that's a single-seat personal product and
-  // must never be reused here. Leave these blank (falls through to the "email us"
-  // alert below) until real bulk-seat Stripe products exist for Team / Department.
-  team:       '',
-  department: ''
+  team:       '/pricing.html',
+  department: '/pricing.html'
 };
 (function(){
   document.querySelectorAll('[data-checkout]').forEach(function(a){

@@ -62,6 +62,6 @@ assert(built.indexOf('listingMediaHtml(slug)') >= 0, 'manufacturer profiles rend
 const claim = fs.readFileSync('claim-profile.html', 'utf8');
 assert(claim.indexOf('name="catalogue_url"') >= 0 && claim.indexOf('name="photo_urls"') >= 0, 'claim form collects catalogue and photos');
 const paid = require('../lib/paid-listings');
-assert(claim.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0, 'verified stripe link unchanged');
+assert(claim.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && claim.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) < 0 && paid.PAYMENT_LINKS.verified_manufacturer.amountCents === 49900, 'verified checkout uses the gate');
 
 console.log('listing-media tests passed');

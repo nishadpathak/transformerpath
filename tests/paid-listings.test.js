@@ -114,6 +114,7 @@ async function main() {
     body: JSON.stringify({ product: 'featured_event', event_id: 'middle-east-energy', email: 'buyer@example.com' })
   });
   check('featured checkout success url opens the events form', res.statusCode === 200 && featuredCheckoutBody.indexOf('paid%3Dfeatured_event') >= 0 && featuredCheckoutBody.indexOf('%23submit-event') >= 0, res.statusCode + ' ' + featuredCheckoutBody.slice(0, 240));
+  check('checkout session cancel url is the pricing page', featuredCheckoutBody.indexOf('cancel_url=https%3A%2F%2Ftransformerpath.com%2Fpricing%2F') >= 0, featuredCheckoutBody);
 
   process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = 'price_test_verified';
   let manufacturerCheckoutBody = '';
@@ -181,7 +182,7 @@ async function main() {
     type: 'checkout.session.completed',
     data: { object: { id: 'cs_test_engineer', metadata: { plan: 'learning' } } }
   });
-  check('engineer checkout without user_id stays 400', engineerMiss.statusCode === 400, engineerMiss.body);
+  check('engineer checkout without user_id does not grant access', engineerMiss.statusCode === 200 && JSON.parse(engineerMiss.body).reason === 'account_required' && store.entitlementWrites === 0, engineerMiss.body);
 
   const engineerHit = await postWebhook(wh.handler, secret, {
     id: 'evt_eng_user',
@@ -430,14 +431,14 @@ async function main() {
   check('engineer $199 payment link still writes an entitlement', engineerStill.statusCode === 200 && store.entitlementWrites === 2 && !store.listings.get('cs_test_eng_199'), engineerStill.body);
 
   const link = paid.FEATURED_EVENT_PAYMENT_LINK;
-  check('events list pay button uses the constant', fs.readFileSync('events.html', 'utf8').indexOf('href="' + link + '"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_name"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_url"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_dates"') >= 0);
-  check('pricing pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + link + '"') >= 0);
+  check('events list pay button uses the gate', fs.readFileSync('events.html', 'utf8').indexOf('href="/checkout/?product=featured_event"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('href="' + link + '"') < 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_name"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_url"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_dates"') >= 0);
+  check('pricing pay button uses the gate', fs.readFileSync('pricing.html', 'utf8').indexOf('href="/checkout/?product=featured_event"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + link + '"') < 0);
   const eventPages = fs.readdirSync('events').filter(function (d) { return fs.existsSync('events/' + d + '/index.html'); });
   const cardPages = eventPages.filter(function (d) {
     return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('Feature your company on TransformerPath') >= 0;
   });
   const linkedPages = cardPages.filter(function (d) {
-    return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('href="' + link + '"') >= 0;
+    return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('href="/checkout/?product=featured_event') >= 0 && fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('href="' + link + '"') < 0;
   });
   const leftoverWidgets = eventPages.filter(function (d) {
     return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('data-product="featured_event"') >= 0;
@@ -479,10 +480,10 @@ async function main() {
   }
   jsHitsExhibitor('.', exhibitorHits);
   check('exhibitor payment link URL lives in that same constant', exhibitorHits.length === 1 && exhibitorHits[0] === './lib/paid-listings.js', exhibitorHits.join(','));
-  check('events list exhibitor pay button uses the constant', fs.readFileSync('events.html', 'utf8').indexOf('href="' + exhibitorLink + '"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('Featured Exhibitor · $399') >= 0);
-  check('pricing exhibitor pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + exhibitorLink + '"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('Feature your exhibitor — $399') >= 0);
-  check('sponsor exhibitor pay button uses the constant', fs.readFileSync('sponsor.html', 'utf8').indexOf('href="' + exhibitorLink + '"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('id="contact"') >= 0);
-  check('exhibitions page exhibitor pay button uses the constant', fs.readFileSync('exhibitions.html', 'utf8').indexOf('href="' + exhibitorLink + '"') >= 0);
+  check('events list exhibitor pay button uses the gate', fs.readFileSync('events.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('events.html', 'utf8').indexOf('Featured Exhibitor · $399') >= 0);
+  check('pricing exhibitor pay button uses the gate', fs.readFileSync('pricing.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('Feature your exhibitor — $399') >= 0);
+  check('sponsor exhibitor pay button uses the gate', fs.readFileSync('sponsor.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('id="contact"') >= 0);
+  check('exhibitions page exhibitor pay button uses the gate', fs.readFileSync('exhibitions.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('exhibitions.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0);
   const commerce = JSON.parse(fs.readFileSync('data/commerce.json', 'utf8'));
   const commerceExhibitor = commerce.sections.reduce(function (found, section) {
     return found || (section.products || []).filter(function (product) { return product.id === 'featured_exhibitor'; })[0];
@@ -501,7 +502,7 @@ async function main() {
   check('commerce catalog does not sell a hosted webinar', !commerceWebinar && JSON.stringify(commerce).indexOf(retiredWebinarCode) < 0);
   const exhibitorPages = cardPages.filter(function (d) {
     const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
-    return html.indexOf('href="' + exhibitorLink + '"') >= 0 && html.indexOf('data-featured-exhibitor-pay="1"') >= 0 && html.indexOf('href="../../sponsor.html">Feature your company — $399') < 0;
+    return html.indexOf('href="/checkout/?product=featured_exhibitor') >= 0 && html.indexOf('href="' + exhibitorLink + '"') < 0 && html.indexOf('data-featured-exhibitor-pay="1"') >= 0 && html.indexOf('href="../../sponsor.html">Feature your company — $399') < 0;
   });
   check('event pages use the exhibitor payment link', exhibitorPages.length === cardPages.length && cardPages.length > 20, 'cards=' + cardPages.length + ' exhibitor=' + exhibitorPages.length);
   const mfrHits = [];
@@ -517,12 +518,12 @@ async function main() {
   jsHitsMfr('.', mfrHits);
   check('manufacturer payment link URL lives in that same constant', mfrHits.length === 1 && mfrHits[0] === './lib/paid-listings.js', mfrHits.join(','));
   const listCompany = fs.readFileSync('list-company.html', 'utf8');
-  check('list-company pay button uses the constant', listCompany.indexOf('href="' + mfrLink + '"') >= 0 && listCompany.indexOf('badge goes live as soon as payment clears') < 0);
+  check('list-company pay button uses the gate', listCompany.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && listCompany.indexOf('href="' + mfrLink + '"') < 0 && listCompany.indexOf('badge goes live as soon as payment clears') < 0);
   check('list-company is pay now, then review, then the badge', listCompany.indexOf('invoiced separately after approval') < 0 && listCompany.indexOf('pay now, then review, then the badge') >= 0 && listCompany.indexOf('$499 one-time payment · covers 12 months') >= 0 && listCompany.indexOf('no auto-renewal') >= 0);
   check('list-company does not state a Verified refund', listCompany.toLowerCase().indexOf('refund') < 0);
   const claimHtml = fs.readFileSync('claim-profile.html', 'utf8');
-  check('claim form pay button uses the constant', claimHtml.indexOf('href="' + mfrLink + '"') >= 0 && claimHtml.indexOf('id="claimForm"') >= 0 && claimHtml.indexOf('name="payment_session"') >= 0 && claimHtml.indexOf('claimPaidBanner') >= 0);
-  check('pricing manufacturer pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + mfrLink + '"') >= 0);
+  check('claim form pay button uses the gate', claimHtml.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && claimHtml.indexOf('href="' + mfrLink + '"') < 0 && claimHtml.indexOf('id="claimForm"') >= 0 && claimHtml.indexOf('name="payment_session"') >= 0 && claimHtml.indexOf('claimPaidBanner') >= 0);
+  check('pricing manufacturer pay button uses the gate', fs.readFileSync('pricing.html', 'utf8').indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + mfrLink + '"') < 0);
   const profileDirs = fs.readdirSync('manufacturers').filter(function (d) {
     return fs.existsSync('manufacturers/' + d + '/index.html') && fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8').indexOf('>Claim this profile →</a>') >= 0;
   });
@@ -530,14 +531,14 @@ async function main() {
   const unpaidProfiles = profileDirs.filter(function (d) { return !paid.isVerifiedManufacturer(d, reviewedDoc); });
   const linkedProfiles = unpaidProfiles.filter(function (d) {
     const html = fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8');
-    return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 one-time — Get Verified') >= 0;
+    return (html.indexOf('href="/checkout/?product=verified_manufacturer&slug=' + d + '"') >= 0 || html.indexOf('href="/checkout/?product=verified_manufacturer&amp;slug=' + d + '"') >= 0) && html.indexOf('href="' + mfrLink) < 0 && html.indexOf('Pay $499 one-time — Get Verified') >= 0;
   });
   check('manufacturer profiles use the Get Verified payment link', unpaidProfiles.length === linkedProfiles.length && linkedProfiles.length > 880, 'profiles=' + profileDirs.length + ' unpaid=' + unpaidProfiles.length + ' linked=' + linkedProfiles.length);
   const beyPage = fs.readFileSync('manufacturers/bey-trafo/index.html', 'utf8');
   check('reviewed Bey Trafo profile omits the Get Verified payment link', paid.isVerifiedManufacturer('bey-trafo', reviewedDoc) && beyPage.indexOf('Pay $499 one-time — Get Verified') < 0 && beyPage.indexOf('data-paid-badge="verified-manufacturer"') >= 0);
-  check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
+  check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('slug=erea-energy-engineering') >= 0 && fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('buy.stripe.com') < 0);
   const sampleCtas = paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
-  check('profile and directory ctas use the $499 link with the maker slug', sampleCtas.indexOf('href="' + mfrLink + '?client_reference_id=erea-energy-engineering"') >= 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);
+  check('profile and directory ctas use the $499 gate with the maker slug', sampleCtas.indexOf('href="/checkout/?product=verified_manufacturer&amp;slug=erea-energy-engineering"') >= 0 && sampleCtas.indexOf(mfrLink) < 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);
   check('earned manufacturer does not get a verify cta', paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', earned: true }) === '');
   const samplePage = fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8');
   const topAt = samplePage.indexOf('data-mfr-verify-cta="get-verified"');
@@ -756,9 +757,9 @@ async function main() {
     metadata: { plan: 'Engineering Team' }
   }).tier === 'enterprise');
   const pricingPage = fs.readFileSync('pricing.html', 'utf8');
-  check('pricing learning button is the one-time link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.learning.url + '"') >= 0 && pricingPage.indexOf('4gMbIU2lO5hj1NC5DcfYY03') < 0 && pricingPage.indexOf('Unavailable — email us to unlock') < 0);
-  check('pricing engineering pro button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_pro.url + '"') >= 0);
-  check('pricing engineering team button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_team.url + '"') >= 0);
+  check('pricing learning button is the one-time link', pricingPage.indexOf('href="/checkout/?product=learning"') >= 0 && pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.learning.url + '"') < 0 && paid.PAYMENT_LINKS.learning.url.indexOf('https://buy.stripe.com/') === 0 && pricingPage.indexOf('4gMbIU2lO5hj1NC5DcfYY03') < 0 && pricingPage.indexOf('Unavailable — email us to unlock') < 0);
+  check('pricing engineering pro button is the existing link', pricingPage.indexOf('href="/checkout/?product=engineering_pro"') >= 0 && pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_pro.url + '"') < 0);
+  check('pricing engineering team button is the existing link', pricingPage.indexOf('href="/checkout/?product=engineering_team"') >= 0 && pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_team.url + '"') < 0);
   check('pricing keeps the single-payment learning line', pricingPage.indexOf('Single payment · 12 months access · no auto-renewal') >= 0);
   ['pricing.html', 'intel-pro.html', 'verified.html', 'list-company.html'].forEach(function (file) {
     const html = fs.readFileSync(file, 'utf8');
@@ -827,7 +828,9 @@ async function main() {
       && block.indexOf('buy.stripe.com') < 0 && block.indexOf('$499') >= 0
       && html.indexOf('Pay $499 one-time payment · covers 12 months') >= 0
       && html.indexOf('no auto-renewal') >= 0
-      && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0;
+      && html.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0
+      && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) < 0
+      && paid.PAYMENT_LINKS.verified_manufacturer.amountCents === 49900;
   })());
 
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
@@ -1286,7 +1289,7 @@ async function main() {
   };
   const emptySlot = paid.featuredListingSlotHtml({ scope: 'directory', doc: { listings: [] } });
   check('empty featured slot says Your company here', emptySlot.indexOf('Your company here') >= 0 && emptySlot.indexOf('>Featured<') >= 0);
-  check('empty featured slot links the live prices', emptySlot.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && emptySlot.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && emptySlot.indexOf('/pricing.html#featured-listings') >= 0 && emptySlot.indexOf('$299/yr plus tax') >= 0 && emptySlot.indexOf('$699/yr plus tax') >= 0);
+  check('empty featured slot links the live prices', emptySlot.indexOf('href="/checkout/?product=featured_listing"') >= 0 && emptySlot.indexOf('href="/checkout/?product=featured_verified"') >= 0 && emptySlot.indexOf(paid.PAYMENT_LINKS.featured_listing.url) < 0 && emptySlot.indexOf('/pricing.html#featured-listings') >= 0 && emptySlot.indexOf('$299/yr plus tax') >= 0 && emptySlot.indexOf('$699/yr plus tax') >= 0 && paid.PAYMENT_LINKS.featured_listing.amountCents === 29900 && paid.PAYMENT_LINKS.featured_verified.amountCents === 69900);
   check('empty featured slot does not invent a sponsor', !/Hitachi|Siemens|Weidmann|\bABB\b|Northwind/.test(emptySlot));
   const directorySlot = paid.featuredListingSlotHtml({ scope: 'directory', doc: reviewedFeature });
   const indiaSlot = paid.featuredListingSlotHtml({ scope: 'country', country: 'India', doc: reviewedFeature });
@@ -1298,7 +1301,7 @@ async function main() {
   check('unreviewed payment does not fill the featured slot', pendingFeature.indexOf('Your company here') >= 0 && pendingFeature.indexOf('Northwind') < 0);
 
   const emptySponsor = paid.componentSponsorSectionHtml({ component: 'coresteel', doc: { listings: [] } });
-  check('empty sponsor says Your company here', emptySponsor.indexOf('Your company here') >= 0 && emptySponsor.indexOf('Sponsor this section, $199/mo') >= 0 && emptySponsor.indexOf('Core steel') >= 0 && emptySponsor.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) >= 0 && emptySponsor.indexOf('plus tax') >= 0);
+  check('empty sponsor says Your company here', emptySponsor.indexOf('Your company here') >= 0 && emptySponsor.indexOf('Sponsor this section, $199/mo') >= 0 && emptySponsor.indexOf('Core steel') >= 0 && emptySponsor.indexOf('href="/checkout/?product=component_sponsor&amp;component=coresteel"') >= 0 && emptySponsor.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) < 0 && emptySponsor.indexOf('plus tax') >= 0 && paid.PAYMENT_LINKS.component_sponsor.amountCents === 19900);
   check('empty sponsor does not invent a company', !/Hitachi|Siemens|Weidmann|\bABB\b|Northwind/.test(emptySponsor));
   const reviewedSponsor = paid.componentSponsorSectionHtml({
     component: 'core steel',
@@ -1320,7 +1323,7 @@ async function main() {
   ['directory.html', 'manufacturers.html', 'manufacturers/india.html'].forEach(function (rel) {
     const page = fs.readFileSync(rel, 'utf8');
     const slot = page.match(/<section class="tp-featured-slot"[\s\S]*?<\/section>/);
-    check(rel + ' has an honest Featured slot', !!slot && slot[0].indexOf('Your company here') >= 0 && slot[0].indexOf('>Featured<') >= 0 && slot[0].indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && slot[0].indexOf('/pricing.html#featured-listings') >= 0 && !/Hitachi|Siemens|Weidmann|\bABB\b/.test(slot[0]));
+    check(rel + ' has an honest Featured slot', !!slot && slot[0].indexOf('Your company here') >= 0 && slot[0].indexOf('>Featured<') >= 0 && slot[0].indexOf('href="/checkout/?product=featured_listing"') >= 0 && slot[0].indexOf(paid.PAYMENT_LINKS.featured_listing.url) < 0 && slot[0].indexOf('/pricing.html#featured-listings') >= 0 && !/Hitachi|Siemens|Weidmann|\bABB\b/.test(slot[0]));
   });
   [
     ['components/bushings/index.html', 'bushings'],
@@ -1339,7 +1342,7 @@ async function main() {
   check('components.html labels coresteel as Core steel', componentsPage.indexOf('Core steel') >= 0 && componentsPage.indexOf('Sponsor this section, $199/mo') >= 0);
 
   const pricingSource = fs.readFileSync('pricing.html', 'utf8');
-  check('pricing keeps the verified manufacturer link', pricingSource.indexOf(mfrLink) >= 0 && pricingSource.indexOf('Pay $499') >= 0);
+  check('pricing keeps the verified manufacturer link', pricingSource.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && pricingSource.indexOf(mfrLink) < 0 && mfrLink.indexOf('https://buy.stripe.com/') === 0 && pricingSource.indexOf('Pay $499') >= 0);
   check('pricing verified card is one-time between the featured prices', (function () {
     const featured = pricingSource.indexOf('>Featured Listing</h3>');
     const verified = pricingSource.indexOf('>Verified Manufacturer</h3>');
@@ -1349,20 +1352,21 @@ async function main() {
       && card.indexOf('$499 one-time payment · covers 12 months') >= 0
       && card.indexOf('no auto-renewal') >= 0
       && card.indexOf('Identity and contact details checked. Not a product certification.') >= 0
-      && card.indexOf(mfrLink) >= 0
+      && card.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0
+      && card.indexOf(mfrLink) < 0
       && card.indexOf('$499/yr') < 0
       && card.indexOf('/ 12 months') < 0
       && card.indexOf('$299') < 0
       && card.indexOf('$699') < 0;
   })());
-  check('pricing keeps the featured event link', pricingSource.indexOf(link) >= 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
-  check('pricing keeps the exhibitor link', pricingSource.indexOf(exhibitorLink) >= 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
-  check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);
-  check('pricing adds the component sponsor', pricingSource.indexOf('id="component-sponsor"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) >= 0 && pricingSource.indexOf('Sponsor this section, $199/mo') >= 0 && pricingSource.indexOf('plus tax') >= 0);
+  check('pricing keeps the featured event link', pricingSource.indexOf('href="/checkout/?product=featured_event"') >= 0 && pricingSource.indexOf(link) < 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
+  check('pricing keeps the exhibitor link', pricingSource.indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && pricingSource.indexOf(exhibitorLink) < 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
+  check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf('href="/checkout/?product=featured_listing"') >= 0 && pricingSource.indexOf('href="/checkout/?product=featured_verified"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) < 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);
+  check('pricing adds the component sponsor', pricingSource.indexOf('id="component-sponsor"') >= 0 && pricingSource.indexOf('href="/checkout/?product=component_sponsor"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) < 0 && pricingSource.indexOf('Sponsor this section, $199/mo') >= 0 && pricingSource.indexOf('plus tax') >= 0);
   const pricingText = pricingSource.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   check('pricing featured prices use yr and mo labels', pricingSource.indexOf('$299/yr') >= 0 && pricingSource.indexOf('$699/yr') >= 0 && pricingSource.indexOf('$199/mo') >= 0 && !/\$\d[\d,]*\s*\/\s*year\b/i.test(pricingText));
   const advertisePage = fs.readFileSync('sponsor.html', 'utf8');
-  check('advertise page keeps the exhibitor checkout', advertisePage.indexOf(exhibitorLink) >= 0 && advertisePage.indexOf('id="featured-listings"') >= 0 && advertisePage.indexOf('id="component-sponsor"') >= 0 && advertisePage.indexOf('Core steel') >= 0 && advertisePage.indexOf('$199/mo plus tax') >= 0);
+  check('advertise page keeps the exhibitor checkout', advertisePage.indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && advertisePage.indexOf(exhibitorLink) < 0 && advertisePage.indexOf('id="featured-listings"') >= 0 && advertisePage.indexOf('id="component-sponsor"') >= 0 && advertisePage.indexOf('Core steel') >= 0 && advertisePage.indexOf('$199/mo plus tax') >= 0);
 
   const claimFile = fs.readFileSync('claim.html', 'utf8');
   const claimNote = claimFile.slice(claimFile.indexOf('id="claimSetupNote"'), claimFile.indexOf('id="claimSetupNote"') + 420);

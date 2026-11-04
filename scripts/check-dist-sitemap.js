@@ -13,6 +13,7 @@ const { decodeXml } = require('../lib/sitemap-split');
 const JOBS_PATH = '/commissioning-jobs/';
 const JOBS_BUTTON = 'Post a job, $199';
 const JOBS_BUY = 'https://buy.stripe.com/4gMeV62lO9xz9g4fdMfYY0U';
+const JOBS_GATE = '/checkout/?product=commissioning_job_post';
 
 function locPath(loc) {
   return new URL(loc).pathname;
@@ -69,7 +70,9 @@ function auditDistSitemap(distRoot, opts) {
   if (jobsFile) {
     const html = fs.readFileSync(jobsFile, 'utf8');
     if (html.indexOf(JOBS_BUTTON) === -1) errors.push('commissioning jobs page is missing the Post a job button');
-    if (html.indexOf(JOBS_BUY) === -1) errors.push('commissioning jobs page is missing the $199 Payment Link');
+    if (html.indexOf(JOBS_GATE) === -1 || html.indexOf('href="' + JOBS_BUY + '"') !== -1) {
+      errors.push('commissioning jobs page is missing the $199 Payment Link');
+    }
   }
   return errors;
 }
@@ -87,4 +90,4 @@ if (require.main === module) {
   console.log('DIST SITEMAP CHECK OK — ' + count + ' URLs are files in dist');
 }
 
-module.exports = { auditDistSitemap, JOBS_BUTTON, JOBS_BUY, JOBS_PATH };
+module.exports = { auditDistSitemap, JOBS_BUTTON, JOBS_BUY, JOBS_GATE, JOBS_PATH };

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { auditDistSitemap, JOBS_BUTTON, JOBS_BUY } = require('../scripts/check-dist-sitemap');
+const { auditDistSitemap, JOBS_BUTTON, JOBS_GATE } = require('../scripts/check-dist-sitemap');
 
 let failed = 0;
 function check(name, cond) {
@@ -37,7 +37,7 @@ check('a copied page passes', auditDistSitemap(present, { requireJobs: false }).
 
 const jobs = fixture({
   'sitemap.xml': '<url><loc>https://transformerpath.com/commissioning-jobs/</loc></url>',
-  'commissioning-jobs/index.html': '<a href="' + JOBS_BUY + '">' + JOBS_BUTTON + '</a>'
+  'commissioning-jobs/index.html': '<a href="' + JOBS_GATE + '">' + JOBS_BUTTON + '</a>'
 });
 check('the published board keeps the $199 button', auditDistSitemap(jobs).length === 0);
 

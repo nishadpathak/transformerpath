@@ -21,10 +21,11 @@ const plans = [
 ];
 plans.forEach(function (row) {
   const url = paid.PAYMENT_LINKS[row[0]].url;
-  const href = 'href="' + url + '"';
-  check(learn.indexOf(href) !== -1, 'learn.html links ' + row[1] + ' to the existing checkout');
+  const href = 'href="/checkout/?product=' + row[0] + '"';
+  check(url.indexOf('https://buy.stripe.com/') === 0, row[1] + ' Payment Link is unchanged');
+  check(learn.indexOf(href) !== -1 && learn.indexOf('href="' + url + '"') === -1, 'learn.html links ' + row[1] + ' to the existing checkout');
   check(learn.indexOf(row[2]) !== -1, 'learn.html labels ' + row[1] + ' as a one-time 12-month payment');
-  check(pricing.indexOf(href) !== -1, 'pricing.html keeps the same ' + row[1] + ' link');
+  check(pricing.indexOf(href) !== -1 && pricing.indexOf('href="' + url + '"') === -1, 'pricing.html keeps the same ' + row[1] + ' link');
 });
 check(learn.indexOf('No auto-renewal') !== -1, 'learn.html says there is no auto-renewal');
 check(learn.indexOf('self-serve') !== -1, 'learn.html says access is self-serve');

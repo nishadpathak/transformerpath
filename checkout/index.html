@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — TransformerPath</title>
+<meta name="description" content="Enter your email before a TransformerPath checkout. The payment page opens only after the address is saved with the plan and the listing.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://transformerpath.com/checkout/">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg"><link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png">
+<link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<link rel="stylesheet" href="/tp-nav.css?v=14">
+<link rel="stylesheet" href="/tp-feedback.css?v=14">
+<style>
+.tp-checkout-email{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px}
+.tp-checkout-email input[type=email]{flex:1 1 220px;min-width:0;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/rental-emergency.html">Rental &amp; emergency providers</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/buy-early/">Buy early</a>
+          <a href="/spare-capacity/">Mid-tier makers</a>
+          <a href="/lead-times/">Lead times</a>
+          <a href="/bottlenecks/">Bottlenecks</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/guides/">Guides</a>
+      <a href="/rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="/tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          
+          <a href="/standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a class="tp-x-link" href="https://x.com/transformerpath" target="_blank" rel="noopener" aria-label="TransformerPath on X" title="TransformerPath on X"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="/google-auth-config.js" defer></script>
+  <script src="/tp-auth.js?v=1" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
+</header>
+<main id="main" tabindex="-1">
+<section class="hero" style="padding:50px 0 28px">
+  <div class="container">
+    <h1 id="checkout-title" style="font-size:2.1rem">Checkout</h1>
+    <p id="checkout-price">Confirm the plan, then continue to payment.</p>
+  </div>
+</section>
+<section class="block">
+  <div class="container" style="max-width:720px">
+    <form id="checkout-gate" method="POST" action="/.netlify/functions/checkout-continue">
+      <input type="hidden" name="product" id="f-product" value="">
+      <input type="hidden" name="slug" id="f-slug" value="">
+      <input type="hidden" name="event" id="f-event" value="">
+      <input type="hidden" name="component" id="f-component" value="">
+      <input type="hidden" name="from" id="f-from" value="">
+      <p class="tp-checkout-email"><input type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><button class="btn btn-amber" id="checkout-submit" type="submit">Continue to payment</button></p>
+      <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is saved with this plan before payment opens. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+    </form>
+    <p style="margin:18px 0 0"><a href="/pricing.html">Back to pricing</a></p>
+    <noscript><p>Turn on JavaScript so this page can name the plan and open payment. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="/supabase-config.js"></script>
+<script src="/checkout-email.js"></script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var product = q.get('product') || '';
+  var slug = q.get('slug') || '';
+  var eventId = q.get('event') || '';
+  var component = q.get('component') || '';
+  var from = q.get('from') || '';
+  if (!from && document.referrer) from = document.referrer;
+  var form = document.getElementById('checkout-gate');
+  document.getElementById('f-product').value = product;
+  document.getElementById('f-slug').value = slug;
+  document.getElementById('f-event').value = eventId;
+  document.getElementById('f-component').value = component;
+  document.getElementById('f-from').value = from;
+  fetch('/data/checkout-plans.json', { credentials: 'same-origin' }).then(function (r) {
+    return r.ok ? r.json() : {};
+  }).then(function (doc) {
+    var plan = doc && doc.plans && doc.plans[product];
+    var title = document.getElementById('checkout-title');
+    var price = document.getElementById('checkout-price');
+    var button = document.getElementById('checkout-submit');
+    if (!plan) {
+      if (title) title.textContent = 'Checkout';
+      if (price) price.textContent = 'This link does not name a plan. Open pricing and choose one.';
+      return;
+    }
+    if (title) title.textContent = plan.label;
+    if (price) price.textContent = plan.priceLabel;
+    if (button && plan.label) button.textContent = 'Continue — ' + plan.label;
+  }).catch(function () {});
+  form.addEventListener('submit', function (ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    var input = form.querySelector('[data-checkout-email]');
+    var email = input ? String(input.value || '').trim() : '';
+    var tools = window.tpCheckoutEmail;
+    if (!tools || !tools.validEmail(email)) {
+      if (input && input.reportValidity) input.reportValidity();
+      return;
+    }
+    var status = document.getElementById('checkout-status');
+    if (status) status.textContent = 'Opening checkout…';
+    fetch('/.netlify/functions/checkout-continue', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ product: product, email: email, slug: slug, event: eventId, component: component, from: document.getElementById('f-from').value || '' })
+    }).then(function (r) {
+      return r.json().then(function (body) { return { ok: r.ok, body: body }; });
+    }).then(function (res) {
+      if (!res.ok || !res.body || !res.body.url) {
+        if (status) status.textContent = 'Checkout did not open. Email hello@transformerpath.com.';
+        return;
+      }
+      function leave() { location.assign(res.body.url); }
+      if (res.body.saved) { leave(); return; }
+      var row = tools.leadRow({
+        email: email,
+        listingSlug: slug || eventId || component,
+        productName: product,
+        priceId: tools.priceIdFromUrl(res.body.url),
+        pagePath: location.pathname + location.search
+      });
+      var pending = tools.rememberLead(row);
+      if (pending && pending.then) pending.then(leave, leave);
+      else leave();
+    }).catch(function () {
+      if (status) status.textContent = 'Checkout did not open. Email hello@transformerpath.com.';
+    });
+  });
+})();
+</script>
+<script src="/analytics.js?v=8" defer></script>
+<script src="/tp-freshness.js?v=8" defer></script>
+<script src="/tp-feedback.js?v=8" defer></script>
+</body>
+</html>

@@ -213,7 +213,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         </label>
 
         <p class="claim-note"><b>3. Payment.</b> Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Identity and contact checked, not a product certification.</p>
-        <p style="margin:0 0 14px"><span class="tp-checkout-email"><input type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email form="verifiedCheckoutEmail"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></span></p>
+        <p style="margin:0 0 14px"><span class="tp-checkout-email"><a class="btn btn-amber" href="/checkout/?product=verified_manufacturer" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></span></p>
 
         <button class="btn btn-amber" type="submit" style="width:100%;padding:12px;font-size:.96rem;font-weight:700">Submit Profile Claim &rarr;</button>
         <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">Our directory research team reviews claims within 1 business day. Profiles are never automatically transferred.</p>
@@ -231,10 +231,16 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <script>
       (function(){
         try {
-          var c = new URLSearchParams(location.search).get('company');
+          var params = new URLSearchParams(location.search);
+          var c = params.get('company');
           if (c) {
             var inp = document.getElementById('fld_company');
             if (inp) inp.value = c.replace(/_/g, ' ');
+          }
+          var slug = params.get('slug') || '';
+          if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+            var pay = document.querySelector('[data-verified-manufacturer-pay]');
+            if (pay) pay.href = '/checkout/?product=verified_manufacturer&slug=' + encodeURIComponent(slug);
           }
         } catch(e){}
         var f = document.getElementById('claimForm');

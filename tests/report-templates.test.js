@@ -53,10 +53,11 @@ check('page previews every template', reports.TEMPLATES.every(function (item) {
   return page.indexOf('id="' + item.key + '"') !== -1 && page.indexOf(item.title) !== -1 && item.columns.every(function (col) { return page.indexOf(col) !== -1; });
 }));
 check('page links both live Payment Links',
-  page.indexOf('https://buy.stripe.com/eVqeV67G839beAo7LkfYY0S') !== -1 &&
+  page.indexOf('href="/checkout/?product=report_template"') !== -1 &&
   page.indexOf('data-product="report_template"') !== -1 &&
-  page.indexOf('https://buy.stripe.com/aFa00ce4w4dffEsfdMfYY0T') !== -1 &&
-  page.indexOf('data-product="template_bundle"') !== -1);
+  page.indexOf('href="/checkout/?product=template_bundle"') !== -1 &&
+  page.indexOf('data-product="template_bundle"') !== -1 &&
+  page.indexOf('buy.stripe.com') === -1);
 check('page has no CSV product and no other brand', page.indexOf('csv_') === -1 && page.indexOf('ELIN') === -1);
 check('tools hub links the templates', fs.readFileSync('tools.html', 'utf8').indexOf('/templates/') !== -1);
 check('no workbook is published in the templates directory', fs.readdirSync('templates').every(function (name) { return !/\.xlsx$|\.zip$/i.test(name); }));
