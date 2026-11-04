@@ -85,7 +85,7 @@ async function main() {
   const session = require('../functions/lib/session-cookie');
 
   console.log('source and price');
-  check('payment link is the existing $499 link', flow.paymentLink() === paid.PAYMENT_LINKS.verified_manufacturer.url);
+  check('payment link is the checkout gate for the existing $499 link', flow.paymentLink() === 'https://transformerpath.com/checkout/?product=verified_manufacturer' && paid.PAYMENT_LINKS.verified_manufacturer.url.indexOf('https://buy.stripe.com/') === 0 && paid.PAYMENT_LINKS.verified_manufacturer.amountCents === 49900);
   check('stripe product is the existing verified product', flow.STRIPE_PRODUCT_ID === 'prod_VRGrajnpm0wWTo' && paid.PAYMENT_LINKS.verified_manufacturer.productId === flow.STRIPE_PRODUCT_ID);
   check('amount stays 49900 cents', flow.AMOUNT_CENTS === 49900 && paid.PAYMENT_LINKS.verified_manufacturer.amountCents === 49900);
   const lineItem = paid.listingProduct({
@@ -321,7 +321,7 @@ async function main() {
     check(kind + ' says identity and contact checked, not a product certification', text.indexOf(flow.CHECKED) >= 0);
     check(kind + ' uses the brand contact', text.indexOf('hello@transformerpath.com') >= 0);
     if (kind === 'expiry' || kind === 'renewal') {
-      check(kind + ' repeats the existing payment link', text.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0);
+      check(kind + ' repeats the checkout gate and not a raw Payment Link', text.indexOf('https://transformerpath.com/checkout/?product=verified_manufacturer') >= 0 && text.indexOf('buy.stripe.com') < 0 && paid.PAYMENT_LINKS.verified_manufacturer.url.indexOf('https://buy.stripe.com/') === 0);
     }
   });
   delete process.env.RESEND_API_KEY;
@@ -404,7 +404,7 @@ async function main() {
     check(file + ' keeps the checked wording', pages[file].indexOf('identity and contact checked, not a product certification') >= 0 || pages[file].indexOf('Identity and contact checked, not a product certification') >= 0);
     check(file + ' does not place the company in Dubai or the UAE', !/\bDubai\b|\bUAE\b|United Arab Emirates/.test(pages[file]));
   });
-  check('claim page still uses the payment link and the neutral banner', pages['claim-profile.html'].indexOf('href="' + flow.paymentLink() + '"') >= 0 && pages['claim-profile.html'].indexOf('If you completed payment, submit the form below; we confirm payment before review.') >= 0);
+  check('claim page still uses the payment link and the neutral banner', pages['claim-profile.html'].indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && pages['claim-profile.html'].indexOf('buy.stripe.com') < 0 && pages['claim-profile.html'].indexOf('If you completed payment, submit the form below; we confirm payment before review.') >= 0);
 
   const cookieSecret = 'session-secret-for-unit-test';
   const cookie = session.signSession({ sub: 'abc123', email: 'buyer@example.com', name: '' }, cookieSecret, Date.now());

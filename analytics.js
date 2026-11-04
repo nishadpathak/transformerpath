@@ -161,7 +161,7 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
        to judge whether ad traffic is converting or just bouncing. */
     // Existing prices on the claim-listing buttons. Not a new price list.
     var PAY_PLAN_VALUE = { verified_manufacturer: 499, featured_listing: 299, featured_verified: 699 };
-    document.querySelectorAll('a[href*="buy.stripe.com"], [data-pay-plan]').forEach(function (a) {
+    document.querySelectorAll('a[href*="buy.stripe.com"], a[href*="/checkout/"], [data-pay-plan]').forEach(function (a) {
       a.addEventListener('click', function () {
         var plan = a.getAttribute ? (a.getAttribute('data-pay-plan') || '') : '';
         var id = plan || (a.id || '').replace(/^cta/, '').toLowerCase();

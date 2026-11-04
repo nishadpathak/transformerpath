@@ -51,7 +51,7 @@ check('an unreviewed payment is not listed', board.publicPosts([live({ reviewer:
 
 const page = fs.readFileSync('commissioning-jobs/index.html', 'utf8');
 check('page states the empty board', page.indexOf('No HV or MV commissioning posts are listed.') !== -1);
-check('page offers the live $199 button', page.indexOf('Post a job, $199') !== -1 && page.indexOf('https://buy.stripe.com/4gMeV62lO9xz9g4fdMfYY0U') !== -1 && page.indexOf('data-product="commissioning_job_post"') !== -1);
+check('page offers the live $199 button', page.indexOf('Post a job, $199') !== -1 && page.indexOf('href="/checkout/?product=commissioning_job_post"') !== -1 && page.indexOf('buy.stripe.com') === -1 && page.indexOf('data-product="commissioning_job_post"') !== -1);
 check('page does not invent a vacancy', page.indexOf('Example Utility') === -1 && page.indexOf('example.com/jobs') === -1);
 check('publish copies the board directory', (function () {
   const src = fs.readFileSync('build-dist.js', 'utf8');

@@ -6,7 +6,8 @@
  */
 'use strict';
 const { jobsRfqPaymentsEnabled } = require('../lib/feature-flags');
-const { PAYMENT_LINKS, JOBS_RFQ_GROUPS, paymentButtonHref } = require('../lib/paid-listings');
+const { PAYMENT_LINKS, JOBS_RFQ_GROUPS } = require('../lib/paid-listings');
+const { gateQuery } = require('../lib/checkout-gate');
 
 function json(statusCode, body) {
   return {
@@ -27,7 +28,7 @@ function groups() {
       return {
         product: id,
         label: spec.label,
-        href: paymentButtonHref(id)
+        href: gateQuery({ product: id })
       };
     });
   });

@@ -41,6 +41,7 @@ const flow = require('../lib/verified-flow');
 const paidListings = require('../lib/paid-listings');
 const digitalProducts = require('../lib/digital-products');
 const { listingProduct, companySlugFromReference, componentFromSession } = paidListings;
+const { classifyCourse } = require('../lib/course-payment');
 
 const PAID_LISTING_PRODUCTS = {
   verified_manufacturer: true,
@@ -153,14 +154,19 @@ function paidListingRow(session) {
   const meta = session.metadata || {};
   const product = paidListingProduct(session);
   let companySlug = meta.company_slug || null;
-  if (!companySlug && product === 'verified_manufacturer') {
-    companySlug = companySlugFromReference(session.client_reference_id);
+  const reference = companySlugFromReference(session.client_reference_id);
+  if (!companySlug && reference && product !== 'featured_event' && product !== 'featured_exhibitor') {
+    companySlug = reference;
+  }
+  let eventId = meta.event_id || null;
+  if (!eventId && reference && (product === 'featured_event' || product === 'featured_exhibitor')) {
+    eventId = reference;
   }
   return {
     session_id: session.id,
     product: product,
     company_slug: companySlug,
-    event_id: meta.event_id || null,
+    event_id: eventId,
     email: session.customer_email || (session.customer_details && session.customer_details.email) || null,
     amount: typeof session.amount_total === 'number' ? session.amount_total : null,
     currency: session.currency || null,
@@ -179,8 +185,40 @@ function persistence() {
     markProcessed: markProcessed,
     writeEntitlement: writeEntitlement,
     writePaidListing: writePaidListing,
-    updatePaidListingStatus: updatePaidListingStatus
+    updatePaidListingStatus: updatePaidListingStatus,
+    writeCheckoutLead: writeCheckoutLead,
+    userIdForEmail: userIdForEmail
   };
+}
+
+async function safeLead(store, row) {
+  if (!row || !row.email || !store || typeof store.writeCheckoutLead !== 'function') return;
+  try { await store.writeCheckoutLead(row); }
+  catch (err) { console.warn('checkout lead write failed'); }
+}
+
+async function userIdForEmail(email) {
+  if (!isConfigured() || !email) return null;
+  try {
+    const supabase = client();
+    const { data } = await supabase.from('profiles').select('id').eq('email', email).maybeSingle();
+    return data && data.id ? data.id : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+async function writeCheckoutLead(row) {
+  if (!isConfigured() || !row || !row.email) return;
+  const supabase = client();
+  const { error } = await supabase.from('checkout_leads').insert({
+    email: row.email,
+    listing_slug: row.listing_slug || null,
+    product_name: row.product_name || null,
+    price_id: row.price_id || null,
+    page_path: row.page_path || null
+  });
+  if (error) throw new Error('checkout_leads insert failed');
 }
 
 function listingRefundFromCharge(charge) {
@@ -270,8 +308,45 @@ async function handle(ev) {
     }
     const receipt = await sendPaidReceipts(row);
     if (receipt && receipt.retry) return respond(500, { error: 'receipt failed' });
+    await safeLead(store, {
+      email: row.email,
+      listing_slug: row.company_slug || row.event_id || null,
+      product_name: row.product,
+      price_id: null,
+      page_path: 'stripe:checkout.session.completed'
+    });
     await store.markProcessed(ev.id, type);
     return respond(200, { received: true, paid_listing: true });
+  }
+
+  if (type === 'checkout.session.completed') {
+    const session = ev.data && ev.data.object;
+    const course = session && !paidListingProduct(session) && !digitalProduct(session) ? classifyCourse(session) : null;
+    if (course) {
+      const email = (session.customer_details && session.customer_details.email) || session.customer_email || '';
+      let userId = session.metadata && session.metadata.user_id;
+      if (!userId && email && typeof store.userIdForEmail === 'function') {
+        try { userId = await store.userIdForEmail(email); }
+        catch (lookupErr) { userId = null; }
+      }
+      if (userId) {
+        const entitlement = flow.courseEntitlement(course, userId);
+        entitlement.stripe_customer_id = session.customer || null;
+        entitlement.stripe_checkout_session_id = session.id;
+        entitlement.source = 'checkout.session.completed';
+        await store.writeEntitlement(entitlement);
+      }
+      await safeLead(store, {
+        email: email,
+        listing_slug: null,
+        product_name: course.product,
+        price_id: null,
+        page_path: 'stripe:checkout.session.completed'
+      });
+      await store.markProcessed(ev.id, type);
+      if (!userId) return respond(200, { received: true, stored: false, reason: 'account_required', product: course.product });
+      return respond(200, { received: true, entitlement: true, product: course.product });
+    }
   }
 
   let entitlement;
@@ -316,13 +391,14 @@ async function writeEntitlement(e) {
     return;
   }
   const supabase = client();
+  const product = e.product || e.plan_id || 'learning';
   await supabase.from('entitlements').upsert({
     user_id: e.user_id,
-    product: e.plan_id || 'learning',
-    plan: e.plan_id || 'Learning',
-    access_start: e.starts_at || isoNow(),
-    access_end: e.expires_at || null,
-    status: e.status ? e.status.toLowerCase() : 'active'
+    product: product,
+    plan: e.plan || e.plan_id || product,
+    access_start: e.access_start || e.starts_at || isoNow(),
+    access_end: e.access_end || e.expires_at || null,
+    status: e.status ? String(e.status).toLowerCase() : 'active'
   }, { onConflict: 'user_id,product' });
 }
 

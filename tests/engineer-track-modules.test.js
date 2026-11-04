@@ -48,7 +48,11 @@ modules.forEach(function (mod) {
   check(mod.rel + ' is long enough to study', words.length >= 1200, String(words.length));
   check(mod.rel + ' names an IEC or IEEE designation', /IEC\s+6\d{4}|IEEE\s+C57\./.test(main));
   check(mod.rel + ' gives the TransformerPath address', html.indexOf('hello@transformerpath.com') !== -1);
-  check(mod.rel + ' has no price', !/\$\s?\d/.test(main) && !/£\s?\d/.test(main) && !/€\s?\d/.test(main));
+  if (mod.n === 1) {
+    check(mod.rel + ' upgrade names the Learning plan and $199', main.indexOf('Upgrade to Learning — $199') !== -1 && main.indexOf('href="/checkout/?product=learning"') !== -1 && !/£\s?\d/.test(main) && !/€\s?\d/.test(main));
+  } else {
+    check(mod.rel + ' has no price', !/\$\s?\d/.test(main) && !/£\s?\d/.test(main) && !/€\s?\d/.test(main));
+  }
   check(mod.rel + ' does not place the brand in Dubai or the UAE', !/Dubai|UAE|United Arab Emirates/i.test(html));
   check(mod.rel + ' does not offer a class, a call, or a certification', !/webinar|masterclass|consulting|instructor|tutoring|certificate|book a call|sign in to/i.test(main));
   check(mod.rel + ' is linked from the track', track.indexOf(mod.rel) !== -1);

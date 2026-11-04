@@ -17,7 +17,7 @@ function check(label, pass, detail) {
 
 copy.assertWindows();
 
-const STRIPE = 'https://buy.stripe.com/bJedR2gcE257eAofdMfYY0R';
+const STRIPE = '/checkout/?product=component_sponsor';
 const EXPECTED_SOURCES = {
   'bottlenecks/index.html': 2,
   'bottlenecks/grain-oriented-electrical-steel/index.html': 4,
@@ -99,7 +99,7 @@ copy.PAGES.forEach(function (page) {
   const sponsorBlocks = main.match(/data-component-sponsor="/g) || [];
   if (page.sponsor) {
     check(page.rel + ' sponsor slot', sponsorBlocks.length === 1 && main.indexOf('data-component-sponsor="' + page.sponsor + '"') !== -1);
-    check(page.rel + ' uses the existing sponsor link', main.indexOf(STRIPE) !== -1 && main.split(STRIPE).length === 2);
+    check(page.rel + ' uses the existing sponsor link', main.indexOf(STRIPE) !== -1 && main.split(STRIPE).length === 2 && main.indexOf('buy.stripe.com') === -1);
     check(page.rel + ' sponsor price text', main.indexOf('Sponsor this section, $199/mo') !== -1);
   } else {
     check(page.rel + ' has no sponsor slot', sponsorBlocks.length === 0 && main.indexOf(STRIPE) === -1 && main.indexOf('$') === -1);

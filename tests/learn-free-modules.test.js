@@ -29,8 +29,9 @@ check(paid.PAYMENT_LINKS.engineering_team.amountCents === 199900, 'Engineering T
 
 const learn = fs.readFileSync(path.join(root, 'learn.html'), 'utf8');
 const pricing = fs.readFileSync(path.join(root, 'pricing.html'), 'utf8');
-check(learn.indexOf(LEARNING) !== -1 && learn.indexOf(PRO) !== -1 && learn.indexOf(TEAM) !== -1, 'learn.html still links all three checkouts');
-check(pricing.indexOf(LEARNING) !== -1 && pricing.indexOf(PRO) !== -1 && pricing.indexOf(TEAM) !== -1, 'pricing.html still links all three checkouts');
+check(learn.indexOf('href="/checkout/?product=learning"') !== -1 && learn.indexOf('href="/checkout/?product=engineering_pro"') !== -1 && learn.indexOf('href="/checkout/?product=engineering_team"') !== -1, 'learn.html gates all three checkouts');
+check(learn.indexOf('href="' + LEARNING + '"') === -1 && learn.indexOf('href="' + PRO + '"') === -1 && learn.indexOf('href="' + TEAM + '"') === -1, 'learn.html has no raw Payment Link href');
+check(pricing.indexOf('href="/checkout/?product=learning"') !== -1 && pricing.indexOf('href="/checkout/?product=engineering_pro"') !== -1 && pricing.indexOf('href="/checkout/?product=engineering_team"') !== -1, 'pricing.html gates all three checkouts');
 check(learn.indexOf('$199 one-time payment · 12 months access') !== -1, 'Learning price label is unchanged');
 check(learn.indexOf('$599 one-time payment · 12 months access') !== -1, 'Engineering Pro price label is unchanged');
 check(learn.indexOf('$1,999 one-time payment · 12 months access') !== -1, 'Engineering Team price label is unchanged');
@@ -57,7 +58,7 @@ courses.forEach(function (course) {
   check(html.indexOf('rel="canonical" href="' + url + '"') !== -1, rel + ' canonical is ' + url);
   check(/name="robots" content="index,follow"/.test(html) && !/noindex/i.test(html), rel + ' is indexable');
   check(html.indexOf('>Free<') !== -1, rel + ' is marked Free');
-  check(main.indexOf('href="' + LEARNING + '"') !== -1 && main.indexOf('data-upgrade="learning"') !== -1, rel + ' upgrade uses the existing Learning checkout');
+  check(main.indexOf('href="/checkout/?product=learning"') !== -1 && main.indexOf('Upgrade to Learning — $199') !== -1 && main.indexOf('data-upgrade="learning"') !== -1 && main.indexOf('href="' + LEARNING + '"') === -1, rel + ' upgrade names Learning at $199 and uses the gate');
   check(main.indexOf(PRO) === -1 && main.indexOf(TEAM) === -1, rel + ' does not retarget Pro or Team');
   check(html.indexOf('course-gate') === -1 && html.indexOf('tp-gate') === -1, rel + ' has no paywall');
   check(main.indexOf('hello@transformerpath.com') !== -1, rel + ' uses the brand address');
@@ -70,7 +71,7 @@ courses.forEach(function (course) {
 
 const track = fs.readFileSync(path.join(root, 'engineer-track/module-1.html'), 'utf8');
 check(track.indexOf('>Free<') !== -1, 'engineer-track module 1 is marked Free');
-check(track.indexOf('href="' + LEARNING + '"') !== -1, 'engineer-track module 1 upgrades to the existing Learning checkout');
+check(track.indexOf('href="/checkout/?product=learning"') !== -1 && track.indexOf('Upgrade to Learning — $199') !== -1 && track.indexOf('href="' + LEARNING + '"') === -1, 'engineer-track module 1 names Learning at $199');
 check(!/noindex/i.test(track), 'engineer-track module 1 stays indexable');
 
 if (failed) {

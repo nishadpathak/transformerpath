@@ -201,7 +201,7 @@ function spareMain() {
       '<td data-label="Highest voltage">' + esc(ratingLabel(row.kv)) + '</td>' +
       '<td data-label="Capacity note">' + capacityCell(row) + '</td>' +
       '<td data-label="Availability">' + (flag ? availability.markHtml(flag, row.slug) : '—') + '</td>' +
-      '<td data-label="Verified"><a class="btn btn-amber btn-sm sc-cta" href="' + esc(row.payHref) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started" data-track-manufacturer="' + esc(row.name) + '">Get Verified $499 one-time payment · covers 12 months</a></td>' +
+      '<td data-label="Verified"><a class="btn btn-amber btn-sm sc-cta" href="' + esc(require('./lib/checkout-gate').gateQuery({ product: 'verified_manufacturer', slug: row.slug })) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started" data-track-manufacturer="' + esc(row.name) + '">Get Verified $499 one-time payment · covers 12 months</a></td>' +
       '</tr>';
   }).join('');
   const withNotes = ROWS.filter(function (row) { return row.capacity; }).length;

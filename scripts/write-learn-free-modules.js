@@ -9,11 +9,11 @@ const path = require('path');
 const { PAYMENT_LINKS } = require('../lib/paid-listings');
 
 const ROOT = path.join(__dirname, '..');
-const CHECKOUT = PAYMENT_LINKS.learning.url;
 const EXPECTED = 'https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p';
-if (CHECKOUT !== EXPECTED) {
+if (PAYMENT_LINKS.learning.url !== EXPECTED) {
   throw new Error('Learning checkout is not the existing Payment Link');
 }
+const CHECKOUT = '/checkout/?product=learning';
 
 const BRAND = ' | TransformerPath';
 
@@ -588,8 +588,8 @@ function pageHtml(course, header, footer) {
     '<p class="guide-note"><strong>Free module.</strong> This page is free to read. It does not ask you to sign in. It does not offer a class or a call. Use the edition of each standard named in the contract. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>\n' +
     course.body +
     '<h2>Upgrade</h2>\n' +
-    '<p>Module 1 is free. The rest of this course stays on the paid plan. The plan is a one-time payment for 12 months of access, with no auto-renewal. This page does not offer a class or a call.</p>\n' +
-    '<p><a class="btn btn-amber" href="' + CHECKOUT + '" target="_blank" rel="noopener" data-upgrade="learning" data-track="learning_checkout_started" data-track-plan="Learning">Upgrade</a></p>\n' +
+    '<p>Module 1 is free. The rest of this course is the Learning plan, $199, a one-time payment for 12 months of access, with no auto-renewal. This page does not offer a class or a call.</p>\n' +
+    '<p><a class="btn btn-amber" href="' + CHECKOUT + '" data-upgrade="learning" data-track="learning_checkout_started" data-track-plan="Learning">Upgrade to Learning — $199</a></p>\n' +
     '<h2>Continue</h2>\n<ul>\n' +
     bookLink +
     '<li><a href="/learn.html">All courses</a></li>\n' +

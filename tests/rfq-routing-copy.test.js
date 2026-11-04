@@ -25,7 +25,7 @@ pages.forEach(function (file) {
 
 const verified = fs.readFileSync('verified.html', 'utf8');
 const paid = require('../lib/paid-listings');
-assert(verified.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0, 'stripe link unchanged');
+assert(verified.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && verified.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) < 0, 'verified checkout uses the gate');
 assert(verified.indexOf('$499') >= 0 && verified.indexOf('$199') >= 0, 'existing prices unchanged');
 assert(verified.indexOf('data-feature="logo_brochure_upload" data-delivery="built"') >= 0, 'media feature is built');
 assert(verified.indexOf('data-feature="rfq_eligibility" data-delivery="coming_soon"') >= 0, 'rfq feature stays coming soon');

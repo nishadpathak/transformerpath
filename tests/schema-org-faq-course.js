@@ -26,9 +26,9 @@ check(faq.indexOf('"@type": "FAQPage"') !== -1, 'faq.html has FAQPage markup');
 const learn = fs.readFileSync(path.join(root, 'learn.html'), 'utf8');
 const pricing = fs.readFileSync(path.join(root, 'pricing.html'), 'utf8');
 const offers = [
-  ['199', 'https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p', 'Learning'],
-  ['599', 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01', 'Engineering Pro'],
-  ['1999', 'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02', 'Engineering Team']
+  ['199', '/checkout/?product=learning', 'Learning', 'https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p'],
+  ['599', '/checkout/?product=engineering_pro', 'Engineering Pro', 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01'],
+  ['1999', '/checkout/?product=engineering_team', 'Engineering Team', 'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02']
 ];
 check(learn.indexOf('"@type": "Course"') !== -1, 'learn.html has Course markup');
 const courseJson = learn.match(/<script type="application\/ld\+json">(\{"@context": "https:\/\/schema.org", "@type": "Course"[\s\S]*?)<\/script>/);
@@ -41,8 +41,12 @@ if (courseJson) {
     check(offer.price === row[0] && offer.url === row[1] && offer.name === row[2], row[2] + ' offer matches the live checkout');
   });
 }
+const paid = require('../lib/paid-listings');
 offers.forEach(function (row) {
-  check(pricing.indexOf(row[1]) !== -1, 'pricing page still uses the ' + row[2] + ' checkout');
+  check(pricing.indexOf('href="' + row[1] + '"') !== -1 && pricing.indexOf('href="' + row[3] + '"') === -1, 'pricing page gates the ' + row[2] + ' checkout');
 });
+check(paid.PAYMENT_LINKS.learning.url === offers[0][3], 'Learning Payment Link is unchanged');
+check(paid.PAYMENT_LINKS.engineering_pro.url === offers[1][3], 'Engineering Pro Payment Link is unchanged');
+check(paid.PAYMENT_LINKS.engineering_team.url === offers[2][3], 'Engineering Team Payment Link is unchanged');
 if (failed) process.exit(1);
 console.log('schema checks passed');

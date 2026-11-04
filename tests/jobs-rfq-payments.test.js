@@ -119,7 +119,8 @@ delete process.env.STRIPE_PAYMENT_LINK_JOB_FEATURED;
   const onBody = JSON.parse(on.body);
   check('flag function returns the six buttons', on.statusCode === 200 && onBody.groups.jobs.length === 3 && onBody.groups.rfq.length === 2 && onBody.groups.supplier.length === 1);
   check('on response still hides plink ids', on.body.indexOf('plink_') === -1);
-  check('supplier button carries the promo', onBody.groups.supplier[0].href.indexOf('prefilled_promo_code=FOUNDING30') !== -1);
+  check('supplier button is the checkout gate', onBody.groups.supplier[0].href === '/checkout/?product=supplier_pro' && on.body.indexOf('buy.stripe.com') === -1);
+  check('stored helper still adds the Supplier Pro promo', paid.paymentButtonHref('supplier_pro').indexOf('prefilled_promo_code=FOUNDING30') !== -1);
   delete process.env.TP_JOBS_RFQ_PAYMENTS;
 
   let called = false;

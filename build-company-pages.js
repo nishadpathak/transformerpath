@@ -683,7 +683,7 @@ function page(r, slug) {
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
     claimListing.linkHtml(slug) + ' ' +
-    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
+    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '&slug=' + encodeURIComponent(slug) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
     (earnedVerified ? '' : paidListings.verifiedManufacturerPayHtml({
       companySlug: slug,
       trackName: r.name,
