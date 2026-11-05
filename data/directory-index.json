@@ -1,12 +1,12 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-11-04T08:37:23.404Z",
-  "count": 1779,
+  "generated": "2026-11-05T05:32:12.053Z",
+  "count": 1786,
   "counts": {
     "manufacturers": 1054,
-    "component_suppliers": 463,
+    "component_suppliers": 471,
     "machinery_manufacturers": 20,
-    "testing_laboratories": 141,
+    "testing_laboratories": 140,
     "services": 71,
     "logistics": 12,
     "associations": 8,
@@ -658,7 +658,7 @@
       ],
       "factories": [
         {
-          "city": "Faridabad / UP",
+          "city": "Noida, Uttar Pradesh",
           "country": "India",
           "produces": "",
           "claim_type": "",
@@ -687,7 +687,7 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
+      "last_verified": "2026-11-05",
       "research_completeness": 4,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
@@ -53643,7 +53643,7 @@
         "Transformer Manufacturer"
       ],
       "kind": "manufacturer",
-      "name": "Niagara Power Transformer",
+      "name": "Niagara Transformer",
       "slug": "niagara-power-transformer",
       "country": "USA",
       "region": "North America",
@@ -53709,7 +53709,7 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
+      "last_verified": "2026-11-05",
       "research_completeness": 4,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
@@ -55036,7 +55036,7 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
+      "last_verified": "2026-11-05",
       "research_completeness": 4,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
@@ -59690,19 +59690,31 @@
         "Transformer Manufacturer"
       ],
       "kind": "manufacturer",
-      "name": "QUALITY POWER ELECTRICAL EQUIPMENTS PVT. LTD.",
+      "name": "Quality Power Electrical Equipments Ltd.",
       "slug": "quality-power-electrical-equipments-pvt-ltd",
-      "country": "—",
-      "region": "",
+      "country": "India",
+      "region": "South Asia",
       "website": "https://qualitypower.com",
       "headquarters": "",
-      "product_codes": [],
-      "capability_labels": [],
+      "product_codes": [
+        "SR",
+        "TX",
+        "IT"
+      ],
+      "capability_labels": [
+        "Shunt reactor",
+        "Transformer",
+        "Instrument transformer"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
         "dry_type": {},
-        "special": {}
+        "special": {
+          "__present": true,
+          "reactor": true,
+          "instrument": true
+        }
       },
       "voltage": {
         "value": "",
@@ -59719,47 +59731,45 @@
       "facility_ids": [],
       "factories": [
         {
-          "city": "—",
-          "country": "—",
+          "city": "Sangli, Maharashtra",
+          "country": "India",
           "produces": "",
           "claim_type": "",
           "source_url": ""
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
+        "products": "CONFIRMED",
         "voltage": "UNKNOWN",
         "mva": "UNKNOWN"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://qualitypower.com/contact/",
+        "source_type": "industry_publication",
         "source_url": "https://qualitypower.com"
       },
-      "completeness_score": 35,
+      "completeness_score": 50,
       "missing_fields": [
-        "Headquarters address",
-        "Classified transformer product types",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-15",
-      "research_completeness": 2,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "last_verified": "2026-11-05",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
         "website": "https://qualitypower.com",
-        "capability_source": "",
-        "capability_note": ""
+        "capability_source": "https://qualitypower.com/contact/",
+        "capability_note": "Contact page lists the registered office as L-61 MIDC Kupwad, Sangli, Maharashtra 416 436, India, under the name Quality Power Electrical Equipments Ltd. The product menu lists reactors, special-purpose transformers and instrument transformers. Second source: AGM notice PDF at https://qualitypower.com/wp-content/uploads/2025/09/AGM-Notice-FY2024-25.pdf. No email is stored."
       },
       "factory_count": 1
     },
@@ -61092,7 +61102,7 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-11-05",
       "research_completeness": 6,
       "research_status": "ACTIVE_LIMITED_DATA",
       "commercial_status": "LISTED",
@@ -90921,7 +90931,7 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
+      "last_verified": "2026-11-05",
       "research_completeness": 4,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
@@ -95076,7 +95086,9 @@
       "website": "https://www.adsmetal.com.tr",
       "headquarters": "—, Türkiye",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "Conservator tanks"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -95134,11 +95146,13 @@
       "name": "AEM Cores",
       "slug": "aem-cores",
       "country": "Australia",
-      "region": "",
+      "region": "South Australia",
       "website": "https://www.aemcores.com.au",
-      "headquarters": "—, Australia",
+      "headquarters": "Gillman, Australia",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "CRGO (core steel)"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -96409,6 +96423,71 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.asta.at"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:asya-trafo-otomasyon",
+      "canonical_id": "cmp:asya-trafo-otomasyon",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Asya Trafo Otomasyon",
+      "slug": "asya-trafo-otomasyon",
+      "country": "Türkiye",
+      "region": "",
+      "website": "https://www.asyatrafo.com",
+      "headquarters": "—, Türkiye",
+      "product_codes": [],
+      "capability_labels": [
+        "Test equipment",
+        "Tap changers (OLTC / DETC)"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.asyatrafo.com/contact/",
+        "source_type": "company_documentation",
+        "source_url": "https://www.asyatrafo.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.asyatrafo.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -98468,6 +98547,70 @@
       "listing_tier": "listed"
     },
     {
+      "id": "cmp:chongqing-lushun-scientific-and-technological-development-co-ltd",
+      "canonical_id": "cmp:chongqing-lushun-scientific-and-technological-development-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Chongqing Lushun Scientific & Technological Development Co., Ltd.",
+      "slug": "chongqing-lushun-scientific-and-technological-development-co-ltd",
+      "country": "China",
+      "region": "",
+      "website": "https://www.cnlushuntec.com",
+      "headquarters": "—, China",
+      "product_codes": [],
+      "capability_labels": [
+        "Oil treatment devices"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.cnlushuntec.com",
+        "source_type": "company_documentation",
+        "source_url": "https://www.cnlushuntec.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.cnlushuntec.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
       "id": "cmp:chromatography-and-instruments-co-pvt-ltd",
       "canonical_id": "cmp:chromatography-and-instruments-co-pvt-ltd",
       "roles": [
@@ -98661,6 +98804,70 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.clevelandcliffs.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:cobral-srl",
+      "canonical_id": "cmp:cobral-srl",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Cobral srl",
+      "slug": "cobral-srl",
+      "country": "Italy",
+      "region": "",
+      "website": "https://cobral.eu",
+      "headquarters": "—, Italy",
+      "product_codes": [],
+      "capability_labels": [
+        "Copper / CTC conductors"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://cobral.eu",
+        "source_type": "company_documentation",
+        "source_url": "https://cobral.eu"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://cobral.eu"
       },
       "factory_count": 0,
       "featured": false,
@@ -98989,6 +99196,71 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.ctr.in"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:dalian-ctc-insulator-company-limited",
+      "canonical_id": "cmp:dalian-ctc-insulator-company-limited",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Dalian CTC Insulator Company Limited",
+      "slug": "dalian-ctc-insulator-company-limited",
+      "country": "China",
+      "region": "Liaoning",
+      "website": "https://www.ctcinsulator.com",
+      "headquarters": "Dalian, China",
+      "product_codes": [],
+      "capability_labels": [
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.ctcinsulator.com",
+        "source_type": "company_documentation",
+        "source_url": "https://www.ctcinsulator.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.ctcinsulator.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -102534,6 +102806,68 @@
       "listing_tier": "listed"
     },
     {
+      "id": "cmp:goazu-trafo-ve-mekanik",
+      "canonical_id": "cmp:goazu-trafo-ve-mekanik",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Goazu Trafo ve Mekanik",
+      "slug": "goazu-trafo-ve-mekanik",
+      "country": "Türkiye",
+      "region": "",
+      "website": "https://goazu.com",
+      "headquarters": "—, Türkiye",
+      "product_codes": [],
+      "capability_labels": [],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://goazu.com",
+        "source_type": "company_documentation",
+        "source_url": "https://goazu.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://goazu.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
       "id": "cmp:greenwood-power-gmbh",
       "canonical_id": "cmp:greenwood-power-gmbh",
       "roles": [
@@ -102651,6 +102985,68 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.gruppo-bonomi.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:guangdong-canwin-automatic-equipment-co-ltd",
+      "canonical_id": "cmp:guangdong-canwin-automatic-equipment-co-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Guangdong Canwin Automatic Equipment Co., Ltd.",
+      "slug": "guangdong-canwin-automatic-equipment-co-ltd",
+      "country": "China",
+      "region": "",
+      "website": "https://www.canwindg.com",
+      "headquarters": "—, China",
+      "product_codes": [],
+      "capability_labels": [],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.canwindg.com",
+        "source_type": "company_documentation",
+        "source_url": "https://www.canwindg.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.canwindg.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -114479,68 +114875,6 @@
       "listing_tier": "listed"
     },
     {
-      "id": "cmp:rmes-pvt-ltd-rugged-monitoring",
-      "canonical_id": "cmp:rmes-pvt-ltd-rugged-monitoring",
-      "roles": [
-        "Component Manufacturer"
-      ],
-      "kind": "component_supplier",
-      "name": "RMES PVT. LTD. - RUGGED MONITORING",
-      "slug": "rmes-pvt-ltd-rugged-monitoring",
-      "country": "",
-      "region": "",
-      "website": "",
-      "headquarters": "—, ",
-      "product_codes": [],
-      "capability_labels": [],
-      "transformer_types": {
-        "power": {},
-        "distribution": {},
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [],
-      "factories": [],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "MEDIUM",
-      "source_meta": {
-        "source_title": "Unclaimed listing from the event batch. ELECRAMA 2025 (previous exhibitor)",
-        "source_type": "company_documentation",
-        "source_url": ""
-      },
-      "research_completeness": 0,
-      "completeness_score": 50,
-      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "—",
-      "research_status": "Unclaimed",
-      "commercial_status": "",
-      "sources": {
-        "website": ""
-      },
-      "factory_count": 0,
-      "featured": false,
-      "verified": false,
-      "listing_tier": "listed"
-    },
-    {
       "id": "cmp:rochling-industrial-lignostone",
       "canonical_id": "cmp:rochling-industrial-lignostone",
       "roles": [
@@ -114817,7 +115151,9 @@
       "website": "https://ruzgartrafo.com",
       "headquarters": "Şanlıurfa, Türkiye",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "Bushings (HV, LV)"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -117093,6 +117429,68 @@
       "listing_tier": "listed"
     },
     {
+      "id": "cmp:silmek-s-r-l",
+      "canonical_id": "cmp:silmek-s-r-l",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Silmek S.r.l.",
+      "slug": "silmek-s-r-l",
+      "country": "Italy",
+      "region": "",
+      "website": "https://www.silmek.net",
+      "headquarters": "—, Italy",
+      "product_codes": [],
+      "capability_labels": [],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.silmek.net/",
+        "source_type": "company_documentation",
+        "source_url": "https://www.silmek.net"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.silmek.net"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
       "id": "cmp:sinopec-lubricant-company-sinopec-great-wall",
       "canonical_id": "cmp:sinopec-lubricant-company-sinopec-great-wall",
       "roles": [
@@ -118248,7 +118646,9 @@
       "website": "https://www.systemcore.it",
       "headquarters": "—, Italy",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "CRGO (core steel)"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -118688,7 +119088,9 @@
       "website": "https://tashe.co.in",
       "headquarters": "—, India",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "Conservator tanks"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -120081,12 +120483,14 @@
       "kind": "component_supplier",
       "name": "TOPLINE LAMINATION PVT LTD",
       "slug": "topline-lamination-pvt-ltd",
-      "country": "",
+      "country": "India",
       "region": "",
-      "website": "",
-      "headquarters": "—, ",
+      "website": "https://www.toplinelamination.com",
+      "headquarters": "Jaipur, India",
       "product_codes": [],
-      "capability_labels": [],
+      "capability_labels": [
+        "CRGO (core steel)"
+      ],
       "transformer_types": {
         "power": {},
         "distribution": {},
@@ -120118,7 +120522,7 @@
       "source_meta": {
         "source_title": "Unclaimed listing from the event batch. ELECRAMA 2025 (previous exhibitor)",
         "source_type": "company_documentation",
-        "source_url": ""
+        "source_url": "https://www.toplinelamination.com"
       },
       "research_completeness": 0,
       "completeness_score": 50,
@@ -120127,7 +120531,7 @@
       "research_status": "Unclaimed",
       "commercial_status": "",
       "sources": {
-        "website": ""
+        "website": "https://www.toplinelamination.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -120257,6 +120661,68 @@
       "commercial_status": "",
       "sources": {
         "website": "https://trafovia.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:tranco-production-machines-ltd",
+      "canonical_id": "cmp:tranco-production-machines-ltd",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "TRANCO Production Machines Ltd.",
+      "slug": "tranco-production-machines-ltd",
+      "country": "Canada",
+      "region": "",
+      "website": "https://www.tranco.ca",
+      "headquarters": "—, Canada",
+      "product_codes": [],
+      "capability_labels": [],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.tranco.ca",
+        "source_type": "company_documentation",
+        "source_url": "https://www.tranco.ca"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.tranco.ca"
       },
       "factory_count": 0,
       "featured": false,
@@ -120507,6 +120973,70 @@
       "commercial_status": "",
       "sources": {
         "website": ""
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
+      "id": "cmp:travac-makina",
+      "canonical_id": "cmp:travac-makina",
+      "roles": [
+        "Component Manufacturer"
+      ],
+      "kind": "component_supplier",
+      "name": "Travac Makina",
+      "slug": "travac-makina",
+      "country": "Türkiye",
+      "region": "",
+      "website": "https://www.travac.net",
+      "headquarters": "—, Türkiye",
+      "product_codes": [],
+      "capability_labels": [
+        "Oil treatment devices"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Unclaimed listing. Official site checked 5 Nov 2026: https://www.travac.net",
+        "source_type": "company_documentation",
+        "source_url": "https://www.travac.net"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "—",
+      "research_status": "Unclaimed",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.travac.net"
       },
       "factory_count": 0,
       "featured": false,
@@ -126306,70 +126836,6 @@
       "commercial_status": "",
       "sources": {
         "website": "https://cqbluejay.com"
-      },
-      "factory_count": 1,
-      "featured": false,
-      "verified": false,
-      "listing_tier": "listed"
-    },
-    {
-      "id": "cmp:chongqing-lushun-scientific-and-technological-development-co-ltd",
-      "canonical_id": "cmp:chongqing-lushun-scientific-and-technological-development-co-ltd",
-      "roles": [
-        "Testing Laboratory"
-      ],
-      "kind": "testing_laboratory",
-      "name": "CHONGQING LUSHUN SCIENTIFIC & TECHNOLOGICAL DEVELOPMENT CO., LTD.",
-      "slug": "chongqing-lushun-scientific-and-technological-development-co-ltd",
-      "country": "China",
-      "region": "—",
-      "website": "",
-      "headquarters": "—, China",
-      "product_codes": [
-        "LAB_TESTING"
-      ],
-      "capability_labels": [],
-      "transformer_types": {
-        "power": {},
-        "distribution": {},
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [],
-      "factories": [],
-      "capability_evidence": {
-        "products": "UNKNOWN",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "UNKNOWN",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "EP Shanghai 2026 official Exhibitor List (Partial) PDF, updated 2026-08-31",
-        "source_type": "industry_publication",
-        "source_url": ""
-      },
-      "research_completeness": 0,
-      "completeness_score": 0,
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "",
-      "research_status": "RESEARCH_REQUIRED",
-      "commercial_status": "",
-      "sources": {
-        "website": ""
       },
       "factory_count": 1,
       "featured": false,
