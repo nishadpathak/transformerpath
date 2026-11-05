@@ -150,7 +150,7 @@ function buyer() {
   assert.strictEqual(sessionFollow.ok, true);
   assert.strictEqual(sessionFollow.url, 'https://checkout.stripe.com/c/pay/cs_test_client');
   assert.strictEqual(email.isCheckoutSessionUrl('https://stripe.com'), false);
-  assert.strictEqual(email.isCheckoutSessionUrl('https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05'), false);
+  assert.strictEqual(email.isCheckoutSessionUrl(paid.PAYMENT_LINKS.verified_manufacturer.url), false);
 
   const page = require('fs').readFileSync(require('path').join(__dirname, '..', 'checkout/index.html'), 'utf8');
   assert.ok(page.indexOf('continueCheckout') !== -1);
