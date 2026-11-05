@@ -93,140 +93,25 @@
     return raw + sep + 'prefilled_email=' + encodeURIComponent(String(email || '').trim()) + hash;
   }
 
-  function emailTools() {
-    if (typeof window !== 'undefined' && window.tpCheckoutEmail && window.tpCheckoutEmail.withPrefilledEmail) return window.tpCheckoutEmail;
-    if (typeof require === 'function') {
-      try { return require('./checkout-email'); } catch (e) {}
-    }
-    return null;
-  }
-
-  var emailScriptPromise = null;
-
-  function whenTools() {
-    var tools = emailTools();
-    if (tools && tools.withPrefilledEmail) return tools;
-    if (typeof document === 'undefined' || !document.createElement) return tools;
-    if (emailScriptPromise) return emailScriptPromise;
-    emailScriptPromise = new Promise(function (resolve) {
-      var script = document.createElement('script');
-      script.src = '/checkout-email.js';
-      var done = false;
-      function finish() {
-        if (done) return;
-        done = true;
-        resolve(emailTools());
-      }
-      script.onload = finish;
-      script.onerror = finish;
-      setTimeout(finish, 1500);
-      var parent = document.head || document.documentElement;
-      if (!parent || !parent.appendChild) finish();
-      else parent.appendChild(script);
-    });
-    return emailScriptPromise;
-  }
-
-  function pagePath() {
-    try {
-      if (typeof location !== 'undefined' && location && location.pathname) return String(location.pathname);
-    } catch (e) {}
-    return '';
-  }
-
-  function fieldFor(btn) {
-    var parent = btn && btn.parentNode;
-    if (parent && parent.querySelector) return parent.querySelector('input[type="email"][data-checkout-email]');
-    return null;
-  }
-
-  function ensureCheckoutFields() {
-    if (typeof document === 'undefined' || !document.querySelectorAll || !document.createElement) return;
-    if (document.head && document.createElement && document.getElementById && !document.getElementById('tp-checkout-email-style')) {
-      var style = document.createElement('style');
-      style.id = 'tp-checkout-email-style';
-      style.textContent = '.tp-checkout-email{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;margin:0 0 8px}.tp-checkout-email input[type=email]{flex:1 1 160px;min-width:0;width:auto;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}.tp-checkout-email .btn,.tp-checkout-email button{flex:1 1 180px}';
-      document.head.appendChild(style);
-    }
-    var nodes = document.querySelectorAll('[data-pay-plan]');
-    Array.prototype.forEach.call(nodes, function (btn) {
-      if (!btn || !btn.parentNode || !btn.parentNode.insertBefore) return;
-      if (btn.getAttribute && btn.getAttribute('data-checkout-wrapped') === '1') return;
-      var parent = btn.parentNode;
-      if (parent.classList && parent.classList.contains('tp-checkout-email')) {
-        if (btn.setAttribute) btn.setAttribute('data-checkout-wrapped', '1');
-        return;
-      }
-      var wrap = document.createElement('div');
-      wrap.className = 'tp-checkout-email';
-      var input = document.createElement('input');
-      input.type = 'email';
-      input.required = true;
-      input.setAttribute('maxlength', '160');
-      input.setAttribute('autocomplete', 'email');
-      input.setAttribute('inputmode', 'email');
-      input.setAttribute('placeholder', 'Email');
-      input.setAttribute('aria-label', 'Email');
-      input.setAttribute('data-checkout-email', '1');
-      parent.insertBefore(wrap, btn);
-      wrap.appendChild(input);
-      wrap.appendChild(btn);
-      if (btn.setAttribute) btn.setAttribute('data-checkout-wrapped', '1');
-    });
-  }
-
-  // Plan keys stay in /data/claim-pay-plans.json. A click posts the email to
-  // checkout-continue and opens only a Checkout Session URL.
-  var payMap = null;
+  // Upgrade buttons use the same /checkout/ gate as manufacturer profiles.
+  // data/claim-pay-plans.json names product ids only. It is not a Payment Link.
+  var GATE_PLANS = {
+    verified_manufacturer: 1,
+    featured_listing: 1,
+    featured_verified: 1
+  };
 
   function primePayPlans(plans) {
-    payMap = plans && typeof plans === 'object' ? plans : {};
-    return payMap;
+    return plans && typeof plans === 'object' ? plans : {};
   }
 
-  function ensurePlans() {
-    if (payMap) return Promise.resolve(payMap);
-    if (typeof fetch !== 'function') return Promise.resolve({});
-    return fetch('/data/claim-pay-plans.json', { credentials: 'same-origin' })
-      .then(function (res) { return res.ok ? res.json() : {}; })
-      .then(function (doc) {
-        payMap = doc && doc.plans && typeof doc.plans === 'object' ? doc.plans : {};
-        return payMap;
-      })
-      .catch(function () { payMap = {}; return payMap; });
-  }
-
-  function checkoutUrl(plan, slug, plans) {
-    var map = plans || payMap || {};
-    if (!map[plan]) return '';
-    var url = '/checkout/?product=' + encodeURIComponent(plan);
+  function checkoutUrl(plan, slug) {
+    var key = String(plan || '').trim();
+    if (!GATE_PLANS[key]) return '';
+    var url = '/checkout/?product=' + encodeURIComponent(key);
     var s = String(slug || '').trim().toLowerCase();
-    if (SLUG_RE.test(s)) url += '&slug=' + encodeURIComponent(s);
-    return url;
-  }
-
-  var FAILURE = 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
-
-  function isSessionUrl(url) {
-    try {
-      var parsed = new URL(String(url || ''), 'https://transformerpath.com');
-      return parsed.protocol === 'https:' && parsed.hostname === 'checkout.stripe.com';
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function showPayStatus(message) {
-    var el = null;
-    try { el = document.getElementById('claim-pay-status'); } catch (e) { el = null; }
-    if (el) el.textContent = message || '';
-  }
-
-  function pageHref() {
-    try {
-      if (typeof location !== 'undefined' && location && location.href) return String(location.href);
-    } catch (e) {}
-    return '';
+    if (!SLUG_RE.test(s)) return url;
+    return url + '&slug=' + encodeURIComponent(s);
   }
 
   function slugFor(btn) {
@@ -243,62 +128,15 @@
     return url;
   }
 
-  function depart(plan, slug, email, input, plans, tools) {
-    var check = (tools && tools.validEmail) || validEmail;
-    if (!check(email)) {
-      if (input && typeof input.reportValidity === 'function') input.reportValidity();
-      return Promise.resolve('');
-    }
-    if (!checkoutUrl(plan, slug, plans)) return Promise.resolve('');
-    var doFetch = typeof fetch === 'function' ? fetch : null;
-    if (!doFetch) {
-      showPayStatus(FAILURE);
-      return Promise.resolve('');
-    }
-    return doFetch('/.netlify/functions/checkout-continue', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({
-        product: plan,
-        email: email,
-        slug: slug || '',
-        from: pageHref()
-      })
-    }).then(function (res) {
-      return res.json().then(function (body) {
-        return { ok: !!(res && res.ok), body: body || {} };
-      }, function () {
-        return { ok: false, body: {} };
-      });
-    }, function () {
-      return { ok: false, body: {} };
-    }).then(function (res) {
-      var url = res.body && res.body.url;
-      if (!res.ok || !url || res.body.payment_link || !isSessionUrl(url)) {
-        showPayStatus((res.body && res.body.message) || FAILURE);
-        return '';
-      }
-      showPayStatus('');
-      return go(url);
-    });
-  }
-
   function onPayClick(e) {
     var btn = e && e.target && e.target.closest ? e.target.closest('[data-pay-plan]') : null;
     if (!btn) return Promise.resolve('');
-    var plan = btn.getAttribute('data-pay-plan') || '';
-    var slug = slugFor(btn);
-    var input = fieldFor(btn);
-    var email = input ? String(input.value || '').trim() : '';
-    function afterPlans(plans) {
-      var ready = whenTools();
-      if (ready && typeof ready.then === 'function') {
-        return ready.then(function (tools) { return depart(plan, slug, email, input, plans, tools); });
-      }
-      return depart(plan, slug, email, input, plans, ready);
-    }
-    if (payMap) return afterPlans(payMap);
-    return ensurePlans().then(afterPlans);
+    var url = checkoutUrl(btn.getAttribute('data-pay-plan') || '', slugFor(btn));
+    if (!url) return Promise.resolve('');
+    if (btn.setAttribute) btn.setAttribute('href', url);
+    var tag = btn.tagName ? String(btn.tagName).toLowerCase() : '';
+    if (tag === 'a') return Promise.resolve(url);
+    return Promise.resolve(go(url));
   }
 
   function bindPayClicks() {
@@ -313,21 +151,7 @@
     return '<a class="btn btn-outline btn-sm claim-listing-link" href="' + esc(href(slug)) + '" data-claim-listing="1">Claim this listing</a>';
   }
 
-  function ensurePayStatus() {
-    if (typeof document === 'undefined' || !document.getElementById || !document.createElement) return;
-    if (document.getElementById('claim-pay-status')) return;
-    var el = document.createElement('p');
-    el.id = 'claim-pay-status';
-    el.setAttribute('role', 'status');
-    var anchor = document.querySelector ? document.querySelector('[data-pay-plan]') : null;
-    var parent = anchor && anchor.parentNode;
-    if (parent && parent.appendChild) parent.appendChild(el);
-  }
-
   function boot() {
-    ensureCheckoutFields();
-    ensurePayStatus();
-    whenTools();
     bindPayClicks();
     var form = document.getElementById('claimListingForm');
     if (!form || form.getAttribute('data-claim-ready') === '1') return;
@@ -372,7 +196,10 @@
         ? document.querySelectorAll('[data-pay-plan]')
         : [];
       Array.prototype.forEach.call(nodes, function (pay) {
-        if (pay && pay.setAttribute) pay.setAttribute('data-pay-slug', clean);
+        if (!pay || !pay.setAttribute) return;
+        pay.setAttribute('data-pay-slug', clean);
+        var url = checkoutUrl(pay.getAttribute('data-pay-plan') || '', clean);
+        if (url) pay.setAttribute('href', url);
       });
     }
 

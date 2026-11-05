@@ -19,20 +19,27 @@ function esc(s) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function payHref(plan, slug) {
+  var href = '/checkout/?product=' + encodeURIComponent(plan);
+  var s = String(slug || '').trim().toLowerCase();
+  if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s)) href += '&slug=' + encodeURIComponent(s);
+  return href;
+}
+
 function payButton(plan, slug, cls, label) {
-  return '<button type="button" class="' + cls + '" data-pay-plan="' + plan + '" data-pay-slug="' + esc(slug) + '">' + label + '</button>';
+  return '<a class="' + cls + '" href="' + esc(payHref(plan, slug)) + '" data-pay-plan="' + plan + '" data-pay-slug="' + esc(slug) + '">' + label + '</a>';
 }
 
 function upgrades(slug) {
   return '<section class="claim-upgrades" aria-label="Upgrade options">'
     + '<h2>Upgrade options</h2>'
-    + '<p>Claiming a listing is free. These paid options use the existing checkout links. Payment does not publish a listing before review. Verified Manufacturer is a $499 one-time payment that covers 12 months, with no auto-renewal. Identity and contact details checked. Not a product certification.</p>'
+    + '<p>Claiming a listing is free. These paid options open the same checkout page as a manufacturer profile. Payment does not publish a listing before review. Verified Manufacturer is a $499 one-time payment that covers 12 months, with no auto-renewal. Identity and contact details checked. Not a product certification.</p>'
     + payButton('verified_manufacturer', slug, 'btn btn-amber', 'Get Verified $499 one-time payment · covers 12 months')
     + payButton('featured_listing', slug, 'btn btn-outline', 'Featured $299/yr')
     + payButton('featured_verified', slug, 'btn btn-outline', 'Featured+Verified $699/yr')
     + '<ul class="claim-inclusions"><li>Featured directory slot</li><li>Reviewed Verified Manufacturer badge</li><li>declared-origin check</li></ul>'
     + '<p class="declared-origin-note">' + declaredOrigin.NOTE + '</p>'
-    + '<noscript><p class="claim-note">Checkout needs JavaScript. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>'
+    + '<noscript><p class="claim-note">The checkout page opens from the link. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>'
     + '</section>';
 }
 
@@ -235,9 +242,9 @@ if (start >= 0 && stop > start) {
 }
 fs.writeFileSync(tomlPath, toml);
 const payPlans = {
-  verified_manufacturer: '/checkout/?product=verified_manufacturer',
-  featured_listing: '/checkout/?product=featured_listing',
-  featured_verified: '/checkout/?product=featured_verified'
+  verified_manufacturer: { product: 'verified_manufacturer' },
+  featured_listing: { product: 'featured_listing' },
+  featured_verified: { product: 'featured_verified' }
 };
 fs.writeFileSync(path.join(root, 'data/claim-pay-plans.json'), JSON.stringify({ plans: payPlans }, null, 2) + '\n');
 console.log('wrote claim-listing pages for ' + slugs.length + ' listings');
