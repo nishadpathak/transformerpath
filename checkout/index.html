@@ -163,12 +163,19 @@
 (function () {
   var q = new URLSearchParams(location.search);
   var product = q.get('product') || '';
-  var slug = q.get('slug') || '';
+  var slug = q.get('slug') || q.get('client_reference_id') || '';
   var eventId = q.get('event') || '';
   var component = q.get('component') || '';
   var from = q.get('from') || '';
+  var prefilled = q.get('prefilled_email') || '';
   if (!from && document.referrer) from = document.referrer;
   var form = document.getElementById('checkout-gate');
+  var emailInput = form.querySelector('[data-checkout-email]');
+  if (prefilled && emailInput && !emailInput.value) emailInput.value = prefilled;
+  if (prefilled && window.history && history.replaceState) {
+    q.delete('prefilled_email');
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q.toString() : '') + location.hash);
+  }
   document.getElementById('f-product').value = product;
   document.getElementById('f-slug').value = slug;
   document.getElementById('f-event').value = eventId;
@@ -201,31 +208,26 @@
     }
     var status = document.getElementById('checkout-status');
     if (status) status.textContent = 'Opening checkout…';
-    fetch('/.netlify/functions/checkout-continue', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ product: product, email: email, slug: slug, event: eventId, component: component, from: document.getElementById('f-from').value || '' })
-    }).then(function (r) {
-      return r.json().then(function (body) { return { ok: r.ok, body: body }; });
+    var failure = (tools && tools.FAILURE) || 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
+    if (!tools || !tools.continueCheckout) {
+      if (status) status.textContent = failure;
+      return;
+    }
+    tools.continueCheckout({
+      product: product,
+      email: email,
+      slug: slug,
+      event: eventId,
+      component: component,
+      from: document.getElementById('f-from').value || ''
     }).then(function (res) {
-      if (!res.ok || !res.body || !res.body.url) {
-        if (status) status.textContent = 'Checkout did not open. Email hello@transformerpath.com.';
+      if (!res || !res.ok || !res.url || !tools.isCheckoutSessionUrl(res.url)) {
+        if (status) status.textContent = (res && res.message) || failure;
         return;
       }
-      function leave() { location.assign(res.body.url); }
-      if (res.body.saved) { leave(); return; }
-      var row = tools.leadRow({
-        email: email,
-        listingSlug: slug || eventId || component,
-        productName: product,
-        priceId: tools.priceIdFromUrl(res.body.url),
-        pagePath: location.pathname + location.search
-      });
-      var pending = tools.rememberLead(row);
-      if (pending && pending.then) pending.then(leave, leave);
-      else leave();
+      location.assign(res.url);
     }).catch(function () {
-      if (status) status.textContent = 'Checkout did not open. Email hello@transformerpath.com.';
+      if (status) status.textContent = failure;
     });
   });
 })();

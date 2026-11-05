@@ -1,11 +1,13 @@
 /* Email gate. Saves a checkout lead, then opens a Stripe Checkout Session
- * for the price already on the Payment Link. Payment Links cannot set
- * cancel_url. Verified, Featured, and Featured + Verified cancel to the
- * TransformerPath page the buyer came from, or to /pricing/ otherwise.
- * Promo codes are off. No new price, product, or coupon is created.
+ * for the price already on the Payment Link. The buyer is sent only to that
+ * session, which carries customer_email and a TransformerPath cancel_url.
+ * A Payment Link is not a fallback: its sessions leave customer_email empty
+ * and cancel_url at https://stripe.com. Promo codes are off. No new price,
+ * product, or coupon is created.
  *
- * Env: STRIPE_SECRET_KEY. Supabase is optional for the lead row
- * (SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY).
+ * Env: STRIPE_SECRET_KEY. A lead row also needs SUPABASE_URL and
+ * SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY. When those are unset the
+ * session email is still required before payment opens.
  */
 'use strict';
 
@@ -62,7 +64,12 @@ function wantsJson(event) {
 }
 
 async function insertLead(row) {
-  if (!isConfigured()) return false;
+  if (typeof exports._leadInsertForTests === 'function') {
+    const out = await exports._leadInsertForTests(row);
+    if (!out || out.saved !== true) throw new Error('checkout_leads insert failed');
+    return { saved: true, configured: true };
+  }
+  if (!isConfigured()) return { saved: false, configured: false };
   const supabase = client();
   const { error } = await supabase.from('checkout_leads').insert({
     email: row.email,
@@ -72,7 +79,7 @@ async function insertLead(row) {
     page_path: row.page_path
   });
   if (error) throw new Error('checkout_leads insert failed');
-  return true;
+  return { saved: true, configured: true };
 }
 
 function stripeSecret() {
@@ -115,13 +122,60 @@ async function openSession(opts) {
     },
     body: form.toString()
   });
-  const session = await res.json();
+  let session = null;
+  try { session = await res.json(); } catch (e) { session = null; }
   if (!res.ok || !session || !session.url) {
     const err = new Error('stripe');
     err.status = res.status;
+    err.step = 'session';
+    const code = session && session.error && session.error.code;
+    if (typeof code === 'string' && /^[a-z0-9_]{1,64}$/.test(code)) err.code = code;
     throw err;
   }
   return { url: session.url, priceId: price.priceId };
+}
+
+function buyerMessage(kind) {
+  if (kind === 'lead') return 'We could not save your email, so payment did not start. Try again, or email hello@transformerpath.com.';
+  return 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
+}
+
+function safeToken(value) {
+  const s = String(value || '');
+  return /^[a-z0-9_]{1,64}$/.test(s) ? s : '';
+}
+
+function sessionUrlOk(url) {
+  try {
+    const parsed = new URL(String(url || ''));
+    return parsed.protocol === 'https:' && parsed.hostname === 'checkout.stripe.com';
+  } catch (e) {
+    return false;
+  }
+}
+
+function failure(event, statusCode, error, extra) {
+  extra = extra || {};
+  const payload = {
+    error: error,
+    saved: extra.saved === true,
+    payment_link: false,
+    message: extra.message
+  };
+  if (extra.missing) payload.missing = extra.missing;
+  if (extra.stripe_code) payload.stripe_code = extra.stripe_code;
+  if (extra.step) payload.step = extra.step;
+  if (!wantsJson(event)) {
+    return {
+      statusCode: statusCode,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'no-store'
+      },
+      body: '<!doctype html><meta charset="utf-8"><title>Checkout</title><p>' + payload.message + '</p><p><a href="/pricing.html">Back to pricing</a></p>'
+    };
+  }
+  return json(statusCode, payload);
 }
 
 exports.handler = async function (event) {
@@ -139,9 +193,22 @@ exports.handler = async function (event) {
   if (!gate.gateQuery({ product: product })) return json(400, { error: 'unknown product' });
   if (!emailGate.validEmail(email)) return json(400, { error: 'email required' });
 
+  const row = emailGate.leadRow({
+    email: email,
+    listingSlug: slug || eventId || component,
+    productName: product,
+    priceId: '',
+    pagePath: '/checkout/?product=' + product
+  });
+  let lead;
+  try {
+    lead = await insertLead(row);
+  } catch (e) {
+    console.warn('checkout lead save failed');
+    return failure(event, 502, 'lead_not_saved', { saved: false, message: buyerMessage('lead') });
+  }
+
   let opened;
-  let usedPaymentLink = false;
-  let fallbackReason = '';
   try {
     opened = await openSession({
       product: product,
@@ -152,36 +219,27 @@ exports.handler = async function (event) {
       from: from
     });
   } catch (err) {
-    const fallback = checkoutSession.paymentLinkFallback(product, {
-      slug: slug,
-      event: eventId,
-      email: email
-    });
-    if (!fallback) return json(502, { error: 'checkout_failed' });
-    opened = { url: fallback, priceId: gate.codeOf(fallback) };
-    usedPaymentLink = true;
-    if (err && err.missing) fallbackReason = 'missing_key';
-    else if (err && err.message === 'price') fallbackReason = 'no_price';
-    else if (err && err.status) fallbackReason = 'stripe_' + err.status;
-    else fallbackReason = 'stripe_error';
-    console.warn('checkout session skipped; using Payment Link; reason=' + fallbackReason);
+    const step = safeToken(err && (err.missing ? 'config' : (err.step || (err.message === 'price' ? 'price' : ''))));
+    const stripeCode = safeToken(err && (err.missing ? 'missing_key' : err.code));
+    const status = err && err.status ? String(err.status) : '';
+    console.warn('checkout session failed step=' + (step || 'unknown') + ' status=' + (status || 'none') + ' code=' + (stripeCode || 'none'));
+    const extra = { saved: !!(lead && lead.saved), message: buyerMessage('stripe') };
+    if (err && err.missing) {
+      extra.missing = err.missing;
+      return failure(event, 503, 'not_configured', extra);
+    }
+    if (stripeCode) extra.stripe_code = stripeCode;
+    if (step) extra.step = step;
+    return failure(event, 502, 'checkout_failed', extra);
   }
 
-  const row = emailGate.leadRow({
-    email: email,
-    listingSlug: slug || eventId || component,
-    productName: product,
-    priceId: opened.priceId,
-    pagePath: '/checkout/?product=' + product
-  });
-  let saved = false;
-  try { saved = await insertLead(row); }
-  catch (e) { saved = false; }
+  if (!opened || !sessionUrlOk(opened.url)) {
+    console.warn('checkout session failed step=session status=none code=bad_url');
+    return failure(event, 502, 'checkout_failed', { saved: !!(lead && lead.saved), message: buyerMessage('stripe') });
+  }
 
   if (wantsJson(event)) {
-    const payload = { url: opened.url, saved: saved, payment_link: usedPaymentLink };
-    if (fallbackReason) payload.fallback_reason = fallbackReason;
-    return json(200, payload);
+    return json(200, { url: opened.url, saved: !!(lead && lead.saved), payment_link: false });
   }
   return {
     statusCode: 302,
