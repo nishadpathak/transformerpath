@@ -128,7 +128,7 @@
       <input type="hidden" name="component" id="f-component" value="">
       <input type="hidden" name="from" id="f-from" value="">
       <p class="tp-checkout-email"><input type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><button class="btn btn-amber" id="checkout-submit" type="submit">Continue to payment</button></p>
-      <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is saved with this plan before payment opens. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+      <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is attached to this Stripe checkout. It is not saved as a TransformerPath lead. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
     </form>
     <p style="margin:18px 0 0"><a href="/pricing.html">Back to pricing</a></p>
     <noscript><p>Turn on JavaScript so this page can name the plan and open payment. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
@@ -227,6 +227,7 @@
         if (status) status.textContent = (res && res.message) || failure;
         return;
       }
+      if (status && tools.leadNotice) status.textContent = tools.leadNotice(res.saved === true);
       location.assign(res.url);
     }).catch(function () {
       if (status) status.textContent = failure;
