@@ -40,9 +40,12 @@ check('sitemap manufacturer URLs are profiles plus directories', seen.profile.le
 check('every published profile is in the sitemap', doc.profileRels.every(function (rel) {
   return locs.indexOf('https://transformerpath.com' + sitemap.publicPath(rel)) !== -1;
 }));
-check('group pages are named and omitted', doc.groupPagesOmitted.length > 0 && doc.groupPagesOmitted.every(function (slug) {
+check('remaining group pages stay out of the sitemap', doc.groupPagesOmitted.every(function (slug) {
   return locs.indexOf('https://transformerpath.com/manufacturers/' + slug + '/') === -1;
 }), doc.groupPagesOmitted.join(', '));
+check('named group profiles are in the sitemap', ['ge-vernova', 'weg', 'sgb-smit-group', 'hico-technology', 'emerald-transformer'].every(function (slug) {
+  return locs.indexOf('https://transformerpath.com/manufacturers/' + slug + '/') !== -1;
+}));
 check('report matches the census', report.publicCount === doc.publicCount && report.publishedProfiles === doc.publishedProfiles && report.noindexCompanies === doc.noindexCompanies && report.directoryUrls === doc.directoryUrls && report.hiddenAliases === doc.hiddenAliases && report.manufacturerRedirects === doc.manufacturerRedirects);
 check('site-stats uses the same figures', stats.manufacturers === doc.publicCount && stats.manufacturerProfiles === doc.publishedProfiles && stats.manufacturerNoindex === doc.noindexCompanies && stats.manufacturerDirectories === doc.directoryUrls && stats.manufacturerRedirects === doc.manufacturerRedirects && stats.manufacturerHiddenAliases === doc.hiddenAliases);
 const page = fs.readFileSync(path.join(root, 'manufacturers.html'), 'utf8');
