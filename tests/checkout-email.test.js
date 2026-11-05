@@ -61,6 +61,14 @@ assert.strictEqual(email.leadRow({ email: 'a@b.co', listingSlug: '' }).listing_s
 const skipped = email.saveLead(row);
 assert.strictEqual(skipped.skipped, true);
 assert.strictEqual(typeof skipped.then, 'undefined');
+const remembered = email.rememberLead(row);
+assert.strictEqual(typeof remembered.then, 'undefined');
+assert.strictEqual(remembered.saved, false);
+assert.strictEqual(remembered.ok, false);
+assert.ok(email.leadNotice(true).indexOf('saved as a TransformerPath lead') !== -1);
+assert.strictEqual(email.leadNotice(true).indexOf('not saved'), -1);
+assert.ok(email.leadNotice(false).indexOf('attached to this Stripe checkout') !== -1);
+assert.ok(email.leadNotice(false).indexOf('not saved as a TransformerPath lead') !== -1);
 
 let posted = null;
 email.saveLead(row, {

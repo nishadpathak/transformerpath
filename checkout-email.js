@@ -19,6 +19,12 @@
     + '.tp-checkout-email .btn,.tp-checkout-email .cta,.tp-checkout-email a,.tp-checkout-email button{flex:1 1 180px}';
 
   var FAILURE = 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
+  var SAVED_NOTICE = 'Your email is saved as a TransformerPath lead for this plan.';
+  var UNSAVED_NOTICE = 'Your email is attached to this Stripe checkout. It is not saved as a TransformerPath lead.';
+
+  function leadNotice(saved) {
+    return saved === true ? SAVED_NOTICE : UNSAVED_NOTICE;
+  }
 
   function isCheckoutSessionUrl(url) {
     try {
@@ -62,7 +68,7 @@
         ok: !!(session || fallback),
         url: (session || fallback) ? url : '',
         payment_link: fallback,
-        saved: !!(res.body && res.body.saved),
+        saved: !!(res.body && res.body.saved === true),
         message: (res.body && res.body.message) || FAILURE
       };
     });
@@ -195,16 +201,27 @@
     });
   }
 
+  function rememberResult(result) {
+    var ok = !!(result && result.ok === true);
+    return { ok: ok, saved: ok, skipped: !!(result && result.skipped) };
+  }
+
   function rememberLead(row) {
-    if (readConfig()) return insertLead(row, readConfig());
-    if (typeof window !== 'undefined' && window.TP_SUPABASE) return { ok: false, skipped: true };
-    if (typeof document === 'undefined' || !document.createElement) return { ok: false, skipped: true };
+    function fromInsert(pending) {
+      if (pending && typeof pending.then === 'function') {
+        return pending.then(rememberResult, function () { return { ok: false, saved: false }; });
+      }
+      return rememberResult(pending);
+    }
+    if (readConfig()) return fromInsert(insertLead(row, readConfig()));
+    if (typeof window !== 'undefined' && window.TP_SUPABASE) return { ok: false, saved: false, skipped: true };
+    if (typeof document === 'undefined' || !document.createElement) return { ok: false, saved: false, skipped: true };
     return loadScript('/supabase-config.js').then(function () {
       var cfg = readConfig();
-      if (!cfg) return { ok: false, skipped: true };
-      return insertLead(row, cfg);
+      if (!cfg) return { ok: false, saved: false, skipped: true };
+      return fromInsert(insertLead(row, cfg));
     }, function () {
-      return { ok: false, skipped: true };
+      return { ok: false, saved: false, skipped: true };
     });
   }
 
@@ -261,13 +278,15 @@
       pagePath: pagePath()
     });
     var pending = rememberLead(row);
-    function afterLead() {
-      if (String(href).indexOf('buy.stripe.com') === -1) return '';
-      if (input && input.setCustomValidity) input.setCustomValidity(FAILURE);
+    function afterLead(result) {
+      if (result && result.saved === true) return '';
+      if (String(href).indexOf('buy.stripe.com') !== -1 && input && input.setCustomValidity) input.setCustomValidity('');
       return '';
     }
-    if (pending && typeof pending.then === 'function') return pending.then(afterLead, afterLead);
-    return Promise.resolve(afterLead());
+    if (pending && typeof pending.then === 'function') {
+      return pending.then(afterLead, function () { return afterLead({ ok: false, saved: false }); });
+    }
+    return Promise.resolve(afterLead(pending));
   }
 
   function bindEnter(input) {
@@ -313,6 +332,7 @@
     isCheckoutSessionUrl: isCheckoutSessionUrl,
     isPaymentLinkUrl: isPaymentLinkUrl,
     continueCheckout: continueCheckout,
+    leadNotice: leadNotice,
     FAILURE: FAILURE
   };
 });

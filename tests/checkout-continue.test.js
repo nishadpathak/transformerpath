@@ -157,6 +157,12 @@ function buyer() {
   assert.ok(page.indexOf('continueCheckout') !== -1);
   assert.ok(page.indexOf('isCheckoutSessionUrl') !== -1);
   assert.ok(page.indexOf('isPaymentLinkUrl') !== -1);
+  assert.ok(page.indexOf('Your email is saved with this plan before payment opens') === -1);
+  assert.ok(page.indexOf('It is not saved as a TransformerPath lead') !== -1);
+  assert.ok(page.indexOf('leadNotice(res.saved === true)') !== -1);
+  assert.strictEqual(email.leadNotice(true).indexOf('not saved'), -1);
+  assert.ok(email.leadNotice(false).indexOf('not saved as a TransformerPath lead') !== -1);
+  assert.ok(email.leadNotice(undefined).indexOf('not saved as a TransformerPath lead') !== -1);
   assert.ok(page.indexOf('payment did not start') !== -1);
   assert.ok(page.indexOf("q.get('client_reference_id')") !== -1);
 
