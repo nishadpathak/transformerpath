@@ -1,6 +1,6 @@
 /* Checkout continue: a valid email is attached to a Checkout Session.
- * Stripe and lead-save failures stay on the site. They do not open a
- * Payment Link. Run: node tests/checkout-continue.test.js
+ * When Stripe refuses the session, the existing Payment Link still opens.
+ * A failed lead save does not. Run: node tests/checkout-continue.test.js
  */
 'use strict';
 
@@ -92,15 +92,15 @@ function buyer() {
   };
   const sessionForbidden = await post(buyer());
   const forbiddenBody = JSON.parse(sessionForbidden.body);
-  assert.strictEqual(sessionForbidden.statusCode, 502);
-  assert.strictEqual(forbiddenBody.error, 'checkout_failed');
-  assert.strictEqual(forbiddenBody.payment_link, false);
-  assert.strictEqual(forbiddenBody.step, 'session');
-  assert.strictEqual(forbiddenBody.stripe_code, 'more_permissions_required');
-  assert.strictEqual(forbiddenBody.url, undefined);
-  assert.ok(forbiddenBody.message.indexOf('payment did not start') !== -1);
-  assert.ok(JSON.stringify(forbiddenBody).indexOf('buy.stripe.com') === -1);
-  assert.ok(JSON.stringify(forbiddenBody).indexOf('https://stripe.com') === -1);
+  const forbiddenUrl = new URL(forbiddenBody.url);
+  assert.strictEqual(sessionForbidden.statusCode, 200);
+  assert.strictEqual(forbiddenBody.payment_link, true);
+  assert.strictEqual(forbiddenBody.fallback_reason, 'stripe_403');
+  assert.strictEqual(forbiddenBody.error, undefined);
+  assert.strictEqual(forbiddenUrl.hostname, 'buy.stripe.com');
+  assert.strictEqual(forbiddenUrl.searchParams.get('prefilled_email'), 'buyer@example.com');
+  assert.strictEqual(forbiddenUrl.searchParams.get('client_reference_id'), 'ormazabal');
+  assert.ok(forbiddenUrl.searchParams.get('prefilled_promo_code') == null);
 
   global.fetch = async function () {
     return { ok: true, status: 200, json: async function () { return { id: 'cs_bad', url: paid.PAYMENT_LINKS.verified_manufacturer.url + '?prefilled_email=buyer%40example.com' }; } };
@@ -136,8 +136,9 @@ function buyer() {
       }
     });
   });
-  assert.strictEqual(followed.ok, false);
-  assert.strictEqual(followed.url, '');
+  assert.strictEqual(followed.ok, true);
+  assert.strictEqual(followed.payment_link, true);
+  assert.ok(followed.url.indexOf('https://buy.stripe.com/') === 0);
   assert.ok(clientPosted.indexOf('buyer@example.com') !== -1);
   const sessionFollow = await email.continueCheckout(buyer(), function () {
     return Promise.resolve({
@@ -155,6 +156,7 @@ function buyer() {
   const page = require('fs').readFileSync(require('path').join(__dirname, '..', 'checkout/index.html'), 'utf8');
   assert.ok(page.indexOf('continueCheckout') !== -1);
   assert.ok(page.indexOf('isCheckoutSessionUrl') !== -1);
+  assert.ok(page.indexOf('isPaymentLinkUrl') !== -1);
   assert.ok(page.indexOf('payment did not start') !== -1);
   assert.ok(page.indexOf("q.get('client_reference_id')") !== -1);
 

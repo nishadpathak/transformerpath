@@ -1,6 +1,7 @@
 /* Email gate helpers. A raw buy.stripe.com link is not opened: Payment Link
- * sessions leave customer_email empty. Checkout goes through checkout-continue
- * and only a checkout.stripe.com session URL is followed.
+ * sessions leave customer_email empty. Checkout goes through checkout-continue.
+ * A Checkout Session is preferred. When Stripe refuses that call, the
+ * returned Payment Link is opened so the buyer can still pay.
  * The public anon key is read from window.TP_SUPABASE and is never logged.
  */
 (function (root, factory) {
@@ -28,6 +29,15 @@
     }
   }
 
+  function isPaymentLinkUrl(url) {
+    try {
+      var parsed = new URL(String(url || ''), 'https://transformerpath.com');
+      return parsed.protocol === 'https:' && parsed.hostname === 'buy.stripe.com';
+    } catch (e) {
+      return false;
+    }
+  }
+
   function continueCheckout(body, fetchImpl) {
     var doFetch = fetchImpl || (typeof fetch === 'function' ? fetch : null);
     if (!doFetch) return Promise.resolve({ ok: false, url: '', saved: false, message: FAILURE });
@@ -45,10 +55,13 @@
       return { httpOk: false, body: {} };
     }).then(function (res) {
       var url = res.body && res.body.url;
-      var session = res.httpOk && url && !res.body.payment_link && isCheckoutSessionUrl(url);
+      var paymentLink = !!(res.body && res.body.payment_link);
+      var session = res.httpOk && url && !paymentLink && isCheckoutSessionUrl(url);
+      var fallback = res.httpOk && url && paymentLink && isPaymentLinkUrl(url);
       return {
-        ok: !!session,
-        url: session ? url : '',
+        ok: !!(session || fallback),
+        url: (session || fallback) ? url : '',
+        payment_link: fallback,
         saved: !!(res.body && res.body.saved),
         message: (res.body && res.body.message) || FAILURE
       };
@@ -298,6 +311,7 @@
     mount: mount,
     startAnchor: startAnchor,
     isCheckoutSessionUrl: isCheckoutSessionUrl,
+    isPaymentLinkUrl: isPaymentLinkUrl,
     continueCheckout: continueCheckout,
     FAILURE: FAILURE
   };

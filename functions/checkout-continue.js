@@ -1,9 +1,9 @@
 /* Email gate. Saves a checkout lead, then opens a Stripe Checkout Session
  * for the price already on the Payment Link. The buyer is sent only to that
  * session, which carries customer_email and a TransformerPath cancel_url.
- * A Payment Link is not a fallback: its sessions leave customer_email empty
- * and cancel_url at https://stripe.com. Promo codes are off. No new price,
- * product, or coupon is created.
+ * When Stripe refuses POST /v1/checkout/sessions, payment still opens on the
+ * existing Payment Link with prefilled_email and client_reference_id.
+ * Promo codes are off. No new price, product, or coupon is created.
  *
  * Env: STRIPE_SECRET_KEY. A lead row also needs SUPABASE_URL and
  * SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY. When those are unset the
@@ -223,11 +223,38 @@ exports.handler = async function (event) {
     const stripeCode = safeToken(err && (err.missing ? 'missing_key' : err.code));
     const status = err && err.status ? String(err.status) : '';
     console.warn('checkout session failed step=' + (step || 'unknown') + ' status=' + (status || 'none') + ' code=' + (stripeCode || 'none'));
-    const extra = { saved: !!(lead && lead.saved), message: buyerMessage('stripe') };
     if (err && err.missing) {
-      extra.missing = err.missing;
-      return failure(event, 503, 'not_configured', extra);
+      return failure(event, 503, 'not_configured', {
+        saved: !!(lead && lead.saved),
+        message: buyerMessage('stripe'),
+        missing: err.missing
+      });
     }
+    if (err && err.step === 'session') {
+      const fallbackUrl = checkoutSession.paymentLinkFallback(product, {
+        email: email,
+        slug: slug,
+        event: eventId
+      });
+      if (fallbackUrl.indexOf('https://buy.stripe.com/') === 0) {
+        const reason = status === '403' ? 'stripe_403' : (stripeCode === 'more_permissions_required' ? 'more_permissions_required' : (status ? 'stripe_' + status : 'stripe_error'));
+        console.warn('checkout session skipped; using Payment Link; reason=' + reason);
+        if (wantsJson(event)) {
+          return json(200, {
+            url: fallbackUrl,
+            saved: !!(lead && lead.saved),
+            payment_link: true,
+            fallback_reason: reason
+          });
+        }
+        return {
+          statusCode: 302,
+          headers: { Location: fallbackUrl, 'cache-control': 'no-store' },
+          body: ''
+        };
+      }
+    }
+    const extra = { saved: !!(lead && lead.saved), message: buyerMessage('stripe') };
     if (stripeCode) extra.stripe_code = stripeCode;
     if (step) extra.step = step;
     return failure(event, 502, 'checkout_failed', extra);
