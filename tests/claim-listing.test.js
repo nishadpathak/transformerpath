@@ -25,14 +25,15 @@ check('a missing website is manual review', claim.reviewFlag('sales@bemag.ca', '
 check('claim link carries the slug', claim.href('bemag-transformer') === '/claim-listing/bemag-transformer/');
 check('upgrade links keep the existing price url and add the slug', claim.payHref(paid.PAYMENT_LINKS.featured_listing.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.payHref(paid.PAYMENT_LINKS.featured_verified.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
 const payPlans = {
-  verified_manufacturer: '/checkout/?product=verified_manufacturer',
-  featured_listing: '/checkout/?product=featured_listing',
-  featured_verified: '/checkout/?product=featured_verified'
+  verified_manufacturer: { product: 'verified_manufacturer' },
+  featured_listing: { product: 'featured_listing' },
+  featured_verified: { product: 'featured_verified' }
 };
 const payPlanFile = JSON.parse(fs.readFileSync(path.join(root, 'data/claim-pay-plans.json'), 'utf8'));
-check('pay plan file points at the checkout gate', payPlanFile.plans.verified_manufacturer === payPlans.verified_manufacturer && payPlanFile.plans.featured_listing === payPlans.featured_listing && payPlanFile.plans.featured_verified === payPlans.featured_verified && JSON.stringify(payPlanFile).indexOf('buy.stripe.com') < 0);
-check('claim script does not embed a payment link', fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8').indexOf('buy.stripe.com') < 0 && fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8').indexOf('checkout.stripe.com') >= 0 && fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8').indexOf('/data/claim-pay-plans.json') >= 0);
-check('a click target is the checkout gate with the maker slug', claim.checkoutUrl('verified_manufacturer', 'bemag-transformer', payPlans) === '/checkout/?product=verified_manufacturer&slug=bemag-transformer' && claim.checkoutUrl('featured_listing', 'bemag-transformer', payPlans) === '/checkout/?product=featured_listing&slug=bemag-transformer' && claim.checkoutUrl('featured_verified', 'bemag-transformer', payPlans) === '/checkout/?product=featured_verified&slug=bemag-transformer');
+check('pay plan file names product ids and has no payment link', payPlanFile.plans.verified_manufacturer.product === payPlans.verified_manufacturer.product && payPlanFile.plans.featured_listing.product === payPlans.featured_listing.product && payPlanFile.plans.featured_verified.product === payPlans.featured_verified.product && JSON.stringify(payPlanFile).indexOf('buy.stripe.com') < 0 && JSON.stringify(payPlanFile).indexOf('https://') < 0);
+const claimScript = fs.readFileSync(path.join(root, 'claim-listing.js'), 'utf8');
+check('claim script does not embed a payment link', claimScript.indexOf('buy.stripe.com') < 0 && claimScript.indexOf('checkout.stripe.com') < 0 && claimScript.indexOf('/.netlify/functions/checkout-continue') < 0 && claimScript.indexOf('/checkout/?product=') >= 0 && claimScript.indexOf('data/claim-pay-plans.json') >= 0);
+check('a click target is the checkout gate with the maker slug', claim.checkoutUrl('verified_manufacturer', 'bemag-transformer', { verified_manufacturer: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK }) === '/checkout/?product=verified_manufacturer&slug=bemag-transformer' && claim.checkoutUrl('featured_listing', 'bemag-transformer', payPlans) === '/checkout/?product=featured_listing&slug=bemag-transformer' && claim.checkoutUrl('featured_verified', 'bemag-transformer', payPlans) === '/checkout/?product=featured_verified&slug=bemag-transformer' && claim.checkoutUrl('verified_manufacturer', 'bemag-transformer', { verified_manufacturer: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK }).indexOf('buy.stripe.com') < 0);
 check('an empty slug stays on the checkout gate', claim.checkoutUrl('featured_verified', '', payPlans) === '/checkout/?product=featured_verified' && claim.checkoutUrl('no-such-plan', 'bemag-transformer', payPlans) === '');
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 check('robots.txt disallows the claim pages', /^Disallow:\s*\/claim-listing\/\s*$/m.test(robots));
@@ -203,7 +204,7 @@ setTimeout(function () {
   check('an unknown slug says listing not found and clears the slug', slugBox.value === '' && nodes['claim-domain-status'].textContent === 'Listing not found', slugBox.value + ' / ' + nodes['claim-domain-status'].textContent);
   const bemagPage = fs.readFileSync(path.join(root, 'claim-listing/bemag-transformer/index.html'), 'utf8');
   check('a prerendered claim page is noindex and prefilled', /noindex,follow/.test(bemagPage) && bemagPage.indexOf('value="Bemag Transformer"') >= 0 && bemagPage.indexOf('value="bemag-transformer"') >= 0);
-  check('a prerendered page carries the slug on every pay button', bemagPage.indexOf('buy.stripe.com') < 0 && (bemagPage.match(/data-pay-slug="bemag-transformer"/g) || []).length === 3 && bemagPage.indexOf('data-pay-plan="verified_manufacturer"') >= 0 && bemagPage.indexOf('data-pay-plan="featured_listing"') >= 0 && bemagPage.indexOf('data-pay-plan="featured_verified"') >= 0);
+  check('a prerendered page carries the slug on every pay button', bemagPage.indexOf('buy.stripe.com') < 0 && (bemagPage.match(/data-pay-slug="bemag-transformer"/g) || []).length === 3 && bemagPage.indexOf('href="/checkout/?product=verified_manufacturer&amp;slug=bemag-transformer"') >= 0 && bemagPage.indexOf('href="/checkout/?product=featured_listing&amp;slug=bemag-transformer"') >= 0 && bemagPage.indexOf('href="/checkout/?product=featured_verified&amp;slug=bemag-transformer"') >= 0);
   const clicked = { href: '' };
   const savedWindow = global.window;
   global.window = { location: { search: '', assign: function (url) { clicked.href = url; } } };
@@ -220,35 +221,14 @@ setTimeout(function () {
     }
   };
   const payEvent = { target: { closest: function () { return payBtn; } } };
-  claim.onPayClick(payEvent);
-  check('checkout waits for an email', clicked.href === '' && emailInput.reported === true, clicked.href);
-  emailInput.value = 'buyer@example.com';
   let posted = null;
   global.fetch = function (url, opts) {
     posted = { url: String(url), body: opts && opts.body };
-    return Promise.resolve({
-      ok: true,
-      json: function () {
-        return Promise.resolve({ url: 'https://checkout.stripe.com/c/pay/cs_test_claim', saved: true, payment_link: false });
-      }
-    });
+    return Promise.resolve({ ok: true, json: function () { return Promise.resolve({}); } });
   };
   const opened = claim.onPayClick(payEvent);
-  check('a click does not open a Payment Link before the session returns', clicked.href.indexOf('buy.stripe.com') < 0, clicked.href);
+  check('Get Verified opens the checkout gate and does not call Stripe', clicked.href === '/checkout/?product=featured_verified&slug=bemag-transformer' && clicked.href.indexOf('buy.stripe.com') < 0 && clicked.href.indexOf('checkout.stripe.com') < 0 && !posted, clicked.href);
   opened.then(function () {
-  check('a click opens the Checkout Session for that email and slug', clicked.href === 'https://checkout.stripe.com/c/pay/cs_test_claim' && posted && posted.url.indexOf('/.netlify/functions/checkout-continue') >= 0 && posted.body.indexOf('buyer@example.com') >= 0 && posted.body.indexOf('featured_verified') >= 0 && posted.body.indexOf('bemag-transformer') >= 0, clicked.href);
-  clicked.href = 'stale';
-  global.fetch = function () {
-    return Promise.resolve({
-      ok: false,
-      json: function () {
-        return Promise.resolve({ error: 'checkout_failed', payment_link: false, message: 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.' });
-      }
-    });
-  };
-  return claim.onPayClick(payEvent);
-  }).then(function () {
-  check('a Stripe failure does not open a Payment Link', clicked.href === 'stale');
   global.window = savedWindow;
   check('the prerendered page stays out of the sitemap', sitemap.indexOf('claim-listing') === -1);
   const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
