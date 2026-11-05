@@ -175,8 +175,8 @@
     });
   }
 
-  // Payment Link strings stay in lib/paid-listings.js. The browser reads
-  // the copy written to /data/claim-pay-plans.json and navigates on click.
+  // Plan keys stay in /data/claim-pay-plans.json. A click posts the email to
+  // checkout-continue and opens only a Checkout Session URL.
   var payMap = null;
 
   function primePayPlans(plans) {
@@ -198,9 +198,35 @@
 
   function checkoutUrl(plan, slug, plans) {
     var map = plans || payMap || {};
-    var base = map[plan];
-    if (!base) return '';
-    return payHref(base, slug);
+    if (!map[plan]) return '';
+    var url = '/checkout/?product=' + encodeURIComponent(plan);
+    var s = String(slug || '').trim().toLowerCase();
+    if (SLUG_RE.test(s)) url += '&slug=' + encodeURIComponent(s);
+    return url;
+  }
+
+  var FAILURE = 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
+
+  function isSessionUrl(url) {
+    try {
+      var parsed = new URL(String(url || ''), 'https://transformerpath.com');
+      return parsed.protocol === 'https:' && parsed.hostname === 'checkout.stripe.com';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function showPayStatus(message) {
+    var el = null;
+    try { el = document.getElementById('claim-pay-status'); } catch (e) { el = null; }
+    if (el) el.textContent = message || '';
+  }
+
+  function pageHref() {
+    try {
+      if (typeof location !== 'undefined' && location && location.href) return String(location.href);
+    } catch (e) {}
+    return '';
   }
 
   function slugFor(btn) {
@@ -219,26 +245,42 @@
 
   function depart(plan, slug, email, input, plans, tools) {
     var check = (tools && tools.validEmail) || validEmail;
-    var stamp = (tools && tools.withPrefilledEmail) || withPrefilledEmail;
     if (!check(email)) {
       if (input && typeof input.reportValidity === 'function') input.reportValidity();
       return Promise.resolve('');
     }
-    var url = checkoutUrl(plan, slug, plans);
-    if (!url) return Promise.resolve('');
-    url = stamp(url, email);
-    var row = {
-      email: email,
-      listingSlug: slug,
-      productName: plan,
-      priceId: tools && tools.priceIdFromUrl ? tools.priceIdFromUrl(url) : '',
-      pagePath: pagePath()
-    };
-    var lead = tools && tools.leadRow ? tools.leadRow(row) : null;
-    var save = tools && tools.rememberLead && lead ? tools.rememberLead(lead) : null;
-    function leave() { return go(url); }
-    if (save && typeof save.then === 'function') return save.then(leave, leave);
-    return Promise.resolve(leave());
+    if (!checkoutUrl(plan, slug, plans)) return Promise.resolve('');
+    var doFetch = typeof fetch === 'function' ? fetch : null;
+    if (!doFetch) {
+      showPayStatus(FAILURE);
+      return Promise.resolve('');
+    }
+    return doFetch('/.netlify/functions/checkout-continue', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({
+        product: plan,
+        email: email,
+        slug: slug || '',
+        from: pageHref()
+      })
+    }).then(function (res) {
+      return res.json().then(function (body) {
+        return { ok: !!(res && res.ok), body: body || {} };
+      }, function () {
+        return { ok: false, body: {} };
+      });
+    }, function () {
+      return { ok: false, body: {} };
+    }).then(function (res) {
+      var url = res.body && res.body.url;
+      if (!res.ok || !url || res.body.payment_link || !isSessionUrl(url)) {
+        showPayStatus((res.body && res.body.message) || FAILURE);
+        return '';
+      }
+      showPayStatus('');
+      return go(url);
+    });
   }
 
   function onPayClick(e) {
@@ -271,8 +313,20 @@
     return '<a class="btn btn-outline btn-sm claim-listing-link" href="' + esc(href(slug)) + '" data-claim-listing="1">Claim this listing</a>';
   }
 
+  function ensurePayStatus() {
+    if (typeof document === 'undefined' || !document.getElementById || !document.createElement) return;
+    if (document.getElementById('claim-pay-status')) return;
+    var el = document.createElement('p');
+    el.id = 'claim-pay-status';
+    el.setAttribute('role', 'status');
+    var anchor = document.querySelector ? document.querySelector('[data-pay-plan]') : null;
+    var parent = anchor && anchor.parentNode;
+    if (parent && parent.appendChild) parent.appendChild(el);
+  }
+
   function boot() {
     ensureCheckoutFields();
+    ensurePayStatus();
     whenTools();
     bindPayClicks();
     var form = document.getElementById('claimListingForm');

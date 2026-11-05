@@ -159,9 +159,8 @@ email.saveLead(row, {
   assert.strictEqual(opened.length, 0);
   assert.strictEqual(input.reported, true);
   input.value = 'buyer@example.com';
-  return email.startAnchor(anchor, input, { preventDefault: function () {} }).then(function () {
-    assert.strictEqual(opened.length, 1);
-    assert.strictEqual(opened[0], base + '?prefilled_email=' + encodeURIComponent('buyer@example.com'));
+    return email.startAnchor(anchor, input, { preventDefault: function () {} }).then(function () {
+    assert.strictEqual(opened.length, 0);
     var popup = { closed: false, location: {} };
     var asyncAnchor = {
       attrs: { href: withSlug, target: '_blank', 'data-track-plan': 'Verified Manufacturer' },
@@ -177,13 +176,10 @@ email.saveLead(row, {
       TP_SUPABASE: { url: 'https://example.supabase.co', anon: 'test-anon-key' }
     };
     global.fetch = function () { return Promise.resolve({ ok: false }); };
-    return email.startAnchor(asyncAnchor, { value: 'buyer@example.com' }, { preventDefault: function () {} }).then(function () {
-      assert.strictEqual(opened[opened.length - 1], 'about:blank');
-      assert.strictEqual(
-        popup.location.href,
-        withSlug + '&prefilled_email=' + encodeURIComponent('buyer@example.com')
-      );
-      assert.ok(popup.location.href.indexOf('client_reference_id=hitachi-energy') > 0);
+    return email.startAnchor(asyncAnchor, { value: 'buyer@example.com', setCustomValidity: function () {} }, { preventDefault: function () {} }).then(function () {
+      assert.ok(opened.indexOf('about:blank') === -1);
+      assert.strictEqual(popup.location.href, undefined);
+      assert.ok(JSON.stringify(opened).indexOf('buy.stripe.com') === -1);
     });
   }).then(function () {
     assert.ok(fs.readFileSync(path.join(root, 'build-dist.js'), 'utf8').indexOf("'checkout-email.js'") >= 0);

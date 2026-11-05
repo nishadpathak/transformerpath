@@ -1,6 +1,6 @@
-/* Email gate for Stripe Payment Links on pricing and claim pages.
- * Appends prefilled_email and leaves client_reference_id as it was.
- * A failed lead insert still lets checkout continue.
+/* Email gate helpers. A raw buy.stripe.com link is not opened: Payment Link
+ * sessions leave customer_email empty. Checkout goes through checkout-continue
+ * and only a checkout.stripe.com session URL is followed.
  * The public anon key is read from window.TP_SUPABASE and is never logged.
  */
 (function (root, factory) {
@@ -16,6 +16,44 @@
   var CSS = '.tp-checkout-email{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;margin:0 0 8px}'
     + '.tp-checkout-email input[type=email]{flex:1 1 160px;min-width:0;width:auto;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}'
     + '.tp-checkout-email .btn,.tp-checkout-email .cta,.tp-checkout-email a,.tp-checkout-email button{flex:1 1 180px}';
+
+  var FAILURE = 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
+
+  function isCheckoutSessionUrl(url) {
+    try {
+      var parsed = new URL(String(url || ''), 'https://transformerpath.com');
+      return parsed.protocol === 'https:' && parsed.hostname === 'checkout.stripe.com';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function continueCheckout(body, fetchImpl) {
+    var doFetch = fetchImpl || (typeof fetch === 'function' ? fetch : null);
+    if (!doFetch) return Promise.resolve({ ok: false, url: '', saved: false, message: FAILURE });
+    return doFetch('/.netlify/functions/checkout-continue', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify(body || {})
+    }).then(function (res) {
+      return res.json().then(function (payload) {
+        return { httpOk: !!(res && res.ok), body: payload || {} };
+      }, function () {
+        return { httpOk: false, body: {} };
+      });
+    }, function () {
+      return { httpOk: false, body: {} };
+    }).then(function (res) {
+      var url = res.body && res.body.url;
+      var session = res.httpOk && url && !res.body.payment_link && isCheckoutSessionUrl(url);
+      return {
+        ok: !!session,
+        url: session ? url : '',
+        saved: !!(res.body && res.body.saved),
+        message: (res.body && res.body.message) || FAILURE
+      };
+    });
+  }
 
   function validEmail(email) {
     var s = String(email || '').trim();
@@ -194,32 +232,6 @@
     return input;
   }
 
-  function openCheckout(anchor, url, popup) {
-    if (popup && !popup.closed) {
-      try {
-        popup.location.href = url;
-        try { popup.opener = null; } catch (e) {}
-        return url;
-      } catch (e) {}
-    }
-    var blank = anchor && anchor.getAttribute && anchor.getAttribute('target') === '_blank';
-    if (blank && typeof window !== 'undefined' && window.open) {
-      window.open(url, '_blank', 'noopener');
-      return url;
-    }
-    if (typeof window !== 'undefined' && window.location) {
-      if (typeof window.location.assign === 'function') window.location.assign(url);
-      else window.location.href = url;
-    }
-    return url;
-  }
-
-  function reserveBlank(anchor) {
-    if (!anchor || !anchor.getAttribute || anchor.getAttribute('target') !== '_blank') return null;
-    if (typeof window === 'undefined' || !window.open) return null;
-    try { return window.open('about:blank', '_blank'); } catch (e) { return null; }
-  }
-
   function startAnchor(anchor, input, event) {
     if (event && event.preventDefault) event.preventDefault();
     var email = input ? String(input.value || '').trim() : '';
@@ -228,21 +240,21 @@
       return Promise.resolve('');
     }
     var href = anchor.getAttribute ? (anchor.getAttribute('href') || anchor.href || '') : '';
-    var url = withPrefilledEmail(href, email);
     var row = leadRow({
       email: email,
       listingSlug: listingSlug(anchor, href),
       productName: productName(anchor),
-      priceId: priceIdFromUrl(url),
+      priceId: priceIdFromUrl(href),
       pagePath: pagePath()
     });
     var pending = rememberLead(row);
-    if (pending && typeof pending.then === 'function') {
-      var popup = reserveBlank(anchor);
-      var leave = function () { return openCheckout(anchor, url, popup); };
-      return pending.then(leave, leave);
+    function afterLead() {
+      if (String(href).indexOf('buy.stripe.com') === -1) return '';
+      if (input && input.setCustomValidity) input.setCustomValidity(FAILURE);
+      return '';
     }
-    return Promise.resolve(openCheckout(anchor, url, null));
+    if (pending && typeof pending.then === 'function') return pending.then(afterLead, afterLead);
+    return Promise.resolve(afterLead());
   }
 
   function bindEnter(input) {
@@ -284,6 +296,9 @@
     saveLead: saveLead,
     rememberLead: rememberLead,
     mount: mount,
-    startAnchor: startAnchor
+    startAnchor: startAnchor,
+    isCheckoutSessionUrl: isCheckoutSessionUrl,
+    continueCheckout: continueCheckout,
+    FAILURE: FAILURE
   };
 });

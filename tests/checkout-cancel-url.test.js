@@ -93,14 +93,14 @@ const cont = require('../functions/checkout-continue');
     body: JSON.stringify({ product: 'verified_manufacturer', email: 'buyer@example.com', slug: 'ormazabal', from: profile })
   });
   const missingBody = JSON.parse(missing.body);
-  assert.strictEqual(missing.statusCode, 200);
+  assert.strictEqual(missing.statusCode, 503);
   assert.strictEqual(called, false);
-  assert.strictEqual(missingBody.payment_link, true);
-  assert.strictEqual(missingBody.fallback_reason, 'missing_key');
-  assert.strictEqual(
-    missingBody.url,
-    paid.PAYMENT_LINKS.verified_manufacturer.url + '?client_reference_id=ormazabal&prefilled_email=' + encodeURIComponent('buyer@example.com')
-  );
+  assert.strictEqual(missingBody.payment_link, false);
+  assert.strictEqual(missingBody.error, 'not_configured');
+  assert.ok(missingBody.missing.indexOf('STRIPE_SECRET_KEY') !== -1);
+  assert.strictEqual(missingBody.url, undefined);
+  assert.ok(JSON.stringify(missingBody).indexOf('buy.stripe.com') === -1);
+  assert.ok(missingBody.message.indexOf('payment did not start') !== -1);
 
   process.env.STRIPE_SECRET_KEY = 'sk_test_fixture_not_a_real_key';
   let posted = '';
@@ -135,6 +135,7 @@ const cont = require('../functions/checkout-continue');
   const sent = new URLSearchParams(posted);
   assert.strictEqual(opened.statusCode, 200);
   assert.strictEqual(openedBody.url, 'https://checkout.stripe.com/c/pay/cs_test_1');
+  assert.strictEqual(openedBody.payment_link, false);
   assert.ok(openedBody.url.indexOf('buy.stripe.com') === -1);
   assert.strictEqual(sent.get('line_items[0][price]'), 'price_live_verified');
   assert.strictEqual(sent.get('line_items[0][quantity]'), '1');
