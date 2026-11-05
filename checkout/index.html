@@ -221,7 +221,9 @@
       component: component,
       from: document.getElementById('f-from').value || ''
     }).then(function (res) {
-      if (!res || !res.ok || !res.url || !tools.isCheckoutSessionUrl(res.url)) {
+      var session = res && res.url && tools.isCheckoutSessionUrl(res.url);
+      var fallback = res && res.payment_link && res.url && tools.isPaymentLinkUrl && tools.isPaymentLinkUrl(res.url);
+      if (!res || !res.ok || !res.url || (!session && !fallback)) {
         if (status) status.textContent = (res && res.message) || failure;
         return;
       }
