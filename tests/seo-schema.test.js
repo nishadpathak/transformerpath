@@ -365,6 +365,15 @@ assert(apecBlurb === 'Editions of IEEE APEC on TransformerPath: IEEE APEC 2027 (
 assert(hubTitle !== adipecTitle, 'hub title differs from the year page');
 const acdcHub = eventSeo.eventHubTitle('ACDC China (24th IET AC & DC Power Transmission Conference)');
 assert(acdcHub === 'ACDC China editions | Transformer Events | TransformerPath', 'hub title drops an unclosed parenthetical: ' + acdcHub);
+const connectName = 'Transformer Connect: Uncovering the new operating reality of distribution grids';
+const connectTitle = eventSeo.eventProfileTitle({
+  name: connectName, date_status: 'CONFIRMED', start: '2026-11-11', end: '2026-11-11', city: 'Online'
+});
+assert(connectTitle.indexOf(connectName + ' | Transformer Events | TransformerPath') === 0, 'Hitachi edition title keeps the full name: ' + connectTitle);
+assert(connectTitle.indexOf('reality of |') === -1, 'Hitachi edition title is not cut after of');
+const connectHub = eventSeo.eventHubTitle(connectName);
+assert(connectHub === connectName + ' editions | Transformer Events | TransformerPath', 'Hitachi hub title keeps the full name: ' + connectHub);
+assert(connectHub.indexOf('operating editions') === -1, 'Hitachi hub title does not glue editions onto a cut phrase');
 assert(acdcHub.length >= 50 && acdcHub.length <= 100 && acdcHub.split('(').length === acdcHub.split(')').length, 'ACDC hub title stays in range and balanced');
 
 const eventsPage = fs.readFileSync(path.join(__dirname, '..', 'events.html'), 'utf8');
