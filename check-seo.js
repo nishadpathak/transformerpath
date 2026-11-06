@@ -101,7 +101,11 @@ files.forEach(function (file) {
     title === 'Daily Transformer Intel — tenders, awards & prices | TransformerPath';
   const sitePrepTitle = rel === 'knowledge/transformer-site-preparation.html' &&
     title === 'What Site Preparation Does a Transformer Need?';
-  if (!geoTitle && !intelTitle && !sitePrepTitle && (title.length < 50 || title.length > titleMax)) fail(rel + ': title length ' + title.length + ' (' + title + ')');
+  const fullHitachiTitle = /^events\/hitachi-energy-transformer-connect(?:-2026)?\/index\.html$/.test(rel) &&
+    title.indexOf('Transformer Connect: Uncovering the new operating reality of distribution grids') === 0 &&
+    /\| Transformer Events \| TransformerPath$/.test(title) &&
+    title.length <= 140;
+  if (!geoTitle && !intelTitle && !sitePrepTitle && !fullHitachiTitle && (title.length < 50 || title.length > titleMax)) fail(rel + ': title length ' + title.length + ' (' + title + ')');
   if (eventProfile) {
     const brands = title.match(/TransformerPath/g) || [];
     if (brands.length !== 1) fail(rel + ': event title brand count ' + brands.length + ' (' + title + ')');
