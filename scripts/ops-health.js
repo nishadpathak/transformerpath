@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+/* Release Guardian: verify the public site is reachable and its generated
+ * operational metadata is present. This is intentionally read-only. */
+'use strict';
+const https=require('https'),http=require('http');const {URL}=require('url');
+const base=(process.argv[2]||'https://transformerpath.com').replace(/\/$/,'');
+function get(url){return new Promise((resolve,reject)=>{const u=new URL(url),lib=u.protocol==='http:'?http:https;const req=lib.get({hostname:u.hostname,path:u.pathname+u.search,headers:{'user-agent':'transformerpath-release-guardian/1','accept':'*/*'},timeout:20000},res=>{let b='';res.setEncoding('utf8');res.on('data',c=>b+=c);res.on('end',()=>resolve({status:res.statusCode,body:b}))});req.on('timeout',()=>req.destroy(new Error('timeout')));req.on('error',reject)})}
+const results=[];function check(name,ok,detail){results.push(ok);console.log((ok?'PASS':'FAIL')+'  '+name+(detail?' — '+detail:''))}
+async function main(){const pages=['/','/intel.html','/events.html','/directory.html','/rfq.html','/jobs.html'];for(const page of pages){try{const r=await get(base+page);check('page '+page,r.status===200,'HTTP '+r.status)}catch(e){check('page '+page,false,e.message)}}for(const file of ['data/site-stats.json','data/intel-status.json','data/build-provenance.json']){try{const r=await get(base+'/'+file);let d=null;try{d=JSON.parse(r.body)}catch(e){}check(file,r.status===200&&!!d,'HTTP '+r.status);if(file.endsWith('build-provenance.json'))check(file+' build_commit',!!(d&&d.build_commit),d&&d.build_commit||'missing')}catch(e){check(file,false,e.message)}}try{const r=await get(base+'/data/intel-status.json'),d=JSON.parse(r.body),date=d.latest_source_date||d.updated,age=date?((Date.now()-Date.parse(date))/86400000):999;check('intel freshness',Number.isFinite(age)&&age<=3,'age '+(Number.isFinite(age)?age.toFixed(1):'unknown')+' days')}catch(e){check('intel freshness',false,e.message)}const failed=results.filter(x=>!x).length;console.log('Release Guardian: '+(failed?'FAIL':'PASS')+' ('+failed+' failed checks)');if(failed)process.exitCode=1}
+main().catch(e=>{console.error(e);process.exitCode=1});
