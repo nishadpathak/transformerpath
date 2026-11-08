@@ -253,8 +253,10 @@
       <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
       <div data-jobs-rfq-pay="rfq" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">A unique RFQ reference is generated and confirmed by email when the requirement is submitted — quote it in any follow-up email.</p>
+      <p id="shortlistContext" style="display:none;font-size:.82rem;color:var(--accent);margin:0 0 12px"></p>
       <form name="rfq" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
         <input type="hidden" name="reference" id="fld_ref" value="">
+        <input type="hidden" name="supplier_shortlist" id="fld_supplier_shortlist" value="">
         <input type="hidden" name="form-name" value="rfq">
         <input type="hidden" name="consent_version" id="fld_consent_version" value="rfq-consent-2026-10-15">
         <input type="hidden" name="consent_text" id="fld_consent_text" value="I agree that TransformerPath may send my name, work email, company, and the technical fields in this RFQ to at most 5 matched suppliers so they can respond to this request. This disclosure is to those suppliers, not a processor relationship. I can withdraw consent, and further sends will stop.">
@@ -506,6 +508,17 @@
       var d = document.getElementById('fld_details');
       if(d) d.value = 'Inquiry directed to: ' + comp + '\n\n' + (d.value || '');
     }
+    if(p.has('suppliers')){
+      var suppliers = p.get('suppliers');
+      var hidden = document.getElementById('fld_supplier_shortlist');
+      var context = document.getElementById('shortlistContext');
+      if(hidden) hidden.value = suppliers;
+      if(context){
+        var count = suppliers.split(',').filter(Boolean).length;
+        context.textContent = 'Shortlist attached: ' + count + ' supplier' + (count === 1 ? '' : 's') + '. The shortlist will be included with the RFQ for review.';
+        context.style.display = count ? 'block' : 'none';
+      }
+    }
     renderSchedule();
   }
 
@@ -525,6 +538,7 @@
       email: val('fld_email'), company: val('fld_company'), category: val('fld_category'),
       rating: val('fld_rating'), voltage: val('fld_voltage'), details: val('fld_details'),
       deadline: val('fld_deadline'), country: val('fld_country'),
+      supplier_shortlist: val('fld_supplier_shortlist'),
       consent: true, consent_version: val('fld_consent_version'), consent_at: val('fld_consent_at'),
       qualified_by_payment: false
     };
@@ -595,7 +609,8 @@
         country: val('fld_country'), category: val('fld_category'), quantity: val('fld_qty'),
         rating: val('fld_rating'), voltage: val('fld_voltage'), standard: val('fld_standard'),
         details: val('fld_details'), deadline: val('fld_deadline'), budget: val('fld_budget'),
-        destination: val('fld_dest'), consent: 'yes', consent_version: val('fld_consent_version'),
+        destination: val('fld_dest'), supplier_shortlist: val('fld_supplier_shortlist'),
+        consent: 'yes', consent_version: val('fld_consent_version'),
         consent_at: val('fld_consent_at')
       })
     }).then(function(r){ return r.json(); }).catch(function(){ return { sent: false, reason: 'error' }; });
