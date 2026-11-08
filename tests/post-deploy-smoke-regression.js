@@ -67,6 +67,8 @@ assert(/context !== 'production'/.test(plugin), 'plugin smokes production deploy
 assert(/netlify-plugin-post-deploy-smoke/.test(manifest), 'plugin manifest is named');
 const workflow = fs.readFileSync('.github/workflows/post-deploy-smoke.yml', 'utf8');
 assert(/deployment_status:/.test(workflow), 'GitHub Action listens for deployment_status');
+assert(/workflow_dispatch:/.test(workflow), 'GitHub Action can be run manually');
+assert(!/branches: \[main\]/.test(workflow), 'GitHub Action does not smoke before a deployment exists');
 assert(/github\.event\.deployment\.sha \|\| github\.sha/.test(workflow), 'the action smokes the released SHA, not the tip of main');
 assert(/transformerpath\/production/.test(workflow), 'the action posts a production commit status');
 assert(/statuses: write/.test(workflow), 'the action can write commit statuses');
