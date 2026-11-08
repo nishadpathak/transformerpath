@@ -1,9 +1,8 @@
 name: post-deploy-smoke
 
 on:
-  push:
-    branches: [main]
   deployment_status:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,8 +12,9 @@ permissions:
 jobs:
   smoke:
     if: >-
-      github.event_name == 'push' ||
-      (github.event.deployment_status.state == 'success' &&
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'deployment_status' &&
+       github.event.deployment_status.state == 'success' &&
        (github.event.deployment.environment == 'production' ||
         github.event.deployment.environment == 'Production'))
     runs-on: ubuntu-latest
