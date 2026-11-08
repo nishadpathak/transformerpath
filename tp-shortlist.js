@@ -68,6 +68,31 @@
       TP_SHORTLIST.renderDock();
       TP_SHORTLIST.updateButtons();
     },
+    exportCsv: function () {
+      var rows = loadList();
+      if (!rows.length) return;
+      var head = 'Supplier,Country,Role,Profile URL';
+      var body = rows.map(function (x) {
+        return [x.name, x.country, x.role, location.origin + '/manufacturers/' + x.slug + '/']
+          .map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+      });
+      var blob = new Blob([[head].concat(body).join('\n')], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'transformerpath-shortlist.csv';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    },
+    share: function () {
+      var slugs = loadList().map(function (x) { return x.slug; }).join(',');
+      if (!slugs) return;
+      var url = location.origin + '/compare.html?m=' + encodeURIComponent(slugs);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { alert('Shortlist link copied.'); });
+      } else {
+        window.prompt('Copy shortlist link', url);
+      }
+    },
     updateButtons: function () {
       document.querySelectorAll('[data-shortlist-slug]').forEach(btn => {
         const slug = btn.getAttribute('data-shortlist-slug');
@@ -106,13 +131,17 @@
       dock.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:8px">
           <span style="font-size:12px;font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:.05em">📋 Shortlist (${list.length}/${MAX_SHORTLIST})</span>
-          <button type="button" onclick="window.TP_SHORTLIST.clear()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline">Clear</button>
+          <span style="display:flex;gap:8px">
+            <button type="button" onclick="window.TP_SHORTLIST.share()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline">Share</button>
+            <button type="button" onclick="window.TP_SHORTLIST.clear()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline">Clear</button>
+          </span>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px">${names}</div>
         <div style="display:flex;gap:8px;margin-top:4px">
           <a href="/compare.html?m=${encodeURIComponent(slugs)}" class="btn btn-outline btn-sm" style="flex:1;text-align:center;font-size:12px;padding:6px 10px">Compare (${list.length}) →</a>
           <a href="/rfq.html?suppliers=${encodeURIComponent(slugs)}" class="btn btn-amber btn-sm" style="flex:1;text-align:center;font-size:12px;padding:6px 10px">Create RFQ →</a>
         </div>
+        <button type="button" onclick="window.TP_SHORTLIST.exportCsv()" class="btn btn-outline btn-sm" style="width:100%;font-size:12px;padding:6px 10px">Export shortlist CSV</button>
       `;
     }
   };
