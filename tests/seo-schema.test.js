@@ -287,6 +287,15 @@ assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal pa
 
 const { titleKeepingCountry } = require('../lib/seo-fit');
 const seoCat = catalog.create();
+// Validate the real FAQ source as well as the synthetic regression fixture.
+const liveFaqSource = fs.readFileSync(path.join(__dirname, '..', 'faq.html'), 'utf8');
+const liveFaqDraft = catalog.draft('faq.html', liveFaqSource, seoCat);
+const liveFaqNodes = liveFaqDraft.nodes.filter(function (n) { return n['@type'] === 'FAQPage'; });
+const liveFaqCount = (liveFaqSource.match(/<details\\b[^>]*class=["']faq["']/gi) || []).length;
+assert(liveFaqCount > 0 && liveFaqNodes.length === 1, 'real FAQ produces exactly one FAQPage');
+assert(liveFaqNodes.length === 1 && liveFaqNodes[0].mainEntity.length === liveFaqCount,
+  'real FAQ structured question count matches visible FAQ count');
+
 // FAQ markup must mirror questions and answers present in visible page HTML.
 const faqSource = '<html><body><h1>FAQ</h1><details class="faq"><summary>What is CRGO?</summary><div><p>CRGO is grain-oriented electrical steel.</p></div></details></body></html>';
 const faqDraft = catalog.draft('faq.html', faqSource, seoCat);
