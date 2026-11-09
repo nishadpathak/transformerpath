@@ -9,6 +9,8 @@
 
 [build.environment]
   TZ = "UTC"
+  # Public browser values written into supabase-config.js. Not the service-role key.
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY"
 
 # Published HTML must keep /intel.html and the other final targets.
 # Pretty URLs rewrite those hrefs to /intel and the rest, which then 301.
