@@ -291,7 +291,7 @@ const seoCat = catalog.create();
 const liveFaqSource = fs.readFileSync(path.join(__dirname, '..', 'faq.html'), 'utf8');
 const liveFaqDraft = catalog.draft('faq.html', liveFaqSource, seoCat);
 const liveFaqNodes = liveFaqDraft.nodes.filter(function (n) { return n['@type'] === 'FAQPage'; });
-const liveFaqCount = (liveFaqSource.match(/<details\\b[^>]*class=["']faq["']/gi) || []).length;
+const liveFaqCount = (liveFaqSource.match(/<details\b[^>]*class=["']faq["']/gi) || []).length;
 assert(liveFaqCount > 0 && liveFaqNodes.length === 1, 'real FAQ produces exactly one FAQPage');
 assert(liveFaqNodes.length === 1 && liveFaqNodes[0].mainEntity.length === liveFaqCount,
   'real FAQ structured question count matches visible FAQ count');
