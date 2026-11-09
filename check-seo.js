@@ -153,7 +153,7 @@ files.forEach(function (file) {
     if (faqs.length !== 1) fail(rel + ': expected exactly one FAQPage node');
     else {
       const visible = [];
-      const re = /<details\\b[^>]*class=["'][^"']*\\bfaq\\b[^"']*["'][^>]*>\\s*<summary[^>]*>([\\s\\S]*?)<\\/summary>\\s*<div[^>]*>([\\s\\S]*?)<\\/div>\\s*<\\/details>/gi;
+      const re = /<details\b[^>]*class=["'][^"']*\bfaq\b[^"']*["'][^>]*>\s*<summary[^>]*>([\s\S]*?)<\/summary>\s*<div[^>]*>([\s\S]*?)<\/div>\s*<\/details>/gi;
       let match;
       while ((match = re.exec(source))) visible.push({
         name: html.stripTags(match[1]), answer: html.stripTags(match[2])
