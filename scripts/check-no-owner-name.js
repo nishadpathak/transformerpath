@@ -66,6 +66,31 @@ function report(rel, text, index, why) {
 
 /* Official exhibitor-list names and product lines are quotations of that
  * list. They are not TransformerPath offering a personal service. */
+/* An official event title can contain "webinar". That is the organiser's
+ * name for the event, not TransformerPath offering one. Only titles that
+ * themselves contain a banned phrase are removed, and only as a whole title. */
+function stripEventTitles(text) {
+  let events;
+  try {
+    events = JSON.parse(fs.readFileSync(path.join(root, 'data/events.json'), 'utf8'));
+  } catch (e) {
+    return text;
+  }
+  const list = Array.isArray(events) ? events : [];
+  list.forEach(function (ev) {
+    const name = ev && (ev.n || ev.name);
+    if (!name) return;
+    const raw = String(name);
+    if (raw.length < 12 || !phraseRe.test(raw)) return;
+    phraseRe.lastIndex = 0;
+    text = text.split(raw).join(' ');
+    const enc = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    if (enc !== raw) text = text.split(enc).join(' ');
+  });
+  phraseRe.lastIndex = 0;
+  return text;
+}
+
 function stripExhibitorQuotations(text) {
   let doc;
   try {
@@ -90,7 +115,9 @@ function scanText(rel, text) {
   nameRe.lastIndex = 0;
   if (nameHit) report(rel, scrubbed, nameHit.index, 'owner name');
   if (isPublicHtml(rel)) {
-    let visible = stripExhibitorQuotations(maskAbsoluteUrls(text));
+    /* Titles first: a later quotation strip removes bare punctuation, which
+     * would split an official name and leave the banned word behind. */
+    let visible = stripExhibitorQuotations(maskAbsoluteUrls(stripEventTitles(text)));
     if (isEventRecord(rel)) visible = visible.replace(/webinars?/gi, ' ');
     const phraseHit = phraseRe.exec(visible);
     phraseRe.lastIndex = 0;
