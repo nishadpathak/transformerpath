@@ -148,6 +148,23 @@ files.forEach(function (file) {
   if (!hasSearchAction(nodes)) fail(rel + ': missing WebSite SearchAction');
   if (!breadcrumbsOk(nodes)) fail(rel + ': BreadcrumbList is missing or unordered');
 
+  if (rel === 'faq.html') {
+    const faqs = nodes.filter(function (n) { return n['@type'] === 'FAQPage'; });
+    if (faqs.length !== 1) fail(rel + ': expected exactly one FAQPage node');
+    else {
+      const visible = Array.from(source.matchAll(/<details\\b[^>]*class=["'][^"']*\\bfaq\\b[^"']*["'][^>]*>\\s*<summary[^>]*>([\\s\\S]*?)<\\/summary>/gi))
+        .map(function (m) { return html.stripTags(m[1]); });
+      const questions = faqs[0].mainEntity || [];
+      if (questions.length !== visible.length) fail(rel + ': FAQPage question count differs from visible FAQ');
+      questions.forEach(function (q, i) {
+        if (q['@type'] !== 'Question' || q.name !== visible[i] || !q.acceptedAnswer ||
+            q.acceptedAnswer['@type'] !== 'Answer' || !q.acceptedAnswer.text) {
+          fail(rel + ': FAQPage question/answer mismatch at ' + (i + 1));
+        }
+      });
+    }
+  }
+
   if (/^events\/[^/]+\/index\.html$/.test(rel)) {
     const role = catalog.eventRoleOf(source);
     const eventNodes = nodes.filter(function (n) { return n['@type'] === 'Event'; });
