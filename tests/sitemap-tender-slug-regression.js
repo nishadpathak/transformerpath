@@ -81,6 +81,24 @@ NOTICES.forEach(function (pair) {
   check(id + ' sitemap day is the notice publication day', dated['tenders/' + slug + '/index.html'] === '2026-10-15');
 });
 
+const cigrePages = {};
+dates.fillEventSourceDates(cigrePages, [{
+  id: 'cigre-facts-operational-performance-webinar-2026',
+  series_slug: 'cigre-facts-operational-performance-webinar',
+  source_checked_at: '2026-11-08'
+}]);
+check('undated CIGRE edition uses source_checked_at', cigrePages['events/cigre-facts-operational-performance-webinar-2026/index.html'] === '2026-11-08');
+check('undated CIGRE series hub uses source_checked_at', cigrePages['events/cigre-facts-operational-performance-webinar/index.html'] === '2026-11-08');
+const keptEvent = { 'events/cigre-facts-operational-performance-webinar-2026/index.html': '2026-11-01' };
+dates.fillEventSourceDates(keptEvent, [{
+  id: 'cigre-facts-operational-performance-webinar-2026',
+  source_checked_at: '2026-11-08'
+}]);
+check('an event page that already has a lastmod keeps it', keptEvent['events/cigre-facts-operational-performance-webinar-2026/index.html'] === '2026-11-01');
+const liveEvents = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
+const liveCigre = liveEvents.filter(function (ev) { return ev && ev.id === 'cigre-facts-operational-performance-webinar-2026'; })[0];
+check('CIGRE FACTS webinar record was checked on 8 Nov 2026', liveCigre && liveCigre.source_checked_at === '2026-11-08');
+
 if (failed) {
   console.error('SITEMAP TENDER SLUG REGRESSION FAILED (' + failed + ')');
   process.exit(1);
