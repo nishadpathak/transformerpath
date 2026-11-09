@@ -3,10 +3,13 @@
 
 const fs = require('fs');
 const assert = require('assert');
+const { execFileSync } = require('child_process');
 
 const workspace = fs.readFileSync('workspace.html', 'utf8');
 const calculator = fs.readFileSync('calculator.html', 'utf8');
-const config = fs.readFileSync('supabase-config.js', 'utf8');
+/* write-supabase-config.js rewrites this file from public env before the
+ * Netlify tests. The committed copy stays empty; that is what this checks. */
+const config = execFileSync('git', ['show', 'HEAD:supabase-config.js'], { encoding: 'utf8' });
 const docs = fs.readFileSync('docs/workspace-setup.md', 'utf8');
 const studentDocs = fs.readFileSync('docs/student-learning-setup.md', 'utf8');
 const passport = fs.readFileSync('skills-passport.html', 'utf8');

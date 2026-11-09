@@ -58,7 +58,8 @@ check('no company profile lists an event that ended before ' + today, expired.le
 
 const hyosung = upcomingSection(fs.readFileSync('manufacturers/hyosung-heavy-industries/index.html', 'utf8'));
 const hyosungNames = listedNames(hyosung);
-check('Hyosung upcoming list exists', hyosungNames.length > 0, hyosungNames.join(', '));
+check('Hyosung upcoming section is still rendered', hyosung.indexOf('Upcoming events</h2>') !== -1);
+check('Hyosung does not list BIXPO 2026 after it ended on 6 Nov 2026', !hyosungNames.some(function (n) { return /BIXPO 2026/.test(n); }), hyosungNames.join(', '));
 check('Hyosung does not list EPIC 2026', !hyosungNames.some(function (n) { return /EPIC 2026/.test(n); }));
 check('Hyosung upcoming events all end on or after ' + today, hyosungNames.every(function (n) {
   const ev = byName[n];
