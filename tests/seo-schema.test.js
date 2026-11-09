@@ -19,16 +19,6 @@ function assert(cond, msg) {
   else console.log('  ok — ' + msg);
 }
 
-// FAQ markup must mirror questions and answers present in visible page HTML.
-const faqSource = '<html><body><h1>FAQ</h1><details class="faq"><summary>What is CRGO?</summary><div><p>CRGO is grain-oriented electrical steel.</p></div></details></body></html>';
-const faqDraft = catalog.draft('faq.html', faqSource, { companies: {}, byCountry: {}, events: [], intelArticles: [] });
-const faqNode = faqDraft.nodes.find(function (n) { return n['@type'] === 'FAQPage'; });
-assert(faqNode && faqNode.mainEntity.length === 1, 'FAQPage JSON-LD generated from visible FAQ');
-assert(faqNode && faqNode.mainEntity[0].name === 'What is CRGO?', 'FAQ question matches visible summary');
-assert(faqNode && faqNode.mainEntity[0].acceptedAnswer.text === 'CRGO is grain-oriented electrical steel.', 'FAQ answer matches visible paragraph');
-const emptyFaq = catalog.draft('faq.html', '<h1>FAQ</h1>', { companies: {}, byCountry: {}, events: [], intelArticles: [] });
-assert(!emptyFaq.nodes.some(function (n) { return n['@type'] === 'FAQPage'; }), 'no fabricated FAQPage when answers absent');
-
 const site = schema.siteNodes();
 const org = site.find(function (n) { return n['@type'] === 'Organization'; });
 const web = site.find(function (n) { return n['@type'] === 'WebSite'; });
@@ -297,6 +287,17 @@ assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal pa
 
 const { titleKeepingCountry } = require('../lib/seo-fit');
 const seoCat = catalog.create();
+// FAQ markup must mirror questions and answers present in visible page HTML.
+const faqSource = '<html><body><h1>FAQ</h1><details class="faq"><summary>What is CRGO?</summary><div><p>CRGO is grain-oriented electrical steel.</p></div></details></body></html>';
+const faqDraft = catalog.draft('faq.html', faqSource, seoCat);
+const faqNode = faqDraft.nodes.find(function (n) { return n['@type'] === 'FAQPage'; });
+assert(faqNode && faqNode.mainEntity.length === 1, 'FAQPage JSON-LD generated from visible FAQ');
+assert(faqNode && faqNode.mainEntity[0].name === 'What is CRGO?', 'FAQ question matches visible summary');
+assert(faqNode && faqNode.mainEntity[0].acceptedAnswer.text === 'CRGO is grain-oriented electrical steel.', 'FAQ answer matches visible paragraph');
+const emptyFaq = catalog.draft('faq.html', '<h1>FAQ</h1>', seoCat);
+assert(!emptyFaq.nodes.some(function (n) { return n['@type'] === 'FAQPage'; }), 'no fabricated FAQPage when answers absent');
+
+
 let titleMiss = 0;
 Object.keys(seoCat.companies).forEach(function (slug) {
   const c = seoCat.companies[slug];
