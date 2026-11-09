@@ -148,6 +148,28 @@ files.forEach(function (file) {
   if (!hasSearchAction(nodes)) fail(rel + ': missing WebSite SearchAction');
   if (!breadcrumbsOk(nodes)) fail(rel + ': BreadcrumbList is missing or unordered');
 
+  if (rel === 'faq.html') {
+    const faqs = nodes.filter(function (n) { return n['@type'] === 'FAQPage'; });
+    if (faqs.length !== 1) fail(rel + ': expected exactly one FAQPage node');
+    else {
+      const visible = [];
+      const re = /<details\\b[^>]*class=["'][^"']*\\bfaq\\b[^"']*["'][^>]*>\\s*<summary[^>]*>([\\s\\S]*?)<\\/summary>\\s*<div[^>]*>([\\s\\S]*?)<\\/div>\\s*<\\/details>/gi;
+      let match;
+      while ((match = re.exec(source))) visible.push({
+        name: html.stripTags(match[1]), answer: html.stripTags(match[2])
+      });
+      const questions = faqs[0].mainEntity || [];
+      if (questions.length !== visible.length) fail(rel + ': FAQPage count differs from visible questions and answers');
+      questions.forEach(function (q, i) {
+        if (!visible[i] || q['@type'] !== 'Question' || q.name !== visible[i].name ||
+            !q.acceptedAnswer || q.acceptedAnswer['@type'] !== 'Answer' ||
+            q.acceptedAnswer.text !== visible[i].answer) {
+          fail(rel + ': FAQPage question/answer mismatch at ' + (i + 1));
+        }
+      });
+    }
+  }
+
   if (/^events\/[^/]+\/index\.html$/.test(rel)) {
     const role = catalog.eventRoleOf(source);
     const eventNodes = nodes.filter(function (n) { return n['@type'] === 'Event'; });

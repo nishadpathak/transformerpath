@@ -287,6 +287,26 @@ assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal pa
 
 const { titleKeepingCountry } = require('../lib/seo-fit');
 const seoCat = catalog.create();
+// Validate the real FAQ source as well as the synthetic regression fixture.
+const liveFaqSource = fs.readFileSync(path.join(__dirname, '..', 'faq.html'), 'utf8');
+const liveFaqDraft = catalog.draft('faq.html', liveFaqSource, seoCat);
+const liveFaqNodes = liveFaqDraft.nodes.filter(function (n) { return n['@type'] === 'FAQPage'; });
+const liveFaqCount = (liveFaqSource.match(/<details\\b[^>]*class=["']faq["']/gi) || []).length;
+assert(liveFaqCount > 0 && liveFaqNodes.length === 1, 'real FAQ produces exactly one FAQPage');
+assert(liveFaqNodes.length === 1 && liveFaqNodes[0].mainEntity.length === liveFaqCount,
+  'real FAQ structured question count matches visible FAQ count');
+
+// FAQ markup must mirror questions and answers present in visible page HTML.
+const faqSource = '<html><body><h1>FAQ</h1><details class="faq"><summary>What is CRGO?</summary><div><p>CRGO is grain-oriented electrical steel.</p></div></details></body></html>';
+const faqDraft = catalog.draft('faq.html', faqSource, seoCat);
+const faqNode = faqDraft.nodes.find(function (n) { return n['@type'] === 'FAQPage'; });
+assert(faqNode && faqNode.mainEntity.length === 1, 'FAQPage JSON-LD generated from visible FAQ');
+assert(faqNode && faqNode.mainEntity[0].name === 'What is CRGO?', 'FAQ question matches visible summary');
+assert(faqNode && faqNode.mainEntity[0].acceptedAnswer.text === 'CRGO is grain-oriented electrical steel.', 'FAQ answer matches visible paragraph');
+const emptyFaq = catalog.draft('faq.html', '<h1>FAQ</h1>', seoCat);
+assert(!emptyFaq.nodes.some(function (n) { return n['@type'] === 'FAQPage'; }), 'no fabricated FAQPage when answers absent');
+
+
 let titleMiss = 0;
 Object.keys(seoCat.companies).forEach(function (slug) {
   const c = seoCat.companies[slug];
