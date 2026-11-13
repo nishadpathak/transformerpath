@@ -1,7 +1,8 @@
 // Netlify scheduled function: soft-freshness rebuild trigger.
 // Posts to TP_BUILD_HOOK_URL when configured so curated Daily Intel,
-// events Up-next, and site-stats counters cannot freeze for weeks
-// between manual deploys.
+// Transformer Tenders (intake merge and status recompute in
+// build-tenders.js), events Up-next, and site-stats counters cannot
+// freeze for weeks between manual deploys.
 //
 // Schedule: once daily — 06:00 UTC. See netlify.toml.
 // No-op unless TP_BUILD_HOOK_URL is set.
