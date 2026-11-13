@@ -2290,39 +2290,54 @@ function sortAndFilterCards(cards, region) {
   return filtered;
 }
 
+function applyIntelFeed(data) {
+  if (!data || data.error || !Array.isArray(data.articles) || !data.articles.length) return false;
+  CHANGELOG = data.briefing ? [data.briefing] : [];
+  renderChangelog();
+  AUTO_FEED = [];
+  const wire = document.getElementById('intel-wire-body');
+  if (wire) {
+    let html = '';
+    data.articles.forEach(function (r) {
+      if (!r || !r.items || !r.items.length) return;
+      html += '<div class="region-h">' + (r.label || 'Wire') + '</div>';
+      r.items.forEach(function (it) {
+        html += '<div class="intel-wire-item"><a href="' + (it.url || '#') + '" target="_blank" rel="noopener">' +
+          (it.title || 'Untitled') + '</a><div class="src">' + (it.src || it.source || '') + '</div></div>';
+      });
+    });
+    wire.innerHTML = html || '<p class="src">No wire items in the intake cache.</p>';
+  }
+  const foot = document.getElementById('intelFooter');
+  if (foot && data.timestamp) {
+    const d = new Date(data.timestamp);
+    foot.innerHTML = 'Curated Daily Intel on the timeline · wire intake last fetched ' +
+      d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) +
+      ' · wire is unedited and is not the briefing.';
+  }
+  return true;
+}
+
+async function loadStaticIntelFeed() {
+  const res = await fetch('/data/intel-feed-snapshot.json');
+  if (!res.ok) return false;
+  return applyIntelFeed(await res.json());
+}
+
 // Fetch auto-generated briefing on page load
 async function loadBriefing() {
-  /* Wire / unedited intake only. Never overwrites curated NEWS or the timeline. */
+  /* Wire intake is the build-time snapshot. A slow call used to 504 and
+     print in the console. Three seconds, then the static file, and no log. */
   try {
-    const res = await fetch('/.netlify/functions/intel-feed');
-    if (!res.ok) return;
-    const data = await res.json();
-    CHANGELOG = data.briefing ? [data.briefing] : [];
-    renderChangelog();
-    AUTO_FEED = [];
-    const wire = document.getElementById('intel-wire-body');
-    const articles = (data && Array.isArray(data.articles)) ? data.articles : [];
-    if (wire) {
-      let html = '';
-      articles.forEach(function (r) {
-        if (!r || !r.items || !r.items.length) return;
-        html += '<div class="region-h">' + (r.label || 'Wire') + '</div>';
-        r.items.forEach(function (it) {
-          html += '<div class="intel-wire-item"><a href="' + (it.url || '#') + '" target="_blank" rel="noopener">' +
-            (it.title || 'Untitled') + '</a><div class="src">' + (it.src || it.source || '') + '</div></div>';
-        });
-      });
-      wire.innerHTML = html || '<p class="src">No wire items in the intake cache.</p>';
-    }
-    const foot = document.getElementById('intelFooter');
-    if (foot && data && data.timestamp) {
-      const d = new Date(data.timestamp);
-      foot.innerHTML = 'Curated Daily Intel on the timeline · wire intake last fetched ' +
-        d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) +
-        ' · wire is unedited and is not the briefing.';
-    }
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 3000) : null;
+    const res = await fetch('/.netlify/functions/intel-feed', { signal: ctrl ? ctrl.signal : undefined });
+    if (timer) clearTimeout(timer);
+    const data = res.ok ? await res.json() : null;
+    if (applyIntelFeed(data)) return;
+    await loadStaticIntelFeed();
   } catch (err) {
-    console.warn('Could not load wire intake:', err.message);
+    try { await loadStaticIntelFeed(); } catch (e) { /* leave the authored briefing in place */ }
   }
 }
 

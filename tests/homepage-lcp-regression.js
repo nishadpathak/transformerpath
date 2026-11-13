@@ -21,12 +21,16 @@ function check(label, pass, detail) {
 check('mobile poster file exists', fs.existsSync(small));
 const smallBytes = fs.existsSync(small) ? fs.statSync(small).size : 0;
 const fullBytes = fs.statSync(full).size;
+const heroSmall = 'brand/hero-800.jpg';
 check('mobile poster is under 120KB', smallBytes > 0 && smallBytes < 120 * 1024, smallBytes + ' bytes');
 check('mobile poster is smaller than the full poster', smallBytes < fullBytes, smallBytes + ' vs ' + fullBytes);
 check('hero img points phones at the small poster', html.indexOf('src="' + small + '"') !== -1 && html.indexOf(small + ' 800w') !== -1);
 check('full poster remains available for wide screens', html.indexOf(full + ' 1280w') !== -1);
 check('poster is not faded in from opacity 0', /\.hero-stage__viz\{ animation: none; \}/.test(html));
-check('brand/hero.jpg is not preloaded ahead of the poster', !/rel="preload" as="image" href="brand\/hero\.jpg"/.test(html));
+check('the full wordmark file is not the mobile preload', !/rel="preload" as="image" href="brand\/hero\.jpg"/.test(html));
+check('phones preload the responsive wordmark', fs.existsSync(heroSmall) && /rel="preload" as="image" href="brand\/hero-800\.jpg"[\s\S]{0,240}media="\(max-width: 760px\)"/.test(html));
+check('the wordmark is responsive and sized', /class="home-hero-banner"[^>]*src="brand\/hero-800\.jpg"[^>]*srcset="brand\/hero-800\.jpg 800w, brand\/hero\.jpg 1774w"[^>]*width="1774" height="887"/.test(html));
+check('the desktop poster preload does not compete on phones', /rel="preload" as="image" href="media\/power-transformer-3d-poster-800\.jpg"[\s\S]{0,280}media="\(min-width: 761px\)"/.test(html));
 check('google fonts do not block first paint', /rel="preload" as="style" href="https:\/\/fonts\.googleapis\.com\//.test(html));
 check('late font swap cannot reset LCP', /display=optional/.test(html));
 check('phones do not idle-load the 3D model', /matchMedia\('\(max-width: 819px\)'\)/.test(html));

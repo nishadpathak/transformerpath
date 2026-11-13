@@ -39,6 +39,7 @@ const path = require('path');
 const { stampHtml } = require('./adsense-inject');
 const { ensureLegalFooter } = require('./lib/legal-footer');
 const { ensureSiteX, chromeGaps } = require('./lib/site-x');
+const { ensureSkipTarget } = require('./lib/skip-target');
 
 const DIST = 'dist';
 
@@ -278,7 +279,7 @@ let stampErrors = 0;
     try { html = fs.readFileSync(p, 'utf8'); }
     catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
     let next;
-    try { next = ensureSiteX(ensureLegalFooter(stampHtml(html, rel))); }
+    try { next = ensureSkipTarget(ensureSiteX(ensureLegalFooter(stampHtml(html, rel)))); }
     catch (err) {
       console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
       stampErrors++;

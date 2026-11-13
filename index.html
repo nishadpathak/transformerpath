@@ -19,7 +19,8 @@
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="media/power-transformer-3d-poster-800.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="brand/hero-800.jpg" imagesrcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" imagesizes="(max-width: 760px) 100vw, 800px" media="(max-width: 760px)" fetchpriority="high">
+<link rel="preload" as="image" href="media/power-transformer-3d-poster-800.jpg" imagesrcset="media/power-transformer-3d-poster-800.jpg 800w, media/power-transformer-3d-poster.jpg 1280w" imagesizes="100vw" media="(min-width: 761px)" fetchpriority="high">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional"></noscript>
 <link rel="stylesheet" href="style.css?v=14">
@@ -105,7 +106,7 @@
 .load3d:hover .l3-icon { transform:scale(1.08); transition:transform .2s; }
 
 /* ── Live glance cards ── */
-#glanceCards .g-region { display:inline-block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--accent); background:#fef3c7; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+#glanceCards .g-region { display:inline-block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:#7c2d12; background:#fef3c7; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
 #glanceCards .g-val { color:var(--accent); font-weight:800; font-size:.85rem; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"TransformerPath","email":"hello@transformerpath.com","url":"https://transformerpath.com/","logo":"https://transformerpath.com/brand/og-image.png","slogan":"The global knowledge and intelligence platform for transformers","description":"Industry intelligence, engineering, manufacturers, markets and tools for the global transformer industry — daily transformer market intelligence, a worldwide manufacturer directory, an electrical-grid census, industry events and engineering tools."},{"@type":"WebSite","name":"TransformerPath","url":"https://transformerpath.com/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://transformerpath.com/search.html?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script>
@@ -210,7 +211,7 @@
   <script src="tp-nav.js?v=8" defer></script>
   <script src="tp-pwa.js?v=8" defer></script>
 </header>
-<img class="home-hero-banner" src="brand/hero.jpg" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
+<img class="home-hero-banner" src="brand/hero-800.jpg" srcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" sizes="(max-width: 760px) 100vw, 800px" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
 <div class="ticker" aria-label="Market and industry headlines">
   <div class="ticker-inner" id="ticker"></div>
 </div>
