@@ -221,8 +221,9 @@ function renderIntelligence() {
   const all = typed.concat(evts.filter(function (e) { return e.type === 'reference'; }));
   all.sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
   const seen = {}; let feed = [];
-  // 49 keeps the 8 Oct 2026 Barajevo fixture on this list after a newer company-linked item.
-  all.slice(0, 49).forEach(function (e) {
+  // The window has to keep the 8 Oct 2026 Barajevo fixture on this list
+  // after newer company-linked Intel items. Rank was 52 on 13 Nov 2026.
+  all.slice(0, 60).forEach(function (e) {
     if (seen[e._co + '|' + e.title]) return; seen[e._co + '|' + e.title] = 1;
     const conf = e.confidence || 'LIMITED';
     feed.push('<div class="tl-row"><div class="tl-evt">' + esc(TYPE_LABEL2[e.type] || e.type) + ' <span class="conf conf-' + esc(conf) + '">' + esc(conf) + '</span></div>' +
