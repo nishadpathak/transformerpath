@@ -11,4 +11,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node tests/tender-scope-filter.test.js
+      - run: node tests/deadline-instant.test.js && node tests/tender-scope-filter.test.js && node tests/tender-open-view.test.js
