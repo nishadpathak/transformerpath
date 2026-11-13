@@ -70,6 +70,19 @@ function main() {
     hashRel(path.relative(DIST, abs).split(path.sep).join('/'));
   });
 
+  /* style.css @imports provenance-badge.css. Hash that target, then rewrite
+   * the import, then rehash the stylesheet so HTML does not pin the pre-rewrite bytes. */
+  files.forEach(function (abs) {
+    if (!/\.css$/i.test(abs)) return;
+    const rel = path.relative(DIST, abs).split(path.sep).join('/');
+    const before = fs.readFileSync(abs, 'utf8');
+    const next = rewrite(before, rel, true);
+    if (next === before) return;
+    fs.writeFileSync(abs, next);
+    delete hashes[rel];
+    hashRel(rel);
+  });
+
   const swAbs = path.join(DIST, 'sw.js');
   if (fs.existsSync(swAbs)) {
     const rel = 'sw.js';

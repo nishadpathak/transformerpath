@@ -51,6 +51,14 @@ const dirDesc = fitWindow(dir.draftDesc, 140, 160, dir.padsDesc);
 check(/^The transformer industry directory\b/.test(dirDesc), 'directory description keeps its subject ' + dirDesc);
 check(!/\|\s*TransformerPath\s*$/.test(dirDesc), 'directory description does not repeat the title brand');
 
+const ordered = snap.buildSnapshot({
+  Europe: { label: 'Europe', items: [
+    { title: 'Old June notice', date_iso: '2026-06-01', url: 'https://example.com/old' },
+    { title: 'New November notice', date_iso: '2026-11-13', url: 'https://example.com/new' }
+  ]}
+}, '2026-11-13');
+check(ordered.articles[0].items[0].title === 'New November notice', 'snapshot leads with the newest item in a region');
+
 const doc = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const built = snap.buildSnapshot(doc);
 check(built.latest_item_date > '2026-07-11', 'snapshot date follows the latest intel item ' + built.latest_item_date);

@@ -79,7 +79,12 @@ function buildSnapshot(doc, today) {
   const items = datedItems(flatten(doc), today);
   const latest = items.map(function (it) { return it.day; }).filter(Boolean).sort().pop() || '';
   const regions = {};
-  items.forEach(function (it) {
+  items.slice().sort(function (a, b) {
+    if (a.day && b.day && a.day !== b.day) return a.day < b.day ? 1 : -1;
+    if (a.day && !b.day) return -1;
+    if (!a.day && b.day) return 1;
+    return 0;
+  }).forEach(function (it) {
     if (!regions[it.region]) regions[it.region] = [];
     if (regions[it.region].length >= 5) return;
     regions[it.region].push({
