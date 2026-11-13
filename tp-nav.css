@@ -75,7 +75,8 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   line-height: 1;
   letter-spacing: -0.03em;
 }
-.logo .logo-mark { width: 36px; height: 36px; }
+.logo .logo-mark { width: 36px; height: 36px; background: url("/brand/logo-mark-white.svg") center / contain no-repeat; }
+.logo .logo-mark * { opacity: 0; }
 footer .logo .logo-mark { width: 28px; height: 28px; }
 .logo .word {
   color: #fff !important;

@@ -414,7 +414,8 @@ footer .logo .word { color: #fff; font-weight: 800; letter-spacing: -.5px; }
 header .logo .word .accent,
 footer .logo .word .accent { color: var(--amber); }
 .logo { display: inline-flex; align-items: center; gap: 10px; }
-.logo .logo-mark { flex: none; width: 36px; height: 36px; }
+.logo .logo-mark { flex: none; width: 36px; height: 36px; background: url("/brand/logo-mark-white.svg") center / contain no-repeat; }
+.logo .logo-mark * { opacity: 0; }
 footer .logo .logo-mark { width: 28px; height: 28px; }
 .dir-notes { max-width: 720px; margin: 16px auto 0; text-align: left; background: rgba(255,255,255,.05); border: 1px solid rgba(215,226,238,.28); border-radius: 12px; padding: 0 16px 4px; }
 .dir-notes summary { cursor: pointer; font-weight: 700; font-size: 1rem; color: #f4f7fb; padding: 12px 0; }
