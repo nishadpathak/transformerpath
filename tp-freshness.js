@@ -30,6 +30,8 @@
   var CADENCE_LONG = 'refreshed hourly, on the hour (UTC)';
 
   var FEED = '/.netlify/functions/intel-feed';
+  var STATIC_FEED = '/data/intel-feed-snapshot.json';
+  var FEED_TIMEOUT_MS = 3000;
 
   function fmt(d) {
     try {
@@ -46,21 +48,36 @@
     }
   }
 
+  function fetchJson(url, ms) {
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, ms) : null;
+    return fetch(url, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) {
+        if (timer) clearTimeout(timer);
+        return r.ok ? r.json() : null;
+      })
+      .catch(function () {
+        if (timer) clearTimeout(timer);
+        return null;
+      });
+  }
+
   function run() {
     /* Cadence is known without a network call, so paint it immediately. */
     paint({ cadence: CADENCE, cadenceLong: CADENCE_LONG });
 
-    /* The refresh timestamp is only knowable from the feed itself. If the
-       request fails we leave the element as authored rather than guessing. */
+    /* The refresh timestamp comes from the build-time snapshot. The function
+       is a fast read of that file. If it is slower than 3s, use the static
+       copy and do not log — a 504 used to land in the console. */
     if (!window.fetch) return;
-    fetch(FEED, { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!d || !d.timestamp) return;
-        var when = fmt(new Date(d.timestamp));
-        paint({ refreshed: when, cadence: CADENCE, cadenceLong: CADENCE_LONG });
-      })
-      .catch(function () { /* leave the authored text in place */ });
+    fetchJson(FEED, FEED_TIMEOUT_MS).then(function (d) {
+      if (d && d.timestamp) return d;
+      return fetchJson(STATIC_FEED, FEED_TIMEOUT_MS);
+    }).then(function (d) {
+      if (!d || !d.timestamp) return;
+      var when = fmt(new Date(d.timestamp));
+      paint({ refreshed: when, cadence: CADENCE, cadenceLong: CADENCE_LONG });
+    }).catch(function () { /* leave the authored text in place */ });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
