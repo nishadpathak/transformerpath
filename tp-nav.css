@@ -70,10 +70,14 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   text-decoration: none !important;
   white-space: nowrap !important;
   font-family: inherit;
-  font-size: 1.25rem;
+  font-size: 1.28rem;
   font-weight: 800;
   line-height: 1;
+  letter-spacing: -0.03em;
 }
+.logo .logo-mark { width: 36px; height: 36px; background: url("/brand/logo-mark-white.svg") center / contain no-repeat; }
+.logo .logo-mark * { opacity: 0; }
+footer .logo .logo-mark { width: 28px; height: 28px; }
 .logo .word {
   color: #fff !important;
   font-weight: 800 !important;

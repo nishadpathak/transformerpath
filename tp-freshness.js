@@ -173,10 +173,11 @@
       if (!live.latest_source_iso || !live.statusLabel) continue;
       if (host.id === 'hero-live-pill') {
         host.setAttribute('data-intel-status', live.statusLabel);
+        host.classList.toggle('is-quiet', live.statusLabel === 'REFRESH DELAYED');
         var badge = document.getElementById('hero-live-status');
         if (badge) badge.textContent = live.statusLabel;
         var mark = document.getElementById('hero-live-dot');
-        if (mark) mark.style.background = dot(live.statusLabel);
+        if (mark) mark.style.background = live.statusLabel === 'REFRESH DELAYED' ? '#9aafc4' : dot(live.statusLabel);
       } else {
         replaceStatusText(host, live.statusLabel);
       }

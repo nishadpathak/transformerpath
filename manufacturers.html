@@ -216,15 +216,30 @@
   <script src="tp-pwa.js?v=8" defer></script>
 </header>
 <main id="main" tabindex="-1">
-<section class="hero" style="padding:50px 0 40px">
+<section class="hero">
   <div class="container">
     <h1>Transformer <span>Manufacturers</span></h1>
-    <p>A growing, sourced directory of transformer makers — power, distribution and dry-type/cast-resin — listed country by country, with locations and official links. Coverage expands as public records are confirmed; this is not every workshop worldwide.</p>
-    <p id="census-method" style="margin:12px 0 0;font-size:.92rem;color:var(--muted)">Company pages lead with the place, products and sourced figures already on that record. A year of establishment is printed only when the census already has one. Listings are compiled from public sources. Verification confirms company identity and published profile data. It does not constitute technical certification, factory approval or commercial endorsement.</p>
-    <p id="sitemap-companies" style="margin:8px 0 0;font-size:.92rem;color:var(--muted)">The public company count and the sitemap use the same census. <b data-stat="manufacturersPublicLabel">1,000+</b> companies are public. <b data-stat="manufacturerProfiles">177</b> published profiles are in the sitemap. A published profile has a public website and multiple sourced fields. <b data-stat="manufacturerNoindex">877</b> company pages stay reachable and out of the sitemap: no public website, or a thin listing without that sourced detail. <b data-stat="manufacturerDirectories">249</b> other sitemap URLs under /manufacturers/ are country and product directories, not additional companies. <b data-stat="manufacturerRedirects">85</b> manufacturer URLs redirect and are omitted. <b data-stat="manufacturerHiddenAliases">7</b> plant aliases are hidden because the company is already counted. Group pages that are not census companies are left out of the sitemap.</p>
-    <p style="margin:12px 0 0"><a href="directory.html" style="color:var(--accent);font-weight:700">Searchable sourcing directory →</a> <span style="color:var(--muted)">filter by transformer type, voltage, country and capability evidence, then compare and RFQ. No ranking.</span></p>
+    <p>A sourced directory of power, distribution and dry-type makers, listed by country. This is sourced coverage, not every workshop worldwide.</p>
+    <p style="margin:12px 0 0"><a href="directory.html" class="btn btn-amber" style="color:var(--navy)">Searchable sourcing directory</a></p>
+    <details class="dir-notes" id="directory-notes">
+      <summary>Census and sitemap notes</summary>
+      <p id="census-method">Company pages lead with the place, products and sourced figures already on that record. A year of establishment is printed only when the census already has one. Listings are compiled from public sources. Verification confirms company identity and published profile data. It does not constitute technical certification, factory approval or commercial endorsement.</p>
+      <p id="sitemap-companies">The public company count and the sitemap use the same census. <b data-stat="manufacturersPublicLabel">1,000+</b> companies are public. <b data-stat="manufacturerProfiles">177</b> published profiles are in the sitemap. A published profile has a public website and multiple sourced fields. <b data-stat="manufacturerNoindex">877</b> company pages stay reachable and out of the sitemap: no public website, or a thin listing without that sourced detail. <b data-stat="manufacturerDirectories">249</b> other sitemap URLs under /manufacturers/ are country and product directories, not additional companies. <b data-stat="manufacturerRedirects">85</b> manufacturer URLs redirect and are omitted. <b data-stat="manufacturerHiddenAliases">7</b> plant aliases are hidden because the company is already counted. Group pages that are not census companies are left out of the sitemap.</p>
+    </details>
   </div>
 </section>
+<script>
+(function () {
+  var notes = document.getElementById('directory-notes');
+  if (!notes) return;
+  function sync() {
+    var id = (location.hash || '').replace('#', '');
+    if (id === 'census-method' || id === 'sitemap-companies' || id === 'directory-notes') notes.open = true;
+  }
+  sync();
+  window.addEventListener('hashchange', sync);
+})();
+</script>
 
 <section class="block">
   <div class="container" style="max-width:900px">
