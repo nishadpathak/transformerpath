@@ -55,6 +55,7 @@ function walk(dir, out) {
 
 const missing = [];
 walk('.', []).forEach(function (file) {
+  if (path.basename(file) === 'fo-verify.html') return;
   const html = fs.readFileSync(file, 'utf8');
   if (!/<\/body>/i.test(html)) return;
   const spans = legal.footerSpans(html);

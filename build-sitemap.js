@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* build-sitemap.js — sitemap from published HTML on disk.
  * Skips noindex, refresh stubs, iCloud conflict copies, admin/_partials,
- * and the legacy /transformerpath/ copy (those URLs 301 or noindex).
+ * fo-verify.html (ownership file, served unchanged), and the legacy
+ * /transformerpath/ copy (those URLs 301 or noindex).
  * lastmod is the content date from lib/sitemap-dates.js. Never the build clock.
  * Run: node build-sitemap.js
  */
@@ -18,7 +19,7 @@ const SKIP_DIR = new Set([
   '.git', 'node_modules', '.cursor', 'admin', '_partials', 'functions', 'dist',
   'transformerpath', 'transformerpath-site', 'archive', '_private', '_docs', 'tests'
 ]);
-const SKIP_FILE = new Set(['404.html', 'offline.html', 'admin.html']);
+const SKIP_FILE = new Set(['404.html', 'offline.html', 'admin.html', 'fo-verify.html']);
 const ICLOUD = / \d+\.[^/]+$/;
 
 function shouldSkipFile(name) {

@@ -22,6 +22,7 @@ function walk(dir, out) {
 
 let changed = 0;
 walk('.', []).forEach(function (file) {
+  if (path.basename(file) === 'fo-verify.html') return;
   const html = fs.readFileSync(file, 'utf8');
   const next = ensureLegalFooter(html);
   if (next !== html) {
