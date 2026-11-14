@@ -676,7 +676,7 @@ function checkLinksInline() {
 // ── 12. Missing canonical tags ─────────────────────────────────────────────
 function checkCanonicalTags() {
   const lines = [];
-  const exempt = /^(404|offline|admin|claim|tutorial|tx-design-masterclass|hero-3d|viz-lab)\.html$/i;
+  const exempt = /^(404|offline|admin|claim|tutorial|tx-design-masterclass|hero-3d|viz-lab|fo-verify)\.html$/i;
   const rootHtml = fs.readdirSync('.').filter(function (f) { return f.endsWith('.html') && !/^intel-2026-/.test(f); });
   let missing = 0;
   rootHtml.forEach(function (f) {

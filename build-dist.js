@@ -274,7 +274,9 @@ let stampErrors = 0;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) { stampWalk(p); continue; }
     if (!e.name.endsWith('.html')) continue;
-    const rel = path.relative(DIST, p);
+    const rel = path.relative(DIST, p).split(path.sep).join('/');
+    // Ownership file must be published byte-for-byte (no footer, consent, or ads).
+    if (rel === 'fo-verify.html') continue;
     let html;
     try { html = fs.readFileSync(p, 'utf8'); }
     catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }

@@ -25,7 +25,7 @@ function walk(dir, out) {
   fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) walk(p, out);
-    else if (e.name.endsWith('.html')) out.push(p);
+    else if (e.name.endsWith('.html') && e.name !== 'fo-verify.html') out.push(p);
   });
   return out;
 }
