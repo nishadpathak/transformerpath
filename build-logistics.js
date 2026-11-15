@@ -15,6 +15,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
+const outreach = require('./lib/directory-outreach');
 
 const DATA = JSON.parse(fs.readFileSync('data/logistics.json', 'utf8'));
 const COMPANIES = DATA.companies || [];
@@ -22,7 +23,8 @@ const { sourcedCardCount } = require('./lib/sourced-card-count');
 const provenanceStat = sourcedCardCount(COMPANIES);
 
 function render() {
-  const logJson = scrubLegacyLabels(JSON.stringify(COMPANIES));
+  const logJson = scrubLegacyLabels(JSON.stringify(COMPANIES.map(outreach.publicCopy)));
+  if (outreach.leaked(logJson)) throw new Error('outreach flag leaked into logistics.html');
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -196,7 +198,7 @@ window.__TP_LOGISTICS__ = ${logJson};
 
       return '<div class="log-card">' +
         '<div class="log-top">' +
-          '<h2 class="log-name">' + esc(d.company_name) + '</h2>' +
+          '<h2 class="log-name">' + (d.profile_page && d.id ? '<a href="/logistics/' + esc(String(d.id).replace(/^log:/, '')) + '/">' + esc(d.company_name) + '</a>' : esc(d.company_name)) + '</h2>' +
           (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="log-loc">📍 ' + esc(loc) + '</div>' +
@@ -232,6 +234,27 @@ window.__TP_LOGISTICS__ = ${logJson};
 
   fs.writeFileSync('logistics.html', html);
   console.log('logistics.html built (' + COMPANIES.length + ' transport & logistics companies)');
+  COMPANIES.filter(function (row) { return row.directory_publish === true; }).forEach(function (row) {
+    const slug = String(row.id || '').replace(/^log:/, '');
+    const url = 'https://transformerpath.com/logistics/' + slug + '/';
+    const loc = [row.city, row.state_province, row.country].filter(Boolean).join(', ');
+    const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+      '<title>' + esc(row.company_name) + ' — Transformer logistics | TransformerPath</title>' +
+      '<meta name="description" content="' + esc((row.description || row.company_name).slice(0, 180)) + '">' +
+      '<link rel="canonical" href="' + url + '">' +
+      '<meta name="robots" content="index,follow">' +
+      '<link rel="stylesheet" href="../../style.css?v=14"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+      '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+      '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../logistics.html">Logistics</a> › ' + esc(row.company_name) + '</nav>' +
+      '<h1>' + esc(row.company_name) + '</h1>' +
+      '<p>' + esc(row.description || '') + '</p>' +
+      '<p>' + esc(loc) + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+      (row.verification_source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.verification_source) + '. Checked ' + esc(row.verification_date || '') + '.</p>' : '') +
+      '</main>\n' + FOOT + '\n</body></html>\n';
+    if (outreach.leaked(page)) throw new Error('outreach flag leaked into logistics profile ' + slug);
+    fs.mkdirSync('logistics/' + slug, { recursive: true });
+    fs.writeFileSync('logistics/' + slug + '/index.html', page);
+  });
 }
 
 render();

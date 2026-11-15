@@ -17,6 +17,7 @@ const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 const listingRichness = require('./lib/listing-richness');
+const outreach = require('./lib/directory-outreach');
 const eventBadges = require('./event-badges');
 function tpmFor(slug) {
   try {
@@ -33,11 +34,12 @@ const provenanceStat = sourcedCardCount(SERVICES);
 
 function render() {
   const servJson = scrubLegacyLabels(JSON.stringify(SERVICES.map(function (row) {
-    const copy = Object.assign({}, row);
+    const copy = outreach.publicCopy(row);
     const id = tpmFor(serviceSlug(row));
     if (id) copy.permanent_id = id;
     return copy;
   })));
+  if (outreach.leaked(servJson)) throw new Error('outreach flag leaked into services.html');
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -262,13 +264,13 @@ ${eventBadges.mountHtml()}
       '<title>' + esc(row.company_name) + ' — Unclaimed service listing | TransformerPath</title>' +
       '<meta name="description" content="' + esc((row.description || row.company_name).slice(0, 180)) + '">' +
       '<link rel="canonical" href="' + url + '">' +
-      '<meta name="robots" content="' + listingRichness.robots(listingRichness.stubProfileIndexable()) + '">' +
+      '<meta name="robots" content="' + (row.directory_publish === true ? 'index,follow' : listingRichness.robots(listingRichness.stubProfileIndexable())) + '">' +
       '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
       '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
       '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../services.html">Services</a> › ' + esc(row.company_name) + '</nav>' +
       '<h1>' + esc(row.company_name) + (badge ? ' ' + badge : '') + '</h1>' +
       (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
-      '<p>Unclaimed listing. No service type is claimed.</p>' +
+      (row.directory_publish === true ? '' : '<p>Unclaimed listing. No service type is claimed.</p>') +
       '<p>' + esc(row.description || '') + '</p>' +
       '<p>' + esc([row.city, row.country].filter(Boolean).join(', ')) + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
       '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
