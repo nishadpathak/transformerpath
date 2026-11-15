@@ -246,7 +246,7 @@ files.forEach(function (file) {
   if (rel === 'events.html') {
     const lists = nodes.filter(function (n) { return n['@type'] === 'ItemList'; });
     const events = nodes.filter(function (n) { return n['@type'] === 'Event'; });
-    if (!lists.length) fail('events.html: missing ItemList');
+    if (lists.length !== 1) fail('events.html: expected one ItemList, found ' + lists.length);
     if (!events.length) fail('events.html: missing Event');
     const today = platformToday();
     if (lists[0] && lists[0].numberOfItems !== (lists[0].itemListElement || []).length) {

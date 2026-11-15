@@ -76,6 +76,22 @@ const past = schema.eventNode('https://transformerpath.com/events/wetex-2025/', 
   start: '2025-10-01', end: '2025-10-03', city: 'Dubai', country: 'UAE', venue: 'Dubai World Trade Centre'
 });
 assert(past.startDate === '2025-10-01' && !past.eventStatus, 'a past event keeps its date and is not marked upcoming ' + past.eventStatus);
+const eventJsonld = require('../lib/event-jsonld');
+const missingEdition = eventJsonld.editionUrl({
+  id: 'no-such-edition-xyz',
+  series_slug: 'no-such-series-xyz',
+  official_url: 'https://example.com/show'
+});
+assert(missingEdition === 'https://example.com/show', 'a missing event page uses the official URL ' + missingEdition);
+const realEdition = eventJsonld.editionUrl({
+  id: 're-plus-2026',
+  series_slug: 're-plus',
+  official_url: 'https://www.re-plus.com/'
+});
+assert(realEdition === 'https://transformerpath.com/events/re-plus-2026/', 'an existing edition page is the event URL ' + realEdition);
+const ssrList = '<head><script type="application/ld+json" id="events-ld">{"@context":"https://schema.org","@graph":[{"@type":"ItemList","@id":"https://transformerpath.com/events.html#events","itemListElement":[{"@type":"ListItem","item":{"@type":"Event","name":"Shown"}}]}]}</script></head>';
+const strippedList = html.stripReplacedJsonLd(ssrList);
+assert(strippedList.indexOf('ItemList') === -1 && strippedList.indexOf('"@type":"Event"') === -1, 'the SEO pass drops the SSR events list');
 assert(confirmed.location['@type'] === 'Place' && confirmed.location.address['@type'] === 'PostalAddress', 'location is Place + PostalAddress');
 assert(confirmed.location.address.addressLocality === 'Dubai' && !confirmed.location.address.streetAddress, 'location is city and country');
 assert(confirmed.eventAttendanceMode === 'https://schema.org/OfflineEventAttendanceMode', 'in-person event is offline');
