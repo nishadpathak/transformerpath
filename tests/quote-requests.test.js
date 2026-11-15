@@ -38,7 +38,7 @@ assert.ok(/set search_path = ''/.test(sql));
 assert.ok(/from private\.quote_outreach_flags/.test(sql));
 assert.ok(/revoke execute on function private\.quote_requests_before_insert\(\) from public, anon, authenticated/.test(sql));
 assert.ok(/execute function private\.quote_requests_before_insert\(\)/.test(sql));
-assert.ok(/drop function if exists public\.quote_requests_before_insert\(\)/.test(sql));
+assert.ok(/drop trigger if exists quote_requests_before_insert on public\.quote_requests;\s*drop function if exists public\.quote_requests_before_insert\(\)/.test(sql));
 assert.strictEqual(/create or replace function public\.quote_requests_before_insert/.test(sql), false);
 assert.ok(/with \(security_invoker = true\)/.test(sql));
 

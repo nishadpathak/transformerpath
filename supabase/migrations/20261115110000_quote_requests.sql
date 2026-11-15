@@ -130,6 +130,7 @@ create policy quote_requests_anon_insert on public.quote_requests
   to anon
   with check (true);
 
+drop trigger if exists quote_requests_before_insert on public.quote_requests;
 drop function if exists public.quote_requests_before_insert();
 
 create or replace function private.quote_requests_before_insert()
@@ -152,7 +153,6 @@ end $$;
 
 revoke execute on function private.quote_requests_before_insert() from public, anon, authenticated;
 
-drop trigger if exists quote_requests_before_insert on public.quote_requests;
 create trigger quote_requests_before_insert
   before insert on public.quote_requests
   for each row execute function private.quote_requests_before_insert();
