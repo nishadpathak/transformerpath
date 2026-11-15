@@ -3,10 +3,11 @@
 -- This file is not applied by CI. Paste it in the Supabase SQL editor
 -- or run `supabase db push`. Anon stays insert-only.
 --
+-- client_reference_id is the lead id, or lead-id:slug when a listing is named.
 -- Join an abandoned Stripe session to the row with:
 --   select id, email, company, product_name, listing_slug, created_at
 --   from public.checkout_leads
---   where id = '<client_reference_id>';
+--   where id::text = split_part('<client_reference_id>', ':', 1);
 
 alter table public.checkout_leads
   add column if not exists company text;

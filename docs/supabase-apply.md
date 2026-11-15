@@ -39,10 +39,10 @@ Anon cannot read these tables. A granted buyer can read a passport and its verif
 
 `supabase/migrations/20261115100000_checkout_leads_company.sql` adds optional `company`. Apply it after the table exists. It is not applied by CI. Until it is applied, checkout still stores the email and still sends a lead id to Stripe; the company name is omitted from the row.
 
-The Stripe `client_reference_id` is that lead id. A directory or event slug stays on `listing_slug` and, for a Checkout Session, in metadata. To read one abandoned checkout:
+The Stripe `client_reference_id` starts with that lead id. When the checkout names a directory slug or an event, the Payment Link appends `:` and that slug so the webhook can still attribute the listing. To read one abandoned checkout:
 
 ```sql
 select id, email, company, product_name, listing_slug, page_path, created_at
 from public.checkout_leads
-where id = '<client_reference_id>';
+where id::text = split_part('<client_reference_id>', ':', 1);
 ```

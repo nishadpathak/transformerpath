@@ -101,7 +101,7 @@ const listingLead = session.sessionFields({
   leadId: lead,
   from: profile
 });
-assert.strictEqual(listingLead.get('client_reference_id'), lead);
+assert.strictEqual(listingLead.get('client_reference_id'), lead + ':ormazabal');
 assert.strictEqual(listingLead.get('metadata[company_slug]'), 'ormazabal');
 assert.strictEqual(listingLead.get('cancel_url'), profile);
 
@@ -111,9 +111,17 @@ const link = new URL(session.paymentLinkFallback('buyer_guide_us_eu', {
 }));
 assert.strictEqual(link.searchParams.get('prefilled_email'), 'buyer@example.com');
 assert.strictEqual(link.searchParams.get('client_reference_id'), lead);
+const listed = new URL(session.paymentLinkFallback('verified_manufacturer', {
+  email: 'buyer@example.com',
+  slug: 'ormazabal',
+  leadId: lead
+}));
+assert.strictEqual(listed.searchParams.get('client_reference_id'), lead + ':ormazabal');
+assert.strictEqual(listed.searchParams.get('prefilled_email'), 'buyer@example.com');
 
 const listings = require('../lib/paid-listings');
 assert.strictEqual(listings.companySlugFromReference(lead), null);
+assert.strictEqual(listings.companySlugFromReference(lead + ':ormazabal'), 'ormazabal');
 assert.strictEqual(listings.companySlugFromReference('ormazabal'), 'ormazabal');
 
 const paid = require('../lib/paid-listings');

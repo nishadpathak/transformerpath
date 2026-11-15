@@ -191,12 +191,25 @@
       body: JSON.stringify(row)
     };
     if (ctrl) opts.signal = ctrl.signal;
-    return doFetch(String(cfg.url).replace(/\/$/, '') + '/rest/v1/checkout_leads', opts).then(function (res) {
+    function post(body) {
+      var next = {};
+      Object.keys(opts).forEach(function (key) { next[key] = opts[key]; });
+      next.body = JSON.stringify(body);
+      return doFetch(String(cfg.url).replace(/\/$/, '') + '/rest/v1/checkout_leads', next).then(function (res) {
+        if (res && res.ok) return { ok: true, text: '' };
+        var read = res && res.text ? res.text() : Promise.resolve('');
+        return Promise.resolve(read).then(function (text) {
+          return { ok: false, text: String(text || '') };
+        }, function () { return { ok: false, text: '' }; });
+      }, function () { return { ok: false, text: '' }; });
+    }
+    return post(row).then(function (res) {
       clearTimeout(timer);
-      return { ok: !!(res && res.ok) };
-    }, function () {
-      clearTimeout(timer);
-      return { ok: false };
+      if (res.ok) return { ok: true };
+      if (!row.company || !/company/i.test(res.text)) return { ok: false };
+      var copy = {};
+      Object.keys(row).forEach(function (key) { if (key !== 'company') copy[key] = row[key]; });
+      return post(copy).then(function (again) { return { ok: !!again.ok }; });
     });
   }
 
