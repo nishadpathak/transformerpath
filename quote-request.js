@@ -39,8 +39,13 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
   }
 
-  function clip(value, max) {
-    var s = String(value || '').replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/[ \t]+/g, ' ').trim();
+  function clip(value, max, keepLines) {
+    var s = String(value || '');
+    s = keepLines
+      ? s.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+      : s.replace(/[\u0000-\u001F\u007F]/g, ' ');
+    s = keepLines ? s.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n') : s.replace(/[ \t]+/g, ' ');
+    s = s.trim();
     if (!s) return null;
     return s.slice(0, max);
   }
@@ -140,11 +145,22 @@
         if (form.email.reportValidity) form.email.reportValidity();
         return;
       }
-      var product = clip(form.product.value, 1000);
+      var buyerName = clip(form.name.value, 120);
+      if (!buyerName) {
+        if (form.name.setCustomValidity) form.name.setCustomValidity('Enter your name.');
+        if (form.name.reportValidity) form.name.reportValidity();
+        if (form.name.setCustomValidity) form.name.setCustomValidity('');
+        return;
+      }
+      var product = clip(form.product.value, 1000, true);
       if (!product) {
         if (form.product.reportValidity) form.product.reportValidity();
         return;
       }
+      if (form.getAttribute('data-sending') === '1') return;
+      form.setAttribute('data-sending', '1');
+      var submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
       if (clip(form.elements['bot-field'].value, 200)) {
         showNote('Request received. We logged it for TransformerPath. Nothing is sent to the company from this form.');
         form.querySelector('.tp-quote-actions').hidden = true;
@@ -154,7 +170,7 @@
         maker_slug: maker.slug,
         maker_name: clip(maker.name, 160),
         maker_kind: maker.kind,
-        name: clip(form.name.value, 120),
+        name: buyerName,
         company: clip(form.company.value, 160),
         email: String(email).trim(),
         country: clip(form.country.value, 80),
@@ -162,7 +178,7 @@
         voltage_mva: clip(form.voltage_mva.value, 120),
         quantity: clip(form.quantity.value, 80),
         timeline: clip(form.timeline.value, 120),
-        message: clip(form.message.value, 2000),
+        message: clip(form.message.value, 2000, true),
         page_path: location.pathname
       };
       showNote('Saving your request…');
@@ -171,6 +187,8 @@
         return insertLead(row, cfg);
       }).then(function (res) {
         if (!res || !res.ok) {
+          form.removeAttribute('data-sending');
+          if (submitBtn) submitBtn.disabled = false;
           showNote('We could not save this request. Email hello@transformerpath.com. Nothing was sent to the company.');
           return;
         }
