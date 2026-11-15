@@ -4,8 +4,10 @@
 -- SQL editor or with `supabase db push`. This file is not applied by CI.
 --
 -- Nothing here sends email. forward_blocked is set by a trigger from
--- quote_outreach_flags (never_contact / do_not_contact slugs). Those
--- requests stay in this table and are not for forwarding.
+-- private.quote_outreach_flags (never_contact / do_not_contact slugs).
+-- Those requests stay in this table and are not for forwarding.
+-- The trigger function is security definer in the private schema, with
+-- search_path empty and execute revoked from the API roles.
 --
 -- Count requests per week (run in the SQL editor as the table owner):
 --
@@ -17,8 +19,8 @@
 --   group by 1, 2
 --   order by 1 desc, 3 desc;
 --
--- The view public.quote_requests_by_week is the same grouping. It is not
--- granted to anon or authenticated.
+-- The view public.quote_requests_by_week is the same grouping. It runs
+-- as the invoker (security_invoker) and is not granted to anon or authenticated.
 
 do $$
 begin
@@ -30,16 +32,19 @@ begin
   end if;
 end $$;
 
-create table if not exists public.quote_outreach_flags (
+create schema if not exists private;
+revoke all on schema private from public, anon, authenticated;
+
+create table if not exists private.quote_outreach_flags (
   slug text primary key,
   never_contact boolean not null default true
 );
 
-alter table public.quote_outreach_flags enable row level security;
-alter table public.quote_outreach_flags force row level security;
-revoke all on table public.quote_outreach_flags from public, anon, authenticated;
+alter table private.quote_outreach_flags enable row level security;
+alter table private.quote_outreach_flags force row level security;
+revoke all on table private.quote_outreach_flags from public, anon, authenticated;
 
-insert into public.quote_outreach_flags (slug, never_contact) values
+insert into private.quote_outreach_flags (slug, never_contact) values
   ('accord-transformer-and-switchgear-ltd', true),
   ('advance-rub-cork-international', true),
   ('aks-international-fzc', true),
@@ -125,31 +130,36 @@ create policy quote_requests_anon_insert on public.quote_requests
   to anon
   with check (true);
 
-create or replace function public.quote_requests_before_insert()
+drop function if exists public.quote_requests_before_insert();
+
+create or replace function private.quote_requests_before_insert()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
-  if new.bot_field is not null and length(btrim(new.bot_field)) > 0 then
+  if new.bot_field is not null and pg_catalog.length(pg_catalog.btrim(new.bot_field)) > 0 then
     return null;
   end if;
   new.bot_field := null;
   new.forward_blocked := exists (
-    select 1 from public.quote_outreach_flags f
+    select 1 from private.quote_outreach_flags f
     where f.slug = new.maker_slug and f.never_contact
   );
   return new;
 end $$;
 
+revoke execute on function private.quote_requests_before_insert() from public, anon, authenticated;
+
 drop trigger if exists quote_requests_before_insert on public.quote_requests;
 create trigger quote_requests_before_insert
   before insert on public.quote_requests
-  for each row execute function public.quote_requests_before_insert();
+  for each row execute function private.quote_requests_before_insert();
 
-create or replace view public.quote_requests_by_week as
-select date_trunc('week', created_at) as week_start,
+create or replace view public.quote_requests_by_week
+with (security_invoker = true) as
+select pg_catalog.date_trunc('week', created_at) as week_start,
        maker_slug,
        count(*) as requests,
        count(*) filter (where forward_blocked) as not_for_forwarding
