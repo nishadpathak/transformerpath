@@ -282,7 +282,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span></div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
       (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
-      (onlineEd ? '' : travelBlock(ev)) + visitorGuideBlock(ev) +
+      (onlineEd ? visitorGuideBlock(ev) : travelBlock(ev) + visitorGuideBlock(ev)) +
       '<p>' + esc(ev.description || '') + '</p>' +
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       '<h2>Deadlines</h2>' + deadlineHtml(ev) +
