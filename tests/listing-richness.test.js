@@ -81,7 +81,21 @@ const svc = profileRobots('services');
 const lab = profileRobots('laboratories');
 const kept = indexableMfr.length + acc.index + svc.index + lab.index;
 check('indexed directory profiles are about 100–300', kept >= 100 && kept <= 300, String(kept) + ' (mfr ' + indexableMfr.length + ', accessories ' + acc.index + ', services ' + svc.index + ', labs ' + lab.index + ')');
-check('unclaimed service profiles are noindex', svc.index === 0 && svc.noindex > 0, JSON.stringify(svc));
+const approvedServices = new Set(JSON.parse(fs.readFileSync(path.join(root, 'data/services.json'), 'utf8')).services.filter(function (row) {
+  return row && row.directory_publish === true;
+}).map(function (row) { return String(row.id || '').replace(/^srv:/, ''); }));
+let serviceIndexErrors = [];
+fs.readdirSync(path.join(root, 'services')).forEach(function (name) {
+  const file = path.join(root, 'services', name, 'index.html');
+  if (!fs.existsSync(file)) return;
+  const tag = robots(path.join('services', name, 'index.html'));
+  if (approvedServices.has(name)) {
+    if (!/index,follow/.test(tag)) serviceIndexErrors.push(name + ' should be indexable');
+  } else if (!/noindex/.test(tag)) {
+    serviceIndexErrors.push(name + ' should stay noindex');
+  }
+});
+check('approved service listings are indexable and other service profiles stay noindex', serviceIndexErrors.length === 0, serviceIndexErrors.join(', '));
 check('unclaimed laboratory profiles are noindex', lab.index === 0 && lab.noindex > 0, JSON.stringify(lab));
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
