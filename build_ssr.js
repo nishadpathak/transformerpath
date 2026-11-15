@@ -295,8 +295,8 @@ function renderEvents(html) {
 
   function eventCard(ev) {
     const soon = allowsCalendar(ev) && showSoonBadge(ev, TODAY);
-    const trav = travelable(ev);
     const online = isOnlineEvent(ev);
+    const trav = !online && travelable(ev);
     const clock = online ? onlineTimeLabel(ev) : '';
     const dateLbl = dateLine(ev) + (clock ? ' · ' + esc(clock) : '');
     const venueLbl = online
