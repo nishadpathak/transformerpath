@@ -161,7 +161,15 @@ fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable
  */
 (function embedIndexData() {
   try {
-    const json = scrubLegacyLabels(fs.readFileSync('data/accessories.json', 'utf8')).replace(/<\/script/gi, '<\\/script');
+    const publicDoc = JSON.parse(JSON.stringify(DATA));
+    (publicDoc.suppliers || []).forEach(function (row) {
+      delete row.never_contact;
+      delete row.do_not_contact;
+      delete row.outreach_flags;
+      delete row.flags;
+    });
+    const json = scrubLegacyLabels(JSON.stringify(publicDoc)).replace(/<\/script/gi, '<\\/script');
+    if (/never_contact|do_not_contact/i.test(json)) throw new Error('outreach flag leaked into accessories.html');
     const marker = "<script src='data/accessories.json'";
     let s = fs.readFileSync('accessories.html', 'utf8');
     // Inject the inline data variable right before the app <script> that fetches it.

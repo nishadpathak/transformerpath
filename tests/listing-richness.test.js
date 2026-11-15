@@ -42,8 +42,19 @@ check('an unclaimed accessory fails the richness bar', unclaimed && rich.accesso
 check('unclaimed accessory page still exists', exists('accessories/3m/index.html'));
 check('unclaimed accessory page is noindex', /noindex/.test(robots('accessories/3m/index.html')));
 
+const publish = JSON.parse(fs.readFileSync(path.join(root, 'data/directory-publish.json'), 'utf8'));
+const approvedAcc = new Set(publish.accessories || []);
 const richAcc = accessories.filter(rich.accessoryIndexable);
-check('some accessory records clear the sourced-field bar', richAcc.length > 0 && richAcc.length < 80, String(richAcc.length));
+const sourcedAcc = richAcc.filter(function (row) { return !approvedAcc.has(row.slug); });
+check('some accessory records clear the sourced-field bar', sourcedAcc.length > 0 && sourcedAcc.length < 80, String(sourcedAcc.length));
+check('approved free accessory listings are indexable', (publish.accessories || []).every(function (slug) {
+  const row = accessories.find(function (item) { return item.slug === slug; });
+  return row && filledWebsite(row) && rich.accessoryIndexable(row);
+}), String((publish.accessories || []).length));
+check('approved manufacturers are indexable from the publish list', (publish.manufacturers || []).every(function (slug) {
+  return rich.manufacturerIndexable({ slug: slug, url: 'https://example.com' });
+}));
+function filledWebsite(row) { return row && row.website && row.website !== '—'; }
 
 check('service stub is not indexable', rich.stubProfileIndexable() === false);
 check('service stub page still exists', exists('services/utb-transformers/index.html'));
