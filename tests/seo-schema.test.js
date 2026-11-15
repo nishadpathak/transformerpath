@@ -62,6 +62,36 @@ const confirmed = schema.eventNode('https://transformerpath.com/events/wetex/', 
 });
 assert(confirmed.eventStatus === 'https://schema.org/EventScheduled', 'confirmed event is EventScheduled');
 assert(confirmed.startDate === '2026-10-20' && confirmed.endDate === '2026-10-22', 'confirmed dates copied from the record');
+const zoned = schema.eventNode('https://transformerpath.com/events/ep-shanghai-2026/', {
+  name: 'EP Shanghai 2026', status: 'CONFIRMED_UPCOMING',
+  start: '2026-12-03', end: '2026-12-05', city: 'Shanghai', country: 'China',
+  venue: 'Shanghai New International Expo Center', tz: 'Asia/Shanghai',
+  organizer: 'Example Organiser'
+});
+assert(zoned.startDate === '2026-12-03+08:00' && zoned.endDate === '2026-12-05+08:00', 'recorded timezone is written on the date ' + zoned.startDate);
+assert(zoned.organizer && zoned.organizer.name === 'Example Organiser', 'organizer is copied');
+assert(zoned.eventStatus === 'https://schema.org/EventScheduled', 'upcoming event stays scheduled');
+const past = schema.eventNode('https://transformerpath.com/events/wetex-2025/', {
+  name: 'WETEX 2025', status: 'COMPLETED',
+  start: '2025-10-01', end: '2025-10-03', city: 'Dubai', country: 'UAE', venue: 'Dubai World Trade Centre'
+});
+assert(past.startDate === '2025-10-01' && !past.eventStatus, 'a past event keeps its date and is not marked upcoming ' + past.eventStatus);
+const eventJsonld = require('../lib/event-jsonld');
+const missingEdition = eventJsonld.editionUrl({
+  id: 'no-such-edition-xyz',
+  series_slug: 'no-such-series-xyz',
+  official_url: 'https://example.com/show'
+});
+assert(missingEdition === 'https://example.com/show', 'a missing event page uses the official URL ' + missingEdition);
+const realEdition = eventJsonld.editionUrl({
+  id: 're-plus-2026',
+  series_slug: 're-plus',
+  official_url: 'https://www.re-plus.com/'
+});
+assert(realEdition === 'https://transformerpath.com/events/re-plus-2026/', 'an existing edition page is the event URL ' + realEdition);
+const ssrList = '<head><script type="application/ld+json" id="events-ld">{"@context":"https://schema.org","@graph":[{"@type":"ItemList","@id":"https://transformerpath.com/events.html#events","itemListElement":[{"@type":"ListItem","item":{"@type":"Event","name":"Shown"}}]}]}</script></head>';
+const strippedList = html.stripReplacedJsonLd(ssrList);
+assert(strippedList.indexOf('ItemList') === -1 && strippedList.indexOf('"@type":"Event"') === -1, 'the SEO pass drops the SSR events list');
 assert(confirmed.location['@type'] === 'Place' && confirmed.location.address['@type'] === 'PostalAddress', 'location is Place + PostalAddress');
 assert(confirmed.location.address.addressLocality === 'Dubai' && !confirmed.location.address.streetAddress, 'location is city and country');
 assert(confirmed.eventAttendanceMode === 'https://schema.org/OfflineEventAttendanceMode', 'in-person event is offline');
@@ -430,6 +460,23 @@ assert(!eventSeo.shouldNoindexEdition({
   end: '2026-01-22',
   description: 'Largest networking event for power generation professionals in the Americas.'
 }, '2026-10-15'), 'past unconfirmed edition with a real description stays indexable');
+
+const reinhausen = fitWindow('Maschinenfabrik Reinhausen (MR / Reinhausen Group) | Regensburg, Germany supplier', 50, 60, [' | TransformerPath']);
+assert(reinhausen.indexOf('Reinhausen') !== -1, 'accessory title keeps the company name ' + reinhausen);
+assert(reinhausen.indexOf('Maschinenfabrik |') !== 0, 'accessory title does not keep only Maschinenfabrik ' + reinhausen);
+
+const cited = ['manufacturers.html', 'tenders.html', 'accessories.html', 'faq.html', '404.html', 'learn.html'];
+cited.forEach(function (rel) {
+  const source = fs.readFileSync(path.join(__dirname, '..', rel), 'utf8');
+  const d = catalog.draft(rel, source, seoCat);
+  assert(d.lockedTitle, rel + ' title is locked');
+  assert(d.draftTitle.length >= 50 && d.draftTitle.length <= 60, rel + ' title window ' + d.draftTitle);
+  assert(!/\brecord\b/i.test(d.draftTitle), rel + ' title has no record pad ' + d.draftTitle);
+  assert(!/\sdirectory directory\b/i.test(d.draftTitle), rel + ' title does not repeat directory ' + d.draftTitle);
+  assert(d.draftDesc.length >= 140 && d.draftDesc.length <= 160, rel + ' description window ' + d.draftDesc.length + ' ' + d.draftDesc);
+  assert(/[.!?]$/.test(d.draftDesc), rel + ' description ends as a sentence ' + d.draftDesc);
+  assert(!/\b(as|a|the|and|for|of|in|with|holds)\s*$/i.test(d.draftDesc), rel + ' description is not cut off ' + d.draftDesc);
+});
 
 const standardsPage = fs.readFileSync(path.join(__dirname, '..', 'standards.html'), 'utf8');
 const standardsTitle = (standardsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
