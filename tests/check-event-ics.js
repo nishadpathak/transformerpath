@@ -24,8 +24,23 @@ assert(hasCalendarDates({ start: '2026-10-13', end: '2026-10-15' }), 'start and 
 assert(!hasCalendarDates({ start: '2026-10-13', end: '' }), 'a missing end date is not a calendar');
 assert(!hasCalendarDates(null), 'a missing event is not a calendar');
 
-const root = path.join(__dirname, '..');
+const { eventIcs } = require('../lib/event-ics');
 const byId = new Map(loadEvents().filter((ev) => ev && ev.id).map((ev) => [ev.id, ev]));
+const icaEv = byId.get('ica-copper-value-chain-transformers-2026');
+const icaIcs = eventIcs(icaEv);
+assert(icaIcs.indexOf('DTSTART:20261117T130000Z') !== -1, 'ICA calendar starts at 13:00 UTC');
+assert(icaIcs.indexOf('DTSTART;VALUE=DATE:') === -1, 'ICA calendar is not an all-day date');
+assert(icaIcs.indexOf('DTEND:20261117T140000Z') !== -1, 'ICA calendar uses a one-hour end when no duration is published');
+assert(icaIcs.indexOf('LOCATION:https://transformer-academy.com/courses/free-lessons/lessons/the-value-chain-of-copper-for-transformers-explained/') !== -1, 'ICA calendar location is the lesson URL');
+assert(icaIcs.indexOf('Online, Online') === -1 && icaIcs.indexOf('LOCATION:Online,') === -1, 'ICA calendar location does not repeat Online');
+const wetex = byId.get('wetex-2026');
+if (wetex) {
+  const wetexIcs = eventIcs(wetex);
+  assert(wetexIcs.indexOf('DTSTART;VALUE=DATE:') !== -1, 'an in-person calendar stays all-day');
+  assert(wetexIcs.indexOf('DTSTART:20') === -1, 'an in-person calendar has no clock time');
+}
+
+const root = path.join(__dirname, '..');
 const missing = [];
 const undated = [];
 listHtmlFiles(root).forEach((file) => {

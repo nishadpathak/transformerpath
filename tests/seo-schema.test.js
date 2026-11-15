@@ -65,6 +65,28 @@ assert(confirmed.startDate === '2026-10-20' && confirmed.endDate === '2026-10-22
 assert(confirmed.location['@type'] === 'Place' && confirmed.location.address['@type'] === 'PostalAddress', 'location is Place + PostalAddress');
 assert(confirmed.location.address.addressLocality === 'Dubai' && !confirmed.location.address.streetAddress, 'location is city and country');
 assert(confirmed.eventAttendanceMode === 'https://schema.org/OfflineEventAttendanceMode', 'in-person event is offline');
+assert(confirmed.startDate === '2026-10-20' && confirmed.location['@type'] === 'Place', 'in-person JSON-LD stays a dated place');
+
+const ica = schema.eventNode('https://transformerpath.com/events/ica-copper-value-chain-transformers-2026/', {
+  name: 'The value chain of copper for transformers explained (International Copper Association e-lesson, Transformer Academy)',
+  status: 'CONFIRMED_UPCOMING', type: 'webinar',
+  start: '2026-11-17', end: '2026-11-17', city: 'Online',
+  venue: 'Online, 14:00 CET (17:00 GST / 13:00 UTC)',
+  source_url: 'https://transformer-academy.com/courses/free-lessons/lessons/the-value-chain-of-copper-for-transformers-explained/',
+  officialUrl: 'https://transformer-academy.com/courses/free-lessons/lessons/the-value-chain-of-copper-for-transformers-explained/?utm_source=transformerpath'
+});
+assert(ica.eventAttendanceMode === 'https://schema.org/OnlineEventAttendanceMode', 'webinar attendance is online');
+assert(ica.location['@type'] === 'VirtualLocation' && ica.location.url === 'https://transformer-academy.com/courses/free-lessons/lessons/the-value-chain-of-copper-for-transformers-explained/', 'webinar location is the lesson URL');
+assert(ica.startDate === '2026-11-17T14:00:00+01:00', 'webinar start is the published CET clock');
+assert(!ica.endDate, 'a webinar with no published duration omits endDate');
+assert(schema.validateEventNode(ica).length === 0, 'webinar JSON-LD passes ' + schema.validateEventNode(ica).join('; '));
+
+const timed = schema.eventNode('https://transformerpath.com/events/hitachi-energy-transformer-connect-2026/', {
+  name: 'Transformer Connect', status: 'CONFIRMED_UPCOMING', type: 'webinar',
+  start: '2026-11-11', end: '2026-11-11', city: 'Online', venue: 'Online, 13:00-14:00 CET',
+  source_url: 'https://www.hitachienergy.com/news-and-events/events-and-webinars/2026/11/uncovering-the-new-operating-reality-of-distribution-grids'
+});
+assert(timed.endDate === '2026-11-11T14:00:00+01:00', 'a published end time is the JSON-LD endDate');
 assert(!confirmed.image, 'brand image is not invented');
 assert(schema.validateEventNode(confirmed).length === 0, 'confirmed event passes the structured-data checks');
 
