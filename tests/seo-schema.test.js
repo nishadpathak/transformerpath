@@ -392,8 +392,8 @@ assert(fs.readFileSync('netlify.toml', 'utf8').indexOf('from = "/manufacturers"\
 const adipecTitle = eventSeo.eventProfileTitle({
   name: 'ADIPEC 2026', date_status: 'CONFIRMED', start: '2026-11-02', end: '2026-11-05', city: 'Abu Dhabi'
 });
-assert(adipecTitle === 'ADIPEC 2026 \u2013 Abu Dhabi, 2\u20135 Nov | Transformer Events | TransformerPath', 'ADIPEC title ' + adipecTitle);
-assert(adipecTitle.length >= 50 && adipecTitle.length <= 100, 'ADIPEC title length ' + adipecTitle.length);
+assert(adipecTitle === 'ADIPEC 2026 \u2013 Abu Dhabi, 2\u20135 Nov | TransformerPath', 'ADIPEC title ' + adipecTitle);
+assert(adipecTitle.length >= 50 && adipecTitle.length <= 60, 'ADIPEC title length ' + adipecTitle.length);
 assert((adipecTitle.match(/TransformerPath/g) || []).length === 1, 'ADIPEC title has one brand');
 assert(!/\| transformer event\b/i.test(adipecTitle) && !/\sprofile\b/i.test(adipecTitle), 'ADIPEC title drops the old suffix');
 
@@ -494,6 +494,41 @@ const standardsDraft = catalog.draft('standards.html', standardsPage, seoCat);
 const fittedStandards = fitWindow(standardsDraft.draftTitle, 50, 60, standardsDraft.padsTitle);
 assert(fittedStandards.indexOf('Standards') !== -1, 'fitted standards draft keeps Standards: ' + fittedStandards);
 assert(fittedStandards !== SHORT_STANDARDS, 'fitted standards draft is not the shortened directory title: ' + fittedStandards);
+
+[
+  ['dynamic-ratings-alarm-to-action-2026', '2026-11-17T09:00:00+08:00'],
+  ['ica-copper-value-chain-transformers-2026', '2026-11-17T14:00:00+01:00'],
+  ['dynamic-ratings-condition-monitoring-strategy-2026', '2026-12-08T14:00:00-06:00'],
+  ['dynamic-ratings-asset-maintenance-strategies-2027', '2027-02-09T10:00:00-06:00']
+].forEach(function (pair) {
+  const rec = seoCat.events.filter(function (ev) { return ev && ev.id === pair[0]; })[0];
+  assert(rec, pair[0] + ' is in the event data');
+  const node = schema.eventNode('https://transformerpath.com/events/' + pair[0] + '/', eventSeo.editionInput(rec));
+  assert(node.eventAttendanceMode === 'https://schema.org/OnlineEventAttendanceMode', pair[0] + ' is online');
+  assert(node.location && node.location['@type'] === 'VirtualLocation' && /^https?:\/\//.test(node.location.url), pair[0] + ' has a VirtualLocation');
+  assert(node.startDate === pair[1], pair[0] + ' start ' + node.startDate);
+  assert(schema.validateEventNode(node).length === 0, pair[0] + ' validates ' + schema.validateEventNode(node).join('; '));
+});
+const monitor = seoCat.events.filter(function (ev) { return ev && ev.id === 'dynamic-ratings-condition-monitoring-strategy-2026'; })[0];
+const monitorNode = schema.eventNode('https://transformerpath.com/events/dynamic-ratings-condition-monitoring-strategy-2026/', eventSeo.editionInput(monitor));
+assert(monitorNode.endDate === '2026-12-09T10:00:00+08:00', 'second session is the end ' + monitorNode.endDate);
+
+const archive = catalog.draft('intel-2026-07-05.html', fs.readFileSync('intel-2026-07-05.html', 'utf8'), seoCat);
+assert(archive.draftTitle === 'Daily Intel briefing — 5 July 2026 | TransformerPath', 'archive title ' + archive.draftTitle);
+assert(archive.draftTitle.length >= 50 && archive.draftTitle.length <= 60, 'archive title window');
+assert(/published by TransformerPath/i.test(archive.draftDesc) && !/—\s+07\s+05/.test(archive.draftDesc), 'archive description names the publisher ' + archive.draftDesc);
+assert(archive.draftDesc.length >= 140 && archive.draftDesc.length <= 160, 'archive description window ' + archive.draftDesc.length);
+
+const hvdc = catalog.draft('applications/hvdc.html', fs.readFileSync('applications/hvdc.html', 'utf8'), seoCat);
+assert(hvdc.draftTitle.indexOf('Transformers') !== -1 && !/[\u26A1]/.test(hvdc.draftTitle), 'HVDC title keeps Transformers and drops the emoji ' + hvdc.draftTitle);
+const lead = catalog.draft('article-lead-times.html', fs.readFileSync('article-lead-times.html', 'utf8'), seoCat);
+assert(/four/i.test(lead.draftTitle) && /lead times/i.test(lead.draftTitle), 'lead-time title keeps the number and the subject ' + lead.draftTitle);
+const gccTitle = eventSeo.eventProfileTitle(seoCat.events.filter(function (ev) { return ev && ev.id === 'gcc-power-2025'; })[0] || { name: 'GCC POWER 2025 / CIGRE 21st Conference (Kuwait)', date_status: 'CONFIRMED', start: '2025-11-10', end: '2025-11-12', city: 'Kuwait City' });
+assert(gccTitle.length >= 50 && gccTitle.length <= 60, 'GCC title is about 60 characters ' + gccTitle.length + ' ' + gccTitle);
+
+const cutDesc = fitWindow('Bharat Heavy Electricals Ltd. is listed as a transformer accessory supplier for Bushings (HV, LV) in New Delhi, India. Listed IEEMA member supplying transformer bushings and related high-voltage equipment to utilities across the region and beyond.', 140, 160, []);
+assert(cutDesc.length >= 140 && cutDesc.length <= 160, 'cut description window ' + cutDesc.length);
+assert(/[.…]$/.test(cutDesc) && !/\btransformer$/.test(cutDesc), 'cut description does not stop mid-phrase ' + cutDesc);
 
 if (failed) {
   console.error('\n' + failed + ' failed');

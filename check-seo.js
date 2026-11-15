@@ -21,6 +21,23 @@ const problems = [];
 
 function fail(msg) { problems.push(msg); }
 
+/* Empty pads ("Published by —", "07 05") and a title that starts without its
+ * subject ("for HVDC", "Why years") are template failures. */
+function findTemplateFault(title, description) {
+  const blob = String(title || '') + '\n' + String(description || '');
+  if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]|\u26A1/u.test(title)) return 'emoji in title';
+  if (/Published by\s+—/.test(blob)) return 'empty publisher';
+  if (/—\s+\d{2}\s+\d{2}\b/.test(blob)) return 'bare date fragment';
+  if (/\bindustry pages\b/.test(title)) return 'dangling industry pages';
+  const head = String(title || '')
+    .replace(/\s+\|\s+Transformer Events\s+\|\s+TransformerPath$/, '')
+    .replace(/\s+\|\s+TransformerPath$/, '');
+  if (/^for\s+(?:HVDC|&)/i.test(head)) return 'title is missing its subject';
+  if (/\bWhy years\b/.test(head)) return 'title is missing a word';
+  if (/—\s*$/.test(head) || /\s—\s+—/.test(head)) return 'empty dash';
+  return '';
+}
+
 function walk(dir, out) {
   fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
     const p = path.join(dir, e.name);
@@ -94,7 +111,7 @@ files.forEach(function (file) {
   langs[lang] = 1;
 
   const eventProfile = /data-tp-event-role="(?:hub|edition)"/.test(source);
-  const titleMax = eventProfile ? 100 : 60;
+  const titleMax = eventProfile ? 60 : 60;
   const geoTitle = /^directory\/(?:region|country)\/[^/]+\/index\.html$/.test(rel) &&
     /^.+ transformer manufacturers \| TransformerPath$/.test(title);
   const intelTitle = rel === 'intel.html' &&
@@ -109,11 +126,16 @@ files.forEach(function (file) {
   if (eventProfile) {
     const brands = title.match(/TransformerPath/g) || [];
     if (brands.length !== 1) fail(rel + ': event title brand count ' + brands.length + ' (' + title + ')');
-    if (!/\| Transformer Events \| TransformerPath$/.test(title)) fail(rel + ': event title suffix (' + title + ')');
+    if (!/\| TransformerPath$/.test(title)) fail(rel + ': event title suffix (' + title + ')');
+    if (title.length > 60 && !/\| Transformer Events \| TransformerPath$/.test(title) && !fullHitachiTitle) {
+      fail(rel + ': long event title kept neither suffix (' + title + ')');
+    }
     if (/\sprofile\b/i.test(title) || /\| transformer event\b/i.test(title)) {
       fail(rel + ': old event title (' + title + ')');
     }
   }
+  const templateFault = findTemplateFault(title, description);
+  if (templateFault) fail(rel + ': ' + templateFault + ' (' + title + ')');
   if (rel === 'events.html') {
     const brands = title.match(/TransformerPath/g) || [];
     if (brands.length !== 1) fail('events.html title brand count ' + brands.length + ' (' + title + ')');
@@ -190,27 +212,33 @@ files.forEach(function (file) {
       eventNodes.forEach(function (n) {
         const scheduled = String(n.eventStatus || '').indexOf('EventScheduled') !== -1;
         if (status === 'COMPLETED' && scheduled) fail(rel + ': past event marked as upcoming');
-        const hasPlace = !!(rec && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue)));
-        const webinar = !!(rec && String(rec.type || '').toLowerCase() === 'webinar' && /^https?:\/\//i.test(rec.official_url || rec.u || ''));
+        const online = !!(rec && schema.isOnlineEvent({ type: rec.type, city: rec.c || rec.city, venue: rec.v || rec.venue }));
+        const hasPlace = !online && !!(rec && ((rec.c && !/^online\b/i.test(rec.c)) || (rec.city && !/^online\b/i.test(rec.city)) || rec.co || rec.country || schema.venueIsReal(rec.v || rec.venue)));
+        const webinar = online && !!(rec && /^https?:\/\//i.test(rec.official_url || rec.u || ''));
         if (firm && rec && (rec.s || rec.start) && (hasPlace || webinar)) {
           if (status !== 'COMPLETED' && !scheduled) fail(rel + ': confirmed event missing EventScheduled');
           const start = rec.s || rec.start;
+          const gotStart = String(n.startDate || '');
+          if (gotStart.slice(0, 10) !== start) fail(rel + ': startDate ' + gotStart + ' != ' + start);
           const off = schema.zoneOffset(start, eventSeo.timezoneFor(rec));
-          const expectStart = off ? start + off : start;
-          if (n.startDate !== expectStart) fail(rel + ': startDate ' + n.startDate + ' != ' + expectStart);
+          if (off && gotStart.indexOf('T') === -1 && gotStart !== start + off) fail(rel + ': startDate missing timezone ' + gotStart);
+          const clocks = schema.clocksIn((rec.v || rec.venue || '') + ' ' + (rec.d || rec.description || ''));
+          if (clocks.length && gotStart.indexOf('T') === -1) fail(rel + ': start time missing ' + gotStart);
           const end = rec.e || rec.end;
-          if (end) {
-            const endOff = schema.zoneOffset(end, eventSeo.timezoneFor(rec));
-            const expectEnd = endOff ? end + endOff : end;
-            if (n.endDate !== expectEnd) fail(rel + ': endDate ' + n.endDate + ' != ' + expectEnd);
-          }
-          if (hasPlace) {
+          if (end && n.endDate && String(n.endDate).slice(0, 10) !== end) fail(rel + ': endDate ' + n.endDate + ' != ' + end);
+          if (end && end !== start && !n.endDate) fail(rel + ': endDate missing');
+          if (online) {
+            if (String(n.eventAttendanceMode || '').indexOf('OnlineEventAttendanceMode') === -1) {
+              fail(rel + ': online event is not OnlineEventAttendanceMode');
+            }
+            if (!n.location || n.location['@type'] !== 'VirtualLocation' || !/^https?:\/\//i.test(n.location.url || '')) {
+              fail(rel + ': online event missing VirtualLocation');
+            }
+          } else if (hasPlace) {
             if (!n.location || n.location['@type'] !== 'Place') fail(rel + ': scheduled event missing Place');
             if (n.location && n.location.address && n.location.address['@type'] !== 'PostalAddress') {
               fail(rel + ': location address is not PostalAddress');
             }
-          } else if (!n.location || n.location['@type'] !== 'VirtualLocation') {
-            fail(rel + ': webinar missing VirtualLocation');
           }
           if (!n.eventAttendanceMode) fail(rel + ': scheduled event missing eventAttendanceMode');
           const org = rec.organiser || rec.organizer || '';
