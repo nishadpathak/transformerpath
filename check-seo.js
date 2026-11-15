@@ -14,6 +14,7 @@ const html = require('./lib/seo-html');
 const catalog = require('./lib/seo-catalog');
 const { resolveStatus } = require('./lib/event-status');
 const eventSeo = require('./lib/event-seo');
+const onlineEvent = require('./lib/online-event');
 const cwv = require('./lib/seo-cwv');
 
 const DIST = process.argv[2] || 'dist';
@@ -189,7 +190,28 @@ files.forEach(function (file) {
       const firm = status === 'CONFIRMED_UPCOMING' || status === 'LIVE' || status === 'COMPLETED';
       eventNodes.forEach(function (n) {
         const scheduled = String(n.eventStatus || '').indexOf('EventScheduled') !== -1;
-        if (firm && rec && (rec.s || rec.start) && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue))) {
+        const online = !!(rec && onlineEvent.isOnlineEvent(rec));
+        const placed = !!(rec && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue)));
+        if (firm && rec && (rec.s || rec.start) && online) {
+          if (!scheduled) fail(rel + ': confirmed event missing EventScheduled');
+          const clock = onlineEvent.scheduleOf(rec);
+          const wantStart = clock ? clock.startIso : (rec.s || rec.start);
+          if (n.startDate !== wantStart) fail(rel + ': startDate ' + n.startDate + ' != ' + wantStart);
+          if (!n.location || n.location['@type'] !== 'VirtualLocation') fail(rel + ': scheduled online event missing VirtualLocation');
+          const lesson = onlineEvent.publicUrl(rec);
+          if (lesson && (!n.location || n.location.url !== lesson)) fail(rel + ': VirtualLocation url ' + (n.location && n.location.url));
+          if (n.eventAttendanceMode !== 'https://schema.org/OnlineEventAttendanceMode') fail(rel + ': online eventAttendanceMode');
+          if (clock && clock.endIso) {
+            if (n.endDate !== clock.endIso) fail(rel + ': endDate ' + n.endDate + ' != ' + clock.endIso);
+          } else if (n.endDate) fail(rel + ': online event without a published duration has endDate');
+          const org = rec.organiser || rec.organizer || '';
+          if (org && (!n.organizer || n.organizer.name !== org)) fail(rel + ': organizer missing');
+          const official = rec.official_url || '';
+          const offers = Array.isArray(n.offers) ? n.offers : (n.offers ? [n.offers] : []);
+          if (/^https?:\/\//i.test(official) && !offers.some(function (o) { return o && o.url === official; })) {
+            fail(rel + ': offers.url is not the official site');
+          }
+        } else if (firm && rec && (rec.s || rec.start) && placed) {
           if (!scheduled) fail(rel + ': confirmed event missing EventScheduled');
           if (n.startDate !== (rec.s || rec.start)) fail(rel + ': startDate ' + n.startDate + ' != ' + (rec.s || rec.start));
           if (!n.location || n.location['@type'] !== 'Place') fail(rel + ': scheduled event missing Place');
