@@ -79,6 +79,43 @@ const away = session.sessionFields({
 });
 assert.strictEqual(away.get('cancel_url'), pricing);
 
+const lead = '11111111-1111-4111-8111-111111111111';
+const withLead = session.sessionFields({
+  product: 'learning',
+  email: 'buyer@example.com',
+  priceId: 'price_existing_learning',
+  leadId: lead,
+  company: ' Acme Grid '
+});
+assert.strictEqual(withLead.get('customer_email'), 'buyer@example.com');
+assert.strictEqual(withLead.get('client_reference_id'), lead);
+assert.strictEqual(withLead.get('metadata[lead_id]'), lead);
+assert.strictEqual(withLead.get('metadata[buyer_company]'), 'Acme Grid');
+assert.strictEqual(withLead.get('cancel_url'), pricing);
+
+const listingLead = session.sessionFields({
+  product: 'verified_manufacturer',
+  email: 'buyer@example.com',
+  priceId: 'price_existing_verified',
+  slug: 'ormazabal',
+  leadId: lead,
+  from: profile
+});
+assert.strictEqual(listingLead.get('client_reference_id'), lead);
+assert.strictEqual(listingLead.get('metadata[company_slug]'), 'ormazabal');
+assert.strictEqual(listingLead.get('cancel_url'), profile);
+
+const link = new URL(session.paymentLinkFallback('buyer_guide_us_eu', {
+  email: 'buyer@example.com',
+  leadId: lead
+}));
+assert.strictEqual(link.searchParams.get('prefilled_email'), 'buyer@example.com');
+assert.strictEqual(link.searchParams.get('client_reference_id'), lead);
+
+const listings = require('../lib/paid-listings');
+assert.strictEqual(listings.companySlugFromReference(lead), null);
+assert.strictEqual(listings.companySlugFromReference('ormazabal'), 'ormazabal');
+
 const paid = require('../lib/paid-listings');
 const cont = require('../functions/checkout-continue');
 

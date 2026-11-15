@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout — TransformerPath</title>
-<meta name="description" content="Enter your email before a TransformerPath checkout. The payment page opens only after the address is saved with the plan and the listing.">
+<meta name="description" content="Enter your email and an optional company name before a TransformerPath checkout. Payment opens with that email and a lead id.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://transformerpath.com/checkout/">
 <link rel="stylesheet" href="/style.css?v=14">
@@ -16,8 +16,11 @@
 <link rel="stylesheet" href="/tp-nav.css?v=14">
 <link rel="stylesheet" href="/tp-feedback.css?v=14">
 <style>
-.tp-checkout-email{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px}
-.tp-checkout-email input[type=email]{flex:1 1 220px;min-width:0;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+.tp-checkout-fields{display:flex;flex-direction:column;gap:10px;max-width:440px}
+.tp-checkout-fields label{display:flex;flex-direction:column;gap:4px;font-size:.84rem;font-weight:700;color:var(--text)}
+.tp-checkout-fields input{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;font-size:16px}
+.tp-checkout-fields button{width:100%;margin-top:4px}
+#checkout-includes{color:var(--text);font-size:.95rem;line-height:1.55;margin:8px 0 0;max-width:640px}
 </style>
 </head>
 <body>
@@ -117,6 +120,7 @@
   <div class="container">
     <h1 id="checkout-title" style="font-size:2.1rem">Checkout</h1>
     <p id="checkout-price">Confirm the plan, then continue to payment.</p>
+    <p id="checkout-includes" hidden></p>
   </div>
 </section>
 <section class="block">
@@ -127,8 +131,16 @@
       <input type="hidden" name="event" id="f-event" value="">
       <input type="hidden" name="component" id="f-component" value="">
       <input type="hidden" name="from" id="f-from" value="">
-      <p class="tp-checkout-email"><input type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Email" aria-label="Email" data-checkout-email><button class="btn btn-amber" id="checkout-submit" type="submit">Continue to payment</button></p>
-      <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is attached to this Stripe checkout. It is not saved as a TransformerPath lead. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+      <div class="tp-checkout-fields">
+        <label>Email
+          <input type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="you@company.com" aria-label="Email" data-checkout-email>
+        </label>
+        <label>Company <span style="font-weight:600;color:var(--muted)">(optional)</span>
+          <input type="text" name="company" maxlength="160" autocomplete="organization" placeholder="Company" aria-label="Company, optional" data-checkout-company>
+        </label>
+        <button class="btn btn-amber" id="checkout-submit" type="submit">Continue to payment</button>
+      </div>
+      <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is attached to this Stripe checkout. It is not saved as a TransformerPath lead until this step stores it. Cancel on the card page returns to TransformerPath pricing. A listing checkout returns to the TransformerPath page you opened it from. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
     </form>
     <p style="margin:18px 0 0"><a href="/pricing.html">Back to pricing</a></p>
     <noscript><p>Turn on JavaScript so this page can name the plan and open payment. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
@@ -195,6 +207,16 @@
     }
     if (title) title.textContent = plan.label;
     if (price) price.textContent = plan.priceLabel;
+    var includes = document.getElementById('checkout-includes');
+    if (includes) {
+      if (plan.includes) {
+        includes.hidden = false;
+        includes.textContent = plan.includes;
+      } else {
+        includes.hidden = true;
+        includes.textContent = '';
+      }
+    }
     if (button && plan.label) button.textContent = 'Continue — ' + plan.label;
   }).catch(function () {});
   form.addEventListener('submit', function (ev) {
@@ -206,28 +228,46 @@
       if (input && input.reportValidity) input.reportValidity();
       return;
     }
+    var companyInput = form.querySelector('[data-checkout-company]');
+    var company = tools && tools.cleanCompany ? tools.cleanCompany(companyInput ? companyInput.value : '') : '';
+    var leadId = tools.newLeadId ? tools.newLeadId() : '';
     var status = document.getElementById('checkout-status');
-    if (status) status.textContent = 'Opening checkout…';
+    if (status) status.textContent = 'Saving your email…';
     var failure = (tools && tools.FAILURE) || 'Checkout could not be opened, so payment did not start. Try again, or email hello@transformerpath.com.';
     if (!tools || !tools.continueCheckout) {
       if (status) status.textContent = failure;
       return;
     }
-    tools.continueCheckout({
-      product: product,
+    var row = tools.leadRow({
+      id: leadId,
       email: email,
-      slug: slug,
-      event: eventId,
-      component: component,
-      from: document.getElementById('f-from').value || ''
-    }).then(function (res) {
+      company: company,
+      listingSlug: slug || eventId || component,
+      productName: product,
+      pagePath: location.pathname + location.search
+    });
+    Promise.resolve(tools.rememberLead(row)).then(function (saved) {
+      return tools.continueCheckout({
+        product: product,
+        email: email,
+        company: company,
+        lead_id: (saved && saved.id) || row.id || leadId,
+        slug: slug,
+        event: eventId,
+        component: component,
+        from: document.getElementById('f-from').value || ''
+      }).then(function (res) {
+        return { res: res, browserSaved: !!(saved && saved.saved === true) };
+      });
+    }).then(function (out) {
+      var res = out && out.res;
       var session = res && res.url && tools.isCheckoutSessionUrl(res.url);
       var fallback = res && res.payment_link && res.url && tools.isPaymentLinkUrl && tools.isPaymentLinkUrl(res.url);
       if (!res || !res.ok || !res.url || (!session && !fallback)) {
         if (status) status.textContent = (res && res.message) || failure;
         return;
       }
-      if (status && tools.leadNotice) status.textContent = tools.leadNotice(res.saved === true);
+      if (status && tools.leadNotice) status.textContent = tools.leadNotice(out.browserSaved === true || res.saved === true);
       location.assign(res.url);
     }).catch(function () {
       if (status) status.textContent = failure;

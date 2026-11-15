@@ -125,13 +125,33 @@
     return '';
   }
 
+  var LEAD_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  function cleanLeadId(value) {
+    var s = String(value || '').trim().toLowerCase();
+    return LEAD_ID_RE.test(s) ? s : '';
+  }
+
+  function cleanCompany(value) {
+    var s = String(value || '').replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!s) return '';
+    return s.slice(0, 160);
+  }
+
+  function newLeadId() {
+    try {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    } catch (e) {}
+    return '';
+  }
+
   function leadRow(opts) {
     opts = opts || {};
     function text(value) {
       var s = String(value == null ? '' : value).trim();
       return s || null;
     }
-    return {
+    var row = {
       email: String(opts.email || '').trim(),
       listing_slug: text(opts.listingSlug),
       product_name: text(opts.productName),
@@ -139,6 +159,11 @@
       page_path: text(opts.pagePath),
       created_at: opts.createdAt || new Date().toISOString()
     };
+    var id = cleanLeadId(opts.id);
+    var company = cleanCompany(opts.company);
+    if (id) row.id = id;
+    if (company) row.company = company;
+    return row;
   }
 
   function readConfig() {
@@ -325,6 +350,9 @@
     listingSlug: listingSlug,
     productName: productName,
     leadRow: leadRow,
+    newLeadId: newLeadId,
+    cleanCompany: cleanCompany,
+    cleanLeadId: cleanLeadId,
     saveLead: saveLead,
     rememberLead: rememberLead,
     mount: mount,

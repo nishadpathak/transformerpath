@@ -32,3 +32,17 @@ Anon cannot read these tables. A granted buyer can read a passport and its verif
 - `functions/entitle.js` upserts `paid_listings` for a listing Checkout and upserts `entitlements` on `(user_id, product)` for a course when a profile id exists. It does not insert `public.payments` and it does not write an `email` column on `entitlements`.
 - Review fields, the `expired` status, and the customer `select` policy are in `supabase/migrations/20261021120000_verified_manufacturer_review.sql`. That file is not applied by CI. Paste it in the SQL editor before opening the review queue. It does not delete rows.
 - `supabase.js` `TP.getEntitlements` reads `profiles.plan`, not `entitlements`.
+
+## Checkout leads
+
+`supabase/migrations/20261030140000_checkout_leads.sql` creates `checkout_leads`. Anon may insert and may not select, update, or delete. The browser posts with the publishable key and `Prefer: return=minimal`.
+
+`supabase/migrations/20261115100000_checkout_leads_company.sql` adds optional `company`. Apply it after the table exists. It is not applied by CI. Until it is applied, checkout still stores the email and still sends a lead id to Stripe; the company name is omitted from the row.
+
+The Stripe `client_reference_id` is that lead id. A directory or event slug stays on `listing_slug` and, for a Checkout Session, in metadata. To read one abandoned checkout:
+
+```sql
+select id, email, company, product_name, listing_slug, page_path, created_at
+from public.checkout_leads
+where id = '<client_reference_id>';
+```
