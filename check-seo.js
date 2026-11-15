@@ -12,7 +12,7 @@ const path = require('path');
 const schema = require('./lib/seo-schema');
 const html = require('./lib/seo-html');
 const catalog = require('./lib/seo-catalog');
-const { resolveStatus } = require('./lib/event-status');
+const { resolveStatus, platformToday } = require('./lib/event-status');
 const eventSeo = require('./lib/event-seo');
 const cwv = require('./lib/seo-cwv');
 
@@ -189,16 +189,30 @@ files.forEach(function (file) {
       const firm = status === 'CONFIRMED_UPCOMING' || status === 'LIVE' || status === 'COMPLETED';
       eventNodes.forEach(function (n) {
         const scheduled = String(n.eventStatus || '').indexOf('EventScheduled') !== -1;
-        if (firm && rec && (rec.s || rec.start) && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue))) {
-          if (!scheduled) fail(rel + ': confirmed event missing EventScheduled');
-          if (n.startDate !== (rec.s || rec.start)) fail(rel + ': startDate ' + n.startDate + ' != ' + (rec.s || rec.start));
-          if (!n.location || n.location['@type'] !== 'Place') fail(rel + ': scheduled event missing Place');
-          if (n.location && n.location.address && n.location.address['@type'] !== 'PostalAddress') {
-            fail(rel + ': location address is not PostalAddress');
+        if (status === 'COMPLETED' && scheduled) fail(rel + ': past event marked as upcoming');
+        const hasPlace = !!(rec && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue)));
+        const webinar = !!(rec && String(rec.type || '').toLowerCase() === 'webinar' && /^https?:\/\//i.test(rec.official_url || rec.u || ''));
+        if (firm && rec && (rec.s || rec.start) && (hasPlace || webinar)) {
+          if (status !== 'COMPLETED' && !scheduled) fail(rel + ': confirmed event missing EventScheduled');
+          const start = rec.s || rec.start;
+          const off = schema.zoneOffset(start, eventSeo.timezoneFor(rec));
+          const expectStart = off ? start + off : start;
+          if (n.startDate !== expectStart) fail(rel + ': startDate ' + n.startDate + ' != ' + expectStart);
+          const end = rec.e || rec.end;
+          if (end) {
+            const endOff = schema.zoneOffset(end, eventSeo.timezoneFor(rec));
+            const expectEnd = endOff ? end + endOff : end;
+            if (n.endDate !== expectEnd) fail(rel + ': endDate ' + n.endDate + ' != ' + expectEnd);
+          }
+          if (hasPlace) {
+            if (!n.location || n.location['@type'] !== 'Place') fail(rel + ': scheduled event missing Place');
+            if (n.location && n.location.address && n.location.address['@type'] !== 'PostalAddress') {
+              fail(rel + ': location address is not PostalAddress');
+            }
+          } else if (!n.location || n.location['@type'] !== 'VirtualLocation') {
+            fail(rel + ': webinar missing VirtualLocation');
           }
           if (!n.eventAttendanceMode) fail(rel + ': scheduled event missing eventAttendanceMode');
-          const end = rec.e || rec.end;
-          if (end && n.endDate !== end) fail(rel + ': endDate ' + n.endDate + ' != ' + end);
           const org = rec.organiser || rec.organizer || '';
           if (org && (!n.organizer || n.organizer.name !== org)) fail(rel + ': organizer missing');
           const official = rec.official_url || '';
@@ -227,6 +241,27 @@ files.forEach(function (file) {
         }
       });
     }
+  }
+
+  if (rel === 'events.html') {
+    const lists = nodes.filter(function (n) { return n['@type'] === 'ItemList'; });
+    const events = nodes.filter(function (n) { return n['@type'] === 'Event'; });
+    if (!lists.length) fail('events.html: missing ItemList');
+    if (!events.length) fail('events.html: missing Event');
+    const today = platformToday();
+    if (lists[0] && lists[0].numberOfItems !== (lists[0].itemListElement || []).length) {
+      fail('events.html: ItemList count does not match its events');
+    }
+    events.forEach(function (n) {
+      if (!n.name || !n.startDate || !n.location || !n.eventAttendanceMode || !n.url) {
+        fail('events.html: Event is missing a field the record should support (' + (n.name || 'unnamed') + ')');
+      }
+      const end = String(n.endDate || n.startDate || '').slice(0, 10);
+      if (end && end < today && String(n.eventStatus || '').indexOf('EventScheduled') !== -1) {
+        fail('events.html: past event marked as upcoming (' + n.name + ')');
+      }
+      schema.validateEventNode(n).forEach(function (err) { fail('events.html: ' + err); });
+    });
   }
 
   if (rel === 'intel.html') {

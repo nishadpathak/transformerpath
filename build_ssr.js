@@ -333,32 +333,14 @@ function renderEvents(html) {
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
     countText);
 
-  // Dynamically generate JSON-LD schema with only future, discoverable, scheduled events
-  const jsonLdEvents = list
-    .filter((ev) => allowsCalendar(ev) && ev.end >= TODAY)
-    .slice(0, 60)
-    .map((ev) => ({
-      '@type': 'Event',
-      name: ev.n,
-      startDate: ev.s,
-      endDate: ev.e,
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: listingGroup(ev) === 'webinar' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-      location: listingGroup(ev) === 'webinar'
-        ? { '@type': 'VirtualLocation', url: ev.u }
-        : {
-        '@type': 'Place',
-        name: ev.v,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: ev.c,
-          addressCountry: ev.co,
-        },
-      },
-      url: ev.u,
-    }));
-
-  const jsonLdScript = `<script type="application/ld+json" id="events-ld">\n${JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLdEvents }, null, 2)}\n</script>`;
+  // Same upcoming editions as the visible list, and only fields the record has.
+  const eventJsonld = require('./lib/event-jsonld');
+  const jsonLdScript = `<script type="application/ld+json" id="events-ld">\n${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      eventJsonld.indexGraph('https://transformerpath.com/events.html', TODAY)
+    ]
+  }, null, 2)}\n</script>`;
   html = html.replace(/<script type="application\/ld\+json" id="events-ld">[\s\S]*?<\/script>/, jsonLdScript);
 
   // Synchronize client-side EVENTS array and event-page slug map

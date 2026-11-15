@@ -98,6 +98,15 @@ check('an event page that already has a lastmod keeps it', keptEvent['events/cig
 const liveEvents = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const liveCigre = liveEvents.filter(function (ev) { return ev && ev.id === 'cigre-facts-operational-performance-webinar-2026'; })[0];
 check('CIGRE FACTS webinar record was checked on 8 Nov 2026', liveCigre && liveCigre.source_checked_at === '2026-11-08');
+check('a newer file date replaces a frozen cache date', dates.dateFor('index.html', {
+  pages: { 'index.html': '2026-10-14' },
+  files: { 'index.html': '2026-11-14' }
+}, {}) === '2026-11-14');
+const signalPages = { 'index.html': '2026-10-14', 'intel.html': '2026-10-14', 'tenders.html': '2026-10-01' };
+dates.applyContentSignals(signalPages);
+check('homepage lastmod follows the intel source date when that date is newer', signalPages['index.html'] > '2026-10-14');
+check('intel lastmod follows the same source date', signalPages['intel.html'] === signalPages['index.html']);
+check('tenders index lastmod can move forward from notice dates', signalPages['tenders.html'] > '2026-10-01');
 
 if (failed) {
   console.error('SITEMAP TENDER SLUG REGRESSION FAILED (' + failed + ')');
