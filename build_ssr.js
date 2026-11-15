@@ -27,6 +27,7 @@ const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, showSoonBadge }
 const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
+const { isOnlineEvent, onlineTimeLabel, scheduleOf, publicUrl } = require('./lib/online-event');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const { publicCountLabel, stampListedCount } = require('./lib/public-count-label');
 const { xPostHref, intelCanonical } = require('./lib/x-share');
@@ -198,7 +199,13 @@ function webinarCta(w) {
  * EVENTS
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
-  const EVENTS = loadEvents();
+  const EVENTS = loadEvents().map(function (ev) {
+    if (!isOnlineEvent(ev)) return ev;
+    const clock = onlineTimeLabel(ev);
+    const copy = Object.assign({}, ev, { online: true });
+    if (clock) copy.online_time = clock;
+    return copy;
+  });
   /* Same platform day as the page script. UTC+4, no DST. Status chips and the
      "Showing N upcoming events" line are both taken from this clock at build
      time, so a prerender cannot keep yesterday's "Live now". */
@@ -289,18 +296,22 @@ function renderEvents(html) {
   function eventCard(ev) {
     const soon = allowsCalendar(ev) && showSoonBadge(ev, TODAY);
     const trav = travelable(ev);
-    const dateLbl = dateLine(ev);
-    const venueLbl = `${esc(ev.v) || 'Not yet published by organiser'} — ${esc(ev.c) || 'Not yet published by organiser'}, ${esc(ev.co)}`;
+    const online = isOnlineEvent(ev);
+    const clock = online ? onlineTimeLabel(ev) : '';
+    const dateLbl = dateLine(ev) + (clock ? ' · ' + esc(clock) : '');
+    const venueLbl = online
+      ? 'Online'
+      : `${esc(ev.v) || 'Not yet published by organiser'} — ${esc(ev.c) || 'Not yet published by organiser'}, ${esc(ev.co)}`;
     const kind = listingGroup(ev);
     return `<div class="intel-item event-card" data-start="${esc(ev.s)}" data-end="${esc(ev.e)}" data-event-kind="${kind}">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLbl}${relLabel(ev)}</div>
-      <div class="venue">📍 ${venueLbl}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
+      <div class="venue">📍 ${venueLbl}${online ? '' : (esc(ev.r) ? ' · ' + esc(ev.r) : '')}</div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(ev.d)}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         ${ev.u ? `<a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>` : '<span>Official site: Not yet published by organiser</span>'}
         ${eventHref(ev, { fallbackListing: false }) ? `<a class="btn btn-outline btn-sm" href="${esc(eventHref(ev, { fallbackListing: false }))}">Event page →</a>` : ''}
-        <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a>
+        ${online ? '' : `<a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a>`}
         ${trav ? tpAff.calendarLinks({ slug: resolveEventSlug(ev.n) || ev.n, city: ev.c, checkIn: ev.s, checkOut: ev.e, disclosureHref: 'affiliate-disclosure.html' }) : ''}
         ${icsHref(ev) ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}">📅 Add</a>` : ''}
       </div>
@@ -337,26 +348,33 @@ function renderEvents(html) {
   const jsonLdEvents = list
     .filter((ev) => allowsCalendar(ev) && ev.end >= TODAY)
     .slice(0, 60)
-    .map((ev) => ({
-      '@type': 'Event',
-      name: ev.n,
-      startDate: ev.s,
-      endDate: ev.e,
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: listingGroup(ev) === 'webinar' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-      location: listingGroup(ev) === 'webinar'
-        ? { '@type': 'VirtualLocation', url: ev.u }
-        : {
-        '@type': 'Place',
-        name: ev.v,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: ev.c,
-          addressCountry: ev.co,
-        },
-      },
-      url: ev.u,
-    }));
+    .map((ev) => {
+      const online = listingGroup(ev) === 'webinar' || isOnlineEvent(ev);
+      const clock = online ? scheduleOf(ev) : null;
+      const node = {
+        '@type': 'Event',
+        name: ev.n,
+        startDate: clock ? clock.startIso : ev.s,
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: online ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+        location: online
+          ? { '@type': 'VirtualLocation', url: publicUrl(ev) || ev.u }
+          : {
+            '@type': 'Place',
+            name: ev.v,
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: ev.c,
+              addressCountry: ev.co,
+            },
+          },
+        url: ev.u,
+      };
+      if (online) {
+        if (clock && clock.endIso) node.endDate = clock.endIso;
+      } else node.endDate = ev.e;
+      return node;
+    });
 
   const jsonLdScript = `<script type="application/ld+json" id="events-ld">\n${JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLdEvents }, null, 2)}\n</script>`;
   html = html.replace(/<script type="application\/ld\+json" id="events-ld">[\s\S]*?<\/script>/, jsonLdScript);

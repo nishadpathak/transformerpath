@@ -18,6 +18,7 @@ const tpAff = require('./lib/travelpayouts');
 const paidListings = require('./lib/paid-listings');
 const schema = require('./lib/seo-schema');
 const eventSeo = require('./lib/event-seo');
+const { isOnlineEvent, onlineTimeLabel } = require('./lib/online-event');
 const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -173,12 +174,15 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     className: 'btn btn-amber btn-sm',
     style: 'margin:0 8px 8px 0'
   });
-  const exhibitorPay = paidListings.featuredExhibitorPayHtml({
+  const exhibitorPay = flags.online ? '' : paidListings.featuredExhibitorPayHtml({
     eventId: eventId || '',
     formHref: '../../sponsor.html#contact',
     className: 'btn btn-amber',
     label: 'Feature your company — $399 →'
   });
+  const offerLine = flags.online
+    ? 'Feature this event on TransformerPath — Featured Event is $299 per event.'
+    : 'Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.';
   const robots = flags.noindex ? 'noindex,follow' : 'index,follow';
   const role = flags.role ? ' data-tp-event-role="' + esc(flags.role) + '"' : '';
   const eid = flags.eventId ? ' data-tp-event-id="' + esc(flags.eventId) + '"' : '';
@@ -195,7 +199,7 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     (ld || '') +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap"' + role + eid + '>' + withBadge +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
-    '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.</div>' +
+    '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">' + offerLine + '</div>' +
     pay +
     exhibitorPay + '</div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a></p>' +
@@ -220,13 +224,19 @@ Object.keys(groups).forEach((slug) => {
   const cta = feature.text;
   const hubUrl = 'https://transformerpath.com/events/' + slug + '/';
   const blurb = eventSeo.hubBlurb(seriesName, list);
+  const onlineSeries = list.length > 0 && list.every(isOnlineEvent);
   const editionLinks = '<h2>Editions</h2><ul>' + list.map((ev) => {
-    const place = [ev.city, ev.country].filter(Boolean).join(', ');
+    const online = isOnlineEvent(ev);
+    const clock = online ? onlineTimeLabel(ev) : '';
+    const place = online ? '' : [ev.city, ev.country].filter(Boolean).join(', ');
     const summaries = (ev.intel_links || []).map((id) => ' · <a href="../' + esc(id) + '/summary/">post-event summary</a>').join('');
     return '<li><a href="../' + esc(ev.id) + '/">' + esc(ev.name) + '</a> — ' + esc(dateLine(ev)) +
+      (clock ? ', ' + esc(clock) : '') +
       (place ? ', ' + esc(place) : '') + summaries + '</li>';
   }).join('') + '</ul>';
-  const lead = 'Recorded editions of ' + seriesName + '. This series page lists every edition. Each year has its own page. Dates and venues on this hub are the values stored for that edition.';
+  const lead = onlineSeries
+    ? 'Sessions of ' + seriesName + '. This series page lists every session. Each session has its own page. Dates and times on this hub are the values stored for that session.'
+    : 'Recorded editions of ' + seriesName + '. This series page lists every edition. Each year has its own page. Dates and venues on this hub are the values stored for that edition.';
   const featured = nxt ? visitorGuideBlock(nxt) : '';
   const body = '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../events.html">Events</a> › ' + esc(seriesName) + '</nav>' +
     '<h1>' + esc(h1) + '</h1>' +
@@ -246,7 +256,7 @@ Object.keys(groups).forEach((slug) => {
     body,
     ldScript(hubUrl, hubCrumbs, eventSeo.hubInput(seriesName, blurb)),
     slug,
-    { role: 'hub' }
+    { role: 'hub', online: onlineSeries }
   ));
 
   list.forEach((ev) => {
@@ -259,10 +269,12 @@ Object.keys(groups).forEach((slug) => {
       ? '<h2>Other years</h2><ul>' + siblings.map((other) => '<li><a href="../' + esc(other.id) + '/">' + esc(other.name) + '</a></li>').join('') + '</ul>'
       : '';
     const edUrl = 'https://transformerpath.com/events/' + ev.id + '/';
+    const onlineEd = isOnlineEvent(ev);
+    const edClock = onlineEd ? onlineTimeLabel(ev) : '';
     const edBody = '<nav style="font-size:.8rem"><a href="../../events.html">Events</a> › <a href="../' + esc(slug) + '/">' + esc(seriesName) + '</a> › ' + esc(ev.name) + '</nav>' +
       '<h1>' + esc(ev.name) + '</h1>' +
       '<p>' + (badge || '') + '</p>' +
-      '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
+      '<p class="lead">' + esc(dateLine(ev) + (edClock ? ', ' + edClock : '')) + '</p>' +
       deadlineCallout(ev) +
       '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
@@ -280,7 +292,7 @@ Object.keys(groups).forEach((slug) => {
       '<h2>Stats</h2>' + statsHtml(ev) +
       ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
       siblingHtml +
-      (pastEd ? '' : '<p id="series-cta"><b>Meet the industry at ' + esc(ev.name) + '</b></p>');
+      (pastEd || onlineEd ? '' : '<p id="series-cta"><b>Meet the industry at ' + esc(ev.name) + '</b></p>');
     const edCrumbs = [
       { name: 'Home', item: 'https://transformerpath.com/' },
       { name: 'Events', item: 'https://transformerpath.com/events.html' },
@@ -295,7 +307,7 @@ Object.keys(groups).forEach((slug) => {
       edBody,
       ldScript(edUrl, edCrumbs, eventSeo.editionInput(ev)),
       ev.id,
-      { role: 'edition', eventId: ev.id, noindex: noindex }
+      { role: 'edition', eventId: ev.id, noindex: noindex, online: onlineEd }
     ));
   });
 });
