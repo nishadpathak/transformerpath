@@ -126,7 +126,7 @@ async function main() {
     else otherPages.push(item);
   });
   assignUnique(otherPages, 'title', 50, 60);
-  assignUnique(eventProfiles, 'title', 50, 100);
+  assignUnique(eventProfiles, 'title', 50, 60);
   items.forEach(function (item) {
     item.draft = item.draftDesc;
     item.pads = item.padsDesc;
