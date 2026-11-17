@@ -248,12 +248,12 @@ function renderEvents(html) {
     // data-rel/data-rel-end let the client script recompute the badge against
     // today's date so it never goes stale between builds.
     const relAttr = ` data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}"`;
-    if (key === 'LIVE') return `<span class="rel-today"${relAttr}>Live now</span>`;
+    if (key === 'LIVE') return `<span class="rel-today"${relAttr}></span>`;
     if (key !== 'CONFIRMED_UPCOMING') return '';
     const d = relDays(ev.s);
     if (d <= 0) return '';
-    if (d === 1) return `<span class="rel-soon"${relAttr}>In 1 day</span>`;
-    if (d <= 31) return `<span class="rel-soon"${relAttr}>In ${d} days</span>`;
+    if (d === 1) return `<span class="rel-soon"${relAttr}></span>`;
+    if (d <= 31) return `<span class="rel-soon"${relAttr}></span>`;
     return '';
   };
   const icsHref = (ev) => (allowsCalendar(ev) && ev.id) ? ('events/ics/' + ev.id + '.ics') : '';
@@ -278,8 +278,7 @@ function renderEvents(html) {
   const up = upEligible.sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
   const upNext = up.map((ev) => {
     const d = relDays(ev.s);
-    const lbl = evState(ev).key === 'LIVE' ? 'Live now'
-      : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
+    const lbl = '';
     // Absolute date is the primary, timezone-stable label; the relative badge is
     // recomputed client-side (data-rel="<start date>", data-rel-end="<end date>") so it can never go stale
     // between builds (a crawl can never see "Today" or "Live now" for a passed event).
