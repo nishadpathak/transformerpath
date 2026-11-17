@@ -21,7 +21,7 @@ function interpretHookResponse(status, contentType, text) {
 exports.interpretHookResponse = interpretHookResponse;
 
 exports.handler = async function () {
-  const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
+  const hook = process.env.TP_BUILD_HOOK_URL || process.env.NETLIFY_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
   if (!hook) {
     console.error('daily-rebuild: TP_BUILD_HOOK_URL is not set. The scheduled rebuild did not run.');
     return {
