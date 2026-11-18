@@ -1,0 +1,56 @@
+{
+  "review_date": "2026-11-10",
+  "timezone": "Asia/Dubai",
+  "status": "RESEARCH_REVIEW_ONLY_NOT_PUBLISHED",
+  "policy": "Do not use this review file to advance public freshness or claim verified tender/award scope.",
+  "candidates": [
+    {
+      "title": "POWERGRID reports transformation capacity of 661116 MVA as of 31 October 2026",
+      "country": "India",
+      "category": "GRID_CAPACITY",
+      "source_url": "https://www.powergrid.in/en/home",
+      "source_date": "2026-10-31",
+      "evidence": "Official POWERGRID website displays 661116 MVA as of 31 October 2026; does not alone establish new transformer orders.",
+      "review_status": "PRIMARY_SOURCE_VERIFIED_NEEDS_DEDUP"
+    },
+    {
+      "title": "PGCIL reportedly commissioned 25100 MVA in April-September 2026",
+      "country": "India",
+      "category": "GRID_CAPACITY",
+      "source_url": "https://transformer-magazine.com/news/pgcil-commissions-25100-mva-in-h1fy27/",
+      "source_date": "2026-11-09",
+      "evidence": "Industry publication cites T&D India; original company release and existing-feed dedup still needed.",
+      "review_status": "SECONDARY_SOURCE_NEEDS_PRIMARY"
+    },
+    {
+      "title": "Kuwait Petroleum Corporation power-transformer procurement reported closing 12 November",
+      "country": "Kuwait",
+      "category": "TENDER",
+      "source_url": "https://www.tendersontime.com/tenders-details/procurement-power-transformer-903702b/",
+      "source_date": "2026-10-21",
+      "evidence": "Tender aggregator, reference 151220267; buyer portal notice not verified.",
+      "review_status": "SECONDARY_SOURCE_NEEDS_BUYER_CONFIRMATION"
+    },
+    {
+      "title": "R&S Group Łódź transformer factory reportedly opened",
+      "country": "Poland",
+      "category": "MANUFACTURING",
+      "source_url": "https://transformer-magazine.com/news/business/",
+      "source_date": "2026-11-06",
+      "evidence": "Industry news summary says up to 160 MVA and 220 kV; requires original company release and dedup.",
+      "review_status": "SECONDARY_SOURCE_NEEDS_PRIMARY"
+    }
+  ],
+  "gcc_summary": "No newly published GCC transformer item with original buyer/utility confirmation was established in this run.",
+  "validation": {
+    "json": "Generated via JSON.stringify",
+    "feed_schema": "NOT_RUN",
+    "build": "NOT_RUN",
+    "deploy": "NOT_ATTEMPTED"
+  },
+  "publication": {
+    "intel_feed_changed": false,
+    "main_changed": false,
+    "production_verified": false
+  }
+}
