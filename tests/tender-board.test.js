@@ -26,6 +26,37 @@ check('expired view is hidden by default', /id="expiredView" hidden/.test(html))
 check('alert CTA uses the partner constant', html.indexOf('data-tender-cta="1"') >= 0 && html.indexOf('href="' + TENDER_PARTNER_URL + '"') >= 0);
 check('listing does not mark the internal CTA as sponsored', html.indexOf('rel="sponsored') === -1);
 check('listing does not name an aggregator', /tendersontime/i.test(html) === false);
+check('expired empty state follows the filters', html.indexOf('toggleEmpty("expiredEmpty",expView,name==="expired")') >= 0);
+const closedOnly = {};
+const liveCountries = {};
+tenders.forEach(function (tender) {
+  if (!tender.country) return;
+  if (tender.status === 'CLOSED') closedOnly[tender.country] = 1;
+  else liveCountries[tender.country] = 1;
+});
+Object.keys(closedOnly).forEach(function (country) {
+  if (liveCountries[country]) return;
+  check(country + ' stays in the country filter', html.indexOf('<option value="' + country.replace(/"/g, '&quot;') + '">') >= 0);
+});
+const { slugForCountry } = require('../lib/tender-countries');
+tenders.forEach(function (tender) {
+  if (!tender.country || isOfficialProcurementUrl(tender.official_procurement_url)) return;
+  if (!/^https?:\/\//i.test(String(tender.official_procurement_url || ''))) return;
+  const slug = slugForCountry(tender.country);
+  if (!slug) return;
+  const page = 'tenders/country/' + slug + '/index.html';
+  if (!fs.existsSync(page)) return;
+  const countryHtml = fs.readFileSync(page, 'utf8');
+  const token = 'data-tender-id="' + tender.tender_id + '"';
+  const start = countryHtml.indexOf(token);
+  if (start < 0) return;
+  const next = countryHtml.indexOf('data-tender-id="', start + token.length);
+  const row = countryHtml.slice(start, next < 0 ? start + 1200 : next);
+  if (row.indexOf('>Official notice</a>') >= 0) {
+    check(tender.tender_id + ' is not labeled an official notice', false, tender.official_procurement_url);
+  }
+});
+check('country pages were scanned for unofficial notice labels', true);
 check('nav partial links tenders', fs.readFileSync('_partials/header.html', 'utf8').indexOf('tenders.html">Tenders') >= 0);
 
 const counts = {};

@@ -13,6 +13,7 @@ const {
 } = require('./lib/tender-countries');
 const partner = require('./lib/tender-partner');
 const { productOf } = require('./lib/tender-products');
+const { isOfficialProcurementUrl } = require('./lib/tender-sources');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -155,7 +156,7 @@ function tenderRows(tenders) {
     const awardHtml = award
       ? '<span class="t-meta">Sourced award: <a data-award-link="1" href="/awards.html#award-' + esc(award.tender_id) + '">' + esc(award.awardee) + '</a></span>'
       : '<span class="t-meta">No sourced award record for this tender.</span>';
-    const official = /^https?:\/\//i.test(String(tender.official_procurement_url || ''))
+    const official = isOfficialProcurementUrl(tender.official_procurement_url)
       ? '<a class="t-notice" href="' + esc(tender.official_procurement_url) + '" target="_blank" rel="noopener">Official notice</a>'
       : '';
     return '<div class="t-row" data-tender-id="' + esc(tender.tender_id) + '" data-award-id="' + esc(award ? award.tender_id : '') + '" data-expired="' + (expired ? '1' : '0') + '">' +
