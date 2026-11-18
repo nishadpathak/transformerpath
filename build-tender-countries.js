@@ -11,6 +11,8 @@ const fs = require('fs');
 const {
   slugify, groupTenders, directoryGroupsFor, makerRows
 } = require('./lib/tender-countries');
+const partner = require('./lib/tender-partner');
+const { productOf } = require('./lib/tender-products');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -88,7 +90,7 @@ function modeRegion(tenders) {
   return Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); })[0] || 'Other';
 }
 
-const STYLE = '.c-wrap{max-width:980px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:820px}.c-wrap h2{font-size:1.2rem;color:var(--ink);margin-top:28px}.t-row{padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row a{color:var(--accent);font-weight:700;text-decoration:none}.t-row a:hover{text-decoration:underline}.t-meta{color:var(--muted);font-size:.8rem;display:block;margin-top:3px}.dir-note{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;font-size:.9rem;margin:8px 0 12px}.mk-row{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem}.mk-row .city{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}';
+const STYLE = '.c-wrap{max-width:980px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:820px}.c-wrap h2{font-size:1.2rem;color:var(--ink);margin-top:28px}.t-row{padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row a{color:var(--accent);font-weight:700;text-decoration:none}.t-row a:hover{text-decoration:underline}.t-meta{color:var(--muted);font-size:.8rem;display:block;margin-top:3px}.dir-note{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;font-size:.9rem;margin:8px 0 12px}.mk-row{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem}.mk-row .city{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.tender-cta{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:18px 0}.tender-cta-title{color:var(--text);font-weight:800;margin:0 0 6px}';
 const ST = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-closed', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
 
 function shell(opts) {
@@ -99,10 +101,37 @@ function shell(opts) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(opts.title) + '"><meta property="og:url" content="' + esc(opts.canonical) + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
+    (opts.jsonLd || '') +
     '<link rel="icon" type="image/svg+xml" href="' + opts.icon + 'brand/favicon.svg"><link rel="stylesheet" href="' + opts.icon + 'style.css?v=14"><style>' + STYLE + '</style><link rel="stylesheet" href="' + opts.icon + 'tp-nav.css?v=14">' +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap"' + (opts.attrs || '') + '>' +
     opts.body +
     '</main>\n' + FOOT + '\n<script src="' + opts.icon + 'analytics.js" defer></script>\n</body>\n</html>';
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function dateLabel(iso) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!match) return '';
+  return Number(match[3]) + ' ' + MONTHS[Number(match[2]) - 1] + ' ' + match[1];
+}
+
+function listJsonLd(name, url, tenders) {
+  const node = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: name,
+    url: url,
+    numberOfItems: tenders.length,
+    itemListElement: tenders.map(function (tender, i) {
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        name: tender.title,
+        url: 'https://transformerpath.com/tenders/' + slugify(tender.title) + '/'
+      };
+    })
+  };
+  return '<script type="application/ld+json">' + JSON.stringify(node).replace(/</g, '\\u003c') + '</script>';
 }
 
 function tenderRows(tenders) {
@@ -111,13 +140,28 @@ function tenderRows(tenders) {
   }).map(function (tender) {
     const award = sourcedAward(tender);
     const slug = slugify(tender.title);
-    const status = '<span class="st ' + (ST[tender.status] || 'st-closed') + '">' + esc(tender.statusLabel || tender.status || '') + '</span>';
+    const expired = tender.status === 'CLOSED';
+    const status = '<span class="st ' + (ST[tender.status] || 'st-closed') + '">' + esc(tender.statusLabel || tender.status || '') + '</span>' +
+      (expired ? ' <span class="st st-closed">Expired</span>' : '');
+    const product = productOf(tender);
+    const buyer = tender.buyer || tender.utility || '';
+    const buyerCountry = tender.buyer_country || tender.country || '';
+    const when = dateLabel(tender.deadline);
+    const bits = [buyerCountry];
+    if (buyer) bits.push('Buyer ' + buyer);
+    if (when) bits.push('Deadline ' + when);
+    if (product) bits.push(product.label);
+    if (tender.source) bits.push(tender.source);
     const awardHtml = award
       ? '<span class="t-meta">Sourced award: <a data-award-link="1" href="/awards.html#award-' + esc(award.tender_id) + '">' + esc(award.awardee) + '</a></span>'
       : '<span class="t-meta">No sourced award record for this tender.</span>';
-    return '<div class="t-row" data-tender-id="' + esc(tender.tender_id) + '" data-award-id="' + esc(award ? award.tender_id : '') + '">' +
+    const official = /^https?:\/\//i.test(String(tender.official_procurement_url || ''))
+      ? '<a class="t-notice" href="' + esc(tender.official_procurement_url) + '" target="_blank" rel="noopener">Official notice</a>'
+      : '';
+    return '<div class="t-row" data-tender-id="' + esc(tender.tender_id) + '" data-award-id="' + esc(award ? award.tender_id : '') + '" data-expired="' + (expired ? '1' : '0') + '">' +
       '<a href="/tenders/' + esc(slug) + '/">' + esc(tender.title) + '</a> ' + status +
-      '<span class="t-meta">' + esc(tender.country || '') + (tender.utility || tender.buyer ? ' · ' + esc(tender.utility || tender.buyer) : '') + '</span>' +
+      '<span class="t-meta">' + esc(bits.filter(Boolean).join(' · ')) + '</span>' +
+      official +
       awardHtml + '</div>';
   }).join('');
 }
@@ -164,6 +208,7 @@ slugs.forEach(function (slug) {
   const body = '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html" style="color:var(--accent)">Tenders</a> · <a href="/tenders/countries.html" style="color:var(--accent)">Countries</a> · ' + esc(group.name) + '</nav>' +
     '<h1>' + esc(group.name) + ' transformer tenders</h1>' +
     '<p class="lead">' + group.tenders.length + ' tenders are filed under ' + esc(group.name) + '. Each title links to the tender page. Where a sourced award record exists, the awardee links to that award. Manufacturers below are directory matches, not predictions of who will win.</p>' +
+    partner.ctaHtml() +
     '<p class="t-meta">' + esc(modeRegion(group.tenders)) + ' · ' + awardCount + ' with a sourced award · <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a></p>' +
     '<h2>Tenders (' + group.tenders.length + ')</h2>' +
     tenderRows(group.tenders) +
@@ -174,6 +219,7 @@ slugs.forEach(function (slug) {
     canonical: 'https://transformerpath.com/tenders/country/' + slug + '/',
     icon: '../../../',
     attrs: ' data-country="' + esc(group.name) + '" data-canonical-country="' + esc(group.canonical) + '"',
+    jsonLd: listJsonLd(group.name + ' transformer tenders', 'https://transformerpath.com/tenders/country/' + slug + '/', group.tenders),
     body: body
   });
   fs.mkdirSync('tenders/country/' + slug, { recursive: true });
@@ -203,7 +249,9 @@ const indexHtml = shell({
   body: '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html" style="color:var(--accent)">Tenders</a> · Countries</nav>' +
     '<h1>Transformer tenders by country</h1>' +
     '<p class="lead">One page for each country with a tender on file. A tender stays on the country stored on its record. An award link appears only where a sourced award record exists. Manufacturers on those pages are directory matches, not predictions of who will win. <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a> is separate, and free.</p>' +
+    partner.ctaHtml() +
     indexRows
 });
 fs.writeFileSync('tenders/countries.html', indexHtml);
 console.log('tender country pages wrote ' + slugs.length + ' countries');
+require('./build-tender-products').build();
