@@ -9,7 +9,11 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-execFileSync(process.execPath, [path.join(__dirname, 'build-event-canonicalization.js')], { stdio: 'inherit' });
+/* A filtered rebuild can skip this. Regenerating the canonical file also
+ * rewrites lifecycle status for every other edition. */
+if (process.env.TP_SKIP_CANON !== '1') {
+  execFileSync(process.execPath, [path.join(__dirname, 'build-event-canonicalization.js')], { stdio: 'inherit' });
+}
 const { dubaiToday, fmtDay, dateLine, nullText, allowsCalendar, badgeText } = require('./lib/event-display');
 const { seriesFeature } = require('./lib/event-hub-copy');
 const { eventBadge } = require('./lib/provenance-badge');
@@ -145,6 +149,22 @@ function deadlineHtml(ev) {
     return '<li><strong>' + esc(deadlineLabel(d.kind)) + '</strong>' + (when ? ': ' + esc(when) : '') + note + link + '</li>';
   }).join('') + '</ul>';
 }
+function hoursHtml(ev) {
+  const rows = Array.isArray(ev.hours) ? ev.hours.filter((h) => h && h.date && h.open && h.close) : [];
+  if (!rows.length) return '';
+  const bits = rows.map((h) => esc(fmtDay(h.date) || h.date) + ' ' + esc(h.open) + '\u2013' + esc(h.close));
+  const label = ev.hours_label ? ' (' + esc(ev.hours_label) + ')' : '';
+  return '<span><b>Hours</b> ' + bits.join(', ') + label + '</span>';
+}
+function attendanceHtml(ev) {
+  if (ev.attendance !== 'offline') return '';
+  return '<span><b>Format</b> In person</span>';
+}
+function relatedHtml(ev) {
+  const rows = Array.isArray(ev.related) ? ev.related.filter((r) => r && r.id && r.id !== ev.id && r.name) : [];
+  if (!rows.length) return '';
+  return '<h2>Related editions</h2><ul>' + rows.map((r) => '<li><a href="../' + esc(r.id) + '/">' + esc(r.name) + '</a></li>').join('') + '</ul>';
+}
 function statsHtml(ev) {
   const s = ev.stats || {};
   const rows = ['exhibitors', 'visitors', 'area_sqm', 'countries', 'speakers'].map((k) => {
@@ -267,7 +287,8 @@ Object.keys(groups).forEach((slug) => {
       '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
-      '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span></div>' +
+      '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span>' +
+      hoursHtml(ev) + attendanceHtml(ev) + '</div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
       (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
       travelBlock(ev) + visitorGuideBlock(ev) +
@@ -277,8 +298,9 @@ Object.keys(groups).forEach((slug) => {
       '<h2>Programme</h2>' + programmeHtml(ev) +
       directorySection(ev) +
       '<h2>Key exhibitors</h2>' + exhibitorHtml(ev) +
-      '<h2>Stats</h2>' + statsHtml(ev) +
+      (ev.stats == null ? '' : '<h2>Stats</h2>' + statsHtml(ev)) +
       ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
+      relatedHtml(ev) +
       siblingHtml +
       (pastEd ? '' : '<p id="series-cta"><b>Meet the industry at ' + esc(ev.name) + '</b></p>');
     const edCrumbs = [
