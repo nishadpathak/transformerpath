@@ -59,7 +59,9 @@
 # Soft freshness: optional Netlify Build Hook (env TP_BUILD_HOOK_URL) so
 # events Up-next / site-stats cannot freeze between manual deploys.
 [functions."daily-rebuild"]
-  schedule = "15 2 * * *"
+  # 06:00 UTC = 10:00 Asia/Dubai. Each run triggers the full build,
+  # including build-intel-news.js and the events pipeline.
+  schedule = "0 6 * * *"
 
 # GCC watchlist digests — shortly after rebuild windows
 [functions."watchlist-alerts"]
