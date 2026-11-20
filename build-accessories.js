@@ -29,6 +29,7 @@ function slugify(s) {
 }
 const exhibitorTags = require('./lib/exhibitor-tags');
 const eventBadges = require('./event-badges');
+const { accessoryPublicSlug } = require('./lib/accessory-slug');
 function tpmFor(slug) {
   try {
     const lookup = JSON.parse(fs.readFileSync('data/permanent-id-lookup.json', 'utf8'));
@@ -80,7 +81,7 @@ function compLinks(s) {
 }
 
 function page(s) {
-  const slug = slugify(s.name);
+  const slug = accessoryPublicSlug(s);
   const url = 'https://transformerpath.com/accessories/' + slug + '/';
   const loc = [s.city, s.state, s.country].filter(Boolean).join(', ');
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
@@ -142,7 +143,7 @@ let built = 0, indexable = 0, rich = 0;
 SUPPLIERS.forEach((s) => {
   try {
     if (/^(Inactive|Unverified)$/i.test(s.verification_status || '')) return; // don't generate pages for inactive/unverified
-    const slug = slugify(s.name);
+    const slug = accessoryPublicSlug(s);
     fs.mkdirSync('accessories/' + slug, { recursive: true });
     fs.writeFileSync('accessories/' + slug + '/index.html', page(s));
     built++;

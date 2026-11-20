@@ -283,7 +283,8 @@ CATEGORY_PAGES.forEach(function (cat) {
     city: s.city || '',
     website: s.website || '',
     verified: s.verification_status || 'Listed',
-    line: (s.categories || []).join(', ')
+    line: (s.categories || []).join(', '),
+    slug: require('./lib/accessory-slug').accessoryPublicSlug(s)
   }));
 
   // Combine and deduplicate suppliers
@@ -320,7 +321,7 @@ CATEGORY_PAGES.forEach(function (cat) {
     const loc = [s.city, s.country].filter(Boolean).join(', ');
     const site = safeUrl(s.website);
     const siteLink = site ? `<a href="${esc(site)}" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a>` : '<span style="color:var(--muted)">—</span>';
-    const slug = slugify(s.name);
+    const slug = s.slug || slugify(s.name);
     const hasProfile = fs.existsSync(`accessories/${slug}/index.html`);
     const nameLink = hasProfile ? `<a href="../../accessories/${slug}/" style="color:var(--text);font-weight:700">${esc(s.name)}</a>` : `<b style="color:var(--text)">${esc(s.name)}</b>`;
     const vBadge = paidListings.isVerifiedManufacturer(slug, paidDoc)

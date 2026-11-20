@@ -10,6 +10,7 @@
 'use strict';
 const fs = require('fs');
 const listingRichness = require('./lib/listing-richness');
+const outreach = require('./lib/directory-outreach');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const CSSV = (JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets || {}).css || 14;
@@ -195,11 +196,12 @@ function render() {
   const initialCardsHtml = LABS.map(renderCardServer).join('');
   const labsJson = JSON.stringify(LABS.map(function (lab) {
     const slug = labSlug(lab);
-    const copy = Object.assign({}, lab);
+    const copy = outreach.publicCopy(lab);
     const id = tpmFor(slug);
     if (id) copy.permanent_id = id;
     return copy;
   }));
+  if (outreach.leaked(labsJson)) throw new Error('outreach flag leaked into laboratories.html');
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -513,7 +515,7 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
       '<title>' + esc(lab.name) + ' — Unclaimed laboratory listing | TransformerPath</title>' +
       '<meta name="description" content="' + esc((lab.description || lab.name).slice(0, 180)) + '">' +
       '<link rel="canonical" href="' + url + '">' +
-      '<meta name="robots" content="' + listingRichness.robots(listingRichness.stubProfileIndexable()) + '">' +
+      '<meta name="robots" content="' + (lab.directory_publish === true ? 'index,follow' : listingRichness.robots(listingRichness.stubProfileIndexable())) + '">' +
       '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
       '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
       '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../laboratories.html">Laboratories</a> › ' + esc(lab.name) + '</nav>' +
@@ -521,6 +523,9 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
       (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
       profileRecord(lab) +
       '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
+    if (lab.directory_publish === true && (outreach.leaked(htmlPage) || outreach.leakedPlace(htmlPage))) {
+      throw new Error('outreach or place flag leaked into laboratory profile ' + slug);
+    }
     fs.mkdirSync('laboratories/' + slug, { recursive: true });
     fs.writeFileSync('laboratories/' + slug + '/index.html', htmlPage);
   });

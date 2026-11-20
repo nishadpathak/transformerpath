@@ -701,7 +701,7 @@ function marketPage(m) {
 
   const localSupHtml = localSuppliers.length ? (
     '<div style="margin:8px 0">' + localSuppliers.map(function (s) {
-      const slug = slugify(s.name);
+      const slug = require('./lib/accessory-slug').accessoryPublicSlug(s);
       return '<div class="mk-row"><a href="../../accessories/' + slug + '/" style="color:var(--accent);font-weight:600">' + esc(s.name) + '</a><span class="city">' + esc(s.city || s.country) + '</span><span class="prof">' + esc((s.categories || []).slice(0, 2).join(', ')) + '</span></div>';
     }).join('') + '</div>'
   ) : '<p style="color:var(--muted);font-size:.85rem">Browse the global <a href="../../components.html" style="color:var(--accent)">Components Directory</a> for regional suppliers.</p>';

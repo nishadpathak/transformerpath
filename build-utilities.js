@@ -16,6 +16,7 @@
 'use strict';
 const fs = require('fs');
 const { splitEntityIntel } = require('./lib/entity-intel');
+const outreach = require('./lib/directory-outreach');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -205,6 +206,36 @@ STRATEGIC.forEach((u) => {
 });
 console.log('utility entity pages:', built);
 
+let EXTRA_UTILITIES = [];
+try {
+  EXTRA_UTILITIES = JSON.parse(fs.readFileSync('data/utility-listings.json', 'utf8')).companies || [];
+} catch (e) { EXTRA_UTILITIES = []; }
+const strategicSlugs = {};
+STRATEGIC.forEach(function (u) { strategicSlugs[slugify(u.slug || u.name)] = 1; });
+const extraUtilities = EXTRA_UTILITIES.filter(function (row) { return row && row.slug && !strategicSlugs[row.slug]; });
+extraUtilities.forEach(function (row) {
+  const url = 'https://transformerpath.com/utilities/' + row.slug + '/';
+  const country = outreach.publicCountry(row.country);
+  const loc = country === 'GCC' ? 'GCC' : [row.state, country].filter(Boolean).join(', ');
+  const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>' + esc(row.name) + ' — Utility listing | TransformerPath</title>' +
+    '<meta name="description" content="' + esc((row.description || row.name).slice(0, 180)) + '">' +
+    '<link rel="canonical" href="' + url + '">' +
+    '<meta name="robots" content="index,follow">' +
+    '<link rel="stylesheet" href="../../style.css"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+    '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+    '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../utilities.html">Utilities</a> › ' + esc(row.name) + '</nav>' +
+    '<h1>' + esc(row.name) + '</h1>' +
+    '<p>' + esc(outreach.scrubPublic(row.description || '')) + '</p>' +
+    '<p>Location: ' + esc(loc || '—') + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+    (row.source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.source) + '. Checked ' + esc(row.last_verified || '—') + '.</p>' : '') +
+    '</main>\n' + FOOT + '\n</body></html>\n';
+  if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into utility profile ' + row.slug);
+  fs.mkdirSync('utilities/' + row.slug, { recursive: true });
+  fs.writeFileSync('utilities/' + row.slug + '/index.html', page);
+});
+console.log('extra utility listings:', extraUtilities.length);
+
 /* ── Worldwide Utilities index (/utilities): region → country → profile ───────
  * Lists every built utility profile grouped by region and country, so /utilities
  * resolves (it was 404) and readers can navigate to procurement profiles
@@ -226,6 +257,14 @@ console.log('utility entity pages:', built);
     if (!grouped[region][country]) grouped[region][country] = [];
     grouped[region][country].push({ name: u.name, country: country, slug: slug, blurb: (u.blurb || '').slice(0, 120) });
   });
+  extraUtilities.forEach(function (row) {
+    const country = outreach.publicCountry(row.country) || 'Other';
+    const region = country === 'GCC' ? 'Middle East' : (countryRegion[ci(country)] || 'Other');
+    (grouped[region] = grouped[region] || {});
+    if (!grouped[region][country]) grouped[region][country] = [];
+    grouped[region][country].push({ name: row.name, country: country, slug: row.slug, blurb: outreach.scrubPublic(row.description || '').slice(0, 120) });
+  });
+  const utilityCount = STRATEGIC.length + extraUtilities.length;
 
   const regions = Object.keys(grouped);
   regions.sort(function (a, b) {
@@ -251,10 +290,10 @@ console.log('utility entity pages:', built);
     HEAD + '\n<main id="main" tabindex="-1" class="u-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Utilities</span> &amp; Grid Operators</h1>' +
     '<p class="lead">A worldwide index of the transmission &amp; distribution utilities, TSOs and grid operators that procure transformers — grouped by region and country. Each profile covers the operator\'s grid characteristics, transformer &amp; substation profile, relevant manufacturers and related projects. Organised from the TransformerPath grid census; only distinguished operators with meaningful procurement data are profiled.</p>' +
-    '<div class="u-counts" style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 8px"><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + STRATEGIC.length + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Utility profiles</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + Object.keys(grouped).length + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Regions</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + new Set(STRATEGIC.map(function (u) { return u.country; })).size + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Countries</small></div></div>' +
+    '<div class="u-counts" style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 8px"><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + utilityCount + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Utility profiles</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + Object.keys(grouped).length + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Regions</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + new Set(STRATEGIC.map(function (u) { return u.country; }).concat(extraUtilities.map(function (row) { return outreach.publicCountry(row.country); }))).size + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Countries</small></div></div>' +
     blocks +
     '<p style="font-size:.8rem;color:var(--muted);margin-top:22px">Profiles are informational and compiled from public utility / operator filings and announcements; coverage grows with the grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Utilities%20correction" style="color:var(--accent)">correction</a>.</p>' +
     '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
   fs.writeFileSync('utilities.html', html);
-  console.log('utilities.html wrote (worldwide index, ' + STRATEGIC.length + ' profiles / ' + Object.keys(grouped).length + ' regions)');
+  console.log('utilities.html wrote (worldwide index, ' + utilityCount + ' profiles / ' + Object.keys(grouped).length + ' regions)');
 })();

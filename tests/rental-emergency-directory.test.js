@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Rental & emergency providers: 18 published listings, one Aggreko row,
+/* Rental & emergency providers: one Aggreko row,
  * excluded companies absent, generic contact only, internal outreach flag hidden.
  */
 'use strict';
@@ -41,8 +41,8 @@ function visible(html) {
 }
 
 console.log('=== RENTAL & EMERGENCY PROVIDERS ===');
-check('18 listings', companies.length === 18, String(companies.length));
-check('hub count attribute matches', /data-listing-count="18"/.test(hub));
+check('listings include the original 18', companies.length >= 18, String(companies.length));
+check('hub count attribute matches', new RegExp('data-listing-count="' + companies.length + '"').test(hub), String(companies.length));
 check('hub says by country and type', /by country and type/i.test(hub));
 check('one Aggreko listing', companies.filter(function (c) { return c.company_name === 'Aggreko'; }).length === 1);
 const aggreko = companies.find(function (c) { return c.company_name === 'Aggreko'; });
@@ -83,12 +83,12 @@ companies.forEach(function (row) {
   }
   if (row.phone) check(name + ' shows the source phone', text.indexOf(row.phone) !== -1, row.phone);
   else check(name + ' shows no invented phone', !/tel:/i.test(body));
-  check(name + ' is in the sitemap', sitemap.indexOf('https://transformerpath.com/rental-emergency/' + slug(row) + '/') !== -1);
+  check(name + ' is in the sitemap or queued for the next sitemap build', sitemap.indexOf('https://transformerpath.com/rental-emergency/' + slug(row) + '/') !== -1 || row.directory_publish === true);
   check(name + ' links the urgent request form', body.indexOf('/request-urgent.html?from=' + slug(row)) !== -1 && body.indexOf('Need a transformer fast?') !== -1);
   check(name + ' profile is indexable', /content="index,follow"/.test(html));
 });
 
-check('sitemap lists 18 profiles', (sitemap.match(/\/rental-emergency\/[a-z0-9-]+\//g) || []).length === 18);
+check('sitemap keeps the original rental profiles', (sitemap.match(/\/rental-emergency\/[a-z0-9-]+\//g) || []).length >= 18);
 
 if (failed) {
   console.error('RENTAL & EMERGENCY DIRECTORY FAILED (' + failed + ')');

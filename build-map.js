@@ -20,6 +20,7 @@ const path = require('path');
 const { resolveStatus, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
 const { eventHref } = require('./lib/event-href');
 const listingTier = require('./lib/listing-tier');
+const { accessoryPublicSlug } = require('./lib/accessory-slug');
 
 function slugify(s) {
   return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
@@ -206,7 +207,7 @@ const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
     city: s.city || '',
     t: 'a',
     k: 'accessory',
-    u: listingUrl('accessories', s.name, 'accessories.html?q=' + encodeURIComponent(s.name)),
+    u: listingUrl('accessories', accessoryPublicSlug(s) || s.name, 'accessories.html?q=' + encodeURIComponent(s.name)),
     _src: s
   });
 });
