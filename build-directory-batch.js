@@ -42,9 +42,10 @@ function profile(section, row) {
     '<h1>' + esc(row.name) + '</h1>' +
     (row.category ? '<p style="color:var(--muted)">' + esc(outreach.scrubPublic(row.category)) + '</p>' : '') +
     '<p>' + esc(outreach.scrubPublic(row.description || '')) + '</p>' +
-    '<p>Location: ' + esc(loc) + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+    '<p>Location: ' + esc(loc) + (row.website ? ' · <a href="' + esc(row.website) + '"' + (section.dir === 'manufacturers' ? ' target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(row.name) + '"' : '') + '>Official website</a>' : '') + '</p>' +
     (row.source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.source) + '. Checked ' + esc(row.last_verified || '—') + '.</p>' : '') +
     '<p style="font-size:.78rem;color:var(--muted)">Unclaimed directory listing. It is not a certification or an endorsement.</p>' +
+    (section.dir === 'manufacturers' ? '<p><a href="../../correct-company.html?company=' + encodeURIComponent(row.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(row.name) + '">Suggest a correction →</a></p>' : '') +
     '</main>\n' + FOOT + '\n</body></html>\n';
   if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into ' + url);
   fs.mkdirSync(section.dir + '/' + row.slug, { recursive: true });
