@@ -33,6 +33,10 @@ Append one object to the `notices` array. Do not copy text from FreeTender, Tend
 | `date_found` | yes | `YYYY-MM-DD` when the curator first confirmed the notice. |
 | `last_verified` | yes | `YYYY-MM-DD` when the curator last checked the portal. |
 | `summary` | yes | Two to four original sentences. |
+| `product` | no | `power-transformer`, `distribution-transformer`, `substation-gis`, `switchgear`, `reactors`, `cables`, or `testing-equipment`. |
+| `buyer_country` | no | Country of the buyer. Defaults to `country` when omitted. |
+| `publication_date` | no | `YYYY-MM-DD` on the official notice. |
+| `region` | no | Used when the country is not already in the region map. |
 
 The build dedupes on official reference + buyer + country. If that key is incomplete it dedupes on the official URL. An existing record keeps its title and URL slug. Empty fields on that record are filled from the intake. The close instant, category, summary, and official link are taken from the intake.
 
@@ -40,7 +44,15 @@ A notice is skipped, and is never shown as open, when the URL is missing, is not
 
 ## Allowlisted hosts
 
-GeM BidPlus (`bidplus.gem.gov.in`), CPPP eProcure (`eprocure.gov.in`), state NIC portals (`*.nic.in`, including UP eTender), POWERGRID (`*.powergrid.in`), Etimad, DEWA, the Bahrain Tender Board, Oman Nama and the Oman tender board, South Africa National Treasury eTenders, and TED.
+GeM BidPlus (`bidplus.gem.gov.in`), CPPP eProcure (`eprocure.gov.in`), state NIC portals (`*.nic.in`, including UP eTender), POWERGRID (`*.powergrid.in`), Etimad, DEWA, the Bahrain Tender Board, Oman Nama and the Oman tender board, South Africa National Treasury eTenders, TED, the World Bank (`*.worldbank.org`), ADB (`*.adb.org`), and AfDB (`*.afdb.org`). TendersOnTime is an aggregator and is rejected.
+
+## Public notices and product pages
+
+`data/public-tender-notices.json` is a second intake. `build-tenders.js` merges it with the same rules as `data/tender-notices.json`. Each row keeps the official URL. Product pages at `/tenders/product/<slug>/` are generated only for products that have at least one allowlisted notice. `/tenders/products.html` is the index of those pages.
+
+`node scripts/refresh-public-tenders.js` re-checks the stored TED and World Bank rows against the public APIs. It does not need a secret. A failed or blocked source keeps its stored rows. `--discover` prints extra TED notices and does not write them. The script is not a scheduled job. ADB and AfDB are requested; when those sites block the request, no row is added.
+
+The alert button uses `TENDER_PARTNER_URL` in `lib/tender-partner.js`. It defaults to `/contact.html`. Replace that constant with the partner URL when it is confirmed. An external URL is marked `rel="sponsored noopener"`.
 
 ## What the page shows
 

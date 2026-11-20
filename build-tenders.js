@@ -44,6 +44,8 @@ const { isOfficialProcurementUrl } = require('./lib/tender-sources');
 const { dualZoneLabel } = require('./lib/tender-time');
 const intake = require('./lib/tender-notices');
 const tenderSitemap = require('./lib/tender-sitemap');
+const products = require('./lib/tender-products');
+const partner = require('./lib/tender-partner');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -333,6 +335,15 @@ const intakeReport = intake.mergeInto(tenders, {
 });
 console.log('tender intake added ' + intakeReport.added.length + ', merged ' + intakeReport.merged.length + ', skipped ' + intakeReport.skipped.length);
 intakeReport.skipped.forEach(function (row) { console.log('  skipped ' + row.reference + ' (' + row.reason + ')'); });
+let publicNotices = [];
+try { publicNotices = intake.load('data/public-tender-notices.json'); } catch (e) { publicNotices = []; }
+const publicReport = intake.mergeInto(tenders, {
+  notices: publicNotices,
+  addTender: addTender,
+  regionOf: regionOf
+});
+console.log('public tender notices added ' + publicReport.added.length + ', merged ' + publicReport.merged.length + ', skipped ' + publicReport.skipped.length);
+publicReport.skipped.forEach(function (row) { console.log('  skipped ' + row.reference + ' (' + row.reason + ')'); });
 tenders.forEach(function (row) {
   intake.finalizeRecord(row, {
     parseDeadline: parseDeadline,
@@ -450,7 +461,7 @@ tenders.forEach((t) => {
   tSlugs.add(slug);
 });
 fs.readdirSync('tenders', { withFileTypes: true }).forEach(function (e) {
-  if (e.isDirectory() && e.name !== 'country' && !tSlugs.has(e.name)) fs.rmSync('tenders/' + e.name, { recursive: true, force: true });
+  if (e.isDirectory() && e.name !== 'country' && e.name !== 'product' && !tSlugs.has(e.name)) fs.rmSync('tenders/' + e.name, { recursive: true, force: true });
 });
 console.log('tender entity pages wrote: ' + tSlugs.size);
 const sitemapDates = require('./lib/sitemap-dates');
@@ -485,31 +496,64 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
   pipelineRows.forEach(function (t) { (regions[t.region] = regions[t.region] || []).push(t); });
   const regionKeys = Object.keys(regions).sort(function (a, b) { return (REGION_ORDER[a] ?? 9) - (REGION_ORDER[b] ?? 9); });
   const countries = {};
-  tenders.forEach(function (t) { if (t.status !== 'CLOSED' && t.country) countries[t.country] = 1; });
+  tenders.forEach(function (t) { if (t.country) countries[t.country] = 1; });
   const countryOptions = Object.keys(countries).sort().map(function (name) {
     return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
   }).join('');
-  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-disclaimer{color:var(--muted);font-size:.92rem;max-width:840px;margin:8px 0 4px}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.t-views{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.view-tab{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}.view-tab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#1a1203}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 18px}.t-filters label{display:flex;flex-direction:column;gap:4px;font-size:.75rem;color:var(--muted);font-weight:700}.t-filters select,.t-filters input{font:inherit;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:160px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}';
+  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-disclaimer{color:var(--muted);font-size:.92rem;max-width:840px;margin:8px 0 4px}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.t-views{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.view-tab{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}.view-tab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#1a1203}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 18px}.t-filters label{display:flex;flex-direction:column;gap:4px;font-size:.75rem;color:var(--muted);font-weight:700}.t-filters select,.t-filters input{font:inherit;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:160px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}.tender-cta{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:8px 0 18px}.tender-cta-title{color:var(--text);font-weight:800;margin:0 0 6px}.t-notice{color:var(--accent);font-weight:700;font-size:.8rem}';
   const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', UNDATED: 'st-expected', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function dateLabel(iso) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+    if (!match) return '';
+    return Number(match[3]) + ' ' + MONTHS[Number(match[2]) - 1] + ' ' + match[1];
+  }
   function rowHtml(t) {
     const confirmed = t.transformer_scope === 'CONFIRMED';
     const ref = t.official_reference || t.procurement_id || '';
-    const bits = [t.country || 'Country not stated'];
-    if (CATEGORY_LABEL[t.category]) bits.push(CATEGORY_LABEL[t.category]);
-    if (ref) bits.push(ref);
-    if (t.voltage) bits.push(t.voltage);
-    const when = closeLabel(t);
+    const product = products.productOf(t);
+    const buyer = t.buyer || t.utility || '';
+    const buyerCountry = t.buyer_country || t.country || '';
+    const dated = dateLabel(t.deadline);
+    const when = dated ? ('Deadline ' + dated) : (deadlineLabel(t.deadline) || '');
+    const official = isOfficialProcurementUrl(t.official_procurement_url) ? t.official_procurement_url : '';
+    const bits = [];
+    if (buyer) bits.push('Buyer ' + buyer);
+    if (buyerCountry) bits.push('Buyer country ' + buyerCountry);
     if (when) bits.push(when);
-    return '<div class="t-row" data-scope="' + esc(t.transformer_scope || '') + '" data-category="' + esc(t.category || '') + '" data-country="' + esc(t.country || '') + '" data-title="' + esc(t.title || '') + '" data-buyer="' + esc(t.buyer || t.utility || '') + '" data-ref="' + esc(ref) + '"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
+    if (product) bits.push(product.label);
+    else if (CATEGORY_LABEL[t.category]) bits.push(CATEGORY_LABEL[t.category]);
+    if (t.source) bits.push(t.source);
+    if (ref) bits.push(ref);
+    return '<div class="t-row" data-scope="' + esc(t.transformer_scope || '') + '" data-category="' + esc(t.category || '') + '" data-product="' + esc(product ? product.slug : '') + '" data-region="' + esc(t.region || '') + '" data-country="' + esc(t.country || '') + '" data-title="' + esc(t.title || '') + '" data-buyer="' + esc(buyer) + '" data-ref="' + esc(ref) + '" data-expired="' + (t.status === 'CLOSED' ? '1' : '0') + '"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
       '<span class="st ' + (stCls[t.status] || 'st-unknown') + '">' + esc(t.statusLabel) + '</span>' +
+      (t.status === 'CLOSED' ? '<span class="st st-closed">Expired</span>' : '') +
       (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
-      '<span class="t-meta">' + esc(bits.join(' · ')) + '</span></div>';
+      '<span class="t-meta">' + esc(bits.join(' · ')) + '</span>' +
+      (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener">Official notice</a>' : '') +
+      '</div>';
   }
+  const expiredRows = tenders.filter(function (t) { return t.status === 'CLOSED'; })
+    .sort(function (a, b) { return String(b.deadline || '').localeCompare(String(a.deadline || '')) || String(a.title).localeCompare(b.title); });
+  const productSeen = {};
+  const regionSeen = {};
+  tenders.forEach(function (t) {
+    const product = products.productOf(t);
+    if (product) productSeen[product.slug] = product.label;
+    if (t.region) regionSeen[t.region] = 1;
+  });
+  const productOptions = Object.keys(productSeen).sort().map(function (slug) {
+    return '<option value="' + esc(slug) + '">' + esc(productSeen[slug]) + '</option>';
+  }).join('');
+  const regionOptions = Object.keys(regionSeen).sort(function (a, b) { return (REGION_ORDER[a] ?? 9) - (REGION_ORDER[b] ?? 9) || a.localeCompare(b); }).map(function (name) {
+    return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
+  }).join('');
   const openBody = openRows.map(rowHtml).join('');
   const pipelineBody = regionKeys.map(function (region) {
     const rows = regions[region].sort(function (a, b) { return (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title); }).map(rowHtml).join('');
     return '<div class="region-h">' + esc(region) + ' (' + regions[region].length + ')</div>' + rows;
   }).join('');
+  const expiredBody = expiredRows.map(rowHtml).join('');
   const listNode = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -526,24 +570,28 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
     })
   };
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Tenders — open bids | TransformerPath</title>' +
-    '<meta name="description" content="Open transformer bids sorted by close time, each with an official notice link and the close shown in the portal zone and Asia/Dubai. The pipeline view holds expected, evaluation, awarded and undated records.">' +
+    '<meta name="description" content="Open transformer, substation and power-equipment tenders with buyer, buyer country, deadline date, product and a link to the official public notice.">' +
     '<link rel="canonical" href="https://transformerpath.com/tenders.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Tenders — open bids"><meta property="og:url" content="https://transformerpath.com/tenders.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
     jsonLdScript(listNode) +
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="t-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Tenders</span></h1>' +
     '<p class="t-disclaimer">Open bids list public metadata and a verified official notice link. TransformerPath does not host bid documents.</p>' +
     dataAsOf.html(updated) +
-    '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">Open bids are sorted by close time. Pipeline / record keeps expected, evaluation, awarded and undated rows in regional groups. <a href="/tenders/countries.html" style="color:var(--accent)">Country tender pages</a> list each country’s records.</p>' +
+    '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">Open bids are sorted by close time. A past deadline leaves that list and is marked expired. <a href="/tenders/countries.html" style="color:var(--accent)">Country pages</a> and <a href="/tenders/products.html" style="color:var(--accent)">product pages</a> group the same records.</p>' +
+    partner.ctaHtml() +
     '<div class="t-stats"><div class="s"><b data-stat="tenders">' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b data-stat="openTenders">' + openRows.length + '</b><small>Open now</small></div><div class="s"><b data-stat="tendersPreAward">' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0) + (stats.by_status.UNDATED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b data-stat="tendersAwarded">' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b data-stat="tendersCountries">' + stats.countries + '</b><small>Countries</small></div></div>' +
-    '<div class="t-views" role="tablist"><button type="button" id="viewOpen" class="view-tab" aria-pressed="true" aria-controls="openView">Open bids</button><button type="button" id="viewPipeline" class="view-tab" aria-pressed="false" aria-controls="pipelineView">Pipeline / record</button></div>' +
+    '<div class="t-views" role="tablist"><button type="button" id="viewOpen" class="view-tab" aria-pressed="true" aria-controls="openView">Open bids</button><button type="button" id="viewPipeline" class="view-tab" aria-pressed="false" aria-controls="pipelineView">Pipeline / record</button><button type="button" id="viewExpired" class="view-tab" aria-pressed="false" aria-controls="expiredView">Expired deadlines</button></div>' +
     '<div class="t-filters"><label>Category <select id="categoryFilter"><option value="">All categories</option><option value="supply">Supply</option><option value="testing_equipment">Testing equipment</option><option value="service">Service</option></select></label>' +
+    '<label>Product <select id="productFilter"><option value="">All products</option>' + productOptions + '</select></label>' +
+    '<label>Region <select id="regionFilter"><option value="">All regions</option>' + regionOptions + '</select></label>' +
     '<label>Country <select id="countryFilter"><option value="">All countries</option>' + countryOptions + '</select></label>' +
     '<label>Keyword <input id="keywordFilter" type="search" placeholder="Title, buyer or reference" autocomplete="off"></label>' +
     '<button type="button" id="scopeFilter" class="scope-filter" aria-pressed="false">Confirmed transformer scope</button></div>' +
     '<div id="openView">' + (openBody || '') + '<p id="openEmpty" hidden>No open bids match these filters.</p></div>' +
     '<div id="pipelineView" hidden>' + pipelineBody + '</div>' +
+    '<div id="expiredView" hidden>' + expiredBody + '<p id="expiredEmpty"' + (expiredRows.length ? ' hidden' : '') + '>No expired tenders match these filters.</p></div>' +
     '<p class="t-note">Status is recomputed when the page is built. A past close leaves the Open bids view. Verify the official notice before acting. Report a <a href="mailto:hello@transformerpath.com?subject=Tender%20correction" style="color:var(--accent)">correction</a>.</p>' +
-    '</main>\n' + FOOT + '\n<script src="site-stats.js?v=9" defer></script>\n<script src="analytics.js" defer></script>\n<script>(function(){var openBtn=document.getElementById("viewOpen"),pipeBtn=document.getElementById("viewPipeline"),openView=document.getElementById("openView"),pipeView=document.getElementById("pipelineView"),scope=document.getElementById("scopeFilter"),category=document.getElementById("categoryFilter"),country=document.getElementById("countryFilter"),keyword=document.getElementById("keywordFilter");function viewName(){return pipeBtn.getAttribute("aria-pressed")==="true"?"pipeline":"open";}function apply(){var name=viewName();var root=name==="pipeline"?pipeView:openView;var on=scope.getAttribute("aria-pressed")==="true";var cat=category.value;var cty=country.value;var q=(keyword.value||"").toLowerCase().trim();root.querySelectorAll(".t-row").forEach(function(el){var hay=((el.getAttribute("data-title")||"")+" "+(el.getAttribute("data-buyer")||"")+" "+(el.getAttribute("data-ref")||"")).toLowerCase();var show=(!on||el.getAttribute("data-scope")==="CONFIRMED")&&(!cat||el.getAttribute("data-category")===cat)&&(!cty||el.getAttribute("data-country")===cty)&&(!q||hay.indexOf(q)!==-1);el.style.display=show?"":"none";});root.querySelectorAll(".region-h").forEach(function(h){var el=h.nextElementSibling,any=false;while(el&&!el.classList.contains("region-h")){if(el.classList.contains("t-row")&&el.style.display!=="none")any=true;el=el.nextElementSibling;}h.style.display=any?"":"none";});var empty=document.getElementById("openEmpty");if(empty){var visible=0;openView.querySelectorAll(".t-row").forEach(function(el){if(el.style.display!=="none")visible++;});empty.hidden=name!=="open"||visible>0;}}function showView(name){var pipe=name==="pipeline";openBtn.setAttribute("aria-pressed",pipe?"false":"true");pipeBtn.setAttribute("aria-pressed",pipe?"true":"false");if(pipe){pipeView.removeAttribute("hidden");openView.setAttribute("hidden","");}else{openView.removeAttribute("hidden");pipeView.setAttribute("hidden","");}apply();}openBtn.addEventListener("click",function(){showView("open");});pipeBtn.addEventListener("click",function(){showView("pipeline");});scope.addEventListener("click",function(){scope.setAttribute("aria-pressed",scope.getAttribute("aria-pressed")==="true"?"false":"true");apply();});category.addEventListener("change",apply);country.addEventListener("change",apply);keyword.addEventListener("input",apply);if(/[?&]scope=confirmed(?:&|$)/.test(location.search))scope.setAttribute("aria-pressed","true");if(/[?&]view=pipeline(?:&|$)/.test(location.search))showView("pipeline");else apply();})();</script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="site-stats.js?v=9" defer></script>\n<script src="analytics.js" defer></script>\n<script>(function(){var openBtn=document.getElementById("viewOpen"),pipeBtn=document.getElementById("viewPipeline"),expBtn=document.getElementById("viewExpired"),openView=document.getElementById("openView"),pipeView=document.getElementById("pipelineView"),expView=document.getElementById("expiredView"),scope=document.getElementById("scopeFilter"),category=document.getElementById("categoryFilter"),product=document.getElementById("productFilter"),region=document.getElementById("regionFilter"),country=document.getElementById("countryFilter"),keyword=document.getElementById("keywordFilter");function viewName(){if(expBtn&&expBtn.getAttribute("aria-pressed")==="true")return "expired";return pipeBtn.getAttribute("aria-pressed")==="true"?"pipeline":"open";}function rootFor(name){return name==="pipeline"?pipeView:name==="expired"?expView:openView;}function apply(){var name=viewName();var root=rootFor(name);if(!root)return;var on=scope.getAttribute("aria-pressed")==="true";var cat=category.value;var prod=product?product.value:"";var reg=region?region.value:"";var cty=country.value;var q=(keyword.value||"").toLowerCase().trim();root.querySelectorAll(".t-row").forEach(function(el){var hay=((el.getAttribute("data-title")||"")+" "+(el.getAttribute("data-buyer")||"")+" "+(el.getAttribute("data-ref")||"")).toLowerCase();var show=(!on||el.getAttribute("data-scope")==="CONFIRMED")&&(!cat||el.getAttribute("data-category")===cat)&&(!prod||el.getAttribute("data-product")===prod)&&(!reg||el.getAttribute("data-region")===reg)&&(!cty||el.getAttribute("data-country")===cty)&&(!q||hay.indexOf(q)!==-1);el.style.display=show?"":"none";});root.querySelectorAll(".region-h").forEach(function(h){var el=h.nextElementSibling,any=false;while(el&&!el.classList.contains("region-h")){if(el.classList.contains("t-row")&&el.style.display!=="none")any=true;el=el.nextElementSibling;}h.style.display=any?"":"none";});function toggleEmpty(id,root,active){var empty=document.getElementById(id);if(!empty||!root)return;var visible=0;root.querySelectorAll(".t-row").forEach(function(el){if(el.style.display!=="none")visible++;});empty.hidden=!active||visible>0;}toggleEmpty("openEmpty",openView,name==="open");toggleEmpty("expiredEmpty",expView,name==="expired");}function showView(name){openBtn.setAttribute("aria-pressed",name==="open"?"true":"false");pipeBtn.setAttribute("aria-pressed",name==="pipeline"?"true":"false");if(expBtn)expBtn.setAttribute("aria-pressed",name==="expired"?"true":"false");[openView,pipeView,expView].forEach(function(el){if(!el)return;var on=(name==="open"&&el===openView)||(name==="pipeline"&&el===pipeView)||(name==="expired"&&el===expView);if(on)el.removeAttribute("hidden");else el.setAttribute("hidden","");});apply();}openBtn.addEventListener("click",function(){showView("open");});pipeBtn.addEventListener("click",function(){showView("pipeline");});if(expBtn)expBtn.addEventListener("click",function(){showView("expired");});scope.addEventListener("click",function(){scope.setAttribute("aria-pressed",scope.getAttribute("aria-pressed")==="true"?"false":"true");apply();});category.addEventListener("change",apply);if(product)product.addEventListener("change",apply);if(region)region.addEventListener("change",apply);country.addEventListener("change",apply);keyword.addEventListener("input",apply);if(/[?&]scope=confirmed(?:&|$)/.test(location.search))scope.setAttribute("aria-pressed","true");var params;try{params=new URLSearchParams(location.search);}catch(e){params=null;}if(params){if(product&&params.get("product"))product.value=params.get("product");if(region&&params.get("region"))region.value=params.get("region");if(country&&params.get("country"))country.value=params.get("country");}if(/[?&]view=expired(?:&|$)/.test(location.search))showView("expired");else if(/[?&]view=pipeline(?:&|$)/.test(location.search))showView("pipeline");else apply();})();</script>\n</body>\n</html>';
   fs.writeFileSync('tenders.html', html);
   console.log('tenders.html wrote (Transformer Tenders: ' + tenders.length + ' tenders / ' + openRows.length + ' open / ' + pipelineRows.length + ' pipeline / ' + regionKeys.length + ' pipeline regions)');
 })();
