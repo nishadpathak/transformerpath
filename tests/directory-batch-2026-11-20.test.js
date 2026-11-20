@@ -18,7 +18,7 @@ const banned = new RegExp(['do_not_contact', 'never_contact', 'outreach_flags', 
 const manifest = JSON.parse(read('data/directory-batch-manifest.json'));
 const added = manifest.added || [];
 const skipped = manifest.skipped || [];
-check('batch accounts for every held row', added.length + skipped.length === 160, added.length + ' added, ' + skipped.length + ' skipped');
+check('batch accounts for every held row', added.length + skipped.length === 210, added.length + ' added, ' + skipped.length + ' skipped');
 check('batch added listings', added.length >= 120, String(added.length));
 
 added.forEach(function (row) {

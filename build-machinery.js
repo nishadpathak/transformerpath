@@ -332,6 +332,29 @@ document.getElementById('catPills').addEventListener('click', function(e) {
 
   fs.writeFileSync('machinery.html', html);
   console.log('build-machinery.js wrote machinery.html with', MACHINES.length, 'records (SSR + dynamic stats + client esc)');
+  const outreach = require('./lib/directory-outreach');
+  MACHINES.filter(function (m) { return m && m.directory_publish === true && m.slug; }).forEach(function (m) {
+    const url = 'https://transformerpath.com/machinery/' + m.slug + '/';
+    const loc = m.country === 'GCC' ? 'GCC' : [m.city, m.country].filter(Boolean).join(', ');
+    const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+      '<title>' + esc(m.name) + ' — Machinery | TransformerPath</title>' +
+      '<meta name="description" content="' + esc(String(m.transformer_application || m.name).slice(0, 180)) + '">' +
+      '<link rel="canonical" href="' + url + '">' +
+      '<meta name="robots" content="index,follow">' +
+      '<link rel="stylesheet" href="../../style.css?v=14"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+      '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+      '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../machinery.html">Machinery</a> › ' + esc(m.name) + '</nav>' +
+      '<h1>' + esc(m.name) + '</h1>' +
+      '<p style="color:var(--muted)">' + esc(m.machine_type || '—') + '</p>' +
+      '<p>' + esc(m.transformer_application || '') + '</p>' +
+      '<p>Location: ' + esc(loc || '—') + (m.website ? ' · <a href="' + esc(m.website) + '">Official website</a>' : '') + '</p>' +
+      (m.source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(m.source) + '. Checked ' + esc(m.last_verified || '—') + '.</p>' : '') +
+      '<p style="font-size:.78rem;color:var(--muted)">Unclaimed directory listing. It is not a certification or an endorsement.</p>' +
+      '</main>\n' + FOOT + '\n</body></html>\n';
+    if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into ' + url);
+    fs.mkdirSync('machinery/' + m.slug, { recursive: true });
+    fs.writeFileSync('machinery/' + m.slug + '/index.html', page);
+  });
 }
 
 render();
