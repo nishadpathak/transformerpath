@@ -51,8 +51,8 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'checkout', 'claim-listing', 'tools', 'engineer-track', 'guides', 'learn', 'laboratories', 'services', 'rental-emergency',
-  'components', 'directory', 'events', 'grids', 'knowledge', 'manufacturers',
+  'accessories', 'applications', 'admin', 'approved-vendors', 'books', 'brand', 'case-studies', 'checkout', 'claim-listing', 'tools', 'engineer-track', 'epc', 'guides', 'learn', 'laboratories', 'logistics', 'education', 'monitoring', 'recycling', 'services', 'rental-emergency', 'jobs',
+  'components', 'directory', 'events', 'grids', 'knowledge', 'machinery', 'manufacturers',
   'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];

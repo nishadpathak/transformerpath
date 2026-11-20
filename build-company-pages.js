@@ -789,6 +789,15 @@ Object.keys(aliasRedirectSlugs).forEach(function (s) { currentSlugs.add(s); });
 ['power-transformers', 'distribution-transformers', 'dry-type-transformers', 'sourced', 'specs'].forEach(function (s) {
   currentSlugs.add(s);
 });
+// Free manufacturer listings are not census companies. Their pages live under
+// manufacturers/<slug>/ and manufacturer-listings.html links to them. Dropping
+// the directories makes the entity-canonical check fail the site build.
+try {
+  const batchMakers = JSON.parse(fs.readFileSync('data/manufacturer-listings.json', 'utf8'));
+  (batchMakers.companies || []).forEach(function (row) {
+    if (row && row.slug) currentSlugs.add(row.slug);
+  });
+} catch (e) { /* no batch file on older trees */ }
 (function pruneStale(dir) {
   fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
     if (!e.isDirectory() || e.name.startsWith('.')) return;

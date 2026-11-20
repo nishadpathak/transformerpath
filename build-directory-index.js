@@ -25,6 +25,7 @@ function slugify(s) {
     .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 const { resolveCompanyAlias } = require('./lib/company-aliases');
+const { accessoryPublicSlug } = require('./lib/accessory-slug');
 const TAX = JSON.parse(fs.readFileSync('data/industry-taxonomy.json', 'utf8'));
 const MFG = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies || [];
 const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
@@ -188,7 +189,7 @@ function buildManufacturer(c) {
 
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
-  const slug = slugify(s.name) || require('./lib/company-aliases').slugify(s.name);
+  const slug = accessoryPublicSlug(s);
   const hasPage = slug && fs.existsSync('accessories/' + slug + '/index.html');
   const cp = getCanonProps(slug, s.name, 'component_supplier', 0);
   return {

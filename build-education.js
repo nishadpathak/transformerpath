@@ -15,6 +15,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
+const outreach = require('./lib/directory-outreach');
 
 const DATA = JSON.parse(fs.readFileSync('data/education.json', 'utf8'));
 const PROVIDERS = DATA.providers || [];
@@ -22,7 +23,8 @@ const { sourcedCardCount } = require('./lib/sourced-card-count');
 const provenanceStat = sourcedCardCount(PROVIDERS);
 
 function render() {
-  const eduJson = scrubLegacyLabels(JSON.stringify(PROVIDERS));
+  const eduJson = scrubLegacyLabels(JSON.stringify(PROVIDERS.map(outreach.publicCopy)));
+  if (outreach.leaked(eduJson)) throw new Error('outreach flag leaked into education.html');
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -191,7 +193,7 @@ window.__TP_EDUCATION__ = ${eduJson};
 
       return '<div class="edu-card">' +
         '<div class="edu-top">' +
-          '<h2 class="edu-name">' + esc(d.provider_name) + '</h2>' +
+          '<h2 class="edu-name">' + (d.profile_page && d.id ? '<a href="/education/' + esc(String(d.id).replace(/^edu:/, '')) + '/">' + esc(d.provider_name) + '</a>' : esc(d.provider_name)) + '</h2>' +
           (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="edu-loc">📍 ' + esc(loc) + ' &nbsp; ' + modePill + '</div>' +
@@ -226,6 +228,28 @@ window.__TP_EDUCATION__ = ${eduJson};
 
   fs.writeFileSync('education.html', html);
   console.log('education.html built (' + PROVIDERS.length + ' education providers)');
+  PROVIDERS.filter(function (row) { return row.directory_publish === true; }).forEach(function (row) {
+    const slug = String(row.id || '').replace(/^edu:/, '');
+    const url = 'https://transformerpath.com/education/' + slug + '/';
+    const country = outreach.publicCountry(row.country);
+    const loc = country === 'GCC' ? 'GCC' : [row.city, row.state_province, country].filter(Boolean).join(', ');
+    const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+      '<title>' + esc(row.provider_name) + ' — Transformer training | TransformerPath</title>' +
+      '<meta name="description" content="' + esc((row.description || row.provider_name).slice(0, 180)) + '">' +
+      '<link rel="canonical" href="' + url + '">' +
+      '<meta name="robots" content="index,follow">' +
+      '<link rel="stylesheet" href="../../style.css?v=14"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+      '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+      '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../education.html">Training</a> › ' + esc(row.provider_name) + '</nav>' +
+      '<h1>' + esc(row.provider_name) + '</h1>' +
+      '<p>' + esc(row.description || '') + '</p>' +
+      '<p>Location: ' + esc(loc || '—') + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+      (row.verification_source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.verification_source) + '. Checked ' + esc(row.verification_date || '—') + '.</p>' : '') +
+      '</main>\n' + FOOT + '\n</body></html>\n';
+    if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into training profile ' + slug);
+    fs.mkdirSync('education/' + slug, { recursive: true });
+    fs.writeFileSync('education/' + slug + '/index.html', page);
+  });
 }
 
 render();
