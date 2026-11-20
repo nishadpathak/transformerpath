@@ -465,6 +465,13 @@ const reinhausen = fitWindow('Maschinenfabrik Reinhausen (MR / Reinhausen Group)
 assert(reinhausen.indexOf('Reinhausen') !== -1, 'accessory title keeps the company name ' + reinhausen);
 assert(reinhausen.indexOf('Maschinenfabrik |') !== 0, 'accessory title does not keep only Maschinenfabrik ' + reinhausen);
 
+const hydrogenRel = 'events/hydrogen-and-carbon-capture-technology-expo-mena-2027/index.html';
+const hydrogenCopy = catalog.draft(hydrogenRel, fs.readFileSync(path.join(__dirname, '..', hydrogenRel), 'utf8'), seoCat);
+assert(hydrogenCopy.lockedTitle, 'hydrogen expo title is locked');
+assert(hydrogenCopy.draftTitle === 'Hydrogen & CCUS Technology Expo MENA 2027, Abu Dhabi | TransformerPath', 'hydrogen expo title ' + hydrogenCopy.draftTitle);
+assert(hydrogenCopy.draftDesc.length >= 140 && hydrogenCopy.draftDesc.length <= 160, 'hydrogen expo description window ' + hydrogenCopy.draftDesc.length);
+assert(/[.!?]$/.test(hydrogenCopy.draftDesc) && hydrogenCopy.draftDesc.indexOf('Recorded dates') === -1, 'hydrogen expo description is a finished sentence');
+
 const cited = ['manufacturers.html', 'tenders.html', 'accessories.html', 'faq.html', '404.html', 'learn.html'];
 cited.forEach(function (rel) {
   const source = fs.readFileSync(path.join(__dirname, '..', rel), 'utf8');

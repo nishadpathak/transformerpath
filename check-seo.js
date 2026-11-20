@@ -122,12 +122,14 @@ files.forEach(function (file) {
     title.indexOf('Transformer Connect: Uncovering the new operating reality of distribution grids') === 0 &&
     /\| Transformer Events \| TransformerPath$/.test(title) &&
     title.length <= 140;
-  if (!geoTitle && !intelTitle && !sitePrepTitle && !fullHitachiTitle && (title.length < 50 || title.length > titleMax)) fail(rel + ': title length ' + title.length + ' (' + title + ')');
+  const hydrogenExpoTitle = rel === 'events/hydrogen-and-carbon-capture-technology-expo-mena-2027/index.html' &&
+    title === 'Hydrogen & CCUS Technology Expo MENA 2027, Abu Dhabi | TransformerPath';
+  if (!geoTitle && !intelTitle && !sitePrepTitle && !fullHitachiTitle && !hydrogenExpoTitle && (title.length < 50 || title.length > titleMax)) fail(rel + ': title length ' + title.length + ' (' + title + ')');
   if (eventProfile) {
     const brands = title.match(/TransformerPath/g) || [];
     if (brands.length !== 1) fail(rel + ': event title brand count ' + brands.length + ' (' + title + ')');
     if (!/\| TransformerPath$/.test(title)) fail(rel + ': event title suffix (' + title + ')');
-    if (title.length > 60 && !/\| Transformer Events \| TransformerPath$/.test(title) && !fullHitachiTitle) {
+    if (title.length > 60 && !/\| Transformer Events \| TransformerPath$/.test(title) && !fullHitachiTitle && !hydrogenExpoTitle) {
       fail(rel + ': long event title kept neither suffix (' + title + ')');
     }
     if (/\sprofile\b/i.test(title) || /\| transformer event\b/i.test(title)) {
