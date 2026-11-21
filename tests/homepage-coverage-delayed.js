@@ -22,7 +22,9 @@ if (String(status.status).indexOf(PHRASE) < 0) {
   check('homepage HTML does not contain COVERAGE DELAYED', home.indexOf(PHRASE) < 0);
 } else {
   check('delayed status is confined to the visible banner', stamped.indexOf(PHRASE) >= 0);
-  const outside = home.replace(stamped, '');
+  const pill = home.match(/<div class="hero-live-pill" id="hero-live-pill"[\s\S]*?<\/div>/);
+  check('stamped banner element is present', !!pill);
+  const outside = pill ? home.replace(pill[0], '') : home;
   check('COVERAGE DELAYED is not repeated outside the stamped banner', outside.indexOf(PHRASE) < 0);
 }
 
