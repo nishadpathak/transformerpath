@@ -3,10 +3,13 @@
 'use strict';
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const offer = require('../lib/student-learning-offer');
 const checkout = require('../functions/student-learning-checkout');
 const track = require('../functions/engineer-track-content');
 const masterclass = require('../functions/masterclass-content');
+const learnLesson = require('../functions/learn-lesson');
 
 function jwt(role) {
   const header = Buffer.from(JSON.stringify({ alg: 'none', typ: 'JWT' })).toString('base64url');
@@ -101,6 +104,58 @@ async function main() {
   assert.strictEqual(openChapter.ok, true);
   assert.strictEqual(openChapter.plan, 'student');
   assert.ok(openChapter.html && openChapter.html.length > 0);
+
+  const lockedLesson = JSON.parse((await learnLesson.handler({
+    httpMethod: 'GET',
+    queryStringParameters: { id: 'hv-side-bushing-replacement' },
+    headers: {}
+  })).body);
+  assert.strictEqual(lockedLesson.locked, true);
+  assert.ok(!lockedLesson.html);
+  assert.strictEqual(JSON.stringify(lockedLesson).indexOf('pilot cord'), -1);
+
+  badgeFetch(true);
+  const openLessonStudent = JSON.parse((await learnLesson.handler({
+    httpMethod: 'GET',
+    queryStringParameters: { id: 'hv-side-bushing-replacement' },
+    headers: { 'x-tp-supabase-auth': 'user-access-token' }
+  })).body);
+  assert.strictEqual(openLessonStudent.ok, true);
+  assert.strictEqual(openLessonStudent.plan, 'student');
+  assert.ok(openLessonStudent.html.indexOf('pilot cord') !== -1);
+
+  process.env.ENTITLEMENT_SECRET = 'test_entitlement_secret_lesson';
+  const ent = require('../functions/lib/entitlement');
+  const token = ent.issue('learning', 3600);
+  const openLesson = JSON.parse((await learnLesson.handler({
+    httpMethod: 'GET',
+    queryStringParameters: { id: 'hv-side-bushing-replacement' },
+    headers: { cookie: 'tp_ent=' + token }
+  })).body);
+  assert.strictEqual(openLesson.ok, true);
+  assert.strictEqual(openLesson.plan, 'learning');
+  assert.ok(openLesson.html.indexOf('pilot cord') !== -1);
+  const tampered = JSON.parse((await learnLesson.handler({
+    httpMethod: 'GET',
+    queryStringParameters: { id: 'hv-side-bushing-replacement' },
+    headers: { cookie: 'tp_ent=' + token.slice(0, -4) + 'xxxx' }
+  })).body);
+  assert.strictEqual(tampered.locked, true);
+  assert.ok(!tampered.html);
+  delete process.env.ENTITLEMENT_SECRET;
+
+  const page = fs.readFileSync(path.join(__dirname, '../learn/volume-8/hv-side-bushing-replacement/index.html'), 'utf8');
+  assert.ok(page.indexOf('pilot cord') === -1);
+  assert.ok(page.indexOf('href="/checkout/?product=learning"') !== -1);
+  assert.ok(page.indexOf('Upgrade to Learning — $199') !== -1);
+  assert.ok(page.indexOf('Sign in or create an account') !== -1);
+  assert.ok(!/buy\.stripe\.com/.test(page));
+  assert.ok(!/\bDubai\b|\bUAE\b|United Arab Emirates/i.test(page));
+  assert.strictEqual((await learnLesson.handler({
+    httpMethod: 'GET',
+    queryStringParameters: { id: 'missing' },
+    headers: {}
+  })).statusCode, 404);
 
   delete process.env.STUDENT_LEARNING_COUPON_ENABLED;
   delete process.env.STRIPE_STUDENT_LEARNING_COUPON_ID;

@@ -570,6 +570,12 @@ function pageHtml(course, header, footer) {
   const bookLink = course.volume === null
     ? ''
     : '<li><a href="/books/volume-' + course.volume + '/">Volume ' + course.volume + ' — titles and outcomes</a></li>\n';
+  const volumeLessons = course.volume === 8
+    ? '<h2>Lessons in Volume 8</h2>\n<ul>\n<li>Module 1 — Bushings, taps, cooling (this page)</li>\n<li><a href="/learn/volume-8/hv-side-bushing-replacement/">HV side bushing replacement</a> — Learning plan</li>\n</ul>\n'
+    : '';
+  const lessonLink = course.volume === 8
+    ? '<li><a href="/learn/volume-8/hv-side-bushing-replacement/">HV side bushing replacement</a></li>\n'
+    : '';
   const head = header
     .replace(/<title>[^<]*<\/title>/, '<title>' + title + '</title>')
     .replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="' + description + '">')
@@ -590,7 +596,9 @@ function pageHtml(course, header, footer) {
     '<h2>Upgrade</h2>\n' +
     '<p>Module 1 is free. The rest of this course is the Learning plan, $199, a one-time payment for 12 months of access, with no auto-renewal. This page does not offer a class or a call.</p>\n' +
     '<p><a class="btn btn-amber" href="' + CHECKOUT + '" data-upgrade="learning" data-track="learning_checkout_started" data-track-plan="Learning">Upgrade to Learning — $199</a></p>\n' +
+    volumeLessons +
     '<h2>Continue</h2>\n<ul>\n' +
+    lessonLink +
     bookLink +
     '<li><a href="/learn.html">All courses</a></li>\n' +
     '<li><a href="/pricing.html">Plans</a></li>\n' +
@@ -602,7 +610,10 @@ function indexHtml(courses) {
     const pathName = course.volume === null
       ? '/learn/design/module-1/'
       : '/learn/volume-' + course.volume + '/module-1/';
-    return '<li><span class="free-pill">Free</span> <a href="' + pathName + '">' + course.h1 + '</a></li>';
+    const paid = course.volume === 8
+      ? ' · <a href="/learn/volume-8/hv-side-bushing-replacement/">HV side bushing replacement</a>'
+      : '';
+    return '<li><span class="free-pill">Free</span> <a href="' + pathName + '">' + course.h1 + '</a>' + paid + '</li>';
   }).join('\n');
   return '<nav aria-label="Free modules" id="free-modules" style="margin:0 0 28px">\n' +
     '<h2>Free module 1 of each course</h2>\n' +
