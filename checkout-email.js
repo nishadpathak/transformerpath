@@ -125,13 +125,33 @@
     return '';
   }
 
+  var LEAD_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  function cleanLeadId(value) {
+    var s = String(value || '').trim().toLowerCase();
+    return LEAD_ID_RE.test(s) ? s : '';
+  }
+
+  function cleanCompany(value) {
+    var s = String(value || '').replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!s) return '';
+    return s.slice(0, 160);
+  }
+
+  function newLeadId() {
+    try {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    } catch (e) {}
+    return '';
+  }
+
   function leadRow(opts) {
     opts = opts || {};
     function text(value) {
       var s = String(value == null ? '' : value).trim();
       return s || null;
     }
-    return {
+    var row = {
       email: String(opts.email || '').trim(),
       listing_slug: text(opts.listingSlug),
       product_name: text(opts.productName),
@@ -139,6 +159,11 @@
       page_path: text(opts.pagePath),
       created_at: opts.createdAt || new Date().toISOString()
     };
+    var id = cleanLeadId(opts.id);
+    var company = cleanCompany(opts.company);
+    if (id) row.id = id;
+    if (company) row.company = company;
+    return row;
   }
 
   function readConfig() {
@@ -166,12 +191,25 @@
       body: JSON.stringify(row)
     };
     if (ctrl) opts.signal = ctrl.signal;
-    return doFetch(String(cfg.url).replace(/\/$/, '') + '/rest/v1/checkout_leads', opts).then(function (res) {
+    function post(body) {
+      var next = {};
+      Object.keys(opts).forEach(function (key) { next[key] = opts[key]; });
+      next.body = JSON.stringify(body);
+      return doFetch(String(cfg.url).replace(/\/$/, '') + '/rest/v1/checkout_leads', next).then(function (res) {
+        if (res && res.ok) return { ok: true, text: '' };
+        var read = res && res.text ? res.text() : Promise.resolve('');
+        return Promise.resolve(read).then(function (text) {
+          return { ok: false, text: String(text || '') };
+        }, function () { return { ok: false, text: '' }; });
+      }, function () { return { ok: false, text: '' }; });
+    }
+    return post(row).then(function (res) {
       clearTimeout(timer);
-      return { ok: !!(res && res.ok) };
-    }, function () {
-      clearTimeout(timer);
-      return { ok: false };
+      if (res.ok) return { ok: true };
+      if (!row.company || !/company/i.test(res.text)) return { ok: false };
+      var copy = {};
+      Object.keys(row).forEach(function (key) { if (key !== 'company') copy[key] = row[key]; });
+      return post(copy).then(function (again) { return { ok: !!again.ok }; });
     });
   }
 
@@ -325,6 +363,9 @@
     listingSlug: listingSlug,
     productName: productName,
     leadRow: leadRow,
+    newLeadId: newLeadId,
+    cleanCompany: cleanCompany,
+    cleanLeadId: cleanLeadId,
     saveLead: saveLead,
     rememberLead: rememberLead,
     mount: mount,

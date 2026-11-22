@@ -153,13 +153,61 @@ function buyer() {
   assert.strictEqual(email.isCheckoutSessionUrl('https://stripe.com'), false);
   assert.strictEqual(email.isCheckoutSessionUrl(paid.PAYMENT_LINKS.verified_manufacturer.url), false);
 
+  const lead = '11111111-1111-4111-8111-111111111111';
+  let learnPosted = '';
+  let learnRow = null;
+  cont._leadInsertForTests = async function (row) {
+    learnRow = row;
+    return { saved: true };
+  };
+  global.fetch = async function (url, opts) {
+    const u = String(url);
+    if (u.indexOf('/v1/payment_links?') !== -1) {
+      return { ok: true, json: async function () {
+        return { data: [{ id: 'plink_learn', url: paid.PAYMENT_LINKS.learning.url, active: true, automatic_tax: { enabled: true }, billing_address_collection: 'auto', metadata: {} }], has_more: false };
+      } };
+    }
+    if (u.indexOf('/line_items') !== -1) {
+      return { ok: true, json: async function () { return { data: [{ price: 'price_learn_live' }] }; } };
+    }
+    if (u.indexOf('/v1/checkout/sessions') !== -1) {
+      learnPosted = opts.body;
+      return { ok: false, status: 403, json: async function () { return { error: { code: 'more_permissions_required' } }; } };
+    }
+    return { ok: false, status: 403, json: async function () { return { error: { code: 'more_permissions_required' } }; } };
+  };
+  const learn = await post({
+    product: 'learning',
+    email: 'buyer@example.com',
+    company: 'Acme Grid',
+    lead_id: lead
+  });
+  const learnBody = JSON.parse(learn.body);
+  const learnUrl = new URL(learnBody.url);
+  const learnSent = new URLSearchParams(learnPosted);
+  assert.strictEqual(learn.statusCode, 200);
+  assert.strictEqual(learnBody.payment_link, true);
+  assert.strictEqual(learnUrl.searchParams.get('prefilled_email'), 'buyer@example.com');
+  assert.strictEqual(learnUrl.searchParams.get('client_reference_id'), lead);
+  assert.strictEqual(learnSent.get('customer_email'), 'buyer@example.com');
+  assert.strictEqual(learnSent.get('client_reference_id'), lead);
+  assert.strictEqual(learnSent.get('metadata[lead_id]'), lead);
+  assert.strictEqual(learnSent.get('metadata[buyer_company]'), 'Acme Grid');
+  assert.strictEqual(learnSent.get('cancel_url'), 'https://transformerpath.com/pricing/');
+  assert.strictEqual(learnRow.id, lead);
+  assert.strictEqual(learnRow.company, 'Acme Grid');
+  assert.strictEqual(learnRow.email, 'buyer@example.com');
+  assert.strictEqual(learnRow.product_name, 'learning');
+
   const page = require('fs').readFileSync(require('path').join(__dirname, '..', 'checkout/index.html'), 'utf8');
   assert.ok(page.indexOf('continueCheckout') !== -1);
   assert.ok(page.indexOf('isCheckoutSessionUrl') !== -1);
   assert.ok(page.indexOf('isPaymentLinkUrl') !== -1);
   assert.ok(page.indexOf('Your email is saved with this plan before payment opens') === -1);
   assert.ok(page.indexOf('It is not saved as a TransformerPath lead') !== -1);
-  assert.ok(page.indexOf('leadNotice(res.saved === true)') !== -1);
+  assert.ok(page.indexOf('data-checkout-company') !== -1);
+  assert.ok(page.indexOf('newLeadId') !== -1);
+  assert.ok(page.indexOf('leadNotice(out.browserSaved === true || res.saved === true)') !== -1);
   assert.strictEqual(email.leadNotice(true).indexOf('not saved'), -1);
   assert.ok(email.leadNotice(false).indexOf('not saved as a TransformerPath lead') !== -1);
   assert.ok(email.leadNotice(undefined).indexOf('not saved as a TransformerPath lead') !== -1);
