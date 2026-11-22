@@ -88,7 +88,7 @@ check('viz math does not throw module is not defined in the browser', !/^module\
 const api = require('../viz/viz-math');
 check('viz math still exports for node', typeof api.inrush === 'function' && typeof api.vecGroup === 'function');
 
-check('homepage does not paint the wordmark banner over the headline', home.indexOf('home-hero-banner') === -1 && home.indexOf("url('brand/hero.jpg')") === -1);
+check('homepage keeps the responsive wordmark banner for phones', /class="home-hero-banner"[^>]*src="brand\/hero-800\.jpg"/.test(home) && home.indexOf("background-image:url('brand/hero.jpg')") === -1);
 check('mobile ticker sits in normal flow', /@media \(max-width: 760px\) \{[\s\S]*\.ticker \{ display: block; position: static;/.test(home));
 check('mobile hides the old cover-cropped hero stage', /@media \(max-width: 760px\) \{\s*\.hero-stage__viz,\s*\.hero-stage__poster,\s*\.hero-stage__scrim \{ display: none; \}/.test(home));
 const labelLayout = fs.readFileSync('tp-label-layout.js', 'utf8');
