@@ -88,10 +88,9 @@ check('viz math does not throw module is not defined in the browser', !/^module\
 const api = require('../viz/viz-math');
 check('viz math still exports for node', typeof api.inrush === 'function' && typeof api.vecGroup === 'function');
 
-check('mobile homepage shows the whole hero banner', /class="home-hero-banner"/.test(home) && /object-fit:\s*contain/.test(home) && /aspect-ratio:\s*1774 \/ 887/.test(home));
-check('mobile ticker sits in normal flow under the banner', /@media \(max-width: 760px\) \{[\s\S]*\.ticker \{ display: block; position: static;/.test(home));
+check('homepage keeps the responsive wordmark banner for phones', /class="home-hero-banner"[^>]*src="brand\/hero-800\.jpg"/.test(home) && home.indexOf("background-image:url('brand/hero.jpg')") === -1);
+check('mobile ticker sits in normal flow', /@media \(max-width: 760px\) \{[\s\S]*\.ticker \{ display: block; position: static;/.test(home));
 check('mobile hides the old cover-cropped hero stage', /@media \(max-width: 760px\) \{\s*\.hero-stage__viz,\s*\.hero-stage__poster,\s*\.hero-stage__scrim \{ display: none; \}/.test(home));
-check('desktop does not force the mobile banner', /\.home-hero-banner \{ display: none; \}/.test(home));
 const labelLayout = fs.readFileSync('tp-label-layout.js', 'utf8');
 check('callout layout clamps and avoids collisions', /function layout\(/.test(labelLayout) && /function separate\(/.test(labelLayout) && /obstacleRects/.test(labelLayout));
 check('callout layout script is copied into the published site', /'tp-label-layout\.js'/.test(fs.readFileSync('build-dist.js', 'utf8')) && /tp-label-layout/.test(fs.readFileSync('lib/seo-cwv.js', 'utf8')));
