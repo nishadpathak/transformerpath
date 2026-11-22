@@ -118,9 +118,28 @@ email.saveLead(row, {
   assert.strictEqual(gateCount('claim-profile.html'), 1);
   const gatePage = fs.readFileSync(path.join(root, 'checkout/index.html'), 'utf8');
   assert.ok(/<input type="email"[^>]*data-checkout-email[^>]*required|required[^>]*data-checkout-email/.test(gatePage));
+  assert.ok(gatePage.indexOf('data-checkout-company') !== -1);
+  assert.ok(gatePage.indexOf('name="company"') !== -1);
+  assert.strictEqual(/data-checkout-company[^>]*required|required[^>]*data-checkout-company/.test(gatePage), false);
+  const companySql = fs.readFileSync(path.join(root, 'supabase/migrations/20261115100000_checkout_leads_company.sql'), 'utf8');
+  assert.ok(/add column if not exists company text/.test(companySql));
+  assert.ok(/checkout_leads_company_check/.test(companySql));
+  assert.strictEqual(/for select/.test(companySql), false);
+  const withCompany = email.leadRow({
+    id: '11111111-1111-4111-8111-111111111111',
+    email: 'buyer@example.com',
+    company: '  Acme Grid  ',
+    listingSlug: 'hitachi-energy',
+    productName: 'verified_manufacturer',
+    createdAt: '2026-11-15T00:00:00.000Z'
+  });
+  assert.strictEqual(withCompany.id, '11111111-1111-4111-8111-111111111111');
+  assert.strictEqual(withCompany.company, 'Acme Grid');
+  assert.strictEqual(email.leadRow({ email: 'buyer@example.com', company: '   ' }).company, undefined);
+  assert.ok(email.cleanLeadId(email.newLeadId()) || email.newLeadId() === '');
   assert.strictEqual((gatePage.match(/href="https:\/\/buy\.stripe\.com/g) || []).length, 0);
   const privacy = fs.readFileSync(path.join(root, 'privacy.html'), 'utf8');
-  assert.ok(privacy.indexOf('TransformerPath stores emails entered at checkout to follow up on incomplete purchases, and questions go to hello@transformerpath.com.') >= 0);
+  assert.ok(privacy.indexOf('TransformerPath stores the email and optional company name entered at checkout to follow up on incomplete purchases, and questions go to hello@transformerpath.com.') >= 0);
   assert.strictEqual(/dubai|uae/i.test(privacy.slice(privacy.indexOf('Payment processing'), privacy.indexOf('Payment processing') + 800)), false);
 
   const opened = [];
