@@ -130,7 +130,7 @@ function page(s) {
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply transformer accessories?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your company listed in the directory, or post a requirement to reach accessory suppliers.</p>' +
     '<a class="btn btn-amber" href="../../list-company.html" data-track="supplier_claim_started">Get listed</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started">Submit an RFQ</a></div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:18px">Compare suppliers side by side in the <a href="../../buyers-guide.html" style="color:var(--accent);font-weight:600" data-track="buyers_guide_crosslink" data-track-supplier="' + esc(s.name) + '">Buyer\'s Guide</a>, or browse the <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> library.</p>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n' +
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n<script src="/quote-request.js" defer></script>\n' +
     (eventBadges.htmlFor({ slug: slug, name: s.name }) ? eventBadges.deferScript() : '') +
     '</body>\n</html>';
 }
