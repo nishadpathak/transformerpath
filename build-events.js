@@ -193,12 +193,17 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     className: 'btn btn-amber btn-sm',
     style: 'margin:0 8px 8px 0'
   });
-  const exhibitorPay = paidListings.featuredExhibitorPayHtml({
+  /* An online session has no exhibitor floor. The $399 control is an unpaid
+   * offer, so it is omitted. A paid Featured Event badge still renders. */
+  const exhibitorPay = flags.online ? '' : paidListings.featuredExhibitorPayHtml({
     eventId: eventId || '',
     formHref: '../../sponsor.html#contact',
     className: 'btn btn-amber',
     label: 'Feature your company — $399 →'
   });
+  const offerLine = flags.online
+    ? 'Feature this event on TransformerPath — Featured Event is $299 per event.'
+    : 'Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.';
   const robots = flags.noindex ? 'noindex,follow' : 'index,follow';
   const role = flags.role ? ' data-tp-event-role="' + esc(flags.role) + '"' : '';
   const eid = flags.eventId ? ' data-tp-event-id="' + esc(flags.eventId) + '"' : '';
@@ -215,7 +220,7 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     (ld || '') +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap"' + role + eid + '>' + withBadge +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
-    '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.</div>' +
+    '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">' + offerLine + '</div>' +
     pay +
     exhibitorPay + '</div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a></p>' +
@@ -240,6 +245,12 @@ Object.keys(groups).forEach((slug) => {
   const cta = feature.text;
   const hubUrl = 'https://transformerpath.com/events/' + slug + '/';
   const blurb = eventSeo.hubBlurb(seriesName, list);
+  const onlineSeries = list.length > 0 && list.every(function (ev) { return schema.isOnlineEvent(ev); });
+  const hubEvent = onlineSeries ? eventSeo.editionInput(list[0]) : eventSeo.hubInput(seriesName, blurb);
+  if (onlineSeries) {
+    hubEvent.name = seriesName;
+    hubEvent.omitDates = true;
+  }
   const editionLinks = '<h2>Editions</h2><ul>' + list.map((ev) => {
     const place = [ev.city, ev.country].filter(Boolean).join(', ');
     const summaries = (ev.intel_links || []).map((id) => ' · <a href="../' + esc(id) + '/summary/">post-event summary</a>').join('');
@@ -264,9 +275,9 @@ Object.keys(groups).forEach((slug) => {
     blurb,
     hubUrl,
     body,
-    ldScript(hubUrl, hubCrumbs, eventSeo.hubInput(seriesName, blurb)),
+    ldScript(hubUrl, hubCrumbs, hubEvent),
     slug,
-    { role: 'hub' }
+    { role: 'hub', online: onlineSeries }
   ));
 
   list.forEach((ev) => {
@@ -320,7 +331,7 @@ Object.keys(groups).forEach((slug) => {
       edBody,
       ldScript(edUrl, edCrumbs, eventSeo.editionInput(ev)),
       ev.id,
-      { role: 'edition', eventId: ev.id, noindex: noindex }
+      { role: 'edition', eventId: ev.id, noindex: noindex, online: schema.isOnlineEvent(ev) }
     ));
   });
 });

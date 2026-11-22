@@ -450,6 +450,7 @@ async function main() {
   });
   check('event cards show Featured Event at $299 and Featured Exhibitor at $399', pricedPages.length === cardPages.length, 'priced=' + pricedPages.length + ' cards=' + cardPages.length);
   check('event card template keeps the two prices distinct', fs.readFileSync('build-events.js', 'utf8').indexOf('Featured Event is $299 per event. Featured Exhibitor is $399 per event.') >= 0 && fs.readFileSync('build-events.js', 'utf8').indexOf('from $399') < 0);
+  check('online event cards omit the unpaid exhibitor offer', fs.readFileSync('build-events.js', 'utf8').indexOf("flags.online ? '' : paidListings.featuredExhibitorPayHtml") >= 0);
 
   function jsHits(dir, hits) {
     fs.readdirSync(dir).forEach(function (name) {
