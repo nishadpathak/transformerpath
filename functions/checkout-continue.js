@@ -11,6 +11,7 @@
  */
 'use strict';
 
+const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const gate = require('../lib/checkout-gate');
 const emailGate = require('../checkout-email');
@@ -63,6 +64,32 @@ function wantsJson(event) {
   return accept.indexOf('application/json') !== -1 || type.indexOf('application/json') !== -1;
 }
 
+function leadPayload(row, includeCompany) {
+  const payload = {
+    email: row.email,
+    listing_slug: row.listing_slug,
+    product_name: row.product_name,
+    price_id: row.price_id,
+    page_path: row.page_path
+  };
+  if (row.id) payload.id = row.id;
+  if (includeCompany && row.company) payload.company = row.company;
+  return payload;
+}
+
+function missingCompanyColumn(error) {
+  const message = String(error && (error.message || error.details || error.hint) || '');
+  return /company/i.test(message) && /column|schema cache|Could not find/i.test(message);
+}
+
+async function writeLead(supabase, row, includeCompany) {
+  const payload = leadPayload(row, includeCompany);
+  if (payload.id) {
+    return supabase.from('checkout_leads').upsert(payload, { onConflict: 'id', ignoreDuplicates: true });
+  }
+  return supabase.from('checkout_leads').insert(payload);
+}
+
 async function insertLead(row) {
   if (typeof exports._leadInsertForTests === 'function') {
     const out = await exports._leadInsertForTests(row);
@@ -71,14 +98,11 @@ async function insertLead(row) {
   }
   if (!isConfigured()) return { saved: false, configured: false };
   const supabase = client();
-  const { error } = await supabase.from('checkout_leads').insert({
-    email: row.email,
-    listing_slug: row.listing_slug,
-    product_name: row.product_name,
-    price_id: row.price_id,
-    page_path: row.page_path
-  });
-  if (error) throw new Error('checkout_leads insert failed');
+  let result = await writeLead(supabase, row, true);
+  if (result.error && row.company && missingCompanyColumn(result.error)) {
+    result = await writeLead(supabase, row, false);
+  }
+  if (result.error) throw new Error('checkout_leads insert failed');
   return { saved: true, configured: true };
 }
 
@@ -106,6 +130,8 @@ async function openSession(opts) {
     event: opts.eventId,
     component: opts.component,
     from: opts.from,
+    leadId: opts.leadId,
+    company: opts.company,
     automaticTax: price.automaticTax,
     billingAddressCollection: price.billingAddressCollection,
     metadata: price.metadata
@@ -186,6 +212,7 @@ exports.handler = async function (event) {
   const query = event.queryStringParameters || {};
   const product = String(body.product || query.product || '').trim();
   const email = String(body.email || query.email || '').trim();
+  const company = gate.cleanCompany(body.company || query.company);
   const slug = gate.cleanSlug(body.slug || query.slug);
   const eventId = gate.cleanSlug(body.event || query.event);
   const component = gate.cleanSlug(body.component || query.component);
@@ -193,8 +220,14 @@ exports.handler = async function (event) {
   if (!gate.gateQuery({ product: product })) return json(400, { error: 'unknown product' });
   if (!emailGate.validEmail(email)) return json(400, { error: 'email required' });
 
+  /* A lead id is the Stripe client_reference_id. Products with no directory
+   * slug still get one, so an abandoned Payment Link can be joined to the row. */
+  const leadId = gate.cleanLeadId(body.lead_id || query.lead_id) || (!slug && !eventId ? crypto.randomUUID() : '');
+
   const row = emailGate.leadRow({
+    id: leadId,
     email: email,
+    company: company,
     listingSlug: slug || eventId || component,
     productName: product,
     priceId: '',
@@ -216,7 +249,9 @@ exports.handler = async function (event) {
       slug: slug,
       eventId: eventId,
       component: component,
-      from: from
+      from: from,
+      leadId: leadId,
+      company: company
     });
   } catch (err) {
     const step = safeToken(err && (err.missing ? 'config' : (err.step || (err.message === 'price' ? 'price' : ''))));
@@ -234,7 +269,9 @@ exports.handler = async function (event) {
       const fallbackUrl = checkoutSession.paymentLinkFallback(product, {
         email: email,
         slug: slug,
-        event: eventId
+        event: eventId,
+        leadId: leadId,
+        company: company
       });
       if (fallbackUrl.indexOf('https://buy.stripe.com/') === 0) {
         const reason = status === '403' ? 'stripe_403' : (stripeCode === 'more_permissions_required' ? 'more_permissions_required' : (status ? 'stripe_' + status : 'stripe_error'));
