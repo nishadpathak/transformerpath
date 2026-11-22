@@ -247,7 +247,10 @@ Object.keys(groups).forEach((slug) => {
   const blurb = eventSeo.hubBlurb(seriesName, list);
   const onlineSeries = list.length > 0 && list.every(function (ev) { return schema.isOnlineEvent(ev); });
   const hubEvent = onlineSeries ? eventSeo.editionInput(list[0]) : eventSeo.hubInput(seriesName, blurb);
-  if (onlineSeries) hubEvent.name = seriesName;
+  if (onlineSeries) {
+    hubEvent.name = seriesName;
+    hubEvent.omitDates = true;
+  }
   const editionLinks = '<h2>Editions</h2><ul>' + list.map((ev) => {
     const place = [ev.city, ev.country].filter(Boolean).join(', ');
     const summaries = (ev.intel_links || []).map((id) => ' · <a href="../' + esc(id) + '/summary/">post-event summary</a>').join('');
