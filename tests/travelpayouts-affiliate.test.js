@@ -79,3 +79,6 @@ assert.strictEqual(tp.iataFor('Dubai'), 'DXB');
 assert.strictEqual(tp.iataFor('Greater Noida'), 'DEL');
 
 console.log('travelpayouts-affiliate.test.js OK');
+
+// Registration referrals are a separate opt-in, not a Travelpayouts action.
+require('./event-referral.test');
