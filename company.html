@@ -313,7 +313,11 @@ function renderCanonical(comp, facs, allCompanies, mediaDoc) {
     ? `<a href="${esc(siteUrl)}" target="_blank" rel="noopener" class="btn btn-amber">Official Website ↗</a>`
     : '';
 
-  const rfqLink = `<a href="rfq.html?company=${encodeURIComponent(comp.name)}" class="btn btn-outline">Request Quote / Inquire →</a>`;
+  const rfqLink = comp.reference_only === true ? '' :
+    `<a href="rfq.html?company=${encodeURIComponent(comp.name)}" class="btn btn-outline">Request Quote / Inquire →</a>`;
+  const availabilityHtml = comp.availability_note
+    ? `<p><strong>${esc(comp.availability_note)}</strong>${/^https:\/\//i.test(comp.availability_source_url || '') ? ` · <a href="${esc(comp.availability_source_url)}">Official status notice ↗</a>` : ''}</p>`
+    : '';
 
   let facHtml = '';
   if (facs && facs.length) {
@@ -396,6 +400,7 @@ function renderCanonical(comp, facs, allCompanies, mediaDoc) {
   document.getElementById('profile').innerHTML = `
     <div class="pcard">
       <h2>Company Details</h2>
+      ${availabilityHtml}
       <div class="fact"><span class="k">Country</span><span class="v">${esc(country)}</span></div>
       <div class="fact"><span class="k">Headquarters</span><span class="v">${esc(hqLoc)}</span></div>
       <div class="fact"><span class="k">Primary Roles</span><span class="v">${roles.map(r => `<span class="role-tag">${esc(r)}</span>`).join('')}</span></div>

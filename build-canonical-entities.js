@@ -196,6 +196,11 @@ const { accreditationScopeState } = require('./lib/laboratory-evidence');
 LABS.forEach((l) => {
   const co = getOrCreateCompany(l.name, l.website, l.country, '');
   co.roles.add('Testing Laboratory');
+  if (l.reference_only === true) {
+    co.reference_only = true;
+    co.availability_note = l.availability_note;
+    co.availability_source_url = l.availability_source_url;
+  }
   if (l.city && !co.headquarters.city) co.headquarters.city = l.city;
   const scopeState = accreditationScopeState(l.accreditation);
   if (l.reference_only !== true && (!scopeState || (l.capabilities && l.capabilities.lightning_impulse === true))) {

@@ -228,7 +228,8 @@
             x: [c.country, c.region, types, kv, kv.replace(/\s+/g,''), mva, fac, (c.certs||[]).join(' '), evidence.join(' '), formerNames.join(' '), parentGroup, brands.join(' '), aliases.join(' ')].join(' '),
             href: href,
             tag: c.country || 'Global',
-            desc: (evidence[0] || types || 'Verified OEM manufacturer'),
+            desc: c.reference_only === true ? (c.availability_note || 'Reference only') : (evidence[0] || types || 'Verified OEM manufacturer'),
+            referenceOnly: c.reference_only === true,
             evidence: evidence[0] || '',
             kvNum: c.voltage && c.voltage.num,
             formerNames: formerNames,
@@ -553,8 +554,8 @@
                   </div>
                   <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; border-top:1px dashed var(--border); padding-top:8px">
                     <button type="button" class="btn btn-outline btn-sm" data-shortlist-slug="${esc(slug)}" onclick="window.TP_SHORTLIST.toggle({slug:'${esc(slug)}', name:'${esc(it.t)}', country:'${esc(it.tag)}', role:'${esc(it.role||'')}'})" style="font-size:.72rem; padding:3px 8px">+ Shortlist</button>
-                    <a href="compare.html?m=${encodeURIComponent(slug)}" class="btn btn-outline btn-sm" style="font-size:.72rem; padding:3px 8px">Compare</a>
-                    <a href="rfq.html?suppliers=${encodeURIComponent(slug)}" class="btn btn-amber btn-sm" style="font-size:.72rem; padding:3px 8px">RFQ →</a>
+                    ${it.referenceOnly ? '' : `<a href="compare.html?m=${encodeURIComponent(slug)}" class="btn btn-outline btn-sm" style="font-size:.72rem; padding:3px 8px">Compare</a>
+                    <a href="rfq.html?suppliers=${encodeURIComponent(slug)}" class="btn btn-amber btn-sm" style="font-size:.72rem; padding:3px 8px">RFQ →</a>`}
                     <a href="${esc(it.href)}" class="sr-view-link" style="margin-left:auto; font-size:.74rem; color:var(--accent); font-weight:700">Profile →</a>
                   </div>
                 </div>

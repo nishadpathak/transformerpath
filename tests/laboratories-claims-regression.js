@@ -96,6 +96,9 @@ const cpriGlobalCard = directorySsr.directoryRoot([cpriSearch], {});
 check('Global SSR card links the notice but not a live CPRI RFQ',
   cpriGlobalCard.includes('High Power Laboratory temporarily closed') && cpriGlobalCard.includes('Official status notice') &&
   !cpriGlobalCard.includes('rfq.html?company='));
+const cpriVendorCard = directorySsr.vendors([cpriSearch]).listHtml;
+check('Vendor SSR card cannot attach closed CPRI to a shortlist',
+  cpriVendorCard.includes('Official status notice') && !/rfq\.html\?company=|vnd-select/.test(cpriVendorCard));
 ['doble-engineering-watertown', 'kema-labs-arnhem'].forEach(function (slug) {
   const l = row(slug);
   check(slug + ' has linked scope without a numerical claim', l && l.source_meta.source_url.startsWith('https://') &&
@@ -106,6 +109,42 @@ check('unsupported machinery offers removed from both public directories',
   !row('weidmann-cnc-insulation-machining') && !row('de-angeli-ctc-line') &&
   directory.some(function (d) { return d.kind === 'component_supplier' && /De Angeli Prodotti/.test(d.name); }) &&
   directory.some(function (d) { return d.kind === 'component_supplier' && /Weidmann Electrical Technology/.test(d.name); }));
+
+const rfqMarkup = fs.readFileSync('rfq.html', 'utf8');
+const schedule = Array.from(rfqMarkup.matchAll(/<script(?:\s[^>]*)?>\s*([\s\S]*?)<\/script>/g), function (m) { return m[1]; })
+  .find(function (script) { return script.includes('function loadQueryParams'); });
+function exerciseRfq(query, lab) {
+  const elements = {};
+  const calls = [];
+  function response(value) {
+    return {
+      then: function (fn) { return response(fn(value)); },
+      catch: function () {}
+    };
+  }
+  vm.runInNewContext(schedule, {
+    document: { getElementById: function (id) {
+      return elements[id] || (elements[id] = { value: '', style: {}, addEventListener: function () {} });
+    } },
+    window: { location: { search: query } },
+    URLSearchParams: URLSearchParams,
+    fetch: function (url) {
+      calls.push(url);
+      return response({ ok: !!lab, json: function () { return { companies: lab ? [lab] : [] }; } });
+    }
+  });
+  return { fields: elements, calls: calls };
+}
+const closedRfq = exerciseRfq('?company=' + encodeURIComponent(cpri.name) + '&suppliers=other,cpri-bengaluru&rating=50', cpriSearch);
+check('Opening a stale CPRI quote keeps other targets and never prefills the closed lab',
+  closedRfq.fields.fld_rating.value === '50' && closedRfq.fields.fld_supplier_shortlist.value === 'other' &&
+  !(closedRfq.fields.fld_details && closedRfq.fields.fld_details.value) &&
+  closedRfq.fields.rfqTargetStatus.textContent.includes('not attached') &&
+  closedRfq.calls.join(',') === 'data/directory-index.json');
+const otherRfq = exerciseRfq('?company=Other+Lab&suppliers=other', null);
+check('Ordinary quote links and their existing prefill remain unchanged',
+  otherRfq.fields.fld_details.value.includes('Other Lab') && otherRfq.fields.fld_supplier_shortlist.value === 'other' &&
+  !otherRfq.calls.length);
 
 const verifiedAccred = labs.filter(function (lab) {
   const body = String((lab.accreditation && lab.accreditation.body) || '');
