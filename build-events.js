@@ -103,7 +103,9 @@ function directorySection(ev) {
     const booth = row.booth ? ' <span style="color:var(--muted)">Booth ' + esc(row.booth) + '</span>' : '';
     return '<li>' + link + booth + '</li>';
   }).join('');
-  return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>';
+  const source = httpHref(block.source_url);
+  return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>' +
+    (source ? '<p><a href="' + esc(source) + '" rel="noopener">Source: event organiser</a></p>' : '');
 }
 function exhibitorHtml(ev) {
   if (!ev.key_exhibitors || !ev.key_exhibitors.length) return '<p>' + esc(nullText()) + '</p>';
