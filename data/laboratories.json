@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/laboratories.schema.json",
   "generated": "2026-09-13",
-  "total_laboratories": 140,
+  "total_laboratories": 177,
   "standards": [
     "IEC 60076",
     "IEEE C57.12.00",
@@ -4746,6 +4746,117 @@
           {
             "url": "https://www.cesi.it/labs/mannheim/",
             "label": "CESI Labs Mannheim"
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab:iee-usp-high-power",
+      "name": "IEE-USP — High Power Technical Service",
+      "country": "Brazil",
+      "city": "São Paulo",
+      "website": "https://www.iee.usp.br/pagina/servico-tecnico-de-altas-potencias/",
+      "capabilities": {},
+      "description": "University of São Paulo technical service whose published test scope names power, current and voltage transformers. The institute describes high-power overload and short-circuit test infrastructure.",
+      "last_verified": "2026-11-24",
+      "source": "https://www.iee.usp.br/pagina/servico-tecnico-de-altas-potencias/",
+      "profile_page": true,
+      "directory_publish": true,
+      "public_record": {
+        "checked": "2026-11-24",
+        "sources": [
+          {
+            "label": "IEE-USP high-power technical service and equipment scope",
+            "url": "https://www.iee.usp.br/pagina/servico-tecnico-de-altas-potencias/"
+          },
+          {
+            "label": "IEE-USP short-circuit laboratory",
+            "url": "https://www.iee.usp.br/pagina/laboratorio-de-curto-circuito/"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "Published test scope",
+            "items": [
+              "Power and instrument transformers",
+              "High-power overload and short-circuit testing"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab:lubrisider-chile",
+      "name": "Lubrisider Chile — Dielectric Oil Laboratory",
+      "country": "Chile",
+      "city": "Santiago",
+      "website": "https://www.lubrisider.cl/servicios/laboratorio/",
+      "capabilities": {
+        "oil_testing": true
+      },
+      "description": "Santiago dielectric-oil analysis laboratory operated by Lubrisider Chile for power transformer insulating fluids. The company also lists on-site transformer oil regeneration.",
+      "last_verified": "2026-11-24",
+      "source": "https://www.lubrisider.cl/servicios/laboratorio/",
+      "profile_page": true,
+      "directory_publish": true,
+      "public_record": {
+        "checked": "2026-11-24",
+        "sources": [
+          {
+            "label": "Lubrisider dielectric oil laboratory",
+            "url": "https://www.lubrisider.cl/servicios/laboratorio/"
+          },
+          {
+            "label": "Lubrisider transformer oil services and Santiago location",
+            "url": "https://www.lubrisider.cl/"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "Published test scope",
+            "items": [
+              "Dielectric oil analysis; no full-transformer electrical test scope is claimed"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab:vps-singapore-transformer-oil",
+      "name": "VPS — Singapore Transformer Oil Testing",
+      "country": "Singapore",
+      "city": "Singapore",
+      "website": "https://www.vpsveritas.com/transformer-oil-testing-contact-us",
+      "capabilities": {
+        "oil_testing": true
+      },
+      "description": "Singapore laboratory location in the VPS network offering analysis of transformer insulating oil. VPS identifies Singapore in its technical brochure and acquired local transformer-oil specialist PGI Industries in 2021.",
+      "last_verified": "2026-11-24",
+      "source": "https://www.vpsveritas.com/transformer-oil-testing-contact-us",
+      "profile_page": true,
+      "directory_publish": true,
+      "public_record": {
+        "checked": "2026-11-24",
+        "sources": [
+          {
+            "label": "VPS transformer oil testing and diagnostic services",
+            "url": "https://www.vpsveritas.com/transformer-oil-testing-contact-us"
+          },
+          {
+            "label": "VPS corporate brochure: Singapore laboratory and transformer oil testing",
+            "url": "https://vpsveritas.com/sites/default/files/2024-10/corporate_brochure_vps.pdf"
+          },
+          {
+            "label": "VPS announcement: acquisition of Singapore-based PGI Industries",
+            "url": "https://vpsveritas.com/knowledgecentre/news/vps-announces-acquisition-singapore-based-transformer-oil-testing-company"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "Published test scope",
+            "items": [
+              "Transformer insulating oil analysis; confirm the accreditation schedule for the requested individual test"
+            ]
           }
         ]
       }
