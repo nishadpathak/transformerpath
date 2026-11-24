@@ -19,6 +19,8 @@ const { seriesFeature } = require('./lib/event-hub-copy');
 const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
 const tpAff = require('./lib/travelpayouts');
+const eventReferral = require('./lib/event-referral');
+const EVENT_REFERRALS = eventReferral.load(path.join(__dirname, 'data/event-referrals.json'));
 const paidListings = require('./lib/paid-listings');
 const schema = require('./lib/seo-schema');
 const eventSeo = require('./lib/event-seo');
@@ -301,6 +303,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span>' +
       hoursHtml(ev) + attendanceHtml(ev) + '</div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
+      eventReferral.render(ev, EVENT_REFERRALS, TODAY) +
       (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
       travelBlock(ev) + visitorGuideBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
