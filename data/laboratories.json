@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/laboratories.schema.json",
   "generated": "2026-09-13",
-  "total_laboratories": 177,
+  "total_laboratories": 179,
   "standards": [
     "IEC 60076",
     "IEEE C57.12.00",
@@ -4856,6 +4856,86 @@
             "heading": "Published test scope",
             "items": [
               "Transformer insulating oil analysis; confirm the accreditation schedule for the requested individual test"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "lab:cidet-sabaneta",
+      "name": "CIDET — Insulating Materials Chemical Laboratory",
+      "country": "Colombia",
+      "city": "Sabaneta",
+      "website": "https://cidet.org.co/certifica/laboratorios/laboratorio-de-analisis-quimico/",
+      "capabilities": {
+        "oil_testing": true
+      },
+      "description": "Sabaneta laboratory providing chemical tests for insulating materials and transformer oil, including dissolved-gas analysis. The ONAC schedule lists the exact covered tests at this location.",
+      "last_verified": "2026-11-24",
+      "source": "https://cidet.org.co/certifica/laboratorios/laboratorio-de-analisis-quimico/",
+      "profile_page": true,
+      "directory_publish": true,
+      "public_record": {
+        "checked": "2026-11-24",
+        "sources": [
+          {
+            "label": "CIDET laboratory and transformer oil test scope",
+            "url": "https://cidet.org.co/certifica/laboratorios/laboratorio-de-analisis-quimico/"
+          },
+          {
+            "label": "ONAC listing 11-LAB-024 and expiry",
+            "url": "https://onac.org.co/directorio3/index.php/acreditaciones/11-LAB-024"
+          },
+          {
+            "label": "ONAC laboratory method schedule",
+            "url": "https://onac.org.co/certificados/11-LAB-024.pdf"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "Published test scope",
+            "items": [
+              "The Sabaneta ONAC scope lists dissolved gas analysis, furanic compounds and interfacial tension in dielectric oil.",
+              "ONAC lists an expiry of 9 February 2030. Confirm the requested method and current scope in the accreditation schedule before ordering.",
+              "These claims concern samples of insulating fluid, not electrical testing of a complete transformer."
+            ]
+          }
+        ],
+        "card_note": "ONAC 11-LAB-024 covers specified chemical methods at Sabaneta; check the scope for the requested test."
+      }
+    },
+    {
+      "id": "lab:secamb-peru",
+      "name": "SECAMB — Dielectric Oil Laboratory",
+      "country": "Peru",
+      "city": "Lima",
+      "website": "https://www.secamb.com.pe/servicios/analisis-aceite-dielectrico/",
+      "capabilities": {
+        "oil_testing": true
+      },
+      "description": "Lima laboratory offering laboratory analysis of dielectric oil and on-site sample collection for transformers. SECAMB publishes physicochemical and chromatographic methods for insulating oil.",
+      "last_verified": "2026-11-24",
+      "source": "https://www.secamb.com.pe/servicios/analisis-aceite-dielectrico/",
+      "profile_page": true,
+      "directory_publish": true,
+      "public_record": {
+        "checked": "2026-11-24",
+        "sources": [
+          {
+            "label": "SECAMB laboratory and methods",
+            "url": "https://www.secamb.com.pe/servicios/analisis-aceite-dielectrico/"
+          },
+          {
+            "label": "SECAMB Lima location",
+            "url": "https://www.secamb.com.pe/contacto/"
+          }
+        ],
+        "sections": [
+          {
+            "heading": "Published test scope",
+            "items": [
+              "Physicochemical testing, chromatography, and furanic compound analysis.",
+              "The cited scope does not establish independent accreditation or full-transformer electrical testing."
             ]
           }
         ]
