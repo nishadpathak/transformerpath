@@ -262,7 +262,20 @@
   margin:0 0 28px; color:var(--hs-mute); font-size:clamp(1.02rem,1.5vw,1.18rem);
   line-height:1.55; max-width:34ch;
 }
-.hero-stage__ctas{ display:flex; flex-wrap:wrap; gap:12px; }
+.hero-stage__ctas{ display:flex; flex-wrap:wrap; gap:10px; }
+.hero-stage__ctas + .hero-stage__ctas{ margin-top:10px; }
+.hero-stage__ctas .btn-primary, .hero-stage__ctas .btn-ghost{ min-height:44px; }
+.hero-stage__ctas--explore .btn-ghost{ padding:8px 12px; }
+.hero-stage__ctas :focus-visible, .tp-video-bar button:focus-visible{
+  outline:2px solid #ffcf75; outline-offset:4px;
+}
+@media (max-width:450px){
+  .hero-stage__ctas{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .hero-stage__ctas .btn-primary, .hero-stage__ctas .btn-ghost{ text-align:center; padding:9px 8px; font-size:.88rem; }
+}
+@media (max-width:340px){
+  .hero-stage__ctas{ grid-template-columns:1fr; }
+}
 .hero-stage .btn-primary{
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
   padding:14px 22px; border-radius:10px; border:0; cursor:pointer; text-decoration:none;
@@ -322,11 +335,13 @@
   .hero-cine.hero-v2 { background-image: none; background-size: auto; }
 }
 
-.tp-video-modal[hidden]{ display:none !important; }
+.tp-video-modal:not([open]){ display:none; }
 .tp-video-modal{
-  position:fixed; inset:0; z-index:2000; display:grid; place-items:center;
-  padding:24px; background:rgba(4,10,18,.72); backdrop-filter:blur(8px);
+  position:fixed; inset:0; width:100%; max-width:none; height:100%; max-height:none;
+  margin:0; border:0; display:grid; place-items:center;
+  padding:clamp(10px,4vw,24px); background:transparent; overflow:auto;
 }
+.tp-video-modal::backdrop{ background:rgba(4,10,18,.82); backdrop-filter:blur(8px); }
 .tp-video-dialog{
   width:min(960px,100%); background:#0b1726; border:1px solid rgba(255,255,255,.12);
   border-radius:16px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.45);
@@ -336,7 +351,7 @@
   padding:12px 16px; color:#d7e0ea; font-size:.9rem; font-weight:700;
 }
 .tp-video-bar button{
-  border:0; background:transparent; color:#fff; font-size:1.4rem; cursor:pointer; line-height:1; padding:4px 8px;
+  border:0; background:transparent; color:#fff; font-size:1.4rem; cursor:pointer; line-height:1; min-width:44px; min-height:44px; border-radius:7px;
 }
 .tp-video-dialog video{ width:100%; display:block; background:#000; aspect-ratio:16/9; }
 </style>
@@ -363,14 +378,17 @@
         <p class="hero-stage__brand">Transformer<span>Path</span></p>
         <h1>Every transformer maker, tender and factory, sourced.</h1>
         <p class="hero-stage__3dsub">Take a power transformer apart, layer by layer.</p>
-        <p class="hero-stage__lead">Orbit the live model, then watch a short tour of the intel, directory, grids, events, and RFQ tools behind every part.</p>
+        <p class="hero-stage__lead">Search the supplier directory, send a buying inquiry, or explore the engineering behind the equipment.</p>
         <p class="hero-stage__3dnote" id="hero3dNote" hidden>Interactive 3D is unavailable in this browser. You can still explore TransformerPath’s engineering content and transformer components.</p>
-        <div class="hero-stage__ctas">
-          <a class="btn-primary" href="power3d.html">Open free 3D explorer</a>
+        <div class="hero-stage__ctas hero-stage__ctas--buyer">
+          <a class="btn-primary" href="/directory.html">Find a supplier <span aria-hidden="true">→</span></a>
+          <a class="btn-ghost" href="/rfq.html">Submit an RFQ <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-stage__ctas hero-stage__ctas--explore">
+          <a class="btn-ghost" href="power3d.html">Open free 3D explorer</a>
           <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
             <span class="play" aria-hidden="true">▶</span> Watch the platform tour
           </button>
-          <a class="btn-ghost" href="/directory.html">Browse supplier directory →</a>
         </div>
       </div>
     </div>
@@ -378,7 +396,7 @@
   <p class="hero-stage__hint" id="hero3dHint" hidden>Ctrl + scroll to zoom</p>
 </section>
 
-<div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
+<dialog class="tp-video-modal" id="heroVideoModal" aria-labelledby="heroVideoTitle">
   <div class="tp-video-dialog">
     <div class="tp-video-bar">
       <span id="heroVideoTitle">TransformerPath — platform features tour</span>
@@ -393,7 +411,7 @@
       src="media/platform-features-tour.mp4">
     </video>
   </div>
-</div>
+</dialog>
 
 <!-- ══ Platform census — search + sourced counts ══ -->
 <style>
@@ -885,9 +903,9 @@
         </div>
 
         <div class="hero-search-wrap">
-          <form action="search.html" method="get" class="hero-search-form" role="search">
+          <form action="search.html" method="get" class="hero-search-form" role="search" aria-label="Search TransformerPath">
             <span class="hero-search-icon" aria-hidden="true">🔍</span>
-            <input type="search" name="q" placeholder="Search companies, factories, components, grids, projects, tenders…" autocomplete="off" required>
+            <input type="search" name="q" aria-label="Search companies, factories, components, grids, projects and tenders" placeholder="Search companies, projects, tenders and more" autocomplete="off" required>
             <button type="submit">Search Data →</button>
           </form>
           <div class="hero-search-pills">
@@ -927,11 +945,11 @@
         </svg>
         <div class="panel-head"><strong class="panel-head-title">Platform Intelligence &middot; 2026 Census</strong><em>transformerpath.com</em></div>
         <div class="stat-grid-primary">
-          <a href="/manufacturers.html" class="stat-card" title="Browse all 1,000+ transformer companies">
+          <a href="/manufacturers.html" class="stat-card" title="Browse transformer companies">
             <div class="stat-card-top"><b data-stat="manufacturersPublicLabel">1,000+</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Transformer Companies</span>
           </a>
-          <a href="/manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 90 countries">
+          <a href="/manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing by country">
             <div class="stat-card-top"><b data-stat="manufacturingCountries">90</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Manufacturing Countries</span>
           </a>
@@ -939,22 +957,22 @@
             <div class="stat-card-top"><b data-stat="projects">305</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Global Projects Tracked</span>
           </a>
-          <a href="/grids.html" class="stat-card" title="Survey 151 national grid systems">
+          <a href="/grids.html" class="stat-card" title="Survey national grid systems">
             <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">National Grids Mapped</span>
           </a>
         </div>
         <div class="stat-strip">
-          <a href="tenders.html" class="strip-item" title="View 256 procurement tenders worldwide">
+          <a href="tenders.html" class="strip-item" title="View procurement tenders worldwide">
             <b data-stat="tenders">256</b>
             <span>Tenders Tracked</span>
           </a>
-          <a href="tenders.html?status=open" class="strip-item is-live" title="48 open tenders accepting bids right now">
+          <a href="tenders.html?status=open" class="strip-item is-live" title="View tenders accepting bids">
             <span class="strip-live-dot" aria-hidden="true"></span>
             <b class="is-amber" data-stat="openTenders">48</b>
             <span>Open Tenders</span>
           </a>
-          <a href="/intel.html?type=awards" class="strip-item" title="74 awards tracked, split by transformer scope">
+          <a href="/intel.html?type=awards" class="strip-item" title="View awards by transformer scope">
             <b data-stat="awards">74</b>
             <span>Awards tracked</span>
             <span class="award-split" style="display:block;font-size:.68rem;line-height:1.35;font-weight:600;margin-top:2px">
@@ -963,7 +981,7 @@
               · <span data-award-scope="unknown"><b data-stat="awardsUnknown">24</b> unknown</span>
             </span>
           </a>
-          <a href="/events.html" class="strip-item" title="Explore 136 upcoming industry conferences and exhibitions">
+          <a href="/events.html" class="strip-item" title="Explore upcoming industry conferences and exhibitions">
             <b data-stat="upcomingEvents">128</b>
             <span>Upcoming Events</span>
           </a>
@@ -972,6 +990,27 @@
         <p class="panel-foot"><span>Interactive 3D engineering models &amp; daily market briefings.</span> <a href="explorer.html">Explore 3D Model &rarr;</a></p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Transformer Intel — At a Glance</h2>
+      <p id="glanceSub"><!--GLANCE:sub-->
+Latest sourced item <b>9 Nov 2026</b>. Dates are on the source, not this visit.
+<!--/GLANCE:sub--></p>
+    </div>
+    <div class="grid grid-3" id="glanceCards">
+<!--GLANCE:cards-->
+<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="Elektro Ljubljana award names ELTIMA for supply and installation of a 40 MVA 110 kV transformer at RTP Brdo" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-778594-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Elektro Ljubljana award names ELTIMA for supply and installation of a 40 MVA 110 kV transformer at RTP Brdo</h3><p>The main CPV is 31170000 Transformers.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · EUR 3,347,800.00 · 40 MVA · 110 kV</p></a>
+<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="Enefit award names Jiangsu Yawei Transformer for a new 120 MVA power transformer at the Balti power station" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-776160-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Enefit award names Jiangsu Yawei Transformer for a new 120 MVA power transformer at the Balti power station</h3><p>The main CPV is 31170000 Transformers.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · EUR 2,634,300.00 · 120 MVA</p></a>
+<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="EWR Netz invites bids to extend the Albig substation, including installation of a buyer-supplied 110/20 kV transformer" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-778130-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">EWR Netz invites bids to extend the Albig substation, including installation of a buyer-supplied 110/20 kV transformer</h3><p>It says the 110 kV switchgear is not included and is taken by the upstream network operator.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · Buyer-supplied 110/20 kV transformer · contractor installs</p></a>
+<!--/GLANCE:cards-->
+    </div>
+    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. <a href="/materials/crgo/#crgo-why">CRGO: no public daily index — see why</a>. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
+    <p class="glance-copper-note" style="margin-top:8px;color:var(--muted);font-size:.82rem">The $14,170/t figure is the LME 3-month official settlement on 20 Aug 2026. Daily Intel also keeps the LME cash settlement of $14,545/t on 14 Aug 2026. Those are two LME series on two dates, not two readings of one price.</p>
+    <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
 
@@ -1009,27 +1048,6 @@
       <div class="card reveal"><span class="emoji" aria-hidden="true">⚡</span><h3>Utilities & EPCs</h3><p>Stay ahead of supplier capacity, lead times and grid investment worldwide.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events and a grid census in one place — plus curated openings on the <a href="jobs.html" style="color:var(--accent)">Jobs</a> page.</p></div>
     </div>
-  </div>
-</section>
-
-<section class="block alt">
-  <div class="container">
-    <div class="section-head reveal">
-      <h2>Transformer Intel — At a Glance</h2>
-      <p id="glanceSub"><!--GLANCE:sub-->
-Latest sourced item <b>9 Nov 2026</b>. Dates are on the source, not this visit.
-<!--/GLANCE:sub--></p>
-    </div>
-    <div class="grid grid-3" id="glanceCards">
-<!--GLANCE:cards-->
-<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="Elektro Ljubljana award names ELTIMA for supply and installation of a 40 MVA 110 kV transformer at RTP Brdo" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-778594-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Elektro Ljubljana award names ELTIMA for supply and installation of a 40 MVA 110 kV transformer at RTP Brdo</h3><p>The main CPV is 31170000 Transformers.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · EUR 3,347,800.00 · 40 MVA · 110 kV</p></a>
-<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="Enefit award names Jiangsu Yawei Transformer for a new 120 MVA power transformer at the Balti power station" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-776160-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Enefit award names Jiangsu Yawei Transformer for a new 120 MVA power transformer at the Balti power station</h3><p>The main CPV is 31170000 Transformers.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · EUR 2,634,300.00 · 120 MVA</p></a>
-<a class="card reveal in" data-glance-date="2026-11-09" data-glance-headline="EWR Netz invites bids to extend the Albig substation, including installation of a buyer-supplied 110/20 kV transformer" href="/intel.html#p-news-ted-europa-eu-en-notice-detail-778130-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">EWR Netz invites bids to extend the Albig substation, including installation of a buyer-supplied 110/20 kV transformer</h3><p>It says the 110 kV switchgear is not included and is taken by the upstream network operator.</p><p class="g-val" style="margin-top:8px">9 Nov 2026 · Buyer-supplied 110/20 kV transformer · contractor installs</p></a>
-<!--/GLANCE:cards-->
-    </div>
-    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. <a href="/materials/crgo/#crgo-why">CRGO: no public daily index — see why</a>. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
-    <p class="glance-copper-note" style="margin-top:8px;color:var(--muted);font-size:.82rem">The $14,170/t figure is the LME 3-month official settlement on 20 Aug 2026. Daily Intel also keeps the LME cash settlement of $14,545/t on 14 Aug 2026. Those are two LME series on two dates, not two readings of one price.</p>
-    <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
 
@@ -1366,25 +1384,38 @@ if('IntersectionObserver' in window){
   var video = document.getElementById('heroVideo');
   var openBtn = document.getElementById('heroWatchBtn');
   var closeBtn = document.getElementById('heroVideoClose');
-  if(!modal || !video || !openBtn) return;
-  var lastFocus = null;
-  function openModal(){
-    lastFocus = document.activeElement;
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    try { video.currentTime = 0; video.play(); } catch(e){}
-    closeBtn && closeBtn.focus();
+  if(!modal || !video || !openBtn || !closeBtn) return;
+  if(typeof modal.showModal !== 'function'){
+    var tourLink = document.createElement('a');
+    tourLink.className = openBtn.className;
+    tourLink.href = video.getAttribute('src');
+    tourLink.textContent = openBtn.textContent.trim();
+    openBtn.replaceWith(tourLink);
+    return;
   }
-  function closeModal(){
-    video.pause();
-    modal.hidden = true;
-    document.body.style.overflow = '';
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  var lastFocus = null;
+  var previousOverflow = '';
+  function openModal(){
+    if(modal.open) return;
+    lastFocus = document.activeElement;
+    previousOverflow = document.body.style.overflow;
+    modal.showModal();
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+    try {
+      video.currentTime = 0;
+      var playback = video.play();
+      if(playback && typeof playback.catch === 'function') playback.catch(function(){});
+    } catch(e){}
   }
   openBtn.addEventListener('click', openModal);
-  closeBtn && closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.hidden) closeModal(); });
+  closeBtn.addEventListener('click', function(){ modal.close(); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) modal.close(); });
+  modal.addEventListener('close', function(){
+    video.pause();
+    document.body.style.overflow = previousOverflow;
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  });
 })();
 </script>
 </body>

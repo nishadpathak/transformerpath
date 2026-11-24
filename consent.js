@@ -90,6 +90,7 @@
   window.tpResetConsent = function () {
     try { localStorage.removeItem(KEY); } catch (e) {}
     started = false;
+    notify(getConsent());
     var existing = document.getElementById('tp-consent');
     if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
     showBanner();
