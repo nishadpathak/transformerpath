@@ -253,6 +253,7 @@
       <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
       <div data-jobs-rfq-pay="rfq" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">Save the RFQ reference shown on this page after the request is stored. Use it in any follow-up.</p>
+      <p id="rfqTargetStatus" role="status" style="display:none;font-size:.82rem;color:var(--muted);margin:0 0 10px"></p>
       <p id="shortlistContext" style="display:none;font-size:.82rem;color:var(--accent);margin:0 0 12px"></p>
       <form name="rfq" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
         <input type="hidden" name="reference" id="fld_ref" value="">
@@ -493,8 +494,7 @@
   });
 
   // Query parameter auto-population
-  function loadQueryParams(){
-    var p = new URLSearchParams(window.location.search);
+  function loadQueryParams(p){
     if(p.has('rating')){ document.getElementById('spec_rating').value = p.get('rating'); if(document.getElementById('fld_rating')) document.getElementById('fld_rating').value = p.get('rating'); }
     if(p.has('voltage')){
       var v = p.get('voltage');
@@ -506,6 +506,10 @@
       }
     }
     if(p.has('country') && document.getElementById('fld_country')){ document.getElementById('fld_country').value = p.get('country'); }
+    renderSchedule();
+  }
+
+  function applyTargetParameters(p){
     if(p.has('company')){
       var comp = p.get('company');
       var d = document.getElementById('fld_details');
@@ -522,10 +526,55 @@
         context.style.display = count ? 'block' : 'none';
       }
     }
-    renderSchedule();
   }
 
-  loadQueryParams();
+  function cpriBengaluruTarget(value, key){
+    var name = String(value || '').trim().toLowerCase();
+    if (name === 'central power research institute (cpri) — bengaluru') return true;
+    if (name === 'cpri-bengaluru' || name === 'central-power-research-institute-cpri-bengaluru' ||
+        name === 'cmp:central-power-research-institute-cpri-bengaluru') return true;
+    return key === 'suppliers' && /^https:\/\/cpri\.res\.in(?:\/en\/hpl-laboratory)?\/?$/.test(name);
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  loadQueryParams(params);
+  var safeTargets = new URLSearchParams(window.location.search);
+  var filteredKeys = ['company', 'suppliers'].filter(function(key){
+    if (!safeTargets.has(key)) return false;
+    var entries = safeTargets.get(key).split(',');
+    if (!entries.some(function(value){ return cpriBengaluruTarget(value, key); })) return false;
+    var kept = entries.filter(function(value){ return !cpriBengaluruTarget(value, key); }).join(',').trim();
+    if (kept) safeTargets.set(key, kept);
+    else safeTargets.delete(key);
+    return true;
+  });
+  applyTargetParameters(safeTargets);
+  if (filteredKeys.length) {
+    var targetStatus = document.getElementById('rfqTargetStatus');
+    if (targetStatus) {
+      targetStatus.textContent = 'CPRI Bengaluru High Power Laboratory was not attached. Confirm availability with the laboratory before requesting this facility.';
+      targetStatus.style.display = 'block';
+    }
+    fetch('data/directory-index.json').then(function(response){
+      if (!response.ok) return null;
+      return response.json();
+    }).then(function(data){
+      var lab = (data && data.companies || []).find(function(row){ return row.slug === 'cpri-bengaluru' && row.kind === 'testing_laboratory'; });
+      if (!lab) return;
+      if (lab.reference_only === true) {
+        if (targetStatus && lab.availability_note) targetStatus.textContent = lab.availability_note + '. It was not attached to this RFQ.';
+        return;
+      }
+      var restored = new URLSearchParams();
+      filteredKeys.forEach(function(key){
+        // Rely on the stable organization name for a reopened profile.
+        if (key === 'company') restored.set(key, lab.name);
+        else restored.set(key, params.get(key));
+      });
+      applyTargetParameters(restored);
+      if (targetStatus) targetStatus.style.display = 'none';
+    }).catch(function(){ /* Keep the stale target off when status cannot be verified. */ });
+  }
 })();
 </script>
 <script>/* RFQ submit: auto-reference + persist to Supabase (if signed in) +

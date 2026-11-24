@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/machinery.schema.json",
   "generated": "2026-09-13",
-  "total_machinery_records": 28,
+  "total_machinery_records": 26,
   "categories": [
     {
       "id": "MAC_CORE",
@@ -367,37 +367,6 @@
       "rfq_eligible": true
     },
     {
-      "id": "mach:weidmann-cnc-insulation-machining",
-      "name": "Weidmann Component Machining CNC Center",
-      "category_id": "MAC_INSULATION_CNC",
-      "category": "CNC Pressboard & Insulation Processing",
-      "manufacturer": "Weidmann Electrical Technology",
-      "country": "Switzerland",
-      "city": "Rapperswil-Jona",
-      "website": "https://www.weidmann-electrical.com",
-      "machine_type": "5-Axis CNC Milling & Cutting Centre for Transformerboard",
-      "capacity_range": "Machining envelope up to 4,000 mm x 2,500 mm x 800 mm",
-      "automation_level": "Full 5-Axis CNC with dust extraction",
-      "transformer_application": "Pressboard Cylinders, Angle Rings, Spacers & Winding Support Blocks",
-      "specs": {
-        "spindle_speed_rpm": 24000,
-        "dust_extraction": "Explosion-proof ATEX certified paper/wood dust extractor",
-        "vacuum_clamping": "High-power grid vacuum table"
-      },
-      "key_features": [
-        "Clean, burr-free chamfering and bevelling of electrical grade pressboard",
-        "High-precision dovetail slot cutting for winding spacer strips",
-        "Maintains dielectric cleanliness standards required for EHV insulation kits"
-      ],
-      "installations_count": "Proprietary & licensed equipment in global insulation facilities",
-      "service_regions": [
-        "Global"
-      ],
-      "last_verified": "2026-08-11",
-      "source": "Weidmann process engineering specifications",
-      "rfq_eligible": true
-    },
-    {
       "id": "mach:phenix-resonance-test-system",
       "name": "Phenix Variable Frequency Resonant Test System (RTS)",
       "category_id": "MAC_TESTING",
@@ -429,39 +398,6 @@
       ],
       "last_verified": "2026-08-04",
       "source": "Phenix Technologies product catalog",
-      "rfq_eligible": true
-    },
-    {
-      "id": "mach:de-angeli-ctc-line",
-      "name": "De Angeli CTC Transposition & Paper Lapping Line",
-      "category_id": "MAC_WINDING",
-      "category": "Winding Machinery (HV, LV, Foil)",
-      "manufacturer": "De Angeli Prodotti S.r.l.",
-      "country": "Italy",
-      "city": "Bagnoli di Sopra (Padua)",
-      "website": "https://www.deangeliprodotti.com",
-      "machine_type": "Continuously Transposed Conductor (CTC) Transposition & Paper Covering Line",
-      "capacity_range": "Number of strands 5 to 73, strip width 3 - 12 mm, thickness 1.0 - 3.5 mm",
-      "automation_level": "Fully Automated Multi-Axis Synchronized Line",
-      "transformer_application": "Power Transformer Windings & EHV Shunt Reactors",
-      "specs": {
-        "transposition_speed": "Up to 120 transpositions/min",
-        "lapping_heads": "Multi-head concentric paper wrapping",
-        "conductor_types": "Copper enamelled strips, epoxy bonded or bare"
-      },
-      "key_features": [
-        "Zero-scraping transposition mechanism preserving delicate enamel coating",
-        "Constant-tension concentric paper tapping heads with broken-tape detector",
-        "Online dimensional laser monitoring of finished cable bundle"
-      ],
-      "installations_count": "80+ global wire and transformer plants",
-      "service_regions": [
-        "Europe",
-        "Americas",
-        "Asia"
-      ],
-      "last_verified": "2026-08-18",
-      "source": "Manufacturer technical catalog",
       "rfq_eligible": true
     },
     {
