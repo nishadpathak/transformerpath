@@ -228,7 +228,9 @@ extraUtilities.forEach(function (row) {
     '<h1>' + esc(row.name) + '</h1>' +
     '<p>' + esc(outreach.scrubPublic(row.description || '')) + '</p>' +
     '<p>Location: ' + esc(loc || '—') + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
-    (row.source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.source) + '. Checked ' + esc(row.last_verified || '—') + '.</p>' : '') +
+    (row.source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' +
+      (/^https?:\/\//i.test(row.source) ? '<a href="' + esc(row.source) + '">Official evidence</a>' : esc(row.source)) +
+      '. Checked ' + esc(row.last_verified || '—') + '.</p>' : '') +
     '</main>\n' + FOOT + '\n</body></html>\n';
   if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into utility profile ' + row.slug);
   fs.mkdirSync('utilities/' + row.slug, { recursive: true });
