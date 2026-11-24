@@ -328,6 +328,7 @@ function buildService(s) {
   const slug = (s.id || '').replace(/^srv:/, '') || (s.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const cp = getCanonProps(slug, s.company_name, 'service_repair', 1);
   const unclaimed = /unclaimed/i.test(s.verification_status || '');
+  const publishedScope = /^https:\/\//i.test(s.capability_source_url || '') ? s.capability_source_url : '';
   if (unclaimed) {
     return {
       id: cp.id,
@@ -381,14 +382,15 @@ function buildService(s) {
     voltage: { value: s.voltage_capability_kv || '', num: NUM(s.voltage_capability_kv), unit: 'kV' },
     mva: { value: s.capacity_mva ? (s.capacity_mva + ' MVA') : '', num: s.capacity_mva || null, unit: 'MVA' },
     certs: s.certifications || [],
-    testing_capability: 'On-Site Diagnostic Testing & Overhaul',
+    // A scoped service record reports only the capabilities its cited scope establishes.
+    testing_capability: publishedScope ? (s.testing_capability || null) : 'On-Site Diagnostic Testing & Overhaul',
     facility_ids: cp.facility_ids,
     factories: [],
-    capability_evidence: { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' },
+    capability_evidence: { products: 'CONFIRMED', voltage: publishedScope && !s.voltage_capability_kv ? 'UNKNOWN' : 'CONFIRMED', mva: publishedScope && !s.capacity_mva ? 'UNKNOWN' : 'CONFIRMED' },
     evidence: 'CONFIRMED',
     claim_type: 'INDEPENDENTLY_SOURCED',
     confidence: 'HIGH',
-    source_meta: { source_title: 'Official website verification', source_type: 'company_documentation', source_url: s.website || '' },
+    source_meta: { source_title: publishedScope ? 'Published scope of services' : 'Official website verification', source_type: 'company_documentation', source_url: publishedScope || s.website || '' },
     research_completeness: 8,
     completeness_score: 90,
     provenance_type: 'OFFICIAL_SOURCE',

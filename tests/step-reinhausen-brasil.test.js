@@ -34,6 +34,11 @@ assert.equal(listed.length, 1);
 assert.equal(listed[0].kind, 'service_repair');
 assert.equal(listed[0].factory_count, 0);
 assert.equal(listed[0].country, 'Brazil');
+assert.equal(listed[0].testing_capability, null);
+assert.equal(listed[0].capability_evidence.voltage, 'UNKNOWN');
+assert.equal(listed[0].capability_evidence.mva, 'UNKNOWN');
+assert.equal(listed[0].source_meta.source_url, row.capability_source_url);
+
 
 const profile = fs.readFileSync('services/' + slug + '/index.html', 'utf8');
 assert.ok(profile.includes('<link rel="canonical" href="https://transformerpath.com' + href + '">'));
