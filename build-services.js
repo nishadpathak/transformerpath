@@ -260,6 +260,7 @@ ${eventBadges.mountHtml()}
     const url = 'https://transformerpath.com/services/' + slug + '/';
     const id = tpmFor(slug);
     const badge = eventBadges.htmlFor({ slug: slug, name: row.company_name });
+    const capabilitySource = /^https:\/\//i.test(row.capability_source_url || '') ? row.capability_source_url : '';
     const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
       '<title>' + esc(row.company_name) + ' — Unclaimed service listing | TransformerPath</title>' +
       '<meta name="description" content="' + esc((row.description || row.company_name).slice(0, 180)) + '">' +
@@ -273,6 +274,7 @@ ${eventBadges.mountHtml()}
       (row.directory_publish === true ? '' : '<p>Unclaimed listing. No service type is claimed.</p>') +
       '<p>' + esc(row.description || '') + '</p>' +
       '<p>' + (row.directory_publish === true ? 'Location: ' : '') + esc((outreach.publicCountry(row.country) === 'GCC' ? 'GCC' : [row.city, row.country].filter(Boolean).join(', ')) || '—') + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+      (capabilitySource ? '<p><a href="' + esc(capabilitySource) + '" rel="noopener">Source: published scope of services</a></p>' : '') +
       '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
     if (row.directory_publish === true && (outreach.leaked(page) || outreach.leakedPlace(page))) {
       throw new Error('outreach or place flag leaked into service profile ' + slug);
