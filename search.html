@@ -195,11 +195,12 @@
 
       const ix = [];
       const directProfiles = new Map(); // Scoped links allowed by the published directory index.
+      const directProfileSlugs = new Map();
       function publishedProfile(c) {
         return /^\/(?:accessories|machinery|laboratories|services|logistics)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(c.profile_url || '') ? c.profile_url : '';
       }
-      function listedProfile(name) {
-        return directProfiles.get(String(name || '').toLowerCase().trim()) || '';
+      function listedProfile(row) {
+        return directProfileSlugs.get(row.slug) || directProfiles.get(String(row.name || '').toLowerCase().trim()) || '';
       }
 
       if(td && td.companies) {
@@ -222,7 +223,10 @@
           const mva = c.mva && c.mva.value ? String(c.mva.value) : '';
           const kind = c.kind || 'manufacturer';
           const direct = publishedProfile(c);
-          if (direct) directProfiles.set(c.name.toLowerCase().trim(), direct);
+          if (direct) {
+            directProfiles.set(c.name.toLowerCase().trim(), direct);
+            directProfileSlugs.set(slug, direct);
+          }
           const href = direct || (kind === 'component_supplier' && slug
             ? 'accessories/' + slug + '/'
             : (kind === 'manufacturer' ? 'manufacturers/' + slug + '/' : (c.website || 'directory.html')));
@@ -283,7 +287,7 @@
             s: 'components',
             t: s.name,
             x: [s.country, s.city, cats, s.description, formerNames.join(' '), parentGroup, (s.standards||[]).join(' ')].join(' '),
-            href: listedProfile(s.name) || ('accessories/' + String(s.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '/'),
+            href: listedProfile(s) || ('accessories/' + String(s.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '/'),
             tag: (s.country||'') + ' · ' + (cats.split(' ')[0] || 'Accessory'),
             desc: cats || s.description || 'Component / material supplier',
             formerNames: formerNames,
@@ -347,7 +351,7 @@
             s: 'labs',
             t: l.name,
             x: [l.country, l.city, l.type, caps.join(' '), (l.standards||[]).join(' ')].join(' '),
-            href: listedProfile(l.name) || 'laboratories.html',
+            href: listedProfile(l) || 'laboratories.html',
             tag: (l.country || '') + ' · Lab',
             desc: caps.slice(0,3).join(' · ') || 'High-Voltage Testing Facility',
             role: 'TESTING LABORATORY',
@@ -362,7 +366,7 @@
             s: 'labs',
             t: m.name,
             x: [m.country, m.category, m.description].join(' '),
-            href: listedProfile(m.name) || 'machinery.html',
+            href: listedProfile(m) || 'machinery.html',
             tag: m.country + ' · Machinery',
             desc: m.category || m.description,
             role: 'MACHINERY BUILDER',

@@ -136,4 +136,31 @@ assert.equal(browserProfileUrl({ kind: 'testing_laboratory', slug: 'legacy', pro
 const cidet = read('laboratories/cidet-sabaneta/index.html');
 assert.ok(cidet.includes('11-LAB-024') && cidet.includes('9 February 2030') && cidet.includes('not electrical testing of a complete transformer'));
 assert.ok(!read('directory.html').includes('Independent impulse, short-circuit and dielectric labs with ISO/IEC 17025 scope.'));
-console.log('LATAM DIRECTORY QUALITY OK: nine sourced profiles across six countries and five directories.');
+// Run the deployed Global Search index builder, including the raw category
+// records whose display names can differ from their unified-index names.
+const searchSource = [...read('search.html').matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)]
+  .map(x => x[1]).find(script => script.includes('function buildIndex()'));
+const start = searchSource.indexOf('let INDEX =');
+const end = searchSource.indexOf('const fh =');
+const loadGlobalSearch = vm.runInNewContext(searchSource.slice(start, end) + '; buildIndex', {
+  document: { getElementById: () => ({ textContent: '' }) },
+  fetch: rel => Promise.resolve({ json: () => json(rel) }),
+  console
+});
+loadGlobalSearch().then(results => {
+  for (const [section, key, kind, slug] of cases) {
+    const company = entities.find(entity => entity.slug === slug);
+    const raw = json('data/' + section + '.json')[key].find(item => slugOf(item) === slug);
+    const matches = results.filter(item => item.t && (item.t === company.name || item.t === raw.name));
+    assert.ok(matches.some(i => i.s === 'companies'), slug + ' is in Global Search companies');
+    const category = { accessories: 'components', machinery: 'labs', laboratories: 'labs' }[section];
+    if (category) assert.ok(matches.some(i => i.s === category), slug + ' is in its Global Search category');
+    for (const hit of matches) assert.equal(hit.href, company.profile_url, slug + ' Global Search points to the published profile');
+  }
+  const previous = results.find(item => item.s === 'labs' && String(item.t).includes('KEMA'));
+  assert.equal(previous.href, 'laboratories.html', 'legacy card fallback is unchanged');
+  console.log('LATAM DIRECTORY QUALITY OK: nine sourced profiles across six countries and five directories.');
+}).catch(err => {
+  console.error(err);
+  process.exitCode = 1;
+});
