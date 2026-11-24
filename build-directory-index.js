@@ -730,6 +730,24 @@ try {
   });
 } catch (e) { /* overlay optional */ }
 
+// Only opt in dated, published paths, never infer a profile from a legacy slug.
+const directoryManifest = require('./data/directory-batch-manifest.json');
+const profileSections = {
+  component_supplier: 'accessories',
+  machinery_manufacturer: 'machinery',
+  testing_laboratory: 'laboratories',
+  service_repair: 'services',
+  transport_logistics: 'logistics'
+};
+const directProfiles = new Set(directoryManifest.direct_profile_links || []);
+index.forEach((row) => {
+  const section = profileSections[row.kind];
+  if (!section || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(row.slug || '')) return;
+  const href = '/' + section + '/' + row.slug + '/';
+  const publishedPage = href.slice(1) + 'index.html';
+  if (directProfiles.has(publishedPage) && directoryManifest.pages[publishedPage]) row.profile_url = href;
+});
+
 // Deterministic sort: manufacturers first, then suppliers, machinery, labs, services, etc.
 const KIND_ORDER = {
   manufacturer: 1,

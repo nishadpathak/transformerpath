@@ -11,6 +11,11 @@ const json = rel => JSON.parse(read(rel));
 const manifest = json('data/directory-batch-manifest.json');
 const entities = json('data/directory-index.json').companies;
 const sitemap = read('sitemap.xml');
+const { directoryCard } = require('../lib/directory-ssr');
+const vm = require('node:vm');
+const client = read('tp-directory.js');
+const clientProfile = client.slice(client.indexOf('function profileUrl('), client.indexOf('function availabilityMark('));
+const browserProfileUrl = vm.runInNewContext(clientProfile + '; profileUrl', { esc: String });
 const cases = [
   [
     "services",
@@ -107,6 +112,11 @@ for (const [section, key, kind, slug, country, citation] of cases) {
   assert.equal(matching.length, 1, slug + ' appears once in Global Search');
   assert.equal(matching[0].kind, kind);
   assert.equal(matching[0].country, country);
+  const href = '/' + section + '/' + slug + '/';
+  assert.equal(matching[0].profile_url, href, slug + ' has a direct indexed profile');
+  assert.equal(browserProfileUrl(matching[0]), href, slug + ' has a direct client link');
+  assert.equal(directoryCard(matching[0]).split('href="' + href + '"').length - 1, 2, slug + ' title and action directly link');
+  assert.ok(manifest.direct_profile_links.includes(rel));
   assert.equal(manifest.pages[rel], checked);
   const sitemapEntry = sitemap.split('<url>').find(entry => entry.includes('<loc>' + url + '</loc>'));
   assert.ok(sitemapEntry?.split('</url>')[0]?.includes('<lastmod>' + checked + '</lastmod>'), slug + ' has an item-specific sitemap date');
@@ -118,6 +128,10 @@ for (const [section, key, kind, slug, country, citation] of cases) {
   }
   if (section === 'accessories') assert.equal(row.listing_status, 'unclaimed');
 }
+
+assert.equal(manifest.direct_profile_links.length, cases.length);
+assert.equal(browserProfileUrl({ kind: 'testing_laboratory', slug: 'legacy' }), 'laboratories.html');
+assert.equal(browserProfileUrl({ kind: 'testing_laboratory', slug: 'legacy', profile_url: '//invalid.example/' }), 'laboratories.html');
 
 const cidet = read('laboratories/cidet-sabaneta/index.html');
 assert.ok(cidet.includes('11-LAB-024') && cidet.includes('9 February 2030') && cidet.includes('not electrical testing of a complete transformer'));
