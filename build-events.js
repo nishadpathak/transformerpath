@@ -22,6 +22,7 @@ const tpAff = require('./lib/travelpayouts');
 const paidListings = require('./lib/paid-listings');
 const schema = require('./lib/seo-schema');
 const eventSeo = require('./lib/event-seo');
+const stepLocale = require('./lib/step-locale');
 const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -241,7 +242,7 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(title) + '</title>' +
     '<meta name="description" content="' + esc(String(desc || '').slice(0, 300)) + '">' +
-    '<link rel="canonical" href="' + canonical + '">' +
+    '<link rel="canonical" href="' + canonical + '">' + (flags.alternates || '') +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="' + canonical + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + robots + '">' +
@@ -321,8 +322,9 @@ Object.keys(groups).forEach((slug) => {
       ? '<h2>Other years</h2><ul>' + siblings.map((other) => '<li><a href="../' + esc(other.id) + '/">' + esc(other.name) + '</a></li>').join('') + '</ul>'
       : '';
     const edUrl = 'https://transformerpath.com/events/' + ev.id + '/';
+    const stepGuide = ev.id === stepLocale.ID && !eventSeo.shouldNoindexEdition(ev, TODAY);
     const edBody = '<nav style="font-size:.8rem"><a href="../../events.html">Events</a> › <a href="../' + esc(slug) + '/">' + esc(seriesName) + '</a> › ' + esc(ev.name) + '</nav>' +
-      '<h1>' + esc(ev.name) + '</h1>' +
+      '<h1>' + esc(ev.name) + '</h1>' + (stepGuide ? stepLocale.handoffLink('en') : '') +
       '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
       deadlineCallout(ev) +
@@ -364,8 +366,14 @@ Object.keys(groups).forEach((slug) => {
       edBody,
       ldScript(edUrl, edCrumbs, eventSeo.editionInput(ev)),
       ev.id,
-      { role: 'edition', eventId: ev.id, noindex: noindex, online: schema.isOnlineEvent(ev) }
+      { role: 'edition', eventId: ev.id, noindex: noindex, online: schema.isOnlineEvent(ev),
+        alternates: stepGuide ? stepLocale.alternateTags() : '' }
     ));
+    if (stepGuide) {
+      writePage(stepLocale.ES_FILE, stepLocale.renderGuide({ event: ev, sponsorLinked: Boolean(publishedHref('/services/reinhausen-brasil/')) }));
+    } else if (ev.id === stepLocale.ID) {
+      fs.rmSync(path.dirname(stepLocale.ES_FILE), { recursive: true, force: true });
+    }
   });
 });
 

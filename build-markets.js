@@ -19,6 +19,7 @@ const tpAff = require('./lib/travelpayouts');
 const { recordOnMarket } = require('./lib/market-country');
 const { formatDayUTC } = require('./lib/intel-freshness');
 const { isUpcoming } = require('./lib/event-status');
+const stepLocale = require('./lib/step-locale');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -761,6 +762,7 @@ function marketPage(m) {
     '<h2>Business activity</h2>' + biHtml +
     '<h2>Projects &amp; intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
+    (m.slug === 'colombia' && evs.some(function (ev) { return ev.id === stepLocale.ID; }) ? stepLocale.handoffLink('en') : '') +
     '<h2>Technical context</h2><ul>' + techHtml + '</ul>' +
     '<h2>Frequently asked</h2>' + faqHtml +
     '<h2>Related reading</h2><div style="margin:4px 0 8px">' + kmapFor(m).map(function (s) { return '<a class="tpill" href="../../knowledge/' + s + '.html">' + esc(knowLabel(s)) + '</a>'; }).join(' ') + '</div>' +
