@@ -201,7 +201,7 @@ ${HEAD}
       <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
         <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">3. CNC Solid Insulation Fabrication</div>
         <div style="font-size:.82rem;color:var(--muted);line-height:1.5">5-axis CNC machining centers for transformerboard cylinders, angle rings, snout exits, and lead supports.</div>
-        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Weidmann, Krempel, Hedrich CNC</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px">Confirm that the supplier sells the machine itself, not just machined insulation components.</div>
       </div>
       <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
         <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">4. Vapour-Phase Drying (VPD) Autoclaves</div>

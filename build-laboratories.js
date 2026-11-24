@@ -11,6 +11,7 @@
 const fs = require('fs');
 const listingRichness = require('./lib/listing-richness');
 const outreach = require('./lib/directory-outreach');
+const { accreditationScopeState } = require('./lib/laboratory-evidence');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const CSSV = (JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets || {}).css || 14;
@@ -67,7 +68,7 @@ function scopeUnsourced(lab) {
 }
 
 function capClaim(lab, k) {
-  if (scopeUnsourced(lab)) return 'unknown';
+  if (lab.reference_only === true || scopeUnsourced(lab)) return 'unknown';
   const raw = lab.capabilities ? lab.capabilities[k] : undefined;
   if (raw === true) return 'yes';
   if (raw === false) return 'no';
@@ -93,7 +94,7 @@ function accreditationVerified(lab) {
   if (!a || !a.standard || String(a.standard).indexOf('17025') < 0) return false;
   const body = String(a.body || '').trim();
   if (!body || /as published/i.test(body)) return false;
-  return true;
+  return accreditationScopeState(a) !== 'historical';
 }
 
 /* A published note is not an accreditation object, so it does not
@@ -143,6 +144,25 @@ function independentVerified(lab) {
   return lab.third_party_independent === true && !scopeUnsourced(lab);
 }
 
+/* Shared by server and browser rendering. Depends only on the escape/source
+ * helpers and scope-state function available in both contexts. */
+function scopedAccreditationNote(a) {
+  const source = safeUrl(a && a.scope_url);
+  if (!source) return '';
+  const state = accreditationScopeState(a);
+  const timing = state === 'historical'
+    ? ' · Historical scope: valid through ' + esc(a.valid_until) + '; a renewed scope is not recorded'
+    : state === 'current' ? ' · Valid through ' + esc(a.valid_until) : '';
+  return '<div style="font-size:.76rem;margin-top:4px"><a href="' + source + '">Published accreditation scope ↗</a>' + timing + '</div>';
+}
+
+function availabilityNotice(lab) {
+  if (!lab.availability_note) return '';
+  const source = safeUrl(lab.availability_source_url);
+  return '<p style="font-size:.86rem"><strong>' + esc(lab.availability_note) + '</strong>' +
+    (source ? ' · <a href="' + source + '">Official status notice ↗</a>' : '') + '</p>';
+}
+
 function renderCardServer(lab) {
   const capRows = Object.keys(CAP_NAMES).map(function(k) {
     return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + capCell(lab, k) + '</td></tr>';
@@ -156,8 +176,8 @@ function renderCardServer(lab) {
     const body = lab.accreditation.body ? ' (' + esc(lab.accreditation.body) + ')' : '';
     const scope = lab.accreditation.scope ? '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + esc(lab.accreditation.scope) + '</div>' : '';
     accredHtml = '<div class="accred-box">' +
-      '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
-      scope +
+      '<div><b>' + (accreditationScopeState(lab.accreditation) === 'historical' ? 'Historical accreditation:' : 'Accreditation:') + '</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
+      scope + scopedAccreditationNote(lab.accreditation) +
       (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div>' : '') +
     '</div>';
   } else if (lab.short_circuit_capacity) {
@@ -173,6 +193,7 @@ function renderCardServer(lab) {
     '</div>' +
     '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (independentVerified(lab) ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
     '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+    availabilityNotice(lab) +
     exhibitorTags.block(exhibitorTags.forSlug(String(lab.id || '').replace(/^lab:/, '')), { claim: true }) +
     accredHtml +
     '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
@@ -180,7 +201,7 @@ function renderCardServer(lab) {
       '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + esc(lab.last_verified || '2026') + '</span>' +
       '<div style="display:flex;gap:6px">' +
         (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
-        '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
+        (lab.reference_only === true ? '' : '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>') +
       '</div>' +
     '</div>' +
   '</div>';
@@ -345,6 +366,10 @@ var minVoltage = 0;
 var selectedCountry = '';
 var searchQuery = '';
 
+${accreditationScopeState.toString()}
+${scopedAccreditationNote.toString()}
+${availabilityNotice.toString()}
+
 var CAP_NAMES = {
   lightning_impulse: '⚡ Lightning Impulse (1.2/50 μs)',
   switching_impulse: '⚡ Switching Impulse (250/2500 μs)',
@@ -380,7 +405,7 @@ function scopeUnsourced(lab) {
 }
 
 function capClaim(lab, k) {
-  if (scopeUnsourced(lab)) return 'unknown';
+  if (lab.reference_only === true || scopeUnsourced(lab)) return 'unknown';
   var raw = lab.capabilities ? lab.capabilities[k] : undefined;
   if (raw === true) return 'yes';
   if (raw === false) return 'no';
@@ -435,8 +460,8 @@ function renderCards() {
       var body = lab.accreditation.body ? ' (' + esc(lab.accreditation.body) + ')' : '';
       var scope = lab.accreditation.scope ? '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + esc(lab.accreditation.scope) + '</div>' : '';
       accredHtml = '<div class="accred-box">' +
-        '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
-        scope +
+        '<div><b>' + (accreditationScopeState(lab.accreditation) === 'historical' ? 'Historical accreditation:' : 'Accreditation:') + '</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
+        scope + scopedAccreditationNote(lab.accreditation) +
         (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div>' : '') +
       '</div>';
     } else if (lab.short_circuit_capacity) {
@@ -458,13 +483,13 @@ function renderCards() {
       '</div>' +
       '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (!scopeUnsourced(lab) && lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
       '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
-      accredHtml +
+      availabilityNotice(lab) + accredHtml +
       '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
       '<div class="card-foot">' +
         '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + esc(lab.last_verified || '2026') + '</span>' +
         '<div style="display:flex;gap:6px">' +
           (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
-          '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
+          (lab.reference_only === true ? '' : '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>') +
         '</div>' +
       '</div>' +
     '</div>';

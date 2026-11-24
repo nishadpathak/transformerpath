@@ -256,6 +256,7 @@
           availabilityMark(c) +
         '</div>' +
         (specsHtml.length ? '<div class="kg-card-specs">' + specsHtml.join('') + '</div>' : '') +
+        (c.availability_note ? '<p style="font-size:.85rem;margin:6px 0"><strong>' + esc(c.availability_note) + '</strong>' + (/^https:\/\//i.test(c.availability_source_url || '') ? ' · <a href="' + esc(c.availability_source_url) + '">Official status notice ↗</a>' : '') + '</p>' : '') +
         '<div class="dir-tags">' + (c.capability_labels || []).slice(0, 6).map(function (l) { return '<span class="dir-tag">' + esc(l) + '</span>'; }).join('') + '</div>' +
         '<div class="kg-comp-wrapper">' +
           '<span>Completeness: <b>' + compScore + '%</b></span>' +
@@ -264,7 +265,7 @@
         '</div>' +
       '</div>' +
       '<div class="kg-card-actions">' +
-        '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
+        (c.reference_only === true ? '' : '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>') +
         '<a class="btn btn-outline btn-sm" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '">Profile →</a>' +
         (c.website ? '<a class="btn btn-outline btn-sm" href="' + esc(c.website) + '" target="_blank" rel="noopener" style="font-size:.72rem" data-track="official_website_click" data-track-entity="' + esc(c.name) + '">Site ↗</a>' : '') +
         claimListingLink(c) +
@@ -515,7 +516,7 @@
           var score = (c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40));
           return '<td><b>' + score + '%</b> (' + (c.provenance_type || 'Verified') + ')</td>';
         }).join('') + '</tr>' +
-        '<tr><td>Direct Action</td>' + rows.map(function (c) { return '<td><a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '">Submit RFQ</a></td>'; }).join('') + '</tr>' +
+        '<tr><td>Direct Action</td>' + rows.map(function (c) { return c.reference_only === true ? '<td>' + esc(c.availability_note || 'Reference only') + '</td>' : '<td><a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '">Submit RFQ</a></td>'; }).join('') + '</tr>' +
         '</tbody></table>' +
       '</div>';
 

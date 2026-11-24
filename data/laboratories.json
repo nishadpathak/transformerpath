@@ -16,8 +16,8 @@
       "city": "Arnhem",
       "website": "https://www.cesi.it/labs/arnhem/",
       "third_party_independent": true,
-      "max_voltage_kv": 1200,
-      "short_circuit_capacity": "13000 MVA (six 2100 MVA short-circuit generators)",
+      "max_voltage_kv": null,
+      "short_circuit_capacity": null,
       "capabilities": {
         "lightning_impulse": true,
         "switching_impulse": true,
@@ -26,19 +26,18 @@
         "short_circuit": true,
         "sound_level": true,
         "dielectric_withstand": true,
-        "oil_testing": true,
-        "materials_testing": true,
         "sfra": true
       },
       "accreditation": {
         "standard": "ISO/IEC 17025",
-        "body": "RvA (Dutch Accreditation Council)",
-        "scope": "Full type and special testing of power and distribution transformers up to 1200 kV",
-        "valid_until": "2028-12-31"
+        "body": "Dutch Accreditation Council (RvA L020)",
+        "scope": "Scope entries include defined high-power and high-voltage test methods, including short-circuit withstand, dielectric tests and partial-discharge measurement. Confirm test, equipment and location against the annex.",
+        "valid_until": "2030-04-01",
+        "scope_url": "https://www.rva.nl/en/alle-geaccrediteerden/l020/"
       },
-      "description": "The premier independent high-power and high-voltage laboratory globally. Capable of full dynamic short-circuit withstand tests on large generator step-up and autotransformers up to 1,200 kV class.",
-      "last_verified": "2026-10-14",
-      "source": "https://www.cesi.it/labs/arnhem/",
+      "description": "KEMA's Arnhem facilities offer transformer short-circuit and high-voltage testing. The test bay and supply ratings are not a general transformer eligibility limit; check the required test, equipment class and setup with the lab.",
+      "last_verified": "2026-11-24",
+      "source": "CESI Arnhem lab and RvA accreditation register (L020)",
       "rfq_eligible": true
     },
     {
@@ -142,32 +141,19 @@
       "name": "Central Power Research Institute (CPRI) — Bengaluru",
       "country": "India",
       "city": "Bengaluru",
-      "website": "https://cpri.res.in",
+      "website": "https://cpri.res.in/en/hpl-laboratory",
       "third_party_independent": true,
-      "max_voltage_kv": 1200,
-      "short_circuit_capacity": "Direct short-circuit testing station for transformers up to 250 MVA class",
-      "capabilities": {
-        "lightning_impulse": true,
-        "switching_impulse": true,
-        "partial_discharge": true,
-        "temperature_rise": true,
-        "short_circuit": true,
-        "sound_level": true,
-        "dielectric_withstand": true,
-        "oil_testing": true,
-        "materials_testing": true,
-        "sfra": true
-      },
-      "accreditation": {
-        "standard": "ISO/IEC 17025",
-        "body": "NABL (National Accreditation Board for Testing and Calibration Laboratories, India)",
-        "scope": "Full electrical, mechanical and chemical testing of power transmission apparatus",
-        "valid_until": "2028-09-30"
-      },
-      "description": "Autonomous premier government research institute and testing laboratory in South Asia. Recognized globally by STL, ASTA and utilities across Asia, Middle East and Africa.",
-      "last_verified": "2026-08-25",
-      "source": "CPRI laboratory testing scope & NABL accreditation directory",
-      "rfq_eligible": true
+      "max_voltage_kv": null,
+      "short_circuit_capacity": null,
+      "capabilities": {},
+      "accreditation": null,
+      "description": "CPRI's Bengaluru High Power Laboratory has been closed for an upgrade since 1 October 2026. The notice states no reopening date. Published pre-shutdown power-transformer short-circuit capability: up to 250 MVA in the 220/400 kV classes. This is a historical reference, not current availability or a rating for another CPRI facility.",
+      "last_verified": "2026-11-24",
+      "source": "CPRI High Power Laboratory facilities and official shutdown notice",
+      "rfq_eligible": false,
+      "reference_only": true,
+      "availability_note": "High Power Laboratory temporarily closed",
+      "availability_source_url": "https://cpri.res.in/sites/default/files/High%20Power%20Laboratory_Remain_Shut_From_1_OCT_2026_0.pdf"
     },
     {
       "id": "lab:erda-vadodara",
@@ -237,32 +223,24 @@
       "id": "lab:doble-engineering-watertown",
       "name": "Doble Engineering Materials & Dielectric Laboratory",
       "country": "USA",
-      "city": "Watertown, Massachusetts",
-      "website": "https://www.doble.com",
+      "city": "Marlborough, Massachusetts",
+      "website": "https://www.doble.com/services/lab-services-details/",
       "third_party_independent": true,
-      "max_voltage_kv": 500,
-      "short_circuit_capacity": "Analytical & dielectric test focus (no high-power short-circuit)",
+      "max_voltage_kv": null,
+      "short_circuit_capacity": null,
       "capabilities": {
-        "lightning_impulse": false,
-        "switching_impulse": false,
-        "partial_discharge": true,
-        "temperature_rise": false,
-        "short_circuit": false,
-        "sound_level": false,
-        "dielectric_withstand": true,
-        "oil_testing": true,
-        "materials_testing": true,
-        "sfra": true
+        "oil_testing": true
       },
       "accreditation": {
         "standard": "ISO/IEC 17025",
-        "body": "A2LA (American Association for Laboratory Accreditation)",
-        "scope": "Electrical, dielectric and chemical testing of insulating fluids and solid insulation",
-        "valid_until": "2027-08-31"
+        "body": "ANSI National Accreditation Board (ANAB AT-2637)",
+        "scope": "Site-specific methods for dielectric fluids, including dissolved gas analysis (ASTM D3612 Method C / IEC 60567), moisture, furanic compounds, corrosive sulfur and oil breakdown voltage. Oil breakdown is not a full-transformer voltage test.",
+        "valid_until": "2026-12-05",
+        "scope_url": "https://www.doble.com/wp-content/uploads/Lab-Doble-Engineering-Company-Cert-and-Scope-MA.pdf"
       },
-      "description": "Industry benchmark laboratory for dielectric diagnostics, DGA, furan analysis, corrosive sulfur detection, and insulation aging assessment.",
-      "last_verified": "2026-08-22",
-      "source": "A2LA Accreditation Certificate #1842.01",
+      "description": "Doble's site at 123 Felton Street, Marlborough, Massachusetts, analyzes insulating-fluid samples. This listing does not establish full-transformer high-voltage or short-circuit testing at this site.",
+      "last_verified": "2026-11-24",
+      "source": "Doble Marlborough laboratory and ANAB AT-2637 certificate and scope",
       "rfq_eligible": true
     },
     {
