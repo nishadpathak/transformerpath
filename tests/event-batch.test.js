@@ -43,7 +43,8 @@ Object.keys(expected).forEach((id) => {
   const block = directory[id];
   const event = events.find((row) => row.id === id);
   check(id + ' section has ' + expected[id][1] + ' rows', block && block.section === expected[id][0] && block.entries.length === expected[id][1], block && String(block.entries.length));
-  check(id + ' edition is confirmed from an official source', event && event.date_status === 'CONFIRMED' && /^https:\/\//.test(event.source_url) && event.source_checked_at === '2026-10-20');
+  const checkedOn = id === 'ep-shanghai-2026' ? '2026-11-24' : '2026-10-20';
+  check(id + ' edition is confirmed from an official source', event && event.date_status === 'CONFIRMED' && /^https:\/\//.test(event.source_url) && event.source_checked_at === checkedOn);
 });
 check('shipped batch files do not publish do_not_contact', !/do_not_contact/i.test(JSON.stringify(directory) + JSON.stringify(badges)));
 

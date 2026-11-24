@@ -165,6 +165,35 @@ function relatedHtml(ev) {
   if (!rows.length) return '';
   return '<h2>Related editions</h2><ul>' + rows.map((r) => '<li><a href="../' + esc(r.id) + '/">' + esc(r.name) + '</a></li>').join('') + '</ul>';
 }
+function sectionHtml(ev, title, body, empty) {
+  if (empty && ev.omit_unpublished) return '';
+  return '<h2>' + esc(title) + '</h2>' + body;
+}
+function notesHtml(ev) {
+  const notes = Array.isArray(ev.notes) ? ev.notes.filter(Boolean) : [];
+  if (!notes.length) return '';
+  return notes.map((note) => '<p>' + esc(note) + '</p>').join('');
+}
+/* Static HTML keeps the referral link. After the cutoff, the browser
+ * points the same button at ordinary pre-registration and hides the perks. */
+function visitorCtaHtml(ev) {
+  const cta = ev && ev.visitor_cta;
+  if (!cta || !cta.href || !cta.label) return '';
+  const id = esc(ev.id || 'event');
+  const perks = Array.isArray(cta.perks) ? cta.perks.filter(Boolean) : [];
+  let perksBlock = '';
+  if (perks.length) {
+    perksBlock = '<div id="' + id + '-perks">' +
+      (cta.perks_intro ? '<p>' + esc(cta.perks_intro) + '</p>' : '') +
+      '<ul>' + perks.map((item) => '<li>' + esc(item) + '</li>').join('') + '</ul>' +
+      (cta.eligibility ? '<p>' + esc(cta.eligibility) + '</p>' : '') +
+      '</div>';
+  }
+  const script = (cta.href_after && cta.cutoff)
+    ? '<script>(function(){var cutoff=Date.parse(' + JSON.stringify(cta.cutoff) + ');if(!(cutoff>0)||Date.now()<=cutoff)return;var a=document.getElementById(' + JSON.stringify(ev.id + '-cta') + ');if(a)a.href=' + JSON.stringify(cta.href_after) + ';var p=document.getElementById(' + JSON.stringify(ev.id + '-perks') + ');if(p)p.hidden=true;})();</script>'
+    : '';
+  return '<p><a class="btn btn-amber" id="' + id + '-cta" href="' + esc(cta.href) + '" target="_blank" rel="noopener">' + esc(cta.label) + '</a></p>' + perksBlock + script;
+}
 function statsHtml(ev) {
   const s = ev.stats || {};
   const rows = ['exhibitors', 'visitors', 'area_sqm', 'countries', 'speakers'].map((k) => {
@@ -301,17 +330,19 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span>' +
       hoursHtml(ev) + attendanceHtml(ev) + '</div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
+      visitorCtaHtml(ev) +
       (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
       travelBlock(ev) + visitorGuideBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
+      notesHtml(ev) +
       (ev.id === 'oman-sustainability-week-2027' && httpHref(ev.registration && ev.registration.url)
         ? '<p><a href="' + esc(httpHref(ev.registration.url)) + '">Registration page</a></p>'
         : '') +
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
-      '<h2>Deadlines</h2>' + deadlineHtml(ev) +
-      '<h2>Programme</h2>' + programmeHtml(ev) +
+      sectionHtml(ev, 'Deadlines', deadlineHtml(ev), !(ev.deadlines && ev.deadlines.length)) +
+      sectionHtml(ev, 'Programme', programmeHtml(ev), !(ev.programme && ev.programme.length)) +
       directorySection(ev) +
-      '<h2>Key exhibitors</h2>' + exhibitorHtml(ev) +
+      sectionHtml(ev, 'Key exhibitors', exhibitorHtml(ev), !(ev.key_exhibitors && ev.key_exhibitors.length)) +
       (ev.stats == null ? '' : '<h2>Stats</h2>' + statsHtml(ev)) +
       ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
       relatedHtml(ev) +
