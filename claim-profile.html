@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claim Company Profile — TransformerPath</title>
-<meta name="description" content="Claim your transformer company profile on TransformerPath. Verified includes a logo, catalogue PDF and photo gallery at no extra charge. RFQ routing is coming soon.">
+<meta name="description" content="Claim your transformer company profile for free, or choose optional Verified Manufacturer: identity and contact details checked, not product certification.">
 <link rel="canonical" href="https://transformerpath.com/claim-profile.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
@@ -30,6 +30,14 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
 .tp-checkout-email { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 14px; }
 .tp-checkout-email input[type="email"] { flex:1 1 160px; min-width:0; width:auto; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font:inherit; }
 .claim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.claim-offer { margin:0 0 20px; padding:20px; }
+.claim-offer h2 { margin:0 0 8px; font-size:1.18rem; }
+.claim-offer p, .claim-offer ul { color:var(--muted); font-size:.9rem; line-height:1.55; margin:0 0 12px; }
+.claim-offer ul { padding-inline-start:1.2em; }
+.claim-options { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+.claim-options .btn { min-height:44px; }
+#claimForm, #verified-checkout { scroll-margin-top:80px; }
+@media (max-width:420px) { .claim-options .btn { width:100%; text-align:center; } }
 @media (max-width:600px) { .claim-grid { grid-template-columns:1fr; } }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
@@ -127,15 +135,30 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
   <script src="tp-nav.js?v=8" defer></script>
   <script src="tp-pwa.js?v=8" defer></script>
 </header>
-<section class="hero" style="padding:50px 0 36px">
+<section class="hero" id="main" tabindex="-1" style="padding:50px 0 36px">
   <div class="container">
     <h1 style="font-size:2.1rem">Claim Your <span>Company Profile</span></h1>
-    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to confirm factory capabilities. A logo, a catalogue PDF link and a photo gallery are included with Verified Manufacturer at no extra charge. RFQ routing is coming soon.</p>
+    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing for free to submit company details and corrections for review. Verified Manufacturer is an optional paid upgrade. RFQ routing is coming soon.</p>
   </div>
 </section>
 
 <section class="block">
   <div class="container formwrap">
+    <section class="card claim-offer" aria-labelledby="verified-offer-title">
+      <h2 id="verified-offer-title">Optional: Verified Manufacturer</h2>
+      <p><strong>$499 one-time payment · covers 12 months.</strong> No auto-renewal. Your basic listing and free claim do not require payment.</p>
+      <ul aria-label="What to have ready for review">
+        <li>The name and official website of the company you represent.</li>
+        <li>Your business email and job title.</li>
+        <li>Evidence that you are authorized to represent the company, such as a company confirmation.</li>
+      </ul>
+      <p>We check identity and contact details. The badge appears only after manual review. A logo, catalogue PDF link and photo gallery are included after review. Verification is not technical approval, product certification or endorsement. Payment does not change organic ranking or guarantee enquiries.</p>
+      <a href="verified-standards.html">Read the verification standards →</a>
+      <div class="claim-options">
+        <a class="btn btn-amber" href="#claimForm">Claim for free</a>
+        <a class="btn btn-outline" href="#verified-checkout">Continue to optional verification</a>
+      </div>
+    </section>
     <div class="card" style="padding:28px 24px">
       <p style="color:var(--muted);font-size:.9rem;line-height:1.6;margin:0 0 16px">
         <b style="color:var(--text)">Integrity & Verification Standard.</b> TransformerPath strictly verifies every representative claim to maintain industry trust. Commercial status or payments never imply technical certification or endorsement. Profile updates and capability claims are held in moderation until verified by our research team.
@@ -144,10 +167,10 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
         If you completed payment, submit the form below; we confirm payment before review.
       </div>
-      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">Claim the company, then send identity and authorization, then pay. After payment, return to this form. The badge appears only after review.</p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">For a free claim, fill in the form and submit it without paying. For Verified Manufacturer, use the optional checkout and return here to submit your claim for manual review.</p>
 
       <form id="verifiedCheckoutEmail" action="#" onsubmit="return false" hidden></form>
-      <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
+      <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" tabindex="-1" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
         <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
@@ -212,17 +235,17 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           I certify that I am a duly authorized employee or representative of this organization, and understand that all technical claims are verified before publication.
         </label>
 
-        <p class="claim-note"><b>3. Payment.</b> Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Identity and contact checked, not a product certification.</p>
+        <p class="claim-note" id="verified-checkout" tabindex="-1"><b>Optional payment.</b> Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Skip checkout if you only want to submit a free claim.</p>
         <p style="margin:0 0 14px"><span class="tp-checkout-email"><a class="btn btn-amber" href="/checkout/?product=verified_manufacturer" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></span></p>
 
         <button class="btn btn-amber" type="submit" style="width:100%;padding:12px;font-size:.96rem;font-weight:700">Submit Profile Claim &rarr;</button>
-        <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">Our directory research team reviews claims within 1 business day. Profiles are never automatically transferred.</p>
+        <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">A person reviews every claim. No payment is required for a free claim, and profiles are never automatically transferred.</p>
       </form>
 
       <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review. Identity and contact checked, not a product certification.</p>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Our team reviews your authority to represent the company. If you purchased Verified Manufacturer, we also confirm payment and review identity and contact details before publishing any badge. It is not a product certification.</p>
         <a href="manufacturer-dashboard.html" class="btn btn-outline" style="display:inline-block;margin-right:8px">Manufacturer dashboard</a>
         <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>

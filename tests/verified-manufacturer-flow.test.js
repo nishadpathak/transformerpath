@@ -406,6 +406,16 @@ async function main() {
   });
   check('claim page still uses the payment link and the neutral banner', pages['claim-profile.html'].indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && pages['claim-profile.html'].indexOf('buy.stripe.com') < 0 && pages['claim-profile.html'].indexOf('If you completed payment, submit the form below; we confirm payment before review.') >= 0);
 
+  console.log('free claim and optional verification copy');
+  const claimPage = pages['claim-profile.html'];
+  const listPage = fs.readFileSync('list-company.html', 'utf8');
+  const offer = claimPage.slice(claimPage.indexOf('class="card claim-offer"'), claimPage.indexOf('id="claimPaidBanner"'));
+  const form = claimPage.slice(claimPage.indexOf('<form name="claim-profile"'), claimPage.indexOf('id="claimThanks"'));
+  check('free claim is explicit, lands at the existing form, and is the default', /href="#claimForm">Claim for free<\/a>/.test(offer) && /id="claimForm"/.test(form) && /<select id="fld_tier" name="tier">\s*<option value="CLAIMED_FREE">/.test(form));
+  check('optional upgrade jumps to the one existing checkout without a change to product', /href="#verified-checkout">Continue to optional verification<\/a>/.test(offer) && /id="verified-checkout"/.test(form) && (form.match(/href="\/checkout\/\?product=verified_manufacturer"/g) || []).length === 1);
+  check('supplier sees evidence checklist, term and review limits before checkout', offer.includes('What to have ready for review') && offer.includes('$499 one-time payment · covers 12 months') && offer.includes('No auto-renewal') && offer.includes('badge appears only after manual review') && offer.includes('not technical approval, product certification or endorsement') && offer.includes('does not change organic ranking or guarantee enquiries') && offer.includes('verified-standards.html'));
+  check('list-company offers both free listing and claim checklist without ranking or popularity claims', listPage.includes('href="#lcForm">Continue with a free listing') && listPage.includes('href="claim-profile.html#verified-offer-title"') && !listPage.includes('Most popular') && !listPage.includes('verified badge and priority placement'));
+
   const cookieSecret = 'session-secret-for-unit-test';
   const cookie = session.signSession({ sub: 'abc123', email: 'buyer@example.com', name: '' }, cookieSecret, Date.now());
   const seen = dashboard._sessionViewerForTests({ headers: { cookie: 'tp_session=' + cookie } }, { SESSION_SECRET: cookieSecret }, Date.now());

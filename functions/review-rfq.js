@@ -45,6 +45,7 @@ exports.handler = async function (event) {
     voltage: body.voltage,
     details: body.details,
     deadline: body.deadline,
+    delivery_by: body.delivery_by,
     country: body.country,
     consent: body.consent === true || body.consent === 'yes',
     consent_version: body.consent_version,

@@ -29,7 +29,7 @@ function envMail() {
 }
 
 // Nicely printable field order for the email body.
-const FIELD_ORDER = ['form', 'form-name', 'reference', 'name', 'company', 'email', 'phone', 'country', 'category', 'quantity', 'rating', 'voltage', 'standard', 'details', 'deadline', 'budget', 'destination', 'consent', 'consent_version', 'consent_at', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
+const FIELD_ORDER = ['form', 'form-name', 'reference', 'name', 'company', 'email', 'phone', 'country', 'category', 'quantity', 'rating', 'voltage', 'standard', 'details', 'deadline', 'delivery_by', 'budget', 'destination', 'consent', 'consent_version', 'consent_at', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
 const OMIT = { 'bot-field': 1, bot_field: 1, consent_text: 1, attachment: 1 };
 
 function formName(data) {
@@ -59,9 +59,9 @@ function previewRfq(data, mail, event) {
   return formName(data) === 'rfq' && !productionDestination(mail, event);
 }
 
-function fmtVal(field, v) {
+function fmtVal(field, v, labelOverride) {
   if (v === undefined || v === null || v === '') return null;
-  const label = field.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const label = labelOverride || field.replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   return `${label}: ${Array.isArray(v) ? v.join(', ') : v}`;
 }
 
@@ -70,7 +70,12 @@ function linesFor(data) {
   Object.keys(data || {}).forEach((k) => {
     if (keys.indexOf(k) === -1 && !OMIT[k]) keys.push(k);
   });
-  return keys.map((f) => fmtVal(f, data[f])).filter(Boolean).join('\n');
+  const rfqDates = formName(data) === 'rfq' && Object.prototype.hasOwnProperty.call(data, 'delivery_by');
+  return keys.map((f) => {
+    const label = rfqDates && f === 'deadline' ? 'Quote by'
+      : rfqDates && f === 'delivery_by' ? 'Delivery needed by' : null;
+    return fmtVal(f, data[f], label);
+  }).filter(Boolean).join('\n');
 }
 
 exports.recipient = function () {
