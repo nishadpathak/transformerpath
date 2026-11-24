@@ -30,6 +30,14 @@ const TAX = JSON.parse(fs.readFileSync('data/industry-taxonomy.json', 'utf8'));
 const MFG = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies || [];
 const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
 const ACC_SUPPLIERS = ACC.suppliers || [];
+const directoryManifest = require('./data/directory-batch-manifest.json');
+const directProfiles = new Set(directoryManifest.direct_profile_links || []);
+function directProfile(section, slug) {
+  if (!section || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug || '')) return '';
+  const href = '/' + section + '/' + slug + '/';
+  const publishedPage = href.slice(1) + 'index.html';
+  return directProfiles.has(publishedPage) && directoryManifest.pages[publishedPage] ? href : '';
+}
 
 const CANON_COMPANIES = (() => {
   try { return JSON.parse(fs.readFileSync('data/companies.json', 'utf8')).companies || []; } catch (e) { return []; }
@@ -190,7 +198,9 @@ function buildManufacturer(c) {
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
   const slug = accessoryPublicSlug(s);
-  const hasPage = slug && fs.existsSync('accessories/' + slug + '/index.html');
+  // The accessory generator runs after the directory index on a clean
+  // build. Only a planned and dated explicit profile can precede its file.
+  const hasPage = slug && (fs.existsSync('accessories/' + slug + '/index.html') || directProfile('accessories', slug));
   const cp = getCanonProps(slug, s.name, 'component_supplier', 0);
   return {
     id: cp.id,
@@ -731,7 +741,6 @@ try {
 } catch (e) { /* overlay optional */ }
 
 // Only opt in dated, published paths, never infer a profile from a legacy slug.
-const directoryManifest = require('./data/directory-batch-manifest.json');
 const profileSections = {
   component_supplier: 'accessories',
   machinery_manufacturer: 'machinery',
@@ -739,13 +748,9 @@ const profileSections = {
   service_repair: 'services',
   transport_logistics: 'logistics'
 };
-const directProfiles = new Set(directoryManifest.direct_profile_links || []);
 index.forEach((row) => {
-  const section = profileSections[row.kind];
-  if (!section || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(row.slug || '')) return;
-  const href = '/' + section + '/' + row.slug + '/';
-  const publishedPage = href.slice(1) + 'index.html';
-  if (directProfiles.has(publishedPage) && directoryManifest.pages[publishedPage]) row.profile_url = href;
+  const href = directProfile(profileSections[row.kind], row.slug);
+  if (href) row.profile_url = href;
 });
 
 // Deterministic sort: manufacturers first, then suppliers, machinery, labs, services, etc.
