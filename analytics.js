@@ -1,16 +1,6 @@
-/* ═══ TransformerPath analytics loader ═══════════════════════════════════════
-   To activate, paste ONE id below and redeploy. No other page edits needed.
-
-   Option A (recommended): Plausible — set PLAUSIBLE_DOMAIN = "transformerpath.com"
-       Cookieless and aggregate-only. Needs NO consent banner and matches what
-       privacy.html already promises ("privacy-friendly and aggregated").
-   Option B: Google Analytics 4 — set GA4_ID = "G-XXXXXXXXXX"
-       Free, but sets cookies and profiles individuals. Requires a consent
-       banner for EU/UK visitors AND a rewrite of privacy.html before use.
-
-   Conversion events below fire through whichever provider is active, so the
-   tracking works the same either way — and stays silent when neither is set.
-   ═════════════════════════════════════════════════════════════════════════ */
+/* TransformerPath analytics. Production measurement is consent-gated.
+   Only an existing configured provider receives events. Never put form data,
+   private query parameters, or an unverified purchase into telemetry. */
 var PLAUSIBLE_DOMAIN = "";
 var GA4_ID = "G-98Q0V62L72";       // Google Analytics 4 — set (leave "" to disable)
 var ADS_AW_ID = "";                // Google Ads conversion ID, e.g. "AW-123456789" (optional)
@@ -41,51 +31,92 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
     try { return localStorage.getItem('tp-cookie-consent') === 'accepted'; } catch (e) { return false; }
   }
 
+  var pageDimensionsSent = false;
+  var disabledKey = 'ga-disable-' + GA4_ID;
+
+  function cleanPath(path) {
+    path = path || '/';
+    // An address, checkout token or query is not a report dimension.
+    if (!/^\/(?:[a-z0-9._-]+\/)*[a-z0-9._-]*$/i.test(path)) return '/';
+    if (/^\/(?:checkout|account|activate|claim)(?:[\/.]|$)/i.test(path)) {
+      return '/' + path.split(/[\/.]/)[1] + '/';
+    }
+    if (/^\/pricing(?:\/|\.html)?$/.test(path)) return '/pricing.html';
+    return path;
+  }
+
+  function baseLocation() { return location.origin + cleanPath(location.pathname); }
+
+  function cleanReferrer() {
+    try {
+      var ref = new URL(document.referrer);
+      if (!/^https?:$/.test(ref.protocol)) return '';
+      // Keep search/referral attribution, not the referring visitor's query.
+      return ref.origin + (ref.origin === location.origin ? cleanPath(ref.pathname) : '/');
+    } catch (e) { return ''; }
+  }
+
   function startGa4() {
-    if (provider === 'ga4' || document.querySelector('script[data-tp-ga4]')) return;
     if (!GA4_ID || !PROD_HOST || !consentOk()) return;
+    window[disabledKey] = false;
+    if (provider === 'ga4' || document.querySelector('script[data-tp-ga4]')) return;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    var config = {
+      page_location: baseLocation(),
+      page_referrer: cleanReferrer(),
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false
+    };
+    // Use GA4's campaign fields, not arbitrary URL properties on every event.
+    var q = new URLSearchParams(location.search);
+    [['utm_source', 'campaign_source'], ['utm_medium', 'campaign_medium'],
+     ['utm_campaign', 'campaign_name'], ['utm_content', 'campaign_content']].forEach(function (pair) {
+      var value = q.get(pair[0]) || '';
+      if (/^[a-z][a-z0-9_ -]{0,79}$/i.test(value) && !/\d{6}/.test(value)) config[pair[1]] = value;
+    });
+    window.gtag('config', GA4_ID, config);
     var g = document.createElement('script');
     g.async = true;
     g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
     g.setAttribute('data-tp-ga4', '1');
     document.head.appendChild(g);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA4_ID);
     provider = 'ga4';
   }
 
-  if (PLAUSIBLE_DOMAIN) {
-    var s = document.createElement('script');
-    s.defer = true;
-    s.setAttribute('data-domain', PLAUSIBLE_DOMAIN);
-    s.src = 'https://plausible.io/js/script.manual.js';
-    document.head.appendChild(s);
-    window.plausible = window.plausible || function () {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
-    window.plausible('pageview');
-    provider = 'plausible';
-  } else {
-    startGa4();
-    window.addEventListener('tp-consent-changed', function (ev) {
-      if (ev && ev.detail && ev.detail.consent === 'accepted') startGa4();
-    });
+  function syncConsent() {
+    if (GA4_ID) window[disabledKey] = !PROD_HOST || !consentOk();
+    if (PLAUSIBLE_DOMAIN) {
+      if (!PROD_HOST || !consentOk() || provider) return;
+      var s = document.createElement('script');
+      s.defer = true;
+      s.setAttribute('data-domain', PLAUSIBLE_DOMAIN);
+      s.src = 'https://plausible.io/js/script.manual.js';
+      document.head.appendChild(s);
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
+      window.plausible('pageview', { u: baseLocation() });
+      provider = 'plausible';
+    } else {
+      startGa4();
+    }
+    if (provider && consentOk()) trackPageDimensions();
   }
 
   /* ── Optional ad/platform tags (drop-in IDs, silent when blank) ─────────
      Google Ads: enable "Enhanced conversions" in Google Ads and, if you wish,
      also load the conversion linker so on-site events can be attributed.
      LinkedIn Insight Tag partner ID, and the Meta Pixel. Each is only loaded
-     when its ID is set — paste the values from the respective dashboards. */
+     each currently disabled; separate authorization is needed to enable ads. */
   try {
-    if (ADS_AW_ID) {
+    if (PROD_HOST && consentOk() && ADS_AW_ID) {
       window.gtag = window.gtag || function () { (window.dataLayer = window.dataLayer || []).push(arguments); };
       window.gtag('js', new Date());
       window.gtag('config', ADS_AW_ID);
     }
-    if (LINKEDIN_INSIGHT_ID) {
+    if (PROD_HOST && consentOk() && LINKEDIN_INSIGHT_ID) {
       var l = document.createElement('script'); l.async = true;
       l.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
       document.head.appendChild(l);
@@ -94,49 +125,40 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
       window._li.push(['enable', 'clickstream']);
       setTimeout(function () { (function (n) { if (!window._li._init) { window._li._init = 1; if (n && n.queue) n.queue.push(function () { window._li.retargetAds = window._li.retargetAds || []; var q = [['set', 'route'], ['set', 'track', 'insight']]; var d = n.queue[0].call; }); } })(window.LI); }, 0);
     }
-    if (META_PIXEL_ID) {
+    if (PROD_HOST && consentOk() && META_PIXEL_ID) {
       !(function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
       window.fbq('init', META_PIXEL_ID); window.fbq('track', 'PageView');
     }
   } catch (e) { /* ad tags must never break the page */ }
 
-  /* ── Traffic / UTM attribution ──────────────────────────────────────────
-     Captured once from the landing URL and merged into every event, so Google
-     Ads (via GA4 linked conversions), LinkedIn and Meta can attribute a lead
-     or order to the exact campaign. Persisted so a visitor who shops around
-     keeps their original source. */
-  var TRAFFIC = (function () {
-    var t = {};
-    try {
-      var q = new URLSearchParams(location.search);
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gbraid', 'fbclid', 'li_fat_id']
-        .forEach(function (k) { var v = q.get(k); if (v) t[k] = v; });
-    } catch (e) {}
-    try {
-      var saved = JSON.parse(sessionStorage.getItem('tp_traffic') || '{}');
-      Object.keys(saved).forEach(function (k) { if (!t[k]) t[k] = saved[k]; });
-      sessionStorage.setItem('tp_traffic', JSON.stringify(t));
-    } catch (e) {}
-    return t;
-  })();
-  window.TP_TRAFFIC = TRAFFIC;
-
-  /* One call signature for both providers. Silent when neither is configured,
-     so nothing breaks and no errors appear before an id is pasted in. */
+  // Only controlled product dimensions, never form data, dynamic URLs,
+  // source parameters, personal identifiers, or checkout reference IDs.
+  var DIMENSIONS = ('form tier plan country manufacturer category context book partner source kind region preset presets ' +
+    'network paid used score reason pages cooldown_days outcome engaged checked currency value mode ' +
+    'loadPercent faultType avr tap t1InService stageId stageName').split(' ');
   function track(name, props) {
-    props = props || {};
+    if (!PROD_HOST || !consentOk() || !/^[a-z][a-z0-9_]{0,39}$/.test(name || '')) return;
+    // Client-side URL parameters, links and DOM events never prove a sale.
+    if (/(^|_)purchase$/.test(name)) return;
     try {
-      // Merge UTM/traffic into every event (explicit props win) so conversions
-      // carry the campaign for GA4/Google Ads/LinkedIn/Meta attribution.
       var p = {};
-      Object.keys(TRAFFIC).forEach(function (k) { p[k] = TRAFFIC[k]; });
-      Object.keys(props).forEach(function (k) { p[k] = props[k]; });
+      DIMENSIONS.forEach(function (key) {
+        var value = (props || {})[key];
+        if (typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value))) p[key] = value;
+        if (typeof value === 'string' && /^[\p{L}\p{N} _.,()+&–-]{1,95}$/u.test(value) &&
+            !/\d[ .-]?(?:\d[ .-]?){6}/.test(value) && !/www\.|\.(?:com|org|net|io)\b/i.test(value)) p[key] = value;
+      });
+      // Affiliate sub-IDs are public placement slugs, never visitor IDs.
+      // Keep the existing report breakdown for this event only.
+      if (name === 'affiliate_click' && props) {
+        if (/^(?:event|trip)_[a-z][a-z0-9_]{1,80}_(?:hotel|flight|insurance|esim)$/.test(props.sub_id || '') &&
+            !/\d{5}/.test(props.sub_id)) p.sub_id = props.sub_id;
+        if (/^(?:hotel|flight|insurance|esim)$/.test(props.placement || '')) p.placement = props.placement;
+      }
       if (provider === 'plausible') {
-        window.plausible(name, { props: p });
+        window.plausible(name, { props: p, u: baseLocation() });
       } else if (provider === 'ga4') {
         window.gtag('event', name, p);
-      } else if (window.fbq) {
-        window.fbq('trackCustom', name, p);
       }
     } catch (e) { /* analytics must never break the page */ }
   }
@@ -146,13 +168,10 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
 
   document.addEventListener('DOMContentLoaded', function () {
 
-    /* ── Purchase ──────────────────────────────────────────────────────────
-       Stripe redirects back to pricing.html?unlocked=<tier> after payment,
-       which is the only signal a static site gets that money changed hands.
-       Read it before course-gate.js strips the query string. */
+    // A return URL is useful funnel context but not a verified purchase.
     var tier = new URLSearchParams(location.search).get('unlocked');
-    if (tier) {
-      track('purchase', { tier: tier, value: TIER_VALUE[tier] || 0, currency: 'USD' });
+    if (cleanPath(location.pathname) === '/pricing.html' && Object.prototype.hasOwnProperty.call(TIER_VALUE, tier)) {
+      track('checkout_return', { tier: tier });
     }
 
     /* ── Checkout start ───────────────────────────────────────────────────
@@ -167,25 +186,17 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
         var id = plan || (a.id || '').replace(/^cta/, '').toLowerCase();
         var value = plan ? (PAY_PLAN_VALUE[plan] || 0) : (TIER_VALUE[id] || 0);
         var props = { tier: id || 'unknown', value: value };
-        if (plan) {
-          props.plan = plan;
-          var slug = a.getAttribute('data-pay-slug') || '';
-          if (!slug) {
-            var slugInput = document.getElementById('claim-slug');
-            slug = slugInput ? String(slugInput.value || '').trim() : '';
-          }
-          if (slug) props.client_reference_id = slug;
-        }
+        if (plan) props.plan = plan;
         track('checkout_start', props);
       });
     });
 
     /* ── Lead ─────────────────────────────────────────────────────────────
        Every Netlify form on the site, identified by its own name so you can
-       tell a manufacturer enquiry from a newsletter signup. */
+       distinguish attempts without counting them as confirmed leads. */
     document.querySelectorAll('form[data-netlify="true"]').forEach(function (f) {
       f.addEventListener('submit', function () {
-        track('lead', { form: f.getAttribute('name') || 'unnamed' });
+        if (!f.hasAttribute('data-track-form')) track('form_submit_attempt', { form: f.getAttribute('name') || 'unnamed' });
       });
     });
 
@@ -275,11 +286,9 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
      Delegated, so it works on any element on any page — including generated SEO
      pages — with no per-page script. The full funnel:
 
-     account_created · newsletter_signup · pricing_view · learning_checkout_started
-     learning_purchase · book_view · book_purchase · supplier_claim_started
-     supplier_claim_submitted · verified_checkout_started · verified_purchase
-     rfq_started · rfq_submitted · event_feature_inquiry · exhibitor_feature_inquiry
-     webinar_inquiry · sponsor_inquiry */
+     DOM interactions are intent events only. RFQ storage calls TP_EVENT
+     after server success to report rfq_submitted; Stripe revenue and any other
+     confirmed conversions require an authoritative integration, not a click. */
   window.TP_EVENT = function (name, params) { track(name, params || {}); };
   (function () {
     function paramsFrom(el) {
@@ -299,16 +308,27 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
     document.addEventListener('submit', function (e) {
       var f = e.target;
       if (!f || !f.getAttribute || !f.getAttribute('data-track-form')) return;
-      track(f.getAttribute('data-track-form'), paramsFrom(f));
+      var eventName = f.getAttribute('data-track-form');
+      if (eventName === 'rfq_submitted') eventName = 'rfq_submit_attempt';
+      if (eventName === 'newsletter_signup') eventName = 'newsletter_submit_attempt';
+      if (!/(?:^|_)submitted$/.test(eventName)) track(eventName, paramsFrom(f));
     }, true);
-    // Page-view events: cheap path-based firing, no per-page config needed.
-    var path = (location.pathname || '').replace(/^\//, '').replace(/\//g, '_');
-    if (/^pricing(_|$)/.test(path)) track('pricing_view', { plan: 'all' });
-    if (/^books(_|$)/.test(path)) track('book_view', { book: 'series' });
-    if (/^verified(_|$)/.test(path)) track('verified_view', {});
-    if (/^manufacturers_[a-z0-9-_]+$/.test(path)) {
-      var slug = path.replace(/^manufacturers_/, '').replace(/_$/, '');
-      track('manufacturer_view', { manufacturer: slug.replace(/_/g, '-') });
-    }
   })();
+
+  function trackPageDimensions() {
+    if (pageDimensionsSent) return;
+    pageDimensionsSent = true;
+    var path = cleanPath(location.pathname);
+    if (path === '/pricing.html') track('pricing_view', { plan: 'all' });
+    if (/^\/books(?:\/|\.html|$)/.test(path)) track('book_view', { book: 'series' });
+    if (/^\/verified(?:\/|\.html|$)/.test(path)) track('verified_view', {});
+    var profile = /^\/manufacturers\/([a-z0-9_-]+)\/?$/.exec(path);
+    if (profile) track('manufacturer_view', { manufacturer: profile[1] });
+  }
+
+  window.addEventListener('tp-consent-changed', syncConsent);
+  window.addEventListener('storage', function (event) {
+    if (!event.key || event.key === 'tp-cookie-consent') syncConsent();
+  });
+  syncConsent();
 })();

@@ -46,6 +46,12 @@ check('a quarter is not a billable deadline', leads.qualify(sample({ deadline: '
 check('a bare year is not a billable deadline', leads.qualify(sample({ deadline: '2027' }), '2026-10-15').qualified === false);
 check('deadline.js still treats a bare year as open', deadline.classifyOpenDeadline('2027', '2026-10-15') === 'OPEN');
 check('a past calendar date is not qualified', leads.qualify(sample({ deadline: '2026-01-02' }), '2026-10-15').qualified === false);
+check('an optional later delivery date remains qualified', leads.qualify(sample({ delivery_by: '2027-03-20' }), '2026-10-15').qualified === true);
+check('same-date delivery remains a valid request', leads.qualify(sample({ delivery_by: '2026-12-31' }), '2026-10-15').qualified === true);
+check('delivery cannot precede quote cutoff', leads.qualify(sample({ delivery_by: '2026-12-30' }), '2026-10-15').reasons.includes('needed-by delivery date cannot be before the quote-by deadline'));
+check('impossible delivery date is not qualified', leads.qualify(sample({ delivery_by: '2027-02-29' }), '2026-10-15').qualified === false);
+check('non-string delivery date is not qualified', leads.qualify(sample({ delivery_by: ['2027-03-20'] }), '2026-10-15').qualified === false);
+check('future delivery does not reopen a closed lead', leads.qualify(sample({ deadline: '2026-10-14', delivery_by: '2027-03-20' }), '2026-10-15').qualified === false);
 check('missing kV and MVA is not qualified', leads.qualify(sample({ rating: '', voltage: 'soon' }), '2026-10-15').qualified === false);
 check('a person is not required', leads.qualify(sample({ qualified_by: '' }), '2026-10-15').qualified === true);
 check('payment does not qualify a lead', leads.qualify(sample({ qualified_by: '', qualified_by_payment: true }), '2026-10-15').qualified === false);
@@ -66,6 +72,7 @@ var billed = leads.billableMatches(matches);
 check('billable list keeps order and stops at 5', billed.length === 5 && billed[0].slug === 's1' && billed[4].slug === 's5');
 
 var hidden = leads.redact(sample());
+check('new delivery date is not exposed by the public card redactor', leads.redact(sample({ delivery_by: '2027-03-20' })).delivery_by === undefined);
 check('public card drops name, email, and phone', hidden.name == null && hidden.email == null && hidden.phone == null && JSON.stringify(hidden).indexOf('amina@') === -1 && JSON.stringify(hidden).indexOf('555') === -1);
 
 var included = { included: true, quota_slot: 1, paid: false };
@@ -93,6 +100,9 @@ check('public files contain no email address', JSON.stringify(pub).indexOf('@') 
 var html = fs.readFileSync('rfq.html', 'utf8');
 check('RFQ form asks for consent', html.indexOf('name="consent"') !== -1 && html.indexOf(leads.CONSENT_VERSION) !== -1);
 check('RFQ deadline is a calendar date', html.indexOf('type="date"') !== -1 && html.indexOf('Q2 2027') === -1);
+check('quote date keeps the legacy required field and has separate optional delivery date', /label for="fld_deadline">Quote by/.test(html) && /<input id="fld_deadline" type="date" name="deadline"[^>]+required>/.test(html) && /<input id="fld_delivery_by" type="date" name="delivery_by"[^>]*>/.test(html) && !/<input id="fld_delivery_by"[^>]+required/.test(html));
+check('file instructions describe email follow-up, not a form upload', html.includes('This form does not upload files.') && !html.includes('id="fld_att"'));
+check('the buyer reference is shown after successful storage, not emailed', html.includes('Save the RFQ reference shown on this page') && !html.includes('confirmed by email'));
 check('public RFQ copy stays redacted', html.indexOf('never shown publicly') !== -1);
 check('RFQ page has no new buy button', html.indexOf('buy.stripe.com/00w3co') === -1 && html.indexOf('plink_1UQhNR') === -1);
 check('RFQ pay mount stays empty in the HTML', html.indexOf('data-jobs-rfq-pay="rfq"') !== -1);

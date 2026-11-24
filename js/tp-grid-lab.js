@@ -332,11 +332,7 @@
 
   // Track analytics event safely
   function trackLabEvent(eventName, params = {}) {
-    if (window.gtag) {
-      window.gtag('event', eventName, params);
-    } else if (window.dataLayer) {
-      window.dataLayer.push({ event: eventName, ...params });
-    }
+    if (typeof window.TP_EVENT === 'function') window.TP_EVENT(eventName, params);
   }
 
   // Initialize 3D Engine

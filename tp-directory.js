@@ -242,7 +242,7 @@
     var flagged = !!(c.kind === 'manufacturer' && AVAIL_LABELS[c.availability]);
     return '<div class="kg-card"' + (flagged ? ' data-shippable="1" data-availability="' + esc(c.availability) + '"' : '') + ' data-id="' + esc(c.id) + '">' +
       '<div class="kg-card-check">' +
-        '<input type="checkbox" title="Select for side-by-side comparison" data-cmp="' + esc(c.id) + '"' + (selected ? ' checked' : '') + '>' +
+        '<input type="checkbox" aria-label="Compare ' + esc(c.name) + '" data-cmp="' + esc(c.id) + '"' + (selected ? ' checked' : '') + '>' +
       '</div>' +
       '<div class="kg-card-main">' +
         '<div class="kg-card-head">' +
@@ -414,11 +414,11 @@
 
       // Main search & dropdown filter bar
       '<div class="dir-controls">' +
-        '<input id="dirQ" type="search" placeholder="Search entity, capability, brand or keyword (e.g. 400 kV, OLTC, pressboard, VPD, Georg, KEMA)..." value="' + esc(q) + '">' +
-        '<select id="dirCountry"><option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) { return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>'; }).join('') + '</select>' +
-        '<select id="dirType">' + typSel + '</select>' +
-        '<select id="dirKv"><option value="0">Any Voltage Class</option><option value="110"' + (minKv===110?' selected':'') + '>110 kV+ (HV)</option><option value="220"' + (minKv===220?' selected':'') + '>220 kV+ (HV)</option><option value="400"' + (minKv===400?' selected':'') + '>400 kV+ (EHV)</option><option value="765"' + (minKv===765?' selected':'') + '>765 kV+ (UHV)</option></select>' +
-        '<select id="dirEv"><option value="">Any Evidence Level</option><option value="CONFIRMED"' + (evFilter==='CONFIRMED'?' selected':'') + '>Confirmed</option><option value="COMPANY_REPORTED"' + (evFilter==='COMPANY_REPORTED'?' selected':'') + '>Company Reported</option><option value="INFERRED"' + (evFilter==='INFERRED'?' selected':'') + '>Inferred</option><option value="UNKNOWN"' + (evFilter==='UNKNOWN'?' selected':'') + '>Unknown</option></select>' +
+        '<input id="dirQ" type="search" aria-label="Search the supplier directory" placeholder="Search entity, capability, brand or keyword (e.g. 400 kV, OLTC, pressboard, VPD, Georg, KEMA)..." value="' + esc(q) + '">' +
+        '<select id="dirCountry" aria-label="Filter by country"><option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) { return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>'; }).join('') + '</select>' +
+        '<select id="dirType" aria-label="Filter by transformer type">' + typSel + '</select>' +
+        '<select id="dirKv" aria-label="Filter by minimum voltage class"><option value="0">Any Voltage Class</option><option value="110"' + (minKv===110?' selected':'') + '>110 kV+ (HV)</option><option value="220"' + (minKv===220?' selected':'') + '>220 kV+ (HV)</option><option value="400"' + (minKv===400?' selected':'') + '>400 kV+ (EHV)</option><option value="765"' + (minKv===765?' selected':'') + '>765 kV+ (UHV)</option></select>' +
+        '<select id="dirEv" aria-label="Filter by evidence level"><option value="">Any Evidence Level</option><option value="CONFIRMED"' + (evFilter==='CONFIRMED'?' selected':'') + '>Confirmed</option><option value="COMPANY_REPORTED"' + (evFilter==='COMPANY_REPORTED'?' selected':'') + '>Company Reported</option><option value="INFERRED"' + (evFilter==='INFERRED'?' selected':'') + '>Inferred</option><option value="UNKNOWN"' + (evFilter==='UNKNOWN'?' selected':'') + '>Unknown</option></select>' +
         '<button id="dirClear" class="btn btn-outline btn-sm">Reset</button>' +
       '</div>' +
 
@@ -427,7 +427,7 @@
         '<span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>' +
       '</div>' +
 
-      '<div id="dirCompare" class="dir-compare"></div>' +
+      '<p id="dirCompareStatus" class="dir-compare-status" role="status"></p><div id="dirCompare" class="dir-compare"></div>' +
       '<div class="dir-list">' + (hits.length ? hits.slice(0, 60).map(cardHtml).join('') : '<div class="card" style="text-align:center;padding:40px;color:var(--muted)"><h3>No matching entities found</h3><p style="margin:8px 0">Try relaxing your search terms or clearing the voltage/evidence filters.</p><button id="btnResetEmpty" class="btn btn-amber btn-sm">Clear All Filters</button></div>') + '</div>' +
       '<div class="dir-note" style="font-size:.78rem;color:var(--muted);margin-top:20px;line-height:1.6;border-top:1px solid var(--border);padding-top:14px">Capability evidence is independent of commercial/paid status. <b>Potentially relevant</b> does not mean technically qualified — verify with the manufacturer before a commercial decision. UNKNOWN is shown rather than guessed.</div>' +
 
@@ -602,6 +602,13 @@
     root.addEventListener('change', function (e) {
       var t = e.target.getAttribute && e.target.getAttribute('data-cmp');
       if (t) {
+        var msg = document.getElementById('dirCompareStatus');
+        if (e.target.checked && !compare[t] && Object.keys(compare).filter(function (id) { return compare[id]; }).length >= 5) {
+          e.target.checked = false;
+          if (msg) msg.textContent = 'You can compare up to 5 suppliers. Remove one before adding another.';
+          return;
+        }
+        if (msg) msg.textContent = '';
         compare[t] = e.target.checked;
         logDirActivity('compare', { entity: t, checked: e.target.checked });
         if (window.TP_EVENT) window.TP_EVENT('compare_selected', { entity: t, checked: e.target.checked });

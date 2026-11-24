@@ -5,6 +5,8 @@
 'use strict';
 const assert = require('assert');
 const notify = require('../functions/notify');
+const review = require('../functions/review-rfq');
+const leads = require('../lib/rfq-leads');
 
 let failed = 0;
 function check(name, ok, detail) {
@@ -63,6 +65,41 @@ function check(name, ok, detail) {
   });
   const quietBody = JSON.parse(quiet.body);
   check('production without a key does not send', quiet.statusCode === 200 && quietBody.sent === false && quietBody.reason === 'not_configured');
+
+  process.env.RESEND_API_KEY = 're_fake_notify_test';
+  const originalFetch = global.fetch;
+  let emailPayload;
+  global.fetch = async (url, options) => {
+    assert.strictEqual(url, 'https://api.resend.com/emails');
+    emailPayload = JSON.parse(options.body);
+    return { ok: true };
+  };
+  try {
+    const request = { form: 'rfq', email: buyer, deadline: '2098-04-15', delivery_by: '2098-05-30' };
+    await notify.handler({ httpMethod: 'POST', headers: { host: 'transformerpath.com' }, body: JSON.stringify(request) });
+    check('the private site-inbox notification distinguishes quote cutoff and requested delivery', emailPayload.to[0] === 'hello@transformerpath.com' && emailPayload.text.includes('Quote by: 2098-04-15') && emailPayload.text.includes('Delivery needed by: 2098-05-30'));
+    delete request.delivery_by;
+    await notify.handler({ httpMethod: 'POST', headers: { host: 'transformerpath.com' }, body: JSON.stringify(request) });
+    check('legacy notifications retain their deadline wording', emailPayload.text.includes('Deadline: 2098-04-15') && !emailPayload.text.includes('Delivery needed by:'));
+  } finally {
+    global.fetch = originalFetch;
+    delete process.env.RESEND_API_KEY;
+  }
+
+  const lead = {
+    email: 'buyer@acme.example', company: 'Acme', category: 'Power Transformer',
+    rating: '25 MVA', voltage: '66 kV', details: 'Supply one 25 MVA transformer to the indicated project and technical schedule.',
+    deadline: '2098-04-15', consent: true,
+    consent_version: leads.CONSENT_VERSION, consent_at: '2026-11-24T08:00:00Z'
+  };
+  const runReview = async fields => JSON.parse((await review.handler({
+    httpMethod: 'POST', body: JSON.stringify(Object.assign({}, lead, fields))
+  })).body);
+  const bothDates = await runReview({ delivery_by: '2098-05-30' });
+  const deliveryTooEarly = await runReview({ delivery_by: '2098-04-14' });
+  check('endpoint preserves legacy requests without delivery date', (await runReview({})).qualified === true);
+  check('endpoint accepts ordered dates without returning private dates or contact', bothDates.qualified === true && !JSON.stringify(bothDates).includes(lead.email) && !JSON.stringify(bothDates).includes('2098-05-30'));
+  check('endpoint rejects a delivery date before the quote cutoff', deliveryTooEarly.qualified === false && deliveryTooEarly.reasons.some(reason => reason.includes('cannot be before')));
 
   assert.strictEqual(failed, 0);
   console.log('\nrfq preview notify: PASS');
