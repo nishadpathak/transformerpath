@@ -15,6 +15,7 @@ const catalog = require('./lib/seo-catalog');
 const { resolveStatus, platformToday } = require('./lib/event-status');
 const eventSeo = require('./lib/event-seo');
 const cwv = require('./lib/seo-cwv');
+const stepLocale = require('./lib/step-locale');
 
 const DIST = process.argv[2] || 'dist';
 const problems = [];
@@ -96,7 +97,7 @@ const cat = catalog.create();
 const files = walk(DIST, []);
 const titles = {};
 const descs = {};
-const langs = {};
+const stepPages = new Set();
 const inbound = {};
 
 files.forEach(function (file) {
@@ -110,7 +111,11 @@ files.forEach(function (file) {
     source.match(/<link[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["']/i) || [])[1] || '';
   const noindex = html.isNoindex(source);
   const lang = (source.match(/<html[^>]*\blang=["']([^"']+)["']/i) || [])[1] || 'en';
-  langs[lang] = 1;
+  const stepLang = rel === stepLocale.ES_FILE ? 'es' : (rel === stepLocale.EN_FILE ? 'en' : '');
+  if (stepLang && lang !== stepLang) fail(rel + ': expected html lang=' + stepLang);
+  if (!stepLang && lang && lang.toLowerCase().indexOf('en') !== 0) {
+    fail(rel + ': non-English page outside the reviewed translation map');
+  }
 
   const eventProfile = /data-tp-event-role="(?:hub|edition)"/.test(source);
   const titleMax = eventProfile ? 60 : 60;
@@ -157,8 +162,20 @@ files.forEach(function (file) {
   else if (!noindex && canon !== html.publicUrl(rel)) fail(rel + ': canonical ' + canon + ' is not self');
   else if (noindex && canon.indexOf(schema.ORIGIN) !== 0) fail(rel + ': canonical is not on-site');
 
-  if (/rel=["']alternate["'][^>]*hreflang=/i.test(source) || /hreflang=["'][^"']+["'][^>]*rel=["']alternate["']/i.test(source)) {
-    fail(rel + ': hreflang is present');
+  const alternateLinks = (source.match(/<link\b[^>]*>/gi) || []).filter(function (tag) {
+    return /\brel=["']alternate["']/i.test(tag) && /\bhreflang\s*=/i.test(tag);
+  });
+  if (stepLang && !noindex) {
+    stepPages.add(rel);
+    const expected = Object.keys(stepLocale.LANGUAGES);
+    if (alternateLinks.length !== expected.length || expected.some(function (l) {
+      return alternateLinks.filter(function (tag) {
+        return (tag.match(/\bhreflang=["']([^"']+)["']/i) || [])[1] === l &&
+          (tag.match(/\bhref=["']([^"']+)["']/i) || [])[1] === stepLocale.LANGUAGES[l];
+      }).length !== 1;
+    })) fail(rel + ': incorrect or non-reciprocal STEP language links');
+  } else if (alternateLinks.length) {
+    fail(rel + ': hreflang is present outside the reviewed translation pair');
   }
 
   const blocks = schema.extractJsonLd(source);
@@ -402,9 +419,7 @@ files.forEach(function (file) {
   if (!inbound[pub]) fail(rel + ': orphan page (no internal link)');
 });
 
-if (Object.keys(langs).some(function (l) { return l && l.toLowerCase().indexOf('en') !== 0; })) {
-  fail('non-English pages exist but hreflang was not paired from a translation map');
-}
+if (stepPages.size && stepPages.size !== 2) fail('STEP language pair is incomplete');
 
 if (problems.length) {
   console.error('SEO CHECK FAILED — ' + problems.length + ' problem(s):');
