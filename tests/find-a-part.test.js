@@ -61,4 +61,22 @@ assert.equal(fields.fld_consent.checked,false);
 assert.match(ctr.textContent,/No RFQ has been sent/);
 assert(!parts.rfqPrefill(doc,'mac-r11')); // Never overwrite edited or restored fields.
 assert.equal(fields.fld_category.value,'Bushings');
+// The hosted SEO pass defers the external part index until after this inline parser runs.
+const vm = require('node:vm');
+const source = require('node:fs').readFileSync('rfq.html','utf8');
+const prefillBranch = source.match(/  function loadQueryParams\(\)\{[\s\S]*?\n    if\(p.has\('rating'\)\)/)[0].replace(/\n    if\(p.has\('rating'\)\)$/, '\n  }');
+let afterParse, appliedPart;
+const context = {
+  URLSearchParams,
+  window:{location:{search:'?parts=mac-rd11'}},
+  document:{readyState:'loading',addEventListener(event,fn,options){
+    assert.equal(event,'DOMContentLoaded'); assert.equal(options.once,true); afterParse=fn;
+  }},
+  renderSchedule:()=>{}
+};
+vm.runInNewContext(prefillBranch+'\nloadQueryParams();',context);
+assert.equal(appliedPart,undefined);
+context.window.TPParts={rfqPrefill(doc,id){ assert.equal(doc,context.document); appliedPart=id; }};
+afterParse();
+assert.equal(appliedPart,'mac-rd11');
 console.log('Find a Part: 10 sourced cards, exact profile paths, filters, and safe prefill verified.');

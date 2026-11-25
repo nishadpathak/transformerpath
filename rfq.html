@@ -497,7 +497,12 @@
   function loadQueryParams(){
     var p = new URLSearchParams(window.location.search);
     if(p.has('parts')){
-      if(p.getAll('parts').length === 1 && window.TPParts) window.TPParts.rfqPrefill(document, p.get('parts'));
+      if(p.getAll('parts').length === 1){
+        // The static publisher defers external scripts. Wait for the reviewed part index.
+        var fromParts = function(){ if(window.TPParts) window.TPParts.rfqPrefill(document, p.get('parts')); };
+        if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fromParts, {once:true});
+        else fromParts();
+      }
       renderSchedule();
       return;
     }
