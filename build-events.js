@@ -23,6 +23,7 @@ const paidListings = require('./lib/paid-listings');
 const schema = require('./lib/seo-schema');
 const eventSeo = require('./lib/event-seo');
 const stepLocale = require('./lib/step-locale');
+const { applyEventVisitorSpotlight } = require('./lib/event-visitor-spotlight');
 const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -105,7 +106,7 @@ function directorySection(ev) {
     return '<li>' + link + booth + '</li>';
   }).join('');
   const source = httpHref(block.source_url);
-  return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>' +
+  return '<h2' + (ev.id === 'ep-shanghai-2026' ? ' id="ep-shanghai-exhibitors"' : '') + '>' + esc(block.section) + '</h2><ul>' + items + '</ul>' +
     (source ? '<p><a href="' + esc(source) + '" rel="noopener">Source: event organiser</a></p>' : '');
 }
 function exhibitorHtml(ev) {
@@ -177,25 +178,45 @@ function notesHtml(ev) {
   if (!notes.length) return '';
   return notes.map((note) => '<p>' + esc(note) + '</p>').join('');
 }
-/* Static HTML keeps the referral link. After the cutoff, the browser
- * points the same button at ordinary pre-registration and hides the perks. */
+/* A static, cacheable page always offers ordinary registration. The
+ * optional organizer campaign is selected only while the live clock is
+ * inside its published window; JavaScript-disabled visitors can still register. */
 function visitorCtaHtml(ev) {
   const cta = ev && ev.visitor_cta;
-  if (!cta || !cta.href || !cta.label) return '';
+  if (!cta || !cta.href || !cta.label || isPast(ev)) return '';
   const id = esc(ev.id || 'event');
+  const normal = cta.href_after || cta.href;
+  const hasCampaign = Boolean(cta.href_after && cta.cutoff && Number.isFinite(Date.parse(cta.cutoff)));
   const perks = Array.isArray(cta.perks) ? cta.perks.filter(Boolean) : [];
-  let perksBlock = '';
-  if (perks.length) {
-    perksBlock = '<div id="' + id + '-perks">' +
-      (cta.perks_intro ? '<p>' + esc(cta.perks_intro) + '</p>' : '') +
-      '<ul>' + perks.map((item) => '<li>' + esc(item) + '</li>').join('') + '</ul>' +
-      (cta.eligibility ? '<p>' + esc(cta.eligibility) + '</p>' : '') +
-      '</div>';
-  }
-  const script = (cta.href_after && cta.cutoff)
-    ? '<script>(function(){var cutoff=Date.parse(' + JSON.stringify(cta.cutoff) + ');if(!(cutoff>0)||Date.now()<=cutoff)return;var a=document.getElementById(' + JSON.stringify(ev.id + '-cta') + ');if(a)a.href=' + JSON.stringify(cta.href_after) + ';var p=document.getElementById(' + JSON.stringify(ev.id + '-perks') + ');if(p)p.hidden=true;})();</script>'
+  const isShanghai = ev.id === 'ep-shanghai-2026';
+  const genericLabel = isShanghai ? 'Pre-register with the organiser' : cta.label;
+  const campaignLabel = isShanghai ? 'Pre-register through the organiser’s campaign' : cta.label;
+  const perksBlock = hasCampaign && perks.length ? '<details id="' + id + '-perks" hidden>' +
+    '<summary>Campaign benefits and eligibility</summary>' +
+    (cta.perks_intro ? '<p>' + esc(cta.perks_intro) + '</p>' : '') +
+    '<ul>' + perks.map((item) => '<li>' + esc(item) + '</li>').join('') + '</ul>' +
+    (cta.eligibility ? '<p>' + esc(cta.eligibility) + '</p>' : '') + '</details>' : '';
+  const attrs = hasCampaign
+    ? ' data-campaign-url="' + esc(cta.href) + '" data-campaign-cutoff="' + esc(cta.cutoff) +
+      '" data-campaign-label="' + esc(campaignLabel) + '"' : '';
+  const script = hasCampaign
+    ? '<script>(function(){var a=document.getElementById(' + JSON.stringify(ev.id + '-cta') + ');' +
+      'if(!a)return;var cutoff=Date.parse(a.dataset.campaignCutoff),normal=a.href,label=a.textContent,timer;' +
+      'var perks=document.getElementById(' + JSON.stringify(ev.id + '-perks') + ');' +
+      'function refresh(){clearTimeout(timer);var remaining=cutoff-Date.now()+1;var active=Number.isFinite(remaining)&&remaining>0;' +
+      'a.href=active?a.dataset.campaignUrl:normal;a.textContent=active?a.dataset.campaignLabel:label;' +
+      'a.setAttribute("data-track-registration_type",active?"organiser_campaign":"organiser");' +
+      'if(perks)perks.hidden=!active;if(active)timer=setTimeout(refresh,Math.min(remaining,2147483647));}' +
+      'refresh();window.addEventListener("pageshow",refresh);document.addEventListener("visibilitychange",refresh);})();</script>'
     : '';
-  return '<p><a class="btn btn-amber" id="' + id + '-cta" href="' + esc(cta.href) + '" target="_blank" rel="noopener">' + esc(cta.label) + '</a></p>' + perksBlock + script;
+  return '<section class="event-visit card" id="visitor-registration" aria-labelledby="' + id + '-visit-title">' +
+    '<h2 id="' + id + '-visit-title">Visitor registration</h2>' +
+    (isShanghai ? '<p>Free admission for industry professionals. Registration and badges are handled by the event organiser.</p>' : '') +
+    '<div class="event-visit-actions"><a class="btn btn-amber" id="' + id + '-cta" href="' + esc(normal) + '"' +
+    ' data-track="event_registration_click" data-track-event_id="' + id +
+    '" data-track-registration_type="organiser" data-track-placement="edition"' + attrs + '>' + esc(genericLabel) + '</a>' +
+    (isShanghai && EVENT_DIRECTORY[ev.id] && EVENT_DIRECTORY[ev.id].entries.length ? '<a class="event-visit-secondary" href="#ep-shanghai-exhibitors">Browse exhibitors</a>' : '') +
+    '</div>' + perksBlock + script + '</section>';
 }
 function statsHtml(ev) {
   const s = ev.stats || {};
@@ -248,7 +269,7 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + robots + '">' +
     '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="stylesheet" href="../../tp-nav.css?v=' + CSSV + '">' +
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
-    '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted)}.c-wrap h2{font-size:1.2rem;margin-top:22px}.c-wrap p{overflow-wrap:anywhere}.evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem}</style>' +
+    '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted)}.c-wrap h2{font-size:1.2rem;margin-top:22px}.c-wrap p{overflow-wrap:anywhere}.evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem}.event-visit{margin:16px 0 20px;padding:16px 18px;border-inline-start:3px solid var(--accent);scroll-margin-top:6rem}.c-wrap .event-visit h2{margin:0 0 8px}.event-visit p{margin:0 0 12px}.event-visit-actions{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center}.event-visit-actions a,.event-visit summary{min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center;line-height:1.3}.event-visit summary{display:list-item;padding-top:13px;cursor:pointer;color:var(--accent);font-weight:700}.event-visit [hidden]{display:none}.event-visit a:focus-visible,.event-visit summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}#ep-shanghai-exhibitors{scroll-margin-top:6rem}@media(max-width:500px){.event-visit-actions{align-items:stretch;flex-direction:column}.event-visit-actions a{justify-content:center;text-align:center}}</style>' +
     (ld || '') +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap"' + role + eid + '>' + withBadge +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
@@ -327,14 +348,13 @@ Object.keys(groups).forEach((slug) => {
       '<h1>' + esc(ev.name) + '</h1>' + (stepGuide ? stepLocale.handoffLink('en') : '') +
       '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
-      deadlineCallout(ev) +
+      deadlineCallout(ev) + visitorCtaHtml(ev) +
       '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span>' +
       hoursHtml(ev) + attendanceHtml(ev) + '</div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
-      visitorCtaHtml(ev) +
       (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
       travelBlock(ev) + visitorGuideBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
@@ -381,6 +401,9 @@ Object.keys(groups).forEach((slug) => {
  * event directory and the shared calendar files where they are. */
 const confirmedUpcoming = ALL.filter((ev) => allowsCalendar(ev) && ev.end >= TODAY);
 if (!SERIES_FILTER.length) {
+const eventsHub = fs.readFileSync('events.html', 'utf8');
+const eventsSpotlight = applyEventVisitorSpotlight(eventsHub, byId['ep-shanghai-2026']);
+if (eventsSpotlight !== eventsHub) fs.writeFileSync('events.html', eventsSpotlight);
 /* Calendars: CONFIRMED upcoming only. */
 fs.mkdirSync('events/ics', { recursive: true });
 confirmedUpcoming.forEach((ev) => {
