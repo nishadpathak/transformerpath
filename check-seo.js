@@ -16,6 +16,9 @@ const { resolveStatus, platformToday } = require('./lib/event-status');
 const eventSeo = require('./lib/event-seo');
 const cwv = require('./lib/seo-cwv');
 const stepLocale = require('./lib/step-locale');
+const latamHub = require('./lib/latam-hub');
+const latamHubLocales = Object.fromEntries(Object.entries(latamHub.FILES).map(([lang, file]) => [file, lang]));
+const latamHubAlternates = Object.fromEntries(Object.entries({ ...latamHub.PATHS, 'x-default': latamHub.ROOT }).map(([lang, page]) => [lang, schema.ORIGIN + page]));
 
 const DIST = process.argv[2] || 'dist';
 const problems = [];
@@ -98,6 +101,8 @@ const files = walk(DIST, []);
 const titles = {};
 const descs = {};
 const stepPages = new Set();
+const companyLocales = require('./lib/company-profile-locales');
+const checkedCompanyLocales = new Set();
 const inbound = {};
 
 files.forEach(function (file) {
@@ -113,7 +118,13 @@ files.forEach(function (file) {
   const lang = (source.match(/<html[^>]*\blang=["']([^"']+)["']/i) || [])[1] || 'en';
   const stepLang = rel === stepLocale.ES_FILE ? 'es' : (rel === stepLocale.EN_FILE ? 'en' : '');
   if (stepLang && lang !== stepLang) fail(rel + ': expected html lang=' + stepLang);
-  if (!stepLang && lang && lang.toLowerCase().indexOf('en') !== 0) {
+  const hubLang = latamHubLocales[rel];
+  if (hubLang && lang !== hubLang) fail(rel + ': expected html lang=' + hubLang);
+  const companyLocale = companyLocales.forRel(rel);
+  if (companyLocale && lang !== companyLocales.localeForRel(rel)) {
+    fail(rel + ': wrong HTML language for company profile');
+  }
+  if (!stepLang && !hubLang && !companyLocale && lang && lang.toLowerCase().indexOf('en') !== 0) {
     fail(rel + ': non-English page outside the reviewed translation map');
   }
 
@@ -174,8 +185,25 @@ files.forEach(function (file) {
           (tag.match(/\bhref=["']([^"']+)["']/i) || [])[1] === stepLocale.LANGUAGES[l];
       }).length !== 1;
     })) fail(rel + ': incorrect or non-reciprocal STEP language links');
+  } else if (hubLang && !noindex) {
+    const expected = Object.keys(latamHubAlternates);
+    if (alternateLinks.length !== expected.length || expected.some(function (l) {
+      return alternateLinks.filter(function (tag) {
+        return (tag.match(/\bhreflang=["']([^"']+)["']/i) || [])[1] === l &&
+          (tag.match(/\bhref=["']([^"']+)["']/i) || [])[1] === latamHubAlternates[l];
+      }).length !== 1;
+    })) fail(rel + ': invalid Latin America hub language links');
+  } else if (companyLocale && !noindex) {
+    checkedCompanyLocales.add(rel);
+    const links = Object.entries(companyLocale.alternates);
+    if (alternateLinks.length !== links.length || links.some(function ([language, url]) {
+      return alternateLinks.filter(function (tag) {
+        return (tag.match(/\bhreflang=["']([^"']+)["']/i) || [])[1] === language &&
+          (tag.match(/\bhref=["']([^"']+)["']/i) || [])[1] === url;
+      }).length !== 1;
+    })) fail(rel + ': incorrect or non-reciprocal company language links');
   } else if (alternateLinks.length) {
-    fail(rel + ': hreflang is present outside the reviewed translation pair');
+    fail(rel + ': hreflang is present outside a reviewed translation set');
   }
 
   const blocks = schema.extractJsonLd(source);
@@ -420,6 +448,11 @@ files.forEach(function (file) {
 });
 
 if (stepPages.size && stepPages.size !== 2) fail('STEP language pair is incomplete');
+companyLocales.allPairs().forEach(function (p) {
+  if (!checkedCompanyLocales.has(p.rel) || !checkedCompanyLocales.has(p.native)) {
+    fail(p.rel + ': reviewed bilingual company profile pair is incomplete');
+  }
+});
 
 if (problems.length) {
   console.error('SEO CHECK FAILED — ' + problems.length + ' problem(s):');

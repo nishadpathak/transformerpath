@@ -337,5 +337,8 @@ require('./scripts/build-sourced-hubs.js')();
 /* Cooling × MVA floor × country pages. A page is written only at three or more makers. */
 require('./scripts/build-spec-landings.js')();
 
+/* Reviewed company locale companions use the final English profile as their source identity. */
+require('./lib/company-profile-locales').writePages();
+
 /* Sitemap: walk published HTML (see build-sitemap.js). */
 require('./build-sitemap.js')();
