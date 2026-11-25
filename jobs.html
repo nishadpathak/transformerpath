@@ -155,6 +155,50 @@
 <section class="block">
   <div class="container" style="max-width:900px">
 
+    <div id="featuredHiringNotice"></div>
+    <template id="featuredHiringCampaign" data-start="2026-11-25T00:00:00+05:30" data-end="2026-12-05T00:00:00+05:30">
+      <section class="card" style="margin-bottom:24px;border-left:4px solid var(--amber)" aria-labelledby="featured-hiring-title">
+        <span class="job-featured">FEATURED HIRING NOTICE</span>
+        <h2 id="featured-hiring-title" style="margin:.55rem 0">TMC Transformers (India) Limited</h2>
+        <p>Seven roles advertised in the supplied hiring notice. This feature runs through <time datetime="2026-12-04">4 December 2026</time> (India time). That is not an application deadline.</p>
+        <ul style="padding-left:1.35rem;line-height:1.65">
+          <li><strong>Regional Head, Eastern Region:</strong> 12–15 years in the transformer industry.</li>
+          <li><strong>Sales Manager, North:</strong> 5–10 years.</li>
+          <li><strong>Sales Manager, West (Mumbai/Pune):</strong> 5–10 years.</li>
+          <li><strong>Sales Manager, Chennai:</strong> 5–10 years.</li>
+          <li><strong>Tendering and Bid Engineer/Manager, Vadodara:</strong> 5–10 years.</li>
+          <li><strong>Tendering Design Engineer/Manager:</strong> 5–10 years; location not specified.</li>
+          <li><strong>Instrumentation Design Engineer:</strong> 4–7 years; location not specified.</li>
+        </ul>
+        <p>The seven roles do not have individual listings on the employer’s public careers page. Confirm availability and application instructions with TMC before sending personal information.</p>
+        <a class="btn btn-amber btn-sm" href="https://tmc-india.com/careers" rel="noopener">Visit TMC Careers →</a>
+      </section>
+    </template>
+    <script data-featured-hiring-clock>
+    (function () {
+      var mount = document.getElementById('featuredHiringNotice');
+      var template = document.getElementById('featuredHiringCampaign');
+      if (!mount || !template || !template.content) return;
+      var start = Date.parse(template.dataset.start);
+      var end = Date.parse(template.dataset.end);
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return;
+      var timer;
+      function refreshNotice() {
+        clearTimeout(timer);
+        var now = Date.now();
+        if (now >= start && now < end) {
+          if (!mount.firstChild) mount.appendChild(template.content.cloneNode(true));
+        } else {
+          mount.textContent = '';
+        }
+        if (now < end) timer = setTimeout(refreshNotice, Math.min((now < start ? start : end) - now, 2147483647));
+      }
+      refreshNotice();
+      window.addEventListener('pageshow', refreshNotice);
+      document.addEventListener('visibilitychange', refreshNotice);
+    })();
+    </script>
+
     <div class="stat-row" id="statRow">
 <!--SSR:jobs-stats-->
 <div class="s"><b>0</b><small>Live openings</small></div>
