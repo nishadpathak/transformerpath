@@ -46,7 +46,12 @@ function main() {
   resetDir('directory/region');
   resetDir('directory/country');
   docs.forEach(function (doc) {
-    const html = doc.html.replace('<!--HEAD-->', head).replace('<!--FOOT-->', foot);
+    const language = doc.lang || 'en';
+    const localHead = language === 'en' ? head : head
+      .replace('Skip to content</a>', (language === 'es' ? 'Ir al contenido' : 'Ir para o conteúdo') + '</a>')
+      .replace('<header>', '<header lang="en">');
+    const localFoot = language === 'en' ? foot : foot.replace('<footer>', '<footer lang="en">');
+    const html = doc.html.replace('<!--HEAD-->', localHead).replace('<!--FOOT-->', localFoot);
     if (html.indexOf('buy.stripe.com') !== -1) throw new Error(doc.file + ' contains a Stripe link');
     const file = path.join(ROOT, doc.file);
     fs.mkdirSync(path.dirname(file), { recursive: true });
