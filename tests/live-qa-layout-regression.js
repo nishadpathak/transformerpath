@@ -26,6 +26,47 @@ check('netlify.toml keeps build settings in the [build] table', buildAt === 0 &&
 const learn = fs.readFileSync('learn.html', 'utf8');
 check('learn price column can shrink', /class="price-side"/.test(learn) && !/flex:none;text-align:center/.test(learn));
 check('learn plan line may wrap', /class="plan-line"/.test(learn) && /\.price-side \{[^}]*min-width:0/.test(learn));
+const learnHero = (learn.match(/<section class="hero learn-hero">[\s\S]*?<\/section>/) || [''])[0];
+const lessonUrl = '/learn/design/module-1/';
+check('Learn primary action opens the public first lesson, not Learn again',
+  learnHero.includes('href="' + lessonUrl + '">Start free lesson:') && learnHero.includes('No sign-in required'));
+const jumpTo = [...learnHero.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
+check('Learn section links point to four unique static targets',
+  jumpTo.join(',') === 'free-modules,design-curriculum,learning-tools,learning-plans' &&
+  jumpTo.every((id) => learn.split('id="' + id + '"').length === 2));
+check('Learn shows the curriculum before its first paid plan', learn.indexOf('id="design-curriculum"') < learn.indexOf('id="learning-plans"'));
+check('Learn lays out low-width link groups without fixed-size columns',
+  /\.learn-jumps a \{[^}]*min-height:44px/.test(learn) &&
+  /grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/.test(learn));
+const chapterIds = (html) => [...html.matchAll(/id="(design-chapter-\d+)"/g)].map((m) => m[1]);
+const chapterAnchors = chapterIds(learn);
+check('Learn provides stable no-JavaScript anchors for all 26 chapters',
+  chapterAnchors.length === 26 && chapterAnchors.every((id, i) => id === 'design-chapter-' + (i + 1)));
+const enhance = (learn.match(/<script>\s*(\/\/ Design curriculum summaries;[\s\S]*?)<\/script>/) || [])[1];
+const elements = {featured:{hidden:true}, curriculum:{}, seriespath:{}};
+try {
+  require('node:vm').runInNewContext(enhance, {document:{getElementById: (id) => elements[id]}});
+  const spot = (elements.featured.innerHTML.match(/href="#([^"]+)"/) || [])[1];
+  check('Learn spotlight stays hidden until it links to a real chapter overview',
+    elements.featured.hidden === false && chapterIds(elements.curriculum.innerHTML).includes(spot));
+  check('Learn enhanced curriculum preserves the static anchor sequence and specialist resource',
+    chapterIds(elements.curriculum.innerHTML).join(',') === chapterAnchors.join(',') &&
+    elements.curriculum.innerHTML.includes('knowledge/standard-transformer-oil-tests.html') &&
+    !elements.curriculum.innerHTML.includes('href="learn.html"'));
+} catch (err) {
+  check('Learn curriculum script renders', false, err.message);
+}
+const designLesson = fs.readFileSync('learn/design/module-1/index.html', 'utf8');
+const magneticLesson = fs.readFileSync('learn/volume-0/module-1/index.html', 'utf8');
+check('First lesson offers a public magnetic-circuit lesson and returns to the real curriculum before checkout',
+  designLesson.includes('data-free-module="1"') && magneticLesson.includes('data-free-module="1"') &&
+  designLesson.includes('href="/learn/volume-0/module-1/">Magnetic circuit basics') &&
+  designLesson.includes('href="/learn.html#design-curriculum">design curriculum') &&
+  designLesson.indexOf('id="design-continue-title"') < designLesson.indexOf('data-upgrade="learning"'));
+check('Academy offers the same free first lesson',
+  fs.readFileSync('academy.html', 'utf8').includes('href="' + lessonUrl + '"') &&
+  fs.readFileSync('academy.html', 'utf8').includes('Start the free design lesson'));
+
 
 const method = fs.readFileSync('methodology.html', 'utf8');
 check('methodology page scrolls wide tables inside the column', /\.mth-wrap\{[^}]*overflow-x:auto/.test(method));

@@ -53,8 +53,8 @@ check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, home
 check('Homepage openTenders matches site-stats', homeOpenTenders === STATS.openTenders, homeOpenTenders + ' vs ' + STATS.openTenders);
 check('Homepage awards matches site-stats', homeAwards === STATS.awards, homeAwards + ' vs ' + STATS.awards);
 check('Homepage upcomingEvents matches site-stats', homeEvents === STATS.upcomingEvents, homeEvents + ' vs ' + STATS.upcomingEvents);
-check('Homepage hero tagline is the sourced-makers line', HOME.includes('Every transformer maker, tender and factory, sourced.'));
-check('Homepage 3D sub-line is the layer-by-layer line', HOME.includes('Take a power transformer apart, layer by layer.'));
+check('Homepage headline names the sourcing, tender and learning tasks', /<h1>Find suppliers, track tenders and learn transformer design\.<\/h1>/.test(HOME));
+check('Homepage retains a direct, optional link to the 3D explorer', /href="power3d\.html">Open free 3D explorer<\/a>/.test(HOME));
 check('Homepage no longer uses the old 3D-only hero tagline', !HOME.includes('A power transformer you can take apart in 3D'));
 check('Homepage uses the 3D hero stage with static poster', HOME.includes('class="hero-stage"') && HOME.includes('power-transformer-3d-poster.jpg'));
 check('Homepage progressively enhances to hero-3d (not eager iframe)', HOME.includes("src='hero-3d.html'") || HOME.includes('src="hero-3d.html"') || HOME.includes("f.src='hero-3d.html'") || HOME.includes('f.src="hero-3d.html"'));

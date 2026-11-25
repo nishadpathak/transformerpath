@@ -557,6 +557,11 @@ const COURSES = [
   }
 ];
 
+const DESIGN_CONTINUE = '<section class="guide-card" aria-labelledby="design-continue-title">\n' +
+  '<h2 id="design-continue-title" style="margin-top:0">Keep learning for free</h2>\n' +
+  '<p>Build on this lesson with <a href="/learn/volume-0/module-1/">Magnetic circuit basics</a>, or go back to the <a href="/learn.html#design-curriculum">design curriculum</a> to see the full sequence.</p>\n' +
+  '</section>\n';
+
 function pageHtml(course, header, footer) {
   const pathName = course.volume === null
     ? '/learn/design/module-1/'
@@ -593,6 +598,7 @@ function pageHtml(course, header, footer) {
     '<main id="main" class="guide-wrap" tabindex="-1" data-free-module="1">\n' +
     '<p class="guide-note"><strong>Free module.</strong> This page is free to read. It does not ask you to sign in. It does not offer a class or a call. Use the edition of each standard named in the contract. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>\n' +
     course.body +
+    (course.id === 'design' ? DESIGN_CONTINUE : '') +
     '<h2>Upgrade</h2>\n' +
     '<p>Module 1 is free. The rest of this course is the Learning plan, $199, a one-time payment for 12 months of access, with no auto-renewal. This page does not offer a class or a call.</p>\n' +
     '<p><a class="btn btn-amber" href="' + CHECKOUT + '" data-upgrade="learning" data-track="learning_checkout_started" data-track-plan="Learning">Upgrade to Learning — $199</a></p>\n' +
@@ -611,7 +617,7 @@ function indexHtml(courses) {
       ? '/learn/design/module-1/'
       : '/learn/volume-' + course.volume + '/module-1/';
     const paid = course.volume === 8
-      ? ' · <a href="/learn/volume-8/hv-side-bushing-replacement/">HV side bushing replacement</a>'
+      ? ' · <a href="/learn/volume-8/hv-side-bushing-replacement/">HV side bushing replacement (Learning plan)</a>'
       : '';
     return '<li><span class="free-pill">Free</span> <a href="' + pathName + '">' + course.h1 + '</a>' + paid + '</li>';
   }).join('\n');
