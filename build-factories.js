@@ -21,6 +21,13 @@
  */
 'use strict';
 const fs = require('fs');
+const path = require('path');
+const { materializeSupplierCatalogue } = require('./lib/supplier-catalogue-overlay');
+
+// The production build starts its census generators here. Apply the compact
+// sourced catalogue inputs before any later generator reads the same files.
+const overlaid = materializeSupplierCatalogue(path.join(__dirname, 'data'));
+if (overlaid.length) console.log('supplier catalogue overlay: ' + overlaid.join(', '));
 
 const CENSUS = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 

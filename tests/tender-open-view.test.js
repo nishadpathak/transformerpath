@@ -2,7 +2,7 @@
 /* Transformer Tenders: open view, pipeline view, intake rows, closed pages. */
 'use strict';
 const fs = require('fs');
-const { isOfficialProcurementUrl, isAggregatorUrl } = require('../lib/tender-sources');
+const { isOfficialProcurementUrl, isAggregatorUrl, portalZone } = require('../lib/tender-sources');
 const { validateNotice } = require('../lib/tender-notices');
 
 let failed = 0;
@@ -54,7 +54,9 @@ notices.forEach(function (notice) {
   const slug = String(row.title).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
     .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
   const page = fs.readFileSync('tenders/' + slug + '/index.html', 'utf8');
-  check(notice.official_reference + ' page shows both zones', page.indexOf('Asia/Kolkata') !== -1 && page.indexOf('Asia/Dubai') !== -1);
+  const buyerZone = portalZone(notice.official_source_url, notice.portal_timezone) || 'UTC';
+  check(notice.official_reference + ' page shows the buyer portal zone and Dubai',
+    page.indexOf('(' + buyerZone + ')') !== -1 && page.indexOf('(Asia/Dubai)') !== -1);
   check(notice.official_reference + ' page links the official URL', page.indexOf(notice.official_source_url) !== -1);
   check(notice.official_reference + ' page is indexable', /noindex/i.test(page) === false);
 });

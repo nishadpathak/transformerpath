@@ -197,6 +197,9 @@ function buildManufacturer(c) {
 
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
+  const evidenceUrl = require('./lib/listing-richness').accessoryEvidenceUrl(s);
+  const sourceType = evidenceUrl && ['government_industry_record', 'equipment_oem_project_report'].includes(s.directory_evidence_type)
+    ? s.directory_evidence_type : 'company_documentation';
   const slug = accessoryPublicSlug(s);
   // The accessory generator runs after the directory index on a clean
   // build. Only a planned and dated explicit profile can precede its file.
@@ -226,11 +229,11 @@ function buildSupplier(s) {
     evidence: (s.verification_status || '').toLowerCase().indexOf('verified') >= 0 ? 'CONFIRMED' : 'INFERRED',
     claim_type: 'INDEPENDENTLY_SOURCED',
     confidence: 'MEDIUM',
-    source_meta: { source_title: s.directory_source_title || 'website-checked', source_type: 'company_documentation', source_url: s.website || '' },
+    source_meta: { source_title: s.directory_source_title || 'website-checked', source_type: sourceType, source_url: evidenceUrl || s.website || '' },
     research_completeness: 0,
     completeness_score: 50,
     provenance_type: 'TRANSFORMERPATH_RESEARCHED',
-    last_verified: s.verification_date || '2026-08-31',
+    last_verified: evidenceUrl && s.updated ? s.updated : s.verification_date || '2026-08-31',
     research_status: s.verification_status || '',
     commercial_status: '',
     sources: { website: s.website },
