@@ -21,7 +21,6 @@
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="brand/hero-800.jpg" imagesrcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" imagesizes="(max-width: 760px) 100vw, 800px" media="(max-width: 760px)" fetchpriority="high">
 <link rel="preload" as="image" href="media/power-transformer-3d-poster-800.jpg" imagesrcset="media/power-transformer-3d-poster-800.jpg 800w, media/power-transformer-3d-poster.jpg 1280w" imagesizes="100vw" media="(min-width: 761px)" fetchpriority="high">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional"></noscript>
@@ -50,8 +49,8 @@
 @media (max-width:760px){ .hero-cine h1 { font-size:2.2rem; } .hero-cine::after { background:rgba(13,27,46,.55); } }
 /* Mobile banner: the wordmark is painted into hero.jpg. Cover-cropping a
    393px screen cuts the sides off ("RANSFORMER / ATH"). Show the whole file,
-   then the keyword ticker underneath it. Wider screens keep the ticker where
-   it is and do not add this image. */
+   then the keyword ticker underneath it, after the primary homepage tasks.
+   Wider screens do not add a second hero image. */
 .home-hero-banner { display: none; }
 @media (max-width: 760px) {
   .home-hero-banner {
@@ -213,17 +212,12 @@
   <script src="tp-nav.js?v=8" defer></script>
   <script src="tp-pwa.js?v=8" defer></script>
 </header>
-<img class="home-hero-banner" src="brand/hero-800.jpg" srcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" sizes="(max-width: 760px) 100vw, 800px" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
-<div class="ticker" aria-label="Market and industry headlines">
-  <div class="ticker-inner" id="ticker"></div>
-</div>
-
 <main id="main" tabindex="-1">
 <!-- ══ Hero — full-bleed 3D model + video tour ══ -->
 <style>
 .hero-stage{
   --hs-ink:#f3f6fa; --hs-mute:#b7c5d6; --hs-amber:#f5a623; --hs-navy:#07111c;
-  position:relative; isolation:isolate; min-height:min(92vh,920px); color:var(--hs-ink);
+  position:relative; isolation:isolate; color:var(--hs-ink);
   overflow:hidden; background:var(--hs-navy);
   font-family:"Instrument Sans",system-ui,sans-serif;
 }
@@ -236,97 +230,86 @@
 .hero-stage__scrim{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
-    linear-gradient(105deg, rgba(7,17,28,.88) 0%, rgba(7,17,28,.62) 34%, rgba(7,17,28,.22) 58%, rgba(7,17,28,.08) 100%),
+    linear-gradient(105deg, #07111c 0%, rgba(7,17,28,.97) 45%, rgba(7,17,28,.38) 70%, rgba(7,17,28,.10) 100%),
     radial-gradient(900px 520px at 18% 20%, rgba(245,166,35,.10), transparent 60%);
 }
 .hero-stage__inner{
-  position:relative; z-index:2; min-height:min(92vh,920px);
-  display:flex; align-items:center; padding:96px 0 72px;
+  position:relative; z-index:2;
+  display:flex; align-items:center; padding:clamp(34px,4vw,62px) 0;
   pointer-events:none;
 }
-.hero-stage__copy{ max-width:min(32rem, 38vw); pointer-events:auto; }
+.hero-stage__inner > .container{ width:100%; }
+.hero-stage__copy{ max-width:min(37rem, 46vw); pointer-events:auto; }
 .hero-stage__brand{
-  margin:0 0 18px; font-family:Syne,system-ui,sans-serif; font-weight:800; font-size:clamp(1.7rem,3.4vw,2.35rem);
-  letter-spacing:-.03em; line-height:1; color:#fff;
+  margin:0 0 9px; font-weight:800; font-size:.79rem;
+  letter-spacing:.12em; text-transform:uppercase; color:#ffcf75;
 }
-.hero-stage__brand span{ color:var(--hs-amber); }
 .hero-stage h1{
-  margin:0 0 10px; font-family:Syne,system-ui,sans-serif; font-weight:800;
-  font-size:clamp(1.85rem,3.1vw,2.45rem); line-height:1.12; letter-spacing:-.03em; max-width:100%;
-}
-.hero-stage__3dsub{
-  margin:0 0 14px; color:var(--hs-amber); font-weight:700;
-  font-size:clamp(1rem,1.4vw,1.15rem); line-height:1.35; max-width:28ch;
+  margin:0 0 9px; font-family:Syne,system-ui,sans-serif; font-weight:800;
+  font-size:clamp(1.68rem,3.2vw,2.72rem); line-height:1.1; letter-spacing:-.035em;
 }
 .hero-stage__lead{
-  margin:0 0 28px; color:var(--hs-mute); font-size:clamp(1.02rem,1.5vw,1.18rem);
-  line-height:1.55; max-width:34ch;
+  margin:0 0 15px; color:var(--hs-mute); font-size:clamp(.97rem,1.35vw,1.08rem);
+  line-height:1.4; max-width:55ch;
 }
-.hero-stage__ctas{ display:flex; flex-wrap:wrap; gap:10px; }
-.hero-stage__ctas + .hero-stage__ctas{ margin-top:10px; }
-.hero-stage__ctas .btn-primary, .hero-stage__ctas .btn-ghost{ min-height:44px; }
-.hero-stage__ctas--explore .btn-ghost{ padding:8px 12px; }
-.hero-stage__ctas :focus-visible, .tp-video-bar button:focus-visible{
-  outline:2px solid #ffcf75; outline-offset:4px;
+.home-search{
+  display:flex; align-items:stretch; gap:5px; margin:0 0 14px;
+  padding:4px; border:1px solid #9e772d; border-radius:10px; background:#101f32;
+}
+.home-search input{
+  flex:1 1 0; width:100%; min-width:0; min-height:44px; padding:6px 9px;
+  border:0; border-radius:5px; background:transparent; color:#fff; font:inherit;
+}
+.home-search input::placeholder{ color:#b7c5d6; opacity:1; }
+.home-search button{
+  flex:none; min-width:68px; min-height:44px; padding:5px 11px; border:0; border-radius:6px;
+  background:var(--hs-amber); color:#101a28; cursor:pointer; font:inherit; font-weight:800;
+}
+.home-search button:hover{ background:#ffc35e; }
+.home-wayfinding{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0;
+}
+.home-wayfinding a{
+  min-width:0; min-height:44px; padding:5px 8px; border-radius:7px;
+  display:flex; align-items:center; gap:4px; justify-content:space-between;
+  background:#14263b; border:1px solid #3b526c; color:#eff5fc;
+  font-size:.91rem; font-weight:700; line-height:1.2; text-decoration:none;
+}
+.home-wayfinding a:hover{ background:#1c344f; border-color:#a57e3a; }
+.home-wayfinding a span{ color:#ffcf75; }
+.home-explore{ display:flex; align-items:center; flex-wrap:wrap; gap:0 14px; margin:5px 0 0; }
+.home-explore a, .home-explore button{
+  display:inline-flex; align-items:center; min-height:44px; padding:0;
+  color:#dbe6f3; background:none; border:0; cursor:pointer; font:inherit; font-size:.86rem;
+  font-weight:650; text-decoration:underline; text-underline-offset:3px;
+}
+.home-explore a:hover, .home-explore button:hover{ color:#ffcf75; }
+.hero-stage__copy :focus-visible, .tp-video-bar button:focus-visible{
+  outline:2px solid #ffcf75; outline-offset:2px;
 }
 @media (max-width:450px){
-  .hero-stage__ctas{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
-  .hero-stage__ctas .btn-primary, .hero-stage__ctas .btn-ghost{ text-align:center; padding:9px 8px; font-size:.88rem; }
-}
-@media (max-width:340px){
-  .hero-stage__ctas{ grid-template-columns:1fr; }
-}
-.hero-stage .btn-primary{
-  display:inline-flex; align-items:center; justify-content:center; gap:8px;
-  padding:14px 22px; border-radius:10px; border:0; cursor:pointer; text-decoration:none;
-  background:var(--hs-amber); color:#0d1b2e; font-weight:800; font-size:.95rem; font-family:inherit;
-  transition:transform .2s ease, filter .2s ease;
-}
-.hero-stage .btn-primary:hover{ transform:translateY(-1px); filter:brightness(1.05); }
-.hero-stage .btn-ghost{
-  display:inline-flex; align-items:center; justify-content:center; gap:8px;
-  padding:13px 20px; border-radius:10px; cursor:pointer; text-decoration:none;
-  background:rgba(255,255,255,.04); color:#fff; border:1px solid rgba(255,255,255,.22);
-  font-weight:700; font-size:.95rem; font-family:inherit; backdrop-filter:blur(6px);
-  transition:background .2s ease, border-color .2s ease;
-}
-.hero-stage .btn-ghost:hover{ background:rgba(255,255,255,.09); border-color:rgba(245,166,35,.45); }
-.hero-stage .btn-ghost .play{
-  width:18px; height:18px; border-radius:50%; background:var(--hs-amber); color:#0d1b2e;
-  display:inline-grid; place-items:center; font-size:.65rem; line-height:1;
+  .home-wayfinding{ grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 .hero-stage__hint{
   position:absolute; right:24px; bottom:20px; z-index:2; margin:0;
   color:rgba(183,197,214,.75); font-size:.78rem; letter-spacing:.02em;
   pointer-events:none;
 }
-@keyframes hsRise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
 @keyframes hsFade { from { opacity:0; } to { opacity:1; } }
-.hero-stage__copy{ animation: hsRise .85s cubic-bezier(.22,1,.36,1) both; }
+
 .hero-stage__viz{ animation: none; }
 .hero-stage__hint{ animation: hsFade 1s ease .6s both; }
 @media (prefers-reduced-motion: reduce){
-  .hero-stage__copy, .hero-stage__viz, .hero-stage__hint { animation:none; }
+  .hero-stage__viz, .hero-stage__hint { animation:none; }
 }
 @media (max-width:820px){
   .hero-stage{ min-height:auto; }
-  .hero-stage__inner{ min-height:auto; padding:72px 0 36px; }
-  .hero-stage__viz{
-    position:relative; height:min(58vh,460px); order: -1;
-  }
-  .hero-stage{ display:flex; flex-direction:column; }
-  .hero-stage__scrim{
-    background:
-      linear-gradient(180deg, rgba(7,17,28,.15) 0%, rgba(7,17,28,.55) 42%, rgba(7,17,28,.96) 78%);
-  }
-  .hero-stage__inner{ padding-top:28px; }
+  .hero-stage__inner{ padding:22px 0; }
+  .hero-stage__scrim{ background:linear-gradient(90deg, #07111c 0%, rgba(7,17,28,.92) 63%, rgba(7,17,28,.56) 100%); }
   .hero-stage__hint{ display:none; }
-  .hero-stage h1{ max-width:none; }
   .hero-stage__copy{ max-width:40rem; }
-  .hero-stage__lead{ max-width:36ch; }
 }
-/* Phones already show the full wordmark banner. This stage's poster is a
-   second hero, cover-cropped in the short viz box, so it stays off. */
+/* On phones the primary tasks need the first screen, not the desktop poster. */
 @media (max-width: 760px) {
   .hero-stage__viz,
   .hero-stage__poster,
@@ -375,21 +358,27 @@
   <div class="hero-stage__inner">
     <div class="container">
       <div class="hero-stage__copy">
-        <p class="hero-stage__brand">Transformer<span>Path</span></p>
-        <h1>Every transformer maker, tender and factory, sourced.</h1>
-        <p class="hero-stage__3dsub">Take a power transformer apart, layer by layer.</p>
-        <p class="hero-stage__lead">Search the supplier directory, send a buying inquiry, or explore the engineering behind the equipment.</p>
+        <p class="hero-stage__brand">Transformer industry intelligence</p>
+        <h1>Find suppliers, track tenders and learn transformer design.</h1>
+        <p class="hero-stage__lead">Search sourced industry records, or go directly to what you need.</p>
+        <form action="search.html" method="get" class="home-search" role="search" aria-label="Search TransformerPath">
+          <input type="search" name="q" aria-label="Search companies, factories, components, grids, projects and tenders" placeholder="Company, part or tender" autocomplete="off" required>
+          <button type="submit">Search</button>
+        </form>
+        <nav class="home-wayfinding" aria-label="Popular TransformerPath destinations">
+          <a href="/directory.html">Directory <span aria-hidden="true">→</span></a>
+          <a href="/intel.html">Daily Intel <span aria-hidden="true">→</span></a>
+          <a href="/tenders.html?status=open">Open tenders <span aria-hidden="true">→</span></a>
+          <a href="/learn.html">Learn <span aria-hidden="true">→</span></a>
+          <a href="/tools.html">Engineering tools <span aria-hidden="true">→</span></a>
+          <a href="/find-a-part.html">Find a Part <span aria-hidden="true">→</span></a>
+        </nav>
+        <div class="home-explore">
+          <a href="/rfq.html">Submit an RFQ</a>
+          <a href="power3d.html">Open free 3D explorer</a>
+          <button type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">Watch the platform tour</button>
+        </div>
         <p class="hero-stage__3dnote" id="hero3dNote" hidden>Interactive 3D is unavailable in this browser. You can still explore TransformerPath’s engineering content and transformer components.</p>
-        <div class="hero-stage__ctas hero-stage__ctas--buyer">
-          <a class="btn-primary" href="/directory.html">Find a supplier <span aria-hidden="true">→</span></a>
-          <a class="btn-ghost" href="/rfq.html">Submit an RFQ <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="hero-stage__ctas hero-stage__ctas--explore">
-          <a class="btn-ghost" href="power3d.html">Open free 3D explorer</a>
-          <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
-            <span class="play" aria-hidden="true">▶</span> Watch the platform tour
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -413,13 +402,18 @@
   </div>
 </dialog>
 
-<!-- ══ Platform census — search + sourced counts ══ -->
+<img class="home-hero-banner" src="brand/hero-800.jpg" srcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" sizes="(max-width: 760px) 100vw, 800px" width="1774" height="887" loading="lazy" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
+<div class="ticker" aria-label="Market and industry headlines">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- ══ Platform census — source freshness and coverage ══ -->
 <style>
 /* ===== Hero v2 — Disciplined Industrial Intelligence Terminal ===== */
 .hero-cine.hero-v2 {
   position: relative;
   overflow: hidden;
-  padding: 76px 0 84px;
+  padding: 42px 0 48px;
   background: radial-gradient(1100px 600px at 78% -15%, #16365c 0%, var(--navy) 48%, #08121f 100%);
   color: #fff;
 }
@@ -449,7 +443,6 @@
   max-width: min(620px, 100%);
   overflow-wrap: break-word;
 }
-.hero-v2 h2 span { color: var(--amber); }
 .hero-v2 .lead {
   color: #c4d2e4;
   font-size: 1.12rem;
@@ -539,64 +532,6 @@
   color: #fff;
 }
 
-/* Integrated Hero Search Box */
-.hero-v2 .hero-search-wrap {
-  background: rgba(14, 27, 44, 0.72);
-  border: 1px solid rgba(196, 210, 228, 0.16);
-  border-radius: 14px;
-  padding: 12px 14px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
-  max-width: 560px;
-}
-.hero-v2 .hero-search-form {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background: rgba(8, 18, 32, 0.85);
-  border: 1px solid rgba(245, 166, 35, 0.28);
-  border-radius: 10px;
-  padding: 3px 5px 3px 12px;
-  transition: border-color .2s, box-shadow .2s;
-}
-.hero-v2 .hero-search-form:focus-within {
-  border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.18);
-}
-.hero-v2 .hero-search-icon {
-  font-size: 1rem;
-  color: #8fa2ba;
-  user-select: none;
-}
-.hero-v2 .hero-search-form input[type="search"] {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: .92rem;
-  font-family: inherit;
-  padding: 8px 4px;
-}
-.hero-v2 .hero-search-form input[type="search"]::placeholder {
-  color: #8fa2ba;
-}
-.hero-v2 .hero-search-form button {
-  padding: 9px 16px;
-  border-radius: 7px;
-  border: none;
-  background: var(--amber);
-  color: var(--navy);
-  font-weight: 700;
-  font-size: .84rem;
-  cursor: pointer;
-  transition: background .15s;
-  white-space: nowrap;
-}
-.hero-v2 .hero-search-form button:hover {
-  background: #f7b746;
-}
 .hero-v2 .hero-search-pills {
   display: flex;
   align-items: center;
@@ -868,17 +803,13 @@
 @media (max-width: 940px) {
   .hero-v2 .hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .hero-v2 .hero-arcs { inset: -40px -30px; width: calc(100% + 60px); height: calc(100% + 80px); }
-  .hero-v2 .hero-search-wrap { max-width: 100%; }
 }
 @media (max-width: 540px) {
   .hero-v2 h2 { font-size: 1.7rem; }
-  .hero-v2 h2 span { display: block; }
   .hero-v2 .stat-grid-primary { gap: 8px; }
   .hero-v2 .stat-card { padding: 12px 12px 10px; }
   .hero-v2 .stat-card b { font-size: 1.5rem; }
   .hero-v2 .stat-strip { grid-template-columns: 1fr 1fr; gap: 6px; }
-  .hero-v2 .hero-search-form { flex-direction: column; align-items: stretch; }
-  .hero-v2 .hero-search-form button { width: 100%; }
   .hero-v2 .hero-live-pill { flex-wrap: wrap; max-width: 100%; row-gap: 4px; border-radius: 14px; }
 }
 </style>
@@ -895,28 +826,21 @@
           <span class="live-sep">&middot;</span>
           <span id="hero-live-check">source checked 25 Oct 2026</span>
         </div>
-        <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
-        <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
+        <h2>Transformer market coverage</h2>
+        <p class="lead">See the latest sourced briefing and the directory’s worldwide coverage.</p>
         <div class="hero-ctas">
           <a href="/intel.html" class="btn btn-amber" id="hero-intel-cta">Open the latest sourced briefing →</a>
           <a href="/manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
         </div>
 
-        <div class="hero-search-wrap">
-          <form action="search.html" method="get" class="hero-search-form" role="search" aria-label="Search TransformerPath">
-            <span class="hero-search-icon" aria-hidden="true">🔍</span>
-            <input type="search" name="q" aria-label="Search companies, factories, components, grids, projects and tenders" placeholder="Search companies, projects, tenders and more" autocomplete="off" required>
-            <button type="submit">Search Data →</button>
-          </form>
-          <div class="hero-search-pills">
-            <span class="pill-tag">Suggested:</span>
-            <a href="search.html?q=765+kV" class="pill">765 kV manufacturers</a>
-            <a href="search.html?q=Transformerboard" class="pill">Transformerboard suppliers</a>
-            <a href="search.html?q=OLTC" class="pill">OLTC manufacturers</a>
-            <a href="search.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
-            <a href="tenders.html?status=open" class="pill">Active tenders</a>
-            <a href="laboratories.html" class="pill">Testing laboratories</a>
-          </div>
+        <div class="hero-search-pills">
+          <span class="pill-tag">Popular searches:</span>
+          <a href="search.html?q=765+kV" class="pill">765 kV manufacturers</a>
+          <a href="search.html?q=Transformerboard" class="pill">Transformerboard suppliers</a>
+          <a href="search.html?q=OLTC" class="pill">OLTC manufacturers</a>
+          <a href="search.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
+          <a href="tenders.html?status=open" class="pill">Active tenders</a>
+          <a href="laboratories.html" class="pill">Testing laboratories</a>
         </div>
 
         <div class="hero-trust">
@@ -1327,7 +1251,9 @@ if('IntersectionObserver' in window){
       viz.addEventListener('pointerenter', showHint, {once:true});
       viz.addEventListener('mouseenter', showHint, {once:true});
     }
-    if(!viz||!stage) return;
+    // The desktop preview is hidden at phone widths; the explicit explorer
+    // link works there without downloading a hidden interactive model.
+    if(!viz||!stage || window.matchMedia('(max-width: 760px)').matches) return;
     var gate=window.TPWebGL;
     var started=false;
     function unavailable(detail){

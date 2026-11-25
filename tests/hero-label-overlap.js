@@ -14,7 +14,7 @@ function check(cond, msg) {
   else console.log('ok ' + msg);
 }
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-check(home.indexOf('max-width:min(32rem, 38vw)') !== -1, 'homepage copy stays left of the poster labels');
+check(home.indexOf('max-width:min(37rem, 46vw)') !== -1, 'homepage copy stays left of the poster labels');
 check(home.indexOf('font-family:Syne,system-ui,sans-serif') !== -1, 'homepage heading has a system-ui fallback');
 check(home.indexOf('.hero-stage__copy{ max-width:40rem; }') !== -1, 'stacked hero copy uses the full column');
 const explorer = fs.readFileSync(path.join(root, 'power3d.html'), 'utf8');
