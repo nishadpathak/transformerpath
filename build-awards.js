@@ -144,3 +144,6 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
   fs.writeFileSync('awards.html', html);
   console.log('awards.html wrote (' + awards.length + ' awards / ' + stats.countries + ' countries / ' + regionKeys.length + ' regions)');
 })();
+
+// Regional market pages consume the finalized canonical tender and award data.
+if (require.main === module) require('./build-regional-markets').buildRegionalMarkets();

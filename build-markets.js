@@ -66,6 +66,7 @@ const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
 const indiaHub = require('./lib/india-market-hub');
+const regional = require('./lib/regional-market-hubs');
 const tenderIntake = require('./lib/tender-notices');
 const INDIA_TENDERS = indiaHub.activeTenderSnapshot(TENDERS,
   tenderIntake.load('data/tender-notices.json').concat(tenderIntake.load('data/public-tender-notices.json')));
@@ -108,10 +109,10 @@ const MARKETS = [
   { slug: 'saudi-arabia', name: 'Saudi Arabia', gridsName: 'Saudi Arabia', manufName: 'Saudi Arabia', region: 'Middle East', flag: '🇸🇦',
     intel: 'GCC', kw: ['saudi', 'ksa', 'neom', 'red sea', 'sec', 'vision', 'etimad'],
     blurb: 'Saudi Arabia is the largest transformer market in the Gulf, driven by Vision 2030 giga-projects (NEOM, Red Sea, Qiddiya), grid expansion and a massive renewables build-out. It demands high-ambient, high-reliability plant for one of the harshest operating environments on earth.',
-    tech: ['380 kV / 110 / 13.8 kV transmission, 60 Hz transmission is not used — 50 Hz', 'Very high ambient temperature derating and sand/dust protection', 'National grid operator (SEC) procurement and international compliance', 'Large-scale solar + BESS integration and grid-stability requirements', 'Strong demand for power and distribution transformers, reactors and GSUs'],
+    tech: ['380 / 110 kV transmission and 13.8 kV distribution are common; nominal transmission frequency is 60 Hz', 'Very high ambient temperature derating and sand/dust protection', 'National grid operator (SEC) procurement and international compliance', 'Large-scale solar + BESS integration and grid-stability requirements', 'Strong demand for power and distribution transformers, reactors and GSUs'],
     faq: [
       ['Who buys transformers in Saudi Arabia?', 'The Saudi Electricity Company (SEC) and its subsidiaries, alongside independent power producers (IPPs) and the developer-owners of Vision 2030 giga-projects.'],
-      ['What transformer voltage does Saudi Arabia use?', 'The transmission grid is 380 kV / 110 kV, with distribution at 13.8 kV and lower. Frequency is 50 Hz.'],
+      ['What transformer voltage does Saudi Arabia use?', 'The Saudi Arabian Grid Code specifies 60 Hz nominal transmission frequency. Check project-specific voltage and frequency with the buyer.'],
       ['Why is upstream demand growing so fast?', 'Project awards rose sharply in 2026 (per TransformerPath intel), with substation and transmission build-out a direct consequence of large solar, industrial and giga-project loads.'],
     ] },
   { slug: 'kuwait', name: 'Kuwait', gridsName: 'Kuwait', manufName: 'Kuwait', region: 'Middle East', flag: '🇰🇼',
@@ -624,6 +625,7 @@ const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', 
 
 function marketPage(m) {
   const isIndia = m.slug === 'india';
+  const regionalSlug = regional.regionForCountry(m.gridsName);
   const pageTitle = isIndia ? 'India Transformer Hub' : 'Transformer Industry — ' + m.name;
   const pageDescription = isIndia
     ? 'India transformer news, buyer tenders with IST submission times, contract awards and sourced supplier clusters across manufacturing, materials, testing and service.'
@@ -730,6 +732,8 @@ function marketPage(m) {
     '<h1>' + m.flag + ' ' + esc(pageTitle) + '</h1>' +
     '<p class="lead">' + esc(isIndia ? 'Explore the Indian transformer ecosystem: see what buyers are procuring, track capacity and grid news, and find suppliers by region and capability.' : m.blurb) + '</p>' +
     (isIndia ? indiaHub.renderNav() + indiaHub.renderTenders(INDIA_TENDERS) + indiaHub.renderNews() + indiaHub.renderDirectory() : '') +
+    (regionalSlug ? '<p class="market-parent"><a href="' + regional.pathFor(regionalSlug) + '">' + esc(regional.CONFIG[regionalSlug].label) + ' transformer market hub</a></p>' : '') +
+    (m.slug === 'saudi-arabia' ? '<p><a href="https://www.sera.gov.sa/-/media/760cb4c6f4d7482fbae4325f53e035d1.ashx" rel="noopener">Saudi Arabian Grid Code: 60 Hz nominal transmission frequency</a></p>' : '') +
     gccCoverageHtml(m) +
     (isIndia ? '' : (function () {
       const nextEv = evs[0];
@@ -852,9 +856,10 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders and project pipelines. RFQ routing is coming soon.">' +
   '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
-  '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
+  '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;margin-top:20px}' +
   '.m-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s ease,box-shadow .15s ease}' +
   '.m-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(13,27,46,.12)}' +
+  '.regional-guide{margin:0 0 2rem}.regional-guide-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:12px;margin:.85rem 0}.regional-guide-links a{display:block;min-height:44px;padding:14px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--accent);text-decoration:none}.regional-guide-links a:hover,.regional-guide-links a:focus-visible{text-decoration:underline}.regional-guide-links a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.regional-guide-links span{display:block;margin-top:.4rem;color:var(--muted);font-size:.87rem;line-height:1.5}' +
   '.tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:.72rem;color:var(--text)}' +
   '</style>' +
   '</head><body>\n' + idxHead + '\n' +
@@ -865,7 +870,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and project pipelines. RFQ routing is coming soon.</p>' +
   '</div></section>' +
   '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
-  '<div class="market-grid">' +
+  regional.teasers() + '<div class="market-grid">' +
   links.map(function (l) {
     return '<div class="m-card">' +
       '<div>' +
