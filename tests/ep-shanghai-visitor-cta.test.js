@@ -7,7 +7,11 @@ const root = path.resolve(__dirname, '..');
 const edition = JSON.parse(fs.readFileSync(path.join(root, 'data/events-canonical.json'), 'utf8'))
   .canonical_editions.find(ev => ev.id === 'ep-shanghai-2026');
 const html = fs.readFileSync(path.join(root, 'events/ep-shanghai-2026/index.html'), 'utf8');
-const list = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
+const { applyEventVisitorSpotlight } = require('../lib/event-visitor-spotlight');
+const eventsSource = fs.readFileSync(path.join(root, 'events.html'), 'utf8');
+const list = applyEventVisitorSpotlight(eventsSource, edition);
+assert.equal(applyEventVisitorSpotlight(list, edition), list, 'main Events injection is idempotent');
+assert.throws(() => applyEventVisitorSpotlight('<body/>', edition), /unique Events search section/);
 const cta = edition.visitor_cta;
 const end = Date.parse(cta.cutoff);
 const match = html.match(/<a[^>]+id="ep-shanghai-2026-cta"[^>]*>/);
@@ -48,4 +52,30 @@ const expired = run(end + 1);
 assert.equal(expired.a.href, cta.href_after);
 assert.equal(expired.a['data-track-registration_type'], 'organiser');
 assert.equal(expired.perks.hidden, true);
-console.log('EP Shanghai visitor registration and cutoff OK');
+const hubScript = list.match(/<script>(\(function \(\) \{\n  var block = document.getElementById\('event-visit-discovery'\);.*?\}\)\(\);)<\/script>/s);
+assert.ok(hubScript, 'main Events publishes a direct registration enhancement');
+assert.match(list, /<a[^>]+id="event-visit-discovery-cta" href="https:\/\/www\.epchinashow\.com\//);
+function runHub(time, edit = {}) {
+  const block = { hidden: true, dataset: { showClose: edition.end + 'T15:00:00+08:00' } };
+  const link = { dataset: { campaignUrl: cta.href, campaignCutoff: cta.cutoff, ...edit }, getAttribute: () => cta.href_after,
+    setAttribute(k, v) { this[k] = v; }, removeAttribute(k) { delete this[k]; } };
+  const timer = [];
+  vm.runInNewContext(hubScript[1], {
+    Date: { now: () => time, parse: Date.parse }, setTimeout: (cb, ms) => timer.push({cb, ms}), clearTimeout() {},
+    document: { getElementById: id => id.endsWith('cta') ? link : block, addEventListener() {} },
+    window: { addEventListener() {} },
+  });
+  return { block, link, timer, move(ms) { time = ms; } };
+}
+const hub = runHub(end);
+assert.equal(hub.block.hidden, false);
+assert.equal(hub.link.href, cta.href, 'main Events links directly to exact organiser campaign up to cutoff');
+assert.equal(hub.timer[0].ms, 1);
+assert.equal(hub.link['data-track-registration_type'], 'organiser_campaign');
+hub.move(end + 1);
+hub.timer[0].cb();
+assert.equal(hub.link.href, cta.href_after, 'main Events open tab falls back to ordinary organiser registration');
+assert.equal(hub.link['data-track-registration_type'], 'organiser');
+assert.equal(runHub(Date.parse(edition.end + 'T15:00:00+08:00')).block.hidden, true, 'spotlight expires at the show close');
+assert.doesNotMatch(applyEventVisitorSpotlight(eventsSource, { ...edition, visitor_cta: { ...cta, href: 'https://www.epchinashow.com@other.example/EP/' } }), /other\.example/);
+console.log('EP Shanghai visitor registration and cutoff OK on both Events pages');
