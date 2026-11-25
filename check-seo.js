@@ -272,9 +272,13 @@ files.forEach(function (file) {
           }
           const official = rec.official_url || '';
           const registrationUrl = (rec.registration && rec.registration.url) || '';
+          // The public EP Shanghai offer should stay usable when the time-limited
+          // invitation link stops. Accept only the configured organiser fallback.
+          const visitorFallback = rel === 'events/ep-shanghai-2026/index.html' && /^(https:\/\/www\.epchinashow\.com\/EP\/)/.test(rec.visitor_cta && rec.visitor_cta.href_after || '')
+            ? rec.visitor_cta.href_after : '';
           const offers = Array.isArray(n.offers) ? n.offers : (n.offers ? [n.offers] : []);
           if (/^https?:\/\//i.test(official) && !offers.some(function (o) {
-            return o && (o.url === official || (registrationUrl && o.url === registrationUrl));
+            return o && (o.url === official || (registrationUrl && o.url === registrationUrl) || (visitorFallback && o.url === visitorFallback));
           })) {
             fail(rel + ': offers.url is not the official site');
           }
