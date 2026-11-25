@@ -118,6 +118,7 @@ if (fs.existsSync(mexicoHtmlPath)) {
 }
 
 require('./india-market-hub.test');
+require('./regional-market-hubs.test');
 
 if (failed) {
   console.error('MARKET COUNTRY REGRESSION FAILED (' + failed + ')');
