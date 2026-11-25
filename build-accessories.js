@@ -84,6 +84,7 @@ function page(s) {
   const slug = accessoryPublicSlug(s);
   const url = 'https://transformerpath.com/accessories/' + slug + '/';
   const loc = [s.city, s.state, s.country].filter(Boolean).join(', ');
+  const evidenceUrl = listingRichness.accessoryEvidenceUrl(s);
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(s.name) + ' — Transformer Accessories Supplier | TransformerPath</title>' +
     '<meta name="description" content="' + esc(s.name) + ' — ' + esc((s.categories || []).join(', ')) + ' transformer accessories/supplier (' + esc(loc) + '). ' + esc((s.description || '').slice(0, 140)) + '">' +
@@ -122,7 +123,7 @@ function page(s) {
     (s.thickness_range_mm ? '<tr><th>Thickness / dimensions</th><td>' + esc(s.thickness_range_mm) + '</td></tr>' : '') +
     (s.standards && s.standards.length ? '<tr><th>Technical standards</th><td>' + esc((Array.isArray(s.standards) ? s.standards.join(', ') : s.standards)) + '</td></tr>' : '') +
     (s.founded_year ? '<tr><th>Founded</th><td>' + esc(String(s.founded_year)) + '</td></tr>' : '') +
-    (s.evidence_source ? '<tr><th>Primary evidence citation</th><td><span style="font-size:.85rem;color:var(--muted)">' + esc(s.evidence_source) + '</span></td></tr>' : '') +
+    (s.evidence_source ? '<tr><th>Primary evidence citation</th><td><span style="font-size:.85rem;color:var(--muted)">' + esc(s.evidence_source) + '</span>' + (evidenceUrl ? ' <a href="' + esc(evidenceUrl) + '" target="_blank" rel="noopener">Open source ↗</a>' : '') + '</td></tr>' : '') +
     (s.source_tier ? '<tr><th>Source tier</th><td><span class="tpill" style="color:#10b981;border-color:rgba(16,185,129,.4)">' + esc(s.source_tier) + '</span></td></tr>' : '') +
     '<tr><th>Provenance</th><td>' + (directoryBadge(s) || '—') + '</td></tr>' +
     '</table>' +
