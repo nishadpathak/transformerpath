@@ -117,6 +117,8 @@ if (fs.existsSync(mexicoHtmlPath)) {
   check('Built Mexico market page lists Puerto Peñasco', /Puerto Peñasco/.test(mexicoHtml));
 }
 
+require('./india-market-hub.test');
+
 if (failed) {
   console.error('MARKET COUNTRY REGRESSION FAILED (' + failed + ')');
   process.exit(1);
