@@ -80,7 +80,7 @@ const ROOT_JS = [
   'analytics.js', 'checkout-email.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'data-checkout.js', 'event-badges.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'quote-request.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
-  'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js', 'tp-parts.js',
   'google-auth-config.js', 'tp-auth.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',
@@ -185,6 +185,16 @@ for (const f of fs.readdirSync('.')) {
   if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
+}
+
+// Link the pilot from generated directory pages without storing copies of their output.
+for (const [file, wrap] of [['directory.html', 'directory-wrap'], ['accessories.html', 'acc-wrap']]) {
+  const target = path.join(DIST, file);
+  const html = fs.readFileSync(target, 'utf8');
+  const main = '<main id="main" tabindex="-1" class="' + wrap + '">';
+  if (!html.includes(main)) throw new Error('Find a Part link: missing ' + file + ' main element');
+  const link = '<p style="margin:0 0 1rem"><a href="/find-a-part.html" style="font-weight:750;color:var(--accent)">Find a transformer part →</a> Browse bushings, gaskets and tap changers by model and specification.</p>';
+  fs.writeFileSync(target, html.replace(main, main + '\n  ' + link));
 }
 
 // 2. Runtime JS + static root files.

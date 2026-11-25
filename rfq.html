@@ -249,7 +249,7 @@
     </script>
 
     <div class="card">
-      <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
+      <h3 id="part-rfq-form" style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
       <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
       <div data-jobs-rfq-pay="rfq" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">Save the RFQ reference shown on this page after the request is stored. Use it in any follow-up.</p>
@@ -339,6 +339,7 @@
 </footer>
 
 <script src="analytics.js?v=8" defer></script>
+<script src="tp-parts.js?v=1"></script>
 <script>
 /* ====== TECHNICAL SPECIFICATION & SCHEDULE BUILDER (TRACK 1) ====== */
 (function(){
@@ -495,6 +496,11 @@
   // Query parameter auto-population
   function loadQueryParams(){
     var p = new URLSearchParams(window.location.search);
+    if(p.has('parts')){
+      if(p.getAll('parts').length === 1 && window.TPParts) window.TPParts.rfqPrefill(document, p.get('parts'));
+      renderSchedule();
+      return;
+    }
     if(p.has('rating')){ document.getElementById('spec_rating').value = p.get('rating'); if(document.getElementById('fld_rating')) document.getElementById('fld_rating').value = p.get('rating'); }
     if(p.has('voltage')){
       var v = p.get('voltage');
