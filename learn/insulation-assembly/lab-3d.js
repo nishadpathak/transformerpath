@@ -13,8 +13,44 @@
     ring: [2.79, 1.97, FRONT - HALF_CUT],
   };
 
+  // Preserve the exact anchor when possible. Move only the button, with a visible
+  // leader back to the projected feature. The 44px hit areas get 8px of air.
+  function separateMarkers(points, w, h) {
+    const inset = 27;
+    const step = 52;
+    const placed = [];
+    const clamp = (n, limit) => Math.round(Math.max(inset, Math.min(limit - inset, n)));
+    for (const point of points) {
+      const x = clamp(point.x, w), y = clamp(point.y, h);
+      const clear = (a, b) => placed.every(p => Math.abs(p.x - a) >= step || Math.abs(p.y - b) >= step);
+      let best = clear(x, y) ? { x, y } : null;
+      if (!best) {
+        let distance = Infinity;
+        const candidatesX = [x, inset, w - inset];
+        const candidatesY = [y, inset, h - inset];
+        placed.forEach(p => {
+          candidatesX.push(p.x - step, p.x + step);
+          candidatesY.push(p.y - step, p.y + step);
+        });
+        for (const a of candidatesX) for (const b of candidatesY) {
+          if (a < inset || b < inset || a > w - inset || b > h - inset || !clear(a, b)) continue;
+          const cost = (a - point.x) ** 2 + (b - point.y) ** 2;
+          if (cost < distance) { distance = cost; best = { x: a, y: b }; }
+        }
+      }
+      placed.push(best || { x, y });
+    }
+    return placed;
+  }
+
   function create(container, markerGroup, markers, callbacks) {
     const T = window.THREE;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const leaders = document.createElementNS(svgNS, 'svg');
+    leaders.setAttribute('class', 'marker-leaders');
+    leaders.setAttribute('aria-hidden', 'true');
+    leaders.setAttribute('focusable', 'false');
+    markerGroup.prepend(leaders);
     const result = window.TPWebGL.createRenderer(T, { powerPreference: 'low-power' });
     if (!result.ok) throw Error(result.reason);
     const gpu = result.renderer;
@@ -168,6 +204,7 @@
       camera.updateMatrixWorld();
       cross.visible = state.cutaway;
       exterior.visible = !state.cutaway;
+      const points = [];
       Object.keys(placedMeshes).forEach((key) => {
         const isPlaced = state.matched.has(key);
         const isSelected = state.selected === key;
@@ -181,9 +218,23 @@
         if (!marker.hidden) {
           const [r, y, angle] = anchors[key];
           const point = new T.Vector3(r * Math.cos(angle), y, -r * Math.sin(angle)).project(camera);
-          marker.style.left = ((point.x * .5 + .5) * 100) + '%';
-          marker.style.top = ((.5 - point.y * .5) * 100) + '%';
+          points.push({ marker, x: (point.x * .5 + .5) * w, y: (.5 - point.y * .5) * h });
         }
+      });
+      const positions = separateMarkers(points, w, h);
+      leaders.replaceChildren();
+      leaders.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      points.forEach((anchor, i) => {
+        const location = positions[i];
+        anchor.marker.style.left = location.x + 'px';
+        anchor.marker.style.top = location.y + 'px';
+        if (Math.hypot(location.x - anchor.x, location.y - anchor.y) < 15) return;
+        const line = document.createElementNS(svgNS, 'line');
+        const dot = document.createElementNS(svgNS, 'circle');
+        line.setAttribute('x1', anchor.x); line.setAttribute('y1', anchor.y);
+        line.setAttribute('x2', location.x); line.setAttribute('y2', location.y);
+        dot.setAttribute('cx', anchor.x); dot.setAttribute('cy', anchor.y); dot.setAttribute('r', '2.5');
+        leaders.append(line, dot);
       });
       gpu.render(scene, camera);
     }
