@@ -78,6 +78,8 @@ check('browser script rewrites only an https base', browser.indexOf("/^https:\\/
 check('browser script sets rel and target', browser.indexOf("a.rel = 'sponsored noopener'") !== -1 && browser.indexOf("a.target = '_blank'") !== -1);
 const dist = fs.readFileSync(path.join(root, 'build-dist.js'), 'utf8');
 check('tp-autodesk.js is published', dist.indexOf("'tp-autodesk.js'") !== -1);
+const links = fs.readFileSync(path.join(root, 'check-links.js'), 'utf8');
+check('link gate allows the staged placeholder', links.indexOf("clean === 'AUTODESK_AFFILIATE_URL_PLACEHOLDER'") !== -1);
 const knowledge = fs.readFileSync(path.join(root, 'build-knowledge.js'), 'utf8');
 check('knowledge rebuild keeps the note', knowledge.indexOf('autodesk.blockForPage') !== -1);
 
