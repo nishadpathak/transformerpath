@@ -58,6 +58,17 @@ body{font-family:var(--font-sans,system-ui,sans-serif);background:#0a1624;color:
 #info strong{display:block;color:var(--acc)}
 #info .hint,#partCount{color:var(--mut);font-size:.8rem}
 #partCount{margin-top:5px}
+#partGuide{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0;scroll-margin-top:76px}
+#partGuide h2{margin-top:0}
+#partGuide h3{font-size:.98rem;color:var(--ink);margin:5px 0}
+#partGuide :where(p,progress){margin:5px 0}
+#partGuide progress{display:block;width:100%;height:8px;accent-color:var(--acc)}
+#partGuide .ex-button-row{margin-top:7px}
+#guideFeedback,#guideClosedNote{color:var(--mut);font-size:.82rem;line-height:1.42}
+#guideFeedback:empty,#guideClosedNote:empty{display:none}
+#partGuide button:disabled{opacity:.58;cursor:not-allowed}
+#guideJump,#guideReturn{color:var(--acc);min-height:44px;display:inline-flex;align-items:center;padding:6px 2px}
+#c3d{scroll-margin-top:72px}
 #viewPresets button,.ex-train button,.ex-camera button{padding:8px 10px}
 .ex-train,.ex-camera{margin-top:8px}
 .lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.9);border:1px solid var(--line);color:#e8edf4;font-size:11px;line-height:1.25;padding:3px 6px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:normal;text-align:center;z-index:5}
@@ -194,6 +205,7 @@ body{font-family:var(--font-sans,system-ui,sans-serif);background:#0a1624;color:
         <noscript><div class="ex-static"><p>Enable JavaScript to rotate the model. The tutorials remain available above.</p></div></noscript>
       </div>
       <p id="help" hidden>Drag to orbit · Ctrl or ⌘ + scroll to zoom · Shift + drag to pan. On touch, drag sideways to orbit, swipe vertically to scroll, or pinch to zoom.</p>
+      <a id="guideReturn" href="#partGuide" hidden>Back to walkthrough controls</a>
     </div>
 
     <section id="panel" aria-label="Model controls" hidden>
@@ -204,6 +216,27 @@ body{font-family:var(--font-sans,system-ui,sans-serif);background:#0a1624;color:
         <button type="button" data-preset="exploded" aria-pressed="false">Exploded</button>
       </div>
       <p id="presetStatus" class="ex-intro" role="status"></p>
+
+      <section id="partGuide" aria-labelledby="partGuideHeading" tabindex="-1">
+        <h2 id="partGuideHeading">Find This Part</h2>
+        <p class="ex-intro">Take a short walkthrough of the current model. No score. Ending the walkthrough restores your previous view.</p>
+        <div class="ex-button-row"><button type="button" id="guideStart">Start walkthrough</button></div>
+        <p id="guideClosedNote" role="status"></p>
+        <div id="guideActive" hidden>
+          <p id="guideStep" class="ex-intro" role="status" aria-atomic="true"></p>
+          <progress id="guideProgress" value="1" max="4" aria-label="Walkthrough progress"></progress>
+          <h3 id="guideTitle" tabindex="-1"></h3>
+          <p id="guideHint" class="ex-intro"></p>
+          <div class="ex-button-row" role="group" aria-label="Walkthrough controls">
+            <button type="button" id="guidePrev" disabled>Previous part</button>
+            <button type="button" id="guideLook" aria-pressed="false" aria-controls="c3d info">Look closer</button>
+            <button type="button" id="guideNext">Next part</button>
+            <button type="button" id="guideExit">Exit walkthrough</button>
+          </div>
+          <p id="guideFeedback" role="status" aria-atomic="true"></p>
+          <a id="guideJump" href="#c3d">View in 3D</a>
+        </div>
+      </section>
 
       <h2>Identify a part</h2>
       <label class="ex-field">Filter visible parts <input id="partFilter" type="search" placeholder="Try core, windings or cooling" autocomplete="off" aria-controls="partPicker"></label>
@@ -869,12 +902,13 @@ function updatePicker(){
     ? (matching.length + (matching.length===1?' visible part':' visible parts') + (q?' match.':'.'))
     : (q?'No visible parts match this filter.':'No parts are visible. Choose Overview or show a component below.');
 }
-function selectPart(p){
+function selectPart(p, announceGuide=true){
   if(!p || !p.root.visible || p.root.parent!==modeRoots[mode]) return;
   if(quizOn){ quizAnswer(p); return; }
   clearSelection(); selected=p; pinnedPart=p; highlight(p,true);
   if(Array.from(picker.options).some(opt=>opt.value===p.id)) picker.value=p.id;
   tell(p.name,p.desc);
+  if(announceGuide) guideSelection(p);
   draw();
 }
 picker.addEventListener('change',()=>{
@@ -922,7 +956,9 @@ for(const [key,label,color] of toggleDefs){
   toggleRows[key]={wrap,input,label};
 }
 function applyVisibility(){
-  for(const p of currentParts()) p.root.visible=!toggleRows[p.toggle] || toggleRows[p.toggle].input.checked;
+  for(const p of currentParts()) p.root.visible=isolatedPart
+    ? p===isolatedPart
+    : (!toggleRows[p.toggle] || toggleRows[p.toggle].input.checked);
   if(selected && !selected.root.visible){ clearSelection(); promptPart(); }
   updatePicker();
   if(quizOn && (!visibleParts().length || (question && !question.root.visible))){
@@ -932,7 +968,13 @@ function applyVisibility(){
   draw();
 }
 togglesBox.addEventListener('change',e=>{
-  if(e.target.dataset.k in toggleRows){ chooseCustom(); applyVisibility(); }
+  const key=e.target.dataset.k;
+  if(key in toggleRows){
+    const checked=e.target.checked;
+    closeLook();
+    toggleRows[key].input.checked=checked;
+    chooseCustom(); applyVisibility();
+  }
 });
 const explodeSl = document.getElementById('explode');
 const tankSl = document.getElementById('tankop');
@@ -977,7 +1019,9 @@ function setPreset(name, announce=true){
   applyVisibility(); applyExplode(); fitModel(true);
   if(announce) presetStatus.textContent=data.notice;
 }
-for(const button of presetButtons) button.addEventListener('click',()=>setPreset(button.dataset.preset));
+for(const button of presetButtons) button.addEventListener('click',()=>{
+  closeLook(); setPreset(button.dataset.preset);
+});
 
 /* ============ camera: actual stage sizing, keyboard and pointers ============ */
 function applyCam(){
@@ -1011,7 +1055,7 @@ function resizeStage(){
   renderer.setSize(w,h,false);
   camera.aspect=w/h;
   camera.updateProjectionMatrix();
-  if(view!=='custom') fitModel(false);
+  if(isolatedPart || view!=='custom') fitModel(false);
   draw();
 }
 for(const b of document.querySelectorAll('[data-camera]')) b.addEventListener('click',()=>{
@@ -1094,6 +1138,7 @@ function clearFeedback(){
 function endQuiz(reason){
   clearFeedback();
   quizOn=false; question=null; pressed(bQuiz,false); bQuiz.textContent='Start quiz';
+  guideStart.disabled=false;
   if(reason==='complete') tell('Quiz complete · '+score+'/8','Choose Start quiz to try again, or explore another model.');
   else if(reason==='empty') tell('Quiz needs a visible part','Choose Overview or show a component under Part visibility and sliders.');
   else if(reason==='manual') tell('Quiz stopped',answered?'Score: '+score+'/'+answered+'.':'No answers yet.');
@@ -1124,14 +1169,16 @@ function quizAnswer(p){
   },1200);
 }
 bQuiz.addEventListener('click',()=>{
+  if(guide) return;
   if(quizOn){endQuiz('manual'); return;}
   if(!visibleParts().length){endQuiz('empty'); return;}
   clearSelection(); partFilter.value=''; updatePicker();
   quizOn=true; question=null; score=0; answered=0;
-  pressed(bQuiz,true); bQuiz.textContent='Stop quiz'; nextQuestion();
+  pressed(bQuiz,true); bQuiz.textContent='Stop quiz'; guideStart.disabled=true; nextQuestion();
 });
 function setMode(next){
   if(quizOn) endQuiz('mode');
+  if(guide){ guide.focus=null; clearIsolation(); }
   clearSelection(); partFilter.value=''; mode=next;
   container.dataset.explorerMode=mode;
   for(const [name,root] of Object.entries(modeRoots)){
@@ -1141,10 +1188,165 @@ function setMode(next){
   for(const [key,row] of Object.entries(toggleRows)) row.wrap.hidden=!actual.has(key);
   promptPart(); setPreset('overview',false); buildLabels();
   presetStatus.textContent='';
+  if(guide){
+    guide.stops=guideStops(); guide.index=0;
+    if(guide.stops.length) renderGuide(); else exitGuide(false);
+  }
 }
 for(const [name,button] of Object.entries(modeButtons)) button.addEventListener('click',()=>{if(mode!==name) setMode(name);});
 bRot.addEventListener('click',()=>{ autoRotate=!autoRotate; lastFrame=0; pressed(bRot,autoRotate); draw(); });
 bLab.addEventListener('click',()=>{ labelsOn=!labelsOn; pressed(bLab,labelsOn); draw(); });
+
+/* ============ guided walkthrough: optional, unscored and reversible ============ */
+const guideStart = document.getElementById('guideStart');
+const guideClosedNote = document.getElementById('guideClosedNote');
+const guideActive = document.getElementById('guideActive');
+const guideProgress = document.getElementById('guideProgress');
+const guideStep = document.getElementById('guideStep');
+const guideTitle = document.getElementById('guideTitle');
+const guideHint = document.getElementById('guideHint');
+const guideFeedback = document.getElementById('guideFeedback');
+const guidePrev = document.getElementById('guidePrev');
+const guideNext = document.getElementById('guideNext');
+const guideLook = document.getElementById('guideLook');
+const guideExit = document.getElementById('guideExit');
+const guideReturn = document.getElementById('guideReturn');
+let guide = null;
+let isolatedPart = null;
+
+function guideStops(){
+  const choices = [
+    ['core','Find the magnetic path','Look for the laminated steel at the centre of the assembly.'],
+    ['lv','Find the low-voltage winding','Look for a winding inside its paired high-voltage winding.'],
+    ['bushings','Find the external connections',mode==='oil' ? 'Look for the insulated connections through the tank cover.' : 'Look for terminals that connect the windings to the external circuit.'],
+    ['cooling','Find how heat leaves the unit',mode==='oil' ? 'Look for the corrugated walls around the tank.' : 'Look beneath the windings for the cooling fans.']
+  ];
+  return choices.flatMap(([group,title,hint])=>{
+    const part=currentParts().find(p=>p.toggle===group);
+    return part?[{part,title,hint}]:[];
+  });
+}
+function takeView(){
+  return {
+    mode,view,selected,labelsOn,autoRotate,sph:{...sph},target:target.clone(),
+    aspect:camera.aspect,separation:explodeSl.value,opacity:tankSl.value,
+    filter:partFilter.value,presetNote:presetStatus.textContent,
+    infoTitle:info.querySelector('strong')?.textContent || '',
+    infoText:info.querySelector('span')?.textContent || '',
+    visibility:Object.fromEntries(Object.entries(toggleRows).map(([key,row])=>[key,row.input.checked]))
+  };
+}
+function restoreView(saved){
+  clearSelection();
+  if(mode!==saved.mode) setMode(saved.mode);
+  setViewName(saved.view);
+  for(const [key,row] of Object.entries(toggleRows)) row.input.checked=saved.visibility[key];
+  explodeSl.value=saved.separation;
+  tankSl.value=saved.opacity;
+  partFilter.value=saved.filter;
+  presetStatus.textContent=saved.presetNote;
+  labelsOn=saved.labelsOn; pressed(bLab,labelsOn);
+  autoRotate=saved.autoRotate; lastFrame=0; pressed(bRot,autoRotate);
+  applyVisibility();
+  applyExplode();
+  sph={...saved.sph}; target.copy(saved.target);
+  if(Math.abs(camera.aspect-saved.aspect)>.01 && saved.view!=='custom') fitModel(false);
+  else applyCam();
+  if(saved.selected && saved.selected.root.visible) selectPart(saved.selected,false);
+  else tell(saved.infoTitle,saved.infoText);
+}
+function clearIsolation(){
+  isolatedPart=null;
+  delete container.dataset.explorerIsolatedPart;
+}
+function renderGuide(){
+  if(!guide) return;
+  const stop=guide.stops[guide.index];
+  const current=guide.index+1, total=guide.stops.length;
+  guideProgress.max=total; guideProgress.value=current;
+  guideStep.textContent='Step '+current+' of '+total+' · '+stop.title;
+  guideTitle.textContent=stop.title;
+  guideHint.textContent=stop.hint+' Choose a part below, or use Look closer to reveal it.';
+  guidePrev.disabled=guide.index===0;
+  guideNext.textContent=current===total?'Finish walkthrough':'Next part';
+  guideLook.textContent='Look closer';
+  pressed(guideLook,false);
+  guideFeedback.textContent='';
+}
+function startGuide(){
+  if(guide || quizOn || failed) return;
+  const stops=guideStops();
+  if(!stops.length){ guideClosedNote.textContent='No guided steps are available for this model.'; return; }
+  guide={saved:takeView(),focus:null,stops,index:0};
+  guideClosedNote.textContent='';
+  guideStart.hidden=true;
+  bQuiz.disabled=true;
+  autoRotate=false; pressed(bRot,false);
+  clearSelection(); partFilter.value=''; promptPart();
+  setPreset('overview');
+  guideActive.hidden=false; guideReturn.hidden=false;
+  renderGuide();
+  guideTitle.focus();
+}
+function exitGuide(completed){
+  if(!guide) return;
+  const saved=guide.saved;
+  guide=null; clearIsolation();
+  guideActive.hidden=true; guideReturn.hidden=true;
+  guideStart.hidden=false;
+  bQuiz.disabled=false;
+  restoreView(saved);
+  guideClosedNote.textContent=completed?'Walkthrough complete. Your previous view is restored.':'Walkthrough ended. Your previous view is restored.';
+  guideStart.focus();
+}
+function closeLook(){
+  if(!guide?.focus) return;
+  const prior=guide.focus;
+  guide.focus=null;
+  clearIsolation();
+  restoreView(prior);
+  guideLook.textContent='Look closer'; pressed(guideLook,false);
+  guideFeedback.textContent='Whole-model view restored.';
+}
+function lookCloser(){
+  if(!guide) return;
+  if(guide.focus){ closeLook(); return; }
+  const part=guide.stops[guide.index].part;
+  guide.focus=takeView();
+  isolatedPart=part; container.dataset.explorerIsolatedPart=part.name;
+  autoRotate=false; pressed(bRot,false);
+  clearSelection();
+  partFilter.value='';
+  setViewName('custom');
+  presetStatus.textContent='Close-up: '+part.name+'.';
+  applyVisibility(); applyExplode(); fitModel(true);
+  selectPart(part,false);
+  guideLook.textContent='Show whole model'; pressed(guideLook,true);
+  guideFeedback.textContent=part.name+' is isolated in the 3D stage. Use View in 3D to jump to it.';
+}
+function guideSelection(part){
+  if(!guide || guide.focus) return;
+  if(part===guide.stops[guide.index].part) guideFeedback.textContent='Found it: '+part.name+'. Open a close-up or continue.';
+  else guideFeedback.textContent='You selected '+part.name+'. Keep looking, or reveal this step with Look closer.';
+}
+function advanceGuide(change){
+  if(!guide) return;
+  const next=guide.index+change;
+  if(next>=guide.stops.length){ exitGuide(true); return; }
+  if(next<0) return;
+  const previousWasFocused=document.activeElement===guidePrev;
+  closeLook();
+  guide.index=next;
+  clearSelection(); promptPart(); updatePicker();
+  renderGuide();
+  if(previousWasFocused && guidePrev.disabled) guideTitle.focus();
+  draw();
+}
+guideStart.addEventListener('click',startGuide);
+guideLook.addEventListener('click',lookCloser);
+guideExit.addEventListener('click',()=>exitGuide(false));
+guidePrev.addEventListener('click',()=>advanceGuide(-1));
+guideNext.addEventListener('click',()=>advanceGuide(1));
 
 /* ============ render only on change or opt-in auto-rotate ============ */
 function draw(){
@@ -1185,6 +1387,7 @@ window.addEventListener('tp-3d-state',e=>{
   failed=true; __tpWatch.cancel(); clearFeedback();
   if(renderFrame) cancelAnimationFrame(renderFrame);
   renderFrame=0;
+  guideReturn.hidden=true;
   for(const l of labelEls) l.el.hidden=true;
 });
 setMode('oil');
