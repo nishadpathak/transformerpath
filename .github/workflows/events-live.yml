@@ -13,4 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Rebuild artifacts under test from current sources
+        run: node build_ssr.js
       - run: node tests/events-live-upcoming.js && node tests/past-events-regression.js && node tests/events-soon-live.test.js
