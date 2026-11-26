@@ -55,6 +55,25 @@ const dir = catalog.draft('directory.html', fs.readFileSync('directory.html', 'u
 const dirDesc = fitWindow(dir.draftDesc, 140, 160, dir.padsDesc);
 check(/^The transformer industry directory\b/.test(dirDesc), 'directory description keeps its subject ' + dirDesc);
 check(!/\|\s*TransformerPath\s*$/.test(dirDesc), 'directory description does not repeat the title brand');
+function publishedDraft(rel) {
+  return catalog.draft(rel, fs.readFileSync(rel, 'utf8'), cat);
+}
+for (const [slug, label] of [['india', 'India'], ['gcc', 'GCC'], ['europe', 'Europe']]) {
+  const page = publishedDraft('markets/' + slug + '/index.html');
+  check(page.draftTitle === label + ' Transformer Tenders & Suppliers | TransformerPath' && page.lockedTitle,
+    label + ' market title clearly names tenders and suppliers');
+  check(page.canonical === 'https://transformerpath.com/markets/' + slug + '/', label + ' market stays canonical');
+}
+const amiral = publishedDraft('tenders/380-230-kv-amiral-substation/index.html');
+const amiralLinks = amiral.related.map(function (item) { return item.href; });
+check(amiral.lockedTitle && /^380\/230 kV Amiral substation.*\| TransformerPath$/.test(amiral.draftTitle) && !/\bopen\b/i.test(amiral.draftTitle),
+  'tender title keeps its sourced name without inventing an open status');
+check(amiralLinks.includes('/tenders/country/saudi-arabia/') && amiralLinks.includes('/markets/saudi-arabia/'),
+  'tender links to the same country in the tender index and market hub');
+const partSupplier = publishedDraft('accessories/advance-rub-cork-international/index.html');
+check(partSupplier.related.some(function (item) { return item.href === '/find-a-part.html'; }),
+  'an accessory supplier links to the public component sourcing path');
+
 
 const ordered = snap.buildSnapshot({
   Europe: { label: 'Europe', items: [

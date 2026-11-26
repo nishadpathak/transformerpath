@@ -24,6 +24,16 @@ check('filters are category, country, keyword, and confirmed scope',
   html.indexOf('id="categoryFilter"') !== -1 && html.indexOf('id="countryFilter"') !== -1 &&
   html.indexOf('id="keywordFilter"') !== -1 && html.indexOf('id="scopeFilter"') !== -1);
 check('the index carries an ItemList and no JobPosting', html.indexOf('"@type":"ItemList"') !== -1 && html.indexOf('JobPosting') === -1);
+const rowLinks = [...html.matchAll(/class="t-title" href="([^"]+)"/g)].map(function (m) { return m[1]; });
+check('tender card links resolve to the same detail from the .html and directory entry points', rowLinks.length > 0 && rowLinks.every(function (href) {
+  const root = 'https://transformerpath.com';
+  const a = new URL(href, root + '/tenders.html');
+  const b = new URL(href, root + '/tenders/');
+  return a.href === b.href && /^\/tenders\/[^/]+\/$/.test(a.pathname) && fs.existsSync(a.pathname.slice(1) + 'index.html');
+}));
+check('board navigation styles and counts work from the directory alias', ['href="/style.css?', 'href="/tp-nav.css?', 'src="/site-stats.js?'].every(function (token) {
+  return html.includes(token);
+}));
 
 const open = tenders.filter(function (t) { return t.status === 'OPEN' || t.status === 'CLOSING_SOON'; });
 check('every open row has an official URL', open.every(function (t) { return isOfficialProcurementUrl(t.official_procurement_url); }));
@@ -49,7 +59,11 @@ notices.forEach(function (notice) {
   check(notice.official_reference + ' is published', !!row);
   if (!row) return;
   check(notice.official_reference + ' keeps the close instant', row.close_at === notice.close_at);
-  check(notice.official_reference + ' is open', row.status === 'OPEN' || row.status === 'CLOSING_SOON', row.status);
+  const buildAt = Date.parse(doc.stats && doc.stats.generated_at);
+  const deadlineAt = Date.parse(notice.close_at);
+  check(notice.official_reference + ' has comparable build and deadline instants', Number.isFinite(buildAt) && Number.isFinite(deadlineAt));
+  const expired = deadlineAt < buildAt;
+  check(notice.official_reference + ' has the expected state at build time', expired ? row.status === 'CLOSED' : row.status === 'OPEN' || row.status === 'CLOSING_SOON', row.status);
   check(notice.official_reference + ' source is official', isOfficialProcurementUrl(row.official_procurement_url) && !isAggregatorUrl(row.official_procurement_url));
   const slug = String(row.title).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
     .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
@@ -58,7 +72,7 @@ notices.forEach(function (notice) {
   check(notice.official_reference + ' page shows the buyer portal zone and Dubai',
     page.indexOf('(' + buyerZone + ')') !== -1 && page.indexOf('(Asia/Dubai)') !== -1);
   check(notice.official_reference + ' page links the official URL', page.indexOf(notice.official_source_url) !== -1);
-  check(notice.official_reference + ' page is indexable', /noindex/i.test(page) === false);
+  check(notice.official_reference + ' page indexability matches its deadline', /noindex/i.test(page) === expired);
 });
 
 check('no aggregator is the listed source', tenders.every(function (t) {

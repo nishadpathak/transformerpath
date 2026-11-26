@@ -118,6 +118,8 @@ if (fs.existsSync(mexicoHtmlPath)) {
 }
 
 require('./india-market-hub.test');
+require('./north-america-market.test');
+require('./market-guides-release.test')();
 require('./regional-market-hubs.test');
 
 if (failed) {

@@ -16,9 +16,9 @@
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
 <link rel="stylesheet" href="style.css?v=15">
 <link rel="stylesheet" href="tp-nav.css?v=14">
-<link rel="stylesheet" href="find-a-part.css?v=1">
+<link rel="stylesheet" href="find-a-part.css?v=2">
 <script src="tp-theme.js?v=15" defer></script>
-<script src="tp-parts.js?v=1" defer></script>
+<script src="tp-parts.js?v=2" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -32,7 +32,7 @@
     <p>Start with the part, not the company. Check published specs, see who makes or supplies it, and open a draft RFQ for the items you choose.</p>
   </section>
   <section class="part-how" aria-label="How to use the pilot">
-    <p><strong>Published specs help you shortlist. They do not prove fit.</strong> Confirm the exact model and configuration, tolerances, testing, availability and delivery terms with the supplier. No stock or price is verified here.</p>
+    <p><strong>Published specs help you shortlist. They do not prove fit.</strong> Confirm the exact model and configuration, tolerances, testing, availability and delivery terms with the supplier. No stock or price is verified here. <a href="#part-availability">Report dated availability for a bushing or tap changer</a>.</p>
   </section>
   <section id="parts-app" aria-labelledby="parts-results-title">
     <form id="parts-filters" class="part-filters" role="search" aria-label="Find transformer parts" hidden>
@@ -42,7 +42,11 @@
       <button type="reset" class="part-action">Clear filters</button>
     </form>
     <h2 id="parts-results-title">Source-backed options</h2>
-    <p id="parts-result-count" role="status" aria-live="polite"></p>
+    <div class="part-result-tools">
+      <p id="parts-result-count" role="status" aria-live="polite"></p>
+      <a id="parts-shortlist-jump" class="part-action" href="#part-shortlist-title" hidden>Go to shortlist</a>
+    </div>
+    <p>Shortlist two or more options in the same family to compare published specifications.</p>
     <p id="parts-empty" hidden>No matching parts. Try another model or clear the filters.</p>
     <div class="part-grid" id="part-cards">
     <article class="part-card" data-part-id="tom" aria-labelledby="part-tom">
@@ -131,9 +135,44 @@
       <p>Choose up to five items from one part family per RFQ. Nothing is sent when you add an item or open the draft.</p>
       <p id="parts-selection-status" role="status" aria-live="polite" aria-atomic="true"></p>
       <ul id="parts-selected"></ul>
+      <details id="parts-comparison" hidden>
+        <summary>Compare published specifications</summary>
+        <p id="parts-comparison-help">The values keep each source’s labels. Different test conditions, units or missing values do not establish equivalence. Scroll across the comparison on small screens.</p>
+        <div class="part-compare-scroll" tabindex="0" role="region" aria-label="Scrollable specifications comparison" aria-describedby="parts-comparison-help" id="parts-comparison-table"></div>
+      </details>
       <details id="parts-draft-box" hidden><summary>Preview requirement details</summary><pre id="parts-draft"></pre></details>
       <a id="parts-rfq" class="part-action part-primary" hidden>Open RFQ draft</a>
     </section>
+  </section>
+  <section class="part-shortlist part-availability" id="part-availability" aria-labelledby="part-availability-title">
+    <h2 id="part-availability-title">Suggest a dated availability update</h2>
+    <p>This is for suppliers reporting bushings or on-load tap changers (OLTCs). A report goes to TransformerPath for editorial review only if you send it through Contact. Nothing is published automatically, and a supplier report is not independent stock verification or a guarantee.</p>
+    <noscript><p>Use the <a href="/contact.html">Contact form</a> and include the company, exact model, dispatch country, status, date confirmed and validity date. Do not include private links or customer details.</p></noscript>
+    <form id="parts-availability-form" hidden>
+      <div class="part-intake-grid">
+        <div><label for="availability-family">Part family</label><select id="availability-family" name="family" required><option value="">Choose a family</option><option value="bushing">Bushing</option><option value="tap-changer">On-load tap changer (OLTC)</option></select></div>
+        <div><label for="availability-seller">Supplier company</label><input id="availability-seller" name="seller" maxlength="100" required></div>
+        <div><label for="availability-model">Manufacturer and exact model</label><input id="availability-model" name="model" maxlength="120" required></div>
+        <div><label for="availability-country">Dispatch country</label><input id="availability-country" name="country" maxlength="70" required></div>
+        <div><label for="availability-status">Supplier-stated status</label><select id="availability-status" name="status" required><option value="">Choose a status</option><option value="seller-stock">Supplier reports stock</option><option value="made-to-order">Made to order</option><option value="quote-required">Quote required</option></select></div>
+        <div><label for="availability-evidence">Basis for this report</label><select id="availability-evidence" name="evidence" required><option value="">Choose the source type</option><option value="seller-record">Dated stock or order-system record</option><option value="seller-statement">Dated statement from the supplier</option><option value="public-source">Dated public product availability notice</option></select></div>
+        <div><label for="availability-confirmed">Date checked by supplier</label><input id="availability-confirmed" name="confirmed" type="date" aria-describedby="availability-date-help" required></div>
+        <div><label for="availability-until">Report valid through</label><input id="availability-until" name="until" type="date" aria-describedby="availability-date-help" required></div>
+      </div>
+      <p id="availability-date-help">Use a check date from the past 30 days and a validity end up to 30 days after the check. Expired reports are not accepted for draft handoff.</p>
+      <div class="part-intake-grid">
+        <div><label for="availability-source">Public evidence URL (if available)</label><input id="availability-source" name="source" type="url" maxlength="300" placeholder="https://"></div>
+      </div>
+      <p>Do not enter private links, file attachments, customer information or individual contact details.</p>
+      <button class="part-action" type="submit">Prepare availability report</button>
+    </form>
+    <p id="parts-availability-status" role="status" aria-live="polite"></p>
+    <div id="parts-availability-preview" hidden>
+      <label for="parts-availability-draft">Review your draft</label>
+      <textarea id="parts-availability-draft" readonly rows="8"></textarea>
+      <button type="button" class="part-action part-primary" id="parts-availability-review">Continue to Contact to review</button>
+      <p id="parts-availability-fallback" hidden>The browser did not transfer the draft. Copy the text above, then paste it into the <a href="/contact.html#cForm">Contact form</a>.</p>
+    </div>
   </section>
 </main>
 <footer class="part-footer"><a href="/directory.html">Industry directory</a> · <a href="/rfq.html">Request a quote</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/contact.html">Contact</a></footer>
