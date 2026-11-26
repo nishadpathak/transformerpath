@@ -17,9 +17,9 @@
     return null;
   }
 
-  function inView(rect, vw, vh, margin) {
-    return rect.left >= margin - 0.5 && rect.top >= margin - 0.5 &&
-      rect.right <= vw - margin + 0.5 && rect.bottom <= vh - margin + 0.5;
+  function inView(rect, bounds, margin) {
+    return rect.left >= bounds.left + margin - 0.5 && rect.top >= bounds.top + margin - 0.5 &&
+      rect.right <= bounds.right - margin + 0.5 && rect.bottom <= bounds.bottom - margin + 0.5;
   }
 
   function nudge(el, dx, dy) {
@@ -60,26 +60,26 @@
     return out;
   }
 
-  function clampToViewport(el, vw, vh, margin) {
+  function clampToViewport(el, bounds, margin) {
     var guard = 0;
     while (guard++ < 4) {
       var rect = el.getBoundingClientRect();
       var dx = 0;
       var dy = 0;
-      if (rect.left < margin) dx = margin - rect.left;
-      else if (rect.right > vw - margin) dx = (vw - margin) - rect.right;
-      if (rect.top < margin) dy = margin - rect.top;
-      else if (rect.bottom > vh - margin) dy = (vh - margin) - rect.bottom;
+      if (rect.left < bounds.left + margin) dx = bounds.left + margin - rect.left;
+      else if (rect.right > bounds.right - margin) dx = bounds.right - margin - rect.right;
+      if (rect.top < bounds.top + margin) dy = bounds.top + margin - rect.top;
+      else if (rect.bottom > bounds.bottom - margin) dy = bounds.bottom - margin - rect.bottom;
       if (!dx && !dy) return;
       nudge(el, dx, dy);
     }
   }
 
-  function separate(el, blocks, placed, vw, vh, margin, gap) {
+  function separate(el, blocks, placed, bounds, margin, gap) {
     var guard = 0;
     while (guard++ < 20) {
       var rect = el.getBoundingClientRect();
-      if (!inView(rect, vw, vh, margin)) return false;
+      if (!inView(rect, bounds, margin)) return false;
       var block = hits(rect, blocks, 2);
       var other = hits(rect, placed, gap);
       var hit = block || other;
@@ -88,9 +88,9 @@
       var moved = false;
       for (var i = 0; i < options.length; i++) {
         nudge(el, options[i].dx, options[i].dy);
-        clampToViewport(el, vw, vh, margin);
+        clampToViewport(el, bounds, margin);
         var next = el.getBoundingClientRect();
-        if (inView(next, vw, vh, margin) && !hits(next, blocks, 2)) {
+        if (inView(next, bounds, margin) && !hits(next, blocks, 2)) {
           moved = true;
           break;
         }
@@ -99,16 +99,20 @@
       if (!moved) return false;
     }
     var end = el.getBoundingClientRect();
-    return inView(end, vw, vh, margin) && !hits(end, blocks, 2) && !hits(end, placed, gap);
+    return inView(end, bounds, margin) && !hits(end, blocks, 2) && !hits(end, placed, gap);
   }
 
-  function layout(entries) {
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
+  function layout(entries, opts) {
+    // Existing callers use the full viewport. An explorer stage can opt into
+    // its own CSS-local coordinates and clipping with the same collision rules.
+    var container = opts && opts.container;
+    var bounds = container ? container.getBoundingClientRect() :
+      { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight };
+    var vw = bounds.right - bounds.left;
     var margin = 8;
     var gap = 6;
     var mobile = vw <= 760;
-    var blocks = obstacleRects();
+    var blocks = container ? [] : obstacleRects();
     var placed = [];
     var ordered = entries.slice().sort(function (a, b) {
       var pin = (b.pin ? 1 : 0) - (a.pin ? 1 : 0);
@@ -131,13 +135,13 @@
       }
       el.style.left = item.x + 'px';
       el.style.top = item.y + 'px';
-      clampToViewport(el, vw, vh, margin);
-      if (!separate(el, blocks, placed, vw, vh, margin, gap)) {
+      clampToViewport(el, bounds, margin);
+      if (!separate(el, blocks, placed, bounds, margin, gap)) {
         el.style.display = 'none';
         return;
       }
       var rect = el.getBoundingClientRect();
-      if (!inView(rect, vw, vh, margin) || hits(rect, blocks, 2) || hits(rect, placed, gap)) {
+      if (!inView(rect, bounds, margin) || hits(rect, blocks, 2) || hits(rect, placed, gap)) {
         el.style.display = 'none';
         return;
       }
