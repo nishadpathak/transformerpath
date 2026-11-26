@@ -41,7 +41,7 @@ const { isoDateInText, countryFromText, usableSource } = require('./lib/tender-c
 const { parseDeadline, parseCloseInstant, deadlineLabel, classifyOpenDeadline } = require('./lib/deadline');
 const { nonAwardKind, awardeeFromTitle } = require('./lib/award-classification');
 const { isOfficialProcurementUrl } = require('./lib/tender-sources');
-const { dualZoneLabel } = require('./lib/tender-time');
+const { dateLabel, localClose, officialAmendments, amendmentLabel } = require('./lib/tender-board-evidence');
 const intake = require('./lib/tender-notices');
 const tenderSitemap = require('./lib/tender-sitemap');
 const products = require('./lib/tender-products');
@@ -388,7 +388,7 @@ const T_STATUS_LEGEND = {
 };
 const CATEGORY_LABEL = { supply: 'Supply', testing_equipment: 'Testing equipment', service: 'Service' };
 function closeLabel(t) {
-  if (t.close_at) return dualZoneLabel(t.close_at, t.portal_timezone);
+  if (t.close_at) return localClose(t.close_at, t.portal_timezone);
   return deadlineLabel(t.deadline) || '';
 }
 function jsonLdScript(node) {
@@ -407,10 +407,18 @@ function webpageNode(t, url) {
   if (isOfficialProcurementUrl(t.official_procurement_url)) node.significantLink = t.official_procurement_url;
   return node;
 }
+function amendmentLinks(t, newestOnly) {
+  if (!t.source_verified) return '';
+  return officialAmendments(t.status_events).slice(0, newestOnly ? 1 : undefined).map(function (row) {
+    return '<a class="t-notice" href="' + esc(row.source_url) + '" target="_blank" rel="noopener">' +
+      esc(amendmentLabel(row)) + ' (official)</a>';
+  }).join(' · ');
+}
 function tenderPage(t) {
   const slug = slugify(t.title);
   const url = 'https://transformerpath.com/tenders/' + slug + '/';
   const closed = t.status === 'CLOSED';
+  const amendments = amendmentLinks(t, false);
   const projLink = t.project_slug ? '<a href="../../projects/' + esc(t.project_slug) + '/" style="color:var(--accent)">' + esc(t.full_title || t.title) + '</a>' : esc(t.full_title || t.title);
   const linkText = esc(t.source || 'Official notice');
   const srcLinks = (t.source_urls || []).filter(Boolean).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + linkText + '</a>').join(' · ') || '—';
@@ -445,6 +453,7 @@ function tenderPage(t) {
     '<p class="lead">' + (t.summary ? esc(t.summary) : ('A ' + esc(t.statusLabel.toLowerCase()) + ' transformer-relevant procurement opportunity, tracked as an entity (not an article) by TransformerPath. Derived from public, source-backed signals; never fabricated.')) + '</p>' +
     '<div class="cw-meta"><span><b>Status</b> ' + esc(t.statusLabel) + '</span><span><b>Country</b> ' + esc(t.country || '—') + '</span>' + (t.voltage ? '<span><b>Voltage</b> ' + esc(t.voltage) + '</span>' : '') + '<span><b>Scope</b> ' + esc(t.transformer_scope) + '</span></div>' +
     '<table>' + rows + '</table>' +
+    (amendments ? '<h2 style="font-size:1.1rem;margin:22px 0 6px">Official amendments</h2><p>' + amendments + '</p>' : '') +
     (t.project_slug ? '<h2 style="font-size:1.1rem;color:var(--ink);margin:22px 0 6px">Related project</h2><p>' + projLink + '</p>' : '') +
     '<h2 style="font-size:1.1rem;color:var(--ink);margin:22px 0 6px">Official source</h2><p>' + srcLinks + '</p>' +
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply this requirement</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a transformer requirement and TransformerPath will match it against the relevant manufacturing base.</p>' +
@@ -502,20 +511,15 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
   }).join('');
   const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-disclaimer{color:var(--muted);font-size:.92rem;max-width:840px;margin:8px 0 4px}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.t-views{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.view-tab{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}.view-tab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#1a1203}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 18px}.t-filters label{display:flex;flex-direction:column;gap:4px;font-size:.75rem;color:var(--muted);font-weight:700}.t-filters select,.t-filters input{font:inherit;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:160px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}.tender-cta{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:8px 0 18px}.tender-cta-title{color:var(--text);font-weight:800;margin:0 0 6px}.t-notice{color:var(--accent);font-weight:700;font-size:.8rem}';
   const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', UNDATED: 'st-expected', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
-  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  function dateLabel(iso) {
-    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
-    if (!match) return '';
-    return Number(match[3]) + ' ' + MONTHS[Number(match[2]) - 1] + ' ' + match[1];
-  }
   function rowHtml(t) {
     const confirmed = t.transformer_scope === 'CONFIRMED';
     const ref = t.official_reference || t.procurement_id || '';
     const product = products.productOf(t);
     const buyer = t.buyer || t.utility || '';
     const buyerCountry = t.buyer_country || t.country || '';
+    const timed = localClose(t.close_at, t.portal_timezone);
     const dated = dateLabel(t.deadline);
-    const when = dated ? ('Deadline ' + dated) : (deadlineLabel(t.deadline) || '');
+    const when = timed ? ('Deadline ' + timed) : (dated ? ('Deadline ' + dated + ' (time not stated)') : (deadlineLabel(t.deadline) || ''));
     const official = isOfficialProcurementUrl(t.official_procurement_url) ? t.official_procurement_url : '';
     const bits = [];
     if (buyer) bits.push('Buyer ' + buyer);
@@ -530,6 +534,7 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
       (t.status === 'CLOSED' ? '<span class="st st-closed">Expired</span>' : '') +
       (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
       '<span class="t-meta">' + esc(bits.join(' · ')) + '</span>' +
+      amendmentLinks(t, true) +
       (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener">Official notice</a>' : '') +
       '</div>';
   }
@@ -569,10 +574,11 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
       };
     })
   };
+  const savedStyle = '<style>.t-saved{border:1px solid var(--border);border-radius:12px;background:var(--card);padding:14px;margin:0 0 17px}.t-saved[hidden],.t-saved [hidden]{display:none}.t-saved h2{font-size:1rem;margin:0 0 4px}.t-saved p{color:var(--muted);font-size:.84rem;margin:4px 0}.t-saved-actions{display:flex;flex-wrap:wrap;align-items:end;gap:8px;margin-top:10px}.t-saved label{display:grid;gap:4px;font-size:.78rem;max-width:100%;min-width:min(190px,100%)}.t-saved input,.t-saved select{font:inherit;box-sizing:border-box;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;min-height:42px;width:100%;padding:7px 9px}.t-saved button{min-height:42px}.t-saved button:disabled{opacity:.55;cursor:not-allowed}.t-saved-feedback{min-height:1.3em}.t-result-count{font-weight:700}.t-saved-copy{display:contents}</style>';
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Tenders — open bids | TransformerPath</title>' +
     '<meta name="description" content="Open transformer, substation and power-equipment tenders with buyer, buyer country, deadline date, product and a link to the official public notice.">' +
     '<link rel="canonical" href="https://transformerpath.com/tenders.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Tenders — open bids"><meta property="og:url" content="https://transformerpath.com/tenders.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-    jsonLdScript(listNode) +
+    jsonLdScript(listNode) + savedStyle + '<script src="/tp-tender-searches.js" defer></script>' +
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="t-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Tenders</span></h1>' +
     '<p class="t-disclaimer">Open bids list public metadata and a verified official notice link. TransformerPath does not host bid documents.</p>' +
@@ -587,6 +593,16 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
     '<label>Country <select id="countryFilter"><option value="">All countries</option>' + countryOptions + '</select></label>' +
     '<label>Keyword <input id="keywordFilter" type="search" placeholder="Title, buyer or reference" autocomplete="off"></label>' +
     '<button type="button" id="scopeFilter" class="scope-filter" aria-pressed="false">Confirmed transformer scope</button></div>' +
+    '<section id="tenderSavedSearches" class="t-saved" aria-labelledby="tenderSavedHeading" hidden><h2 id="tenderSavedHeading">Saved tender searches</h2>' +
+    '<p>Save a view on this device. Shared links include the filters and keyword, not your saved search names. No email alerts or cross-device sync.</p>' +
+    '<div class="t-saved-actions"><label>Search name (optional)<input id="tenderSavedName" maxlength="70" autocomplete="off" placeholder="e.g. India transformer supply"></label>' +
+    '<button id="tenderSavedSave" type="button" class="btn btn-amber btn-sm">Save current search</button><div class="t-saved-copy">' +
+    '<button id="tenderSavedShare" type="button" class="btn btn-outline btn-sm">Copy filter link</button></div></div>' +
+    '<div class="t-saved-actions"><label>Saved searches<select id="tenderSavedSelect"></select></label>' +
+    '<button id="tenderSavedOpen" type="button" class="btn btn-outline btn-sm" disabled>Open search</button>' +
+    '<button id="tenderSavedDelete" type="button" class="btn btn-outline btn-sm" disabled>Remove search</button></div>' +
+    '<div id="tenderShareFallback" class="t-saved-actions" hidden><label>Shareable filtered tender link<input id="tenderShareLink" type="url" readonly></label></div>' +
+    '<p id="tenderSavedStatus" class="t-saved-feedback" role="status"></p><p id="tenderResultCount" class="t-result-count" role="status"></p></section>' +
     '<div id="openView">' + (openBody || '') + '<p id="openEmpty" hidden>No open bids match these filters.</p></div>' +
     '<div id="pipelineView" hidden>' + pipelineBody + '</div>' +
     '<div id="expiredView" hidden>' + expiredBody + '<p id="expiredEmpty"' + (expiredRows.length ? ' hidden' : '') + '>No expired tenders match these filters.</p></div>' +
