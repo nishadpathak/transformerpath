@@ -22,6 +22,14 @@ assert.ok(match[0].includes('data-track="event_registration_click"') && match[0]
 assert.doesNotMatch(match[0], /data-track-[^=]+=("[^"]*MasterGuid[^"]*"|"https?:)/);
 assert.match(html, /<details id="ep-shanghai-2026-perks" hidden>/);
 assert.match(html, /id="ep-shanghai-exhibitors"/);
+assert.match(html, /<p id="ep-shanghai-2026-campaign-ended">The overseas visitor perks campaign ended on 25 November/);
+assert.match(html, /outside mainland China to register on site/);
+assert.match(html, /href="#post-show"/);
+assert.match(html, /<section id="post-show"[^>]*>[\s\S]*?No verified post-show findings have been published here/);
+assert.ok(html.includes('href="' + edition.post_show.news_url + '"'));
+const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]+?)<\/script>/)[1]);
+assert.equal(ld['@graph'].find(node => node['@type'] === 'Event').offers.url, cta.href_after,
+  'search structured data points to ordinary registration, not the expired perks link');
 assert.ok(html.indexOf('id="visitor-registration"') < html.indexOf('class="evmeta"'), 'first screen prioritizes registration over event administration');
 assert.match(list, /id="event-visit-discovery" hidden/);
 assert.ok(list.includes('href="/events/ep-shanghai-2026/#visitor-registration"'));
@@ -30,34 +38,38 @@ assert.ok(campaignScript);
 function run(time) {
   const a = { href: cta.href_after, textContent: 'Ordinary', dataset: { campaignUrl: cta.href, campaignCutoff: cta.cutoff, campaignLabel: 'Campaign' }, setAttribute(k, v) { this[k] = v; } };
   const perks = { hidden: true };
+  const expiry = { hidden: false };
   const timer = [];
   const clock = { now: () => time, parse: Date.parse };
   vm.runInNewContext(campaignScript[1], {
     Date: clock, setTimeout: (cb, ms) => timer.push({cb, ms}), clearTimeout: () => {},
-    document: { getElementById: id => id.endsWith('perks') ? perks : a, addEventListener() {} },
+    document: { getElementById: id => id.endsWith('perks') ? perks : id.endsWith('campaign-ended') ? expiry : a, addEventListener() {} },
     window: { addEventListener() {} },
   });
-  return { a, perks, timer, move(ms) { time = ms; } };
+  return { a, perks, expiry, timer, move(ms) { time = ms; } };
 }
 const active = run(end - 10000);
 assert.equal(active.a.href, cta.href);
 assert.equal(active.a['data-track-registration_type'], 'organiser_campaign');
 assert.equal(active.perks.hidden, false);
+assert.equal(active.expiry.hidden, true);
 assert.equal(active.timer[0].ms, 10001);
 active.move(end + 1);
 active.timer[0].cb();
 assert.equal(active.a.href, cta.href_after, 'open tabs change links at expiry, not only on reload');
 assert.equal(active.perks.hidden, true);
+assert.equal(active.expiry.hidden, false);
 const expired = run(end + 1);
 assert.equal(expired.a.href, cta.href_after);
 assert.equal(expired.a['data-track-registration_type'], 'organiser');
 assert.equal(expired.perks.hidden, true);
+assert.equal(expired.expiry.hidden, false);
 const hubScript = list.match(/<script>(\(function \(\) \{\n  var block = document.getElementById\('event-visit-discovery'\);.*?\}\)\(\);)<\/script>/s);
 assert.ok(hubScript, 'main Events publishes a direct registration enhancement');
 assert.match(list, /<a[^>]+id="event-visit-discovery-cta" href="https:\/\/www\.epchinashow\.com\//);
 function runHub(time, edit = {}) {
   const block = { hidden: true, dataset: { showClose: edition.end + 'T15:00:00+08:00' } };
-  const link = { dataset: { campaignUrl: cta.href, campaignCutoff: cta.cutoff, ...edit }, getAttribute: () => cta.href_after,
+  const link = { dataset: { campaignUrl: cta.href, campaignCutoff: cta.cutoff, generalLabel: cta.label, ...edit }, getAttribute: () => cta.href_after,
     setAttribute(k, v) { this[k] = v; }, removeAttribute(k) { delete this[k]; } };
   const timer = [];
   vm.runInNewContext(hubScript[1], {
@@ -76,6 +88,7 @@ hub.move(end + 1);
 hub.timer[0].cb();
 assert.equal(hub.link.href, cta.href_after, 'main Events open tab falls back to ordinary organiser registration');
 assert.equal(hub.link['data-track-registration_type'], 'organiser');
+assert.equal(hub.link.textContent, cta.label);
 assert.equal(runHub(Date.parse(edition.end + 'T15:00:00+08:00')).block.hidden, true, 'spotlight expires at the show close');
 assert.doesNotMatch(applyEventVisitorSpotlight(eventsSource, { ...edition, visitor_cta: { ...cta, href: 'https://www.epchinashow.com@other.example/EP/' } }), /other\.example/);
 console.log('EP Shanghai visitor registration and cutoff OK on both Events pages');

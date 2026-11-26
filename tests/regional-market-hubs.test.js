@@ -32,6 +32,29 @@ for(const slug of Object.keys(R.CONFIG)) {
   assert.doesNotMatch(bySection('market-news'),/data-listing="award"/);
   assert.doesNotMatch(bySection('open-tenders'),/data-listing="award"/);
   assert.match(bySection('recent-awards'),/data-listing="award"/);
+  if (slug==='europe') {
+    const pilots=bySection('voltage-regulation-pilots');
+    assert.ok(html.includes('href="#voltage-regulation-pilots"'));
+    assert.equal((pilots.match(/data-evidence="field"/g)||[]).length,2);
+    assert.equal((pilots.match(/data-evidence="lab-model"/g)||[]).length,1);
+    assert.match(pilots,/Bistrup results were simulations/);
+    assert.match(pilots,/EU-TRACE[^<]+not a voltage-regulation pilot/);
+    assert.doesNotMatch(pilots,/data-listing="(?:tender|award)"|data-vrdt-case="eu-trace"/);
+    assert.ok(pilots.includes('datetime="2016"') && pilots.includes('datetime="2026-06-30"'));
+    for (const row of source.voltageRegulationPilots.cases) {
+      const card=pilots.split('data-vrdt-case="'+row.id+'"')[1].split('</article>')[0];
+      for (const x of row.sources) assert.ok(card.includes('href="'+x.url+'"'),row.id+' missing case source');
+    }
+    const corrupt=structuredClone(source);
+    corrupt.voltageRegulationPilots.cases[0].sources[0].url='javascript:alert(1)';
+    assert.throws(()=>R.assertSeed(slug,corrupt),/Invalid Europe VRDT case/);
+    const mislabeled=structuredClone(source);
+    mislabeled.voltageRegulationPilots.cases[2].evidence='field';
+    assert.throws(()=>R.assertSeed(slug,mislabeled),/distinct laboratory/);
+  } else {
+    assert.doesNotMatch(html,/voltage-regulation-pilots|data-vrdt-case/);
+  }
+
   assert.ok(html.includes('Date.parse(c.dataset.regionDeadline)>Date.now()'));
   for(const row of source.companies) {
     assert.ok(fs.existsSync(row.path.slice(1)+'index.html'),slug+' canonical target missing: '+row.path);
