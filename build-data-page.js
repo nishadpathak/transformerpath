@@ -55,7 +55,8 @@ function sampleTable(preview) {
   }).join('');
   return '<div class="csv-sample" data-csv-preview="' + esc(preview.key) + '" data-preview-rows="' + shown + '">' +
     '<p>Free sample — ' + shown + ' of ' + preview.total.toLocaleString('en-US') + ' rows. The paid file is the full export.</p>' +
-    '<div class="csv-wrap"><table><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+    '<p class="csv-scroll-hint">Scroll the sample horizontally to see all fields.</p>' +
+    '<div class="csv-wrap" role="region" tabindex="0" aria-label="' + esc(preview.key) + ' CSV sample table"><table><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
     '</div>';
 }
 
@@ -116,19 +117,20 @@ function render(model) {
     '<style>\n' +
     '.csv-page{max-width:1100px;margin:0 auto;padding:36px 20px 72px}\n' +
     '.csv-page h1{font-size:2rem;margin:0 0 12px}\n' +
-    '.csv-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:24px 0}\n' +
-    '.csv-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 18px 8px}\n' +
+    '.csv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:24px 0}\n' +
+    '.csv-card{min-width:0;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 18px 8px}\n' +
     '.csv-card h2{margin:0 0 6px;font-size:1.25rem}\n' +
     '.csv-price{font-size:1.6rem;font-weight:800;margin:0 0 10px}\n' +
-    '.csv-fields{font-size:.88rem;line-height:1.55}\n' +
+    '.csv-fields{overflow-wrap:anywhere;font-size:.88rem;line-height:1.55}\n' +
     '.csv-fields code,.csv-page code{font-size:.82rem}\n' +
     '.csv-buy{margin:14px 0}\n' +
     '.csv-pay{text-decoration:none;display:inline-block}\n' +
-    '.csv-wrap{overflow-x:auto;margin:0 0 18px;border:1px solid var(--border);border-radius:12px}\n' +
+    '.csv-wrap{max-width:100%;overflow-x:auto;margin:0 0 18px;border:1px solid var(--border);border-radius:12px}\n' +
     '.csv-wrap table{width:100%;border-collapse:collapse;font-size:.78rem}\n' +
-    '.csv-wrap th,.csv-wrap td{border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;white-space:nowrap}\n' +
+    '.csv-wrap th,.csv-wrap td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;min-width:6rem;max-width:16rem;overflow-wrap:anywhere;vertical-align:top}.csv-wrap :is(th,td):first-child{min-width:6rem;max-width:7.5rem}\n' +
     '.csv-wrap th{background:var(--navy);color:#fff}\n' +
-    '@media (max-width:800px){.csv-grid{grid-template-columns:1fr}}\n' +
+    '.csv-wrap:focus-visible{outline:2px solid var(--accent,#b36a00);outline-offset:3px}.csv-scroll-hint{font-size:.82rem;margin:6px 0}.csv-wrap th[scope=col]{white-space:normal}\n' +
+    '@media (max-width:800px){.csv-grid{grid-template-columns:minmax(0,1fr)}.csv-page{padding-inline:14px}}\n' +
     '</style>\n</head>\n<body>\n' +
     header + '\n' +
     '<main id="main" class="csv-page">\n' +
