@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transformer Total Cost of Ownership Calculator | TransformerPath</title>
+<meta name="description" content="Compare two transformer bids by purchase price, quoted losses, energy tariff and service life. Free buyer calculator with optional discounting.">
+<link rel="canonical" href="https://transformerpath.com/tools/transformer-tco/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Transformer Total Cost of Ownership Calculator">
+<meta property="og:description" content="Compare two transformer bids by purchase price, quoted losses, energy tariff and service life. Free buyer calculator with optional discounting.">
+<meta property="og:url" content="https://transformerpath.com/tools/transformer-tco/">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="theme-color" content="#0d1b2e">
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="stylesheet" href="/tools/transformer-tco/tool.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Transformer Total Cost of Ownership Calculator","url":"https://transformerpath.com/tools/transformer-tco/","description":"Compare two transformer bids by purchase price, quoted losses, energy tariff and service life. Free buyer calculator with optional discounting.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"offers":{"@type":"Offer","price":0,"priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com/"}}</script>
+<script src="/tools/transformer-tco/calculator.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- This self-contained tool uses a minimal header without account/PWA scripts. -->
+<header class="tco-top">
+  <div class="container tco-top-nav">
+    <a href="/" class="logo">TransformerPath</a>
+  </div>
+</header>
+<main id="main" class="tco-wrap" tabindex="-1">
+  <nav class="tco-breadcrumbs" aria-label="Breadcrumb"><a href="/tools.html">Engineering tools</a><span aria-hidden="true">›</span><span aria-current="page">Transformer TCO calculator</span></nav>
+  <div class="tco-intro">
+    <p class="tco-eyebrow">Free buyer tool</p>
+    <h1>Transformer total cost of ownership calculator</h1>
+    <p>Compare two like-for-like bids on purchase price and electricity lost in operation. No sign-in. Your quote values stay on this page. No quotes are saved or submitted.</p>
+  </div>
+  <noscript><p class="tco-card">Enable JavaScript to compare quotes in your browser. The method and sources below are still available.</p></noscript>
+  <form id="tco-form" autocomplete="off" aria-label="Transformer bid comparison">
+    <section class="tco-card" aria-labelledby="tco-assumptions-title">
+      <h2 id="tco-assumptions-title"><span class="tco-step" aria-hidden="true">1</span>Shared operating assumptions</h2>
+      <p class="tco-muted">Use the same service duty, energy tariff and currency for both quotes. The tool does not convert currencies.</p>
+      <div class="tco-form-grid">
+        <label class="tco-field" for="tco-currency"><span>Currency</span><select id="tco-currency" required><option value="">Choose a currency</option><option>AED</option><option>AUD</option><option>BHD</option><option>BRL</option><option>CAD</option><option>CHF</option><option>CLP</option><option>CNY</option><option>COP</option><option>DKK</option><option>EGP</option><option>EUR</option><option>GBP</option><option>HKD</option><option>IDR</option><option>INR</option><option>JPY</option><option>KRW</option><option>KWD</option><option>MXN</option><option>MYR</option><option>NOK</option><option>NZD</option><option>OMR</option><option>PHP</option><option>PLN</option><option>QAR</option><option>SAR</option><option>SEK</option><option>SGD</option><option>THB</option><option>TRY</option><option>USD</option><option>VND</option><option>ZAR</option></select></label>
+        <label class="tco-field" for="tco-hours"><span>Annual energized hours</span><input id="tco-hours" type="number" inputmode="decimal" min="0" max="8760" step="any" required aria-describedby="tco-hours-help"></label>
+        <label class="tco-field" for="tco-load"><span>Equivalent load (% of rated current)</span><input id="tco-load" type="number" inputmode="decimal" min="0" max="100" step="any" required aria-describedby="tco-load-help"></label>
+        <label class="tco-field" for="tco-rate"><span>Energy tariff (<span data-currency-label>chosen currency</span>/kWh)</span><input id="tco-rate" type="number" inputmode="decimal" min="0" max="1000000" step="any" required></label>
+        <label class="tco-field" for="tco-life"><span>Service life (years)</span><input id="tco-life" type="number" inputmode="numeric" min="1" max="100" step="1" required></label>
+        <label class="tco-field" for="tco-discount"><span>Real discount rate (%)</span><input id="tco-discount" type="number" inputmode="decimal" min="0" max="100" step="any" value="0" aria-describedby="tco-discount-help"><small id="tco-discount-help">Optional. Use 0 for undiscounted cost.</small></label>
+      </div>
+      <p id="tco-hours-help" class="tco-muted">Use 8,760 hours for a standard year energized continuously. Include energized hours at zero load.</p>
+      <p id="tco-load-help" class="tco-muted">Use a constant load, or a time-weighted RMS load over energized hours. For variable duty, do not use the arithmetic average. This tool does not model overload.</p>
+    </section>
+    <section class="tco-card" aria-labelledby="tco-quotes-title">
+      <h2 id="tco-quotes-title"><span class="tco-step" aria-hidden="true">2</span>Quoted price and guaranteed losses</h2>
+      <p class="tco-muted" id="tco-basis-help">Use the same rating, voltage, frequency, tap and cooling condition for both quotes. Enter full-load loss at rated current and the same reference temperature, excluding no-load loss. Use the same price scope and enter all four losses in the unit selected below. Changing units converts losses already entered.</p>
+      <div class="tco-form-grid">
+        <label class="tco-field" for="tco-unit"><span>Loss unit (both quotes)</span><select id="tco-unit"><option value="kW">Kilowatts (kW)</option><option value="W">Watts (W)</option></select></label>
+      </div>
+      <div class="tco-quote-grid">
+        <fieldset class="tco-card">
+          <legend><strong>Quote A</strong></legend>
+          <div class="tco-quote-fields">
+            <label class="tco-field" for="tco-a-price"><span>Upfront price (<span data-currency-label>chosen currency</span>)</span><input id="tco-a-price" type="number" inputmode="decimal" min="0" max="1000000000000" step="any" required></label>
+            <label class="tco-field" for="tco-a-noLoad"><span>No-load loss (<span data-loss-unit>kW</span>)</span><input id="tco-a-noLoad" type="number" inputmode="decimal" min="0" max="1000000" step="any" required data-loss-input></label>
+            <label class="tco-field" for="tco-a-load"><span>Full-load loss at rated current (<span data-loss-unit>kW</span>)</span><input id="tco-a-load" type="number" inputmode="decimal" min="0" max="1000000" step="any" required data-loss-input aria-describedby="tco-basis-help"></label>
+          </div>
+        </fieldset>
+        <fieldset class="tco-card">
+          <legend><strong>Quote B</strong></legend>
+          <div class="tco-quote-fields">
+            <label class="tco-field" for="tco-b-price"><span>Upfront price (<span data-currency-label>chosen currency</span>)</span><input id="tco-b-price" type="number" inputmode="decimal" min="0" max="1000000000000" step="any" required></label>
+            <label class="tco-field" for="tco-b-noLoad"><span>No-load loss (<span data-loss-unit>kW</span>)</span><input id="tco-b-noLoad" type="number" inputmode="decimal" min="0" max="1000000" step="any" required data-loss-input></label>
+            <label class="tco-field" for="tco-b-load"><span>Full-load loss at rated current (<span data-loss-unit>kW</span>)</span><input id="tco-b-load" type="number" inputmode="decimal" min="0" max="1000000" step="any" required data-loss-input aria-describedby="tco-basis-help"></label>
+          </div>
+        </fieldset>
+      </div>
+      <label class="tco-basis" for="tco-basis"><input id="tco-basis" type="checkbox" required><span>I checked that quote scope and loss test conditions match.</span></label>
+      <div class="tco-actions">
+        <button class="tco-button" type="submit" disabled>Compare quotes</button>
+        <button class="tco-button tco-secondary" id="tco-example" type="button" disabled>Load illustrative example</button>
+        <button class="tco-button tco-secondary" id="tco-clear" type="button" disabled>Clear</button>
+      </div>
+      <p id="tco-error" role="alert"></p>
+      <p class="tco-sr" id="tco-status" role="status"></p>
+    </section>
+  </form>
+  <section class="tco-card" id="tco-results" tabindex="-1" hidden aria-labelledby="tco-result-title">
+    <h2 id="tco-result-title"><span class="tco-step" aria-hidden="true">3</span>Cost comparison</h2>
+    <p id="tco-answer"></p>
+    <table class="tco-table">
+      <caption id="tco-output-label"></caption>
+      <thead><tr><th scope="col">Cost or energy</th><th scope="col">Quote A</th><th scope="col">Quote B</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Upfront price</th><td id="tco-a-out-price"></td><td id="tco-b-out-price"></td></tr>
+        <tr><th scope="row">Annual no-load energy</th><td id="tco-a-out-annualNoLoad"></td><td id="tco-b-out-annualNoLoad"></td></tr>
+        <tr><th scope="row">Annual load-loss energy</th><td id="tco-a-out-annualLoad"></td><td id="tco-b-out-annualLoad"></td></tr>
+        <tr><th scope="row">Total annual loss energy</th><td id="tco-a-out-annualEnergy"></td><td id="tco-b-out-annualEnergy"></td></tr>
+        <tr><th scope="row">Annual loss cost</th><td id="tco-a-out-annualCost"></td><td id="tco-b-out-annualCost"></td></tr>
+        <tr><th scope="row">Lifetime no-load cost</th><td id="tco-a-out-pvNoLoad"></td><td id="tco-b-out-pvNoLoad"></td></tr>
+        <tr><th scope="row">Lifetime load-loss cost</th><td id="tco-a-out-pvLoad"></td><td id="tco-b-out-pvLoad"></td></tr>
+        <tr><th scope="row">Total lifetime loss cost</th><td id="tco-a-out-lifetimeCost"></td><td id="tco-b-out-lifetimeCost"></td></tr>
+        <tr><th scope="row">Modeled total cost</th><td id="tco-a-out-tco"></td><td id="tco-b-out-tco"></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="tco-card tco-method" aria-labelledby="tco-method-title">
+    <h2 id="tco-method-title">How the estimate works</h2>
+    <div class="tco-equation">
+      <p><strong>Annual no-load energy:</strong> no-load loss (kW) × energized hours.</p>
+      <p><strong>Annual load-loss energy:</strong> full-load loss (kW) × (equivalent load % ÷ 100)² × energized hours.</p>
+      <p><strong>Modeled total cost:</strong> upfront price + the lifetime value of both electricity losses.</p>
+    </div>
+    <p>For a variable load, take the square root of the time-weighted mean of the squared load fractions, counting hours at zero load if energized. For example, equal energized time at 0% and 100% is about 70.7% RMS, not 50%. The load-loss model approximates operation at the quoted test basis; it does not correct losses for operating temperature or harmonics.</p>
+    <p>The same duty and energy tariff are repeated each year. The purchase price is at time zero. A non-zero real discount rate discounts each year's loss cost from year end to today. The tariff is constant in today's money; no inflation or escalation is added.</p>
+    <h3>What this does not include</h3>
+    <p>Exclude demand charges, cooling or auxiliary power not included in the quoted losses, maintenance, outages, disposal, residual value and installation or other costs unless explicitly and consistently included in your upfront prices. Do not use this comparison as a compliance, equipment sizing or design verification tool. It does not calculate or certify test losses.</p>
+    <h3>Technical references</h3>
+    <ul>
+      <li><a href="https://www.energy.gov/sites/default/files/2024-04/dt_ecs_fr.pdf">U.S. Department of Energy: Distribution Transformers, final rule technical discussion</a> explains energized no-load losses and quadratic load losses.</li>
+      <li><a href="https://www.bpa.gov/-/media/Aep/energy-efficiency/emerging-technologies/ET-Documents/liquid-immersed-dist-transformers-final-22-02-16.pdf">Bonneville Power Administration: Liquid-Immersed Distribution Transformers</a> explains evaluating purchase price and capitalized transformer losses together. This calculator does not apply a utility's loss factors.</li>
+    </ul>
+  </section>
+</main>
+<footer><div class="container"><a href="/tools.html">Engineering tools</a> · <a href="/buyers-guide.html">Buyer's guide</a></div></footer>
+</body>
+</html>

@@ -47,6 +47,20 @@ function plantAnchors(source) {
   });
 }
 
+// Netlify also serves these root HTML pages at /tenders/ and /markets/.
+// Root the final shared navigation, assets and cards so both entry points
+// resolve the same links. Leave external URLs, query and fragment links alone.
+function rootAliasReferences(source) {
+  return source.replace(/<(?:a|link|script|img|source|use)\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi, function (tag) {
+    return tag.replace(/(\s(?:href|src)\s*=\s*)(["'])([^"']+)\2/gi, function (attr, key, quote, value) {
+      if (/^(?:[\/#?]|[a-z][a-z0-9+.-]*:)/i.test(value)) return attr;
+      // GA rollout is separate. Keep its existing site coverage unchanged.
+      if (/^analytics\.js(?:[?#]|$)/i.test(value)) return attr;
+      return key + quote + '/' + value + quote;
+    });
+  });
+}
+
 function applyOne(file, item, fontFiles, cache) {
   let source = fs.readFileSync(file, 'utf8');
   const lang = (source.match(/<html[^>]*\blang=["']([^"']+)["']/i) || [])[1] || 'en';
@@ -69,6 +83,7 @@ function applyOne(file, item, fontFiles, cache) {
   source = html.ensureCrumbs(source, item.crumbs);
   source = html.setRelated(source, relatedHtml(item.related));
   source = cwv.apply(source, relOf(file), DIST, cache, fontFiles);
+  if (item.rel === 'tenders.html' || item.rel === 'markets.html') source = rootAliasReferences(source);
   fs.writeFileSync(file, source);
 }
 

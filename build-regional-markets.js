@@ -2,6 +2,7 @@
 'use strict';
 const fs=require('node:fs');
 const regions=require('./lib/regional-market-hubs');
+const northAmerica=require('./lib/north-america-market');
 const read=(path)=>JSON.parse(fs.readFileSync(path,'utf8'));
 const absolute=(s)=>s.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g,'$1="/$2"');
 function buildRegionalMarkets() {
@@ -14,6 +15,12 @@ function buildRegionalMarkets() {
     fs.mkdirSync(dir,{recursive:true});
     fs.writeFileSync(dir+'/index.html',regions.render(slug,seed,tenders,awards,fixtures));
     console.log('Regional transformer market hub: /'+dir+'/');
+  }
+  for (const guide of [false, true]) {
+    const dir=(guide?northAmerica.GUIDE:northAmerica.HUB).slice(1,-1);
+    fs.mkdirSync(dir,{recursive:true});
+    fs.writeFileSync(dir+'/index.html',northAmerica.page({...fixtures,guide,rows:tenders}));
+    console.log('North America market page: /'+dir+'/');
   }
 }
 if (require.main === module) buildRegionalMarkets();

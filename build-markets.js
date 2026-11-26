@@ -66,7 +66,9 @@ const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
 const indiaHub = require('./lib/india-market-hub');
+const chinaBuyerHub = require('./lib/china-buyer-hub');
 const regional = require('./lib/regional-market-hubs');
+const northAmerica = require('./lib/north-america-market');
 const tenderIntake = require('./lib/tender-notices');
 const INDIA_TENDERS = indiaHub.activeTenderSnapshot(TENDERS,
   tenderIntake.load('data/tender-notices.json').concat(tenderIntake.load('data/public-tender-notices.json')));
@@ -625,10 +627,12 @@ const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', 
 
 function marketPage(m) {
   const isIndia = m.slug === 'india';
+  const isChina = m.slug === 'china';
   const regionalSlug = regional.regionForCountry(m.gridsName);
-  const pageTitle = isIndia ? 'India Transformer Hub' : 'Transformer Industry — ' + m.name;
+  const pageTitle = isIndia ? 'India Transformer Hub' : isChina ? 'China Transformer Market' : 'Transformer Industry — ' + m.name;
   const pageDescription = isIndia
     ? 'India transformer news, buyer tenders with IST submission times, contract awards and sourced supplier clusters across manufacturing, materials, testing and service.'
+    : isChina ? 'Buying transformers from China? Verify factories, test reports, references and acceptance terms. Explore China suppliers, utilities and tenders.'
     : m.blurb.slice(0, 155);
   const mk = makersFor(m); const g = gridsFor(m);
   const evs = eventsFor(m); const intel = intelFor(m);
@@ -727,15 +731,17 @@ function marketPage(m) {
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
     '<link rel="stylesheet" href="../../style.css?v=12"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:940px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.82rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.78rem;font-weight:600;margin-left:auto}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.stats{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px}.stats .s b{color:var(--accent);font-size:1.15rem;display:block}.stats .s span{color:var(--muted);font-size:.78rem}.tbl-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}.vbadge{color:var(--green);font-weight:700;font-size:.78rem}</style>' + schema +
-    (isIndia ? indiaHub.renderHeadings() : '') + '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap" data-market="' + esc(m.slug) + '" data-market-country="' + esc(m.gridsName) + '">' +
+    (isIndia ? indiaHub.renderHeadings() : '') + (isChina ? chinaBuyerHub.renderStyles() : '') + '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap" data-market="' + esc(m.slug) + '" data-market-country="' + esc(m.gridsName) + '">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../markets.html" style="color:var(--accent)">Markets</a> › ' + esc(m.name) + '</nav>' +
     '<h1>' + m.flag + ' ' + esc(pageTitle) + '</h1>' +
-    '<p class="lead">' + esc(isIndia ? 'Explore the Indian transformer ecosystem: see what buyers are procuring, track capacity and grid news, and find suppliers by region and capability.' : m.blurb) + '</p>' +
-    (isIndia ? indiaHub.renderNav() + indiaHub.renderTenders(INDIA_TENDERS) + indiaHub.renderNews() + indiaHub.renderDirectory() : '') +
+    '<p class="lead">' + esc(isIndia ? 'Explore the Indian transformer ecosystem: see what buyers are procuring, track capacity and grid news, and find suppliers by region and capability.' : isChina ? 'Find transformer suppliers and verify the manufacturing site, test evidence and contract conditions before you place an order.' : m.blurb) + '</p>' +
+    (isChina ? chinaBuyerHub.renderHub() : '') +
+    (isIndia ? indiaHub.renderNav() + require('./lib/market-selling-guides').renderSellerGuide('india') + indiaHub.renderTenders(INDIA_TENDERS) + indiaHub.renderNews() + indiaHub.renderDirectory() : '') +
     (regionalSlug ? '<p class="market-parent"><a href="' + regional.pathFor(regionalSlug) + '">' + esc(regional.CONFIG[regionalSlug].label) + ' transformer market hub</a></p>' : '') +
+    northAmerica.countryGuideLinks(m.slug) +
     (m.slug === 'saudi-arabia' ? '<p><a href="https://www.sera.gov.sa/-/media/760cb4c6f4d7482fbae4325f53e035d1.ashx" rel="noopener">Saudi Arabian Grid Code: 60 Hz nominal transmission frequency</a></p>' : '') +
     gccCoverageHtml(m) +
-    (isIndia ? '' : (function () {
+    (isIndia || isChina ? '' : (function () {
       const nextEv = evs[0];
       const openT = tenders.filter(function (t) { return /open|active|evaluation|tender/i.test(String(t.status || 'OPEN')); }).slice(0, 3);
       const confirmedIntel = intel.filter(function (it) { return /confirmed|transformer/i.test(String(it.title || '') + ' ' + String(it.snippet || '')); }).slice(0, 2);
@@ -761,7 +767,7 @@ function marketPage(m) {
     '<div class="s"><b>' + plantFigure(facs.length) + '</b><span>sourced plants</span></div>' +
     '<div class="s"><b>' + utl.length + '</b><span>grid operators</span></div>' +
     '<div class="s"><b>' + (g ? esc(g.freq) : '-') + ' Hz</b><span>' + esc((g && g.sync) || 'grid frequency') + '</span></div>' +
-    (isIndia ? '' : '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>') +
+    (isIndia || isChina ? '' : '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>') +
     '<div class="s"><b>' + evs.length + '</b><span>upcoming events</span></div>' +
     '</div>' +
     comtrade.sectionHtml(m.gridsName) +
@@ -769,7 +775,7 @@ function marketPage(m) {
     '<h2>Confirmed manufacturing plants &amp; facilities (' + plantFigure(facs.length) + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
-    (isIndia ? '' : '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml) +
+    (isIndia ? '' : isChina ? '<h2>China procurement and tender status</h2><p>Browse the <a href="/tenders/country/china/">China tender board</a> for notices and reported results. Check the issuer for current deadlines and amendments.</p>' : '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml) +
     (isIndia ? '<section class="india-module" id="india-awards" aria-labelledby="india-awards-title"><h2 id="india-awards-title">India transformer contract awards</h2>' + awardsHtml + '<p><a href="/awards.html">Browse the full awards board</a></p></section>' : '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml) +
     '<h2>Component &amp; material suppliers in this market</h2>' + localSupHtml +
     '<h2>Components &amp; accessories directory</h2><div style="margin:4px 0">' + compHtml + '</div>' +
@@ -870,7 +876,9 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and project pipelines. RFQ routing is coming soon.</p>' +
   '</div></section>' +
   '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
-  regional.teasers() + '<div class="market-grid">' +
+  regional.teasers(northAmerica.teaser()) +
+  '<nav class="regional-guide-links" aria-label="Transformer market guides"><a href="/markets/north-america/us-seller-guide/">US seller guide</a><a href="/markets/china/#china-buyer-guide">China buyer guide</a><a href="/markets/europe/#sell-into-market">Europe seller guide</a><a href="/markets/india/#sell-into-market">India seller guide</a></nav>' +
+  '<div class="market-grid">' +
   links.map(function (l) {
     return '<div class="m-card">' +
       '<div>' +
@@ -907,7 +915,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
           '</div>' +
           '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
             '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Demand &amp; Awards</span>' +
-            '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
+            (l.slug === 'china' ? '<a href="/tenders/country/china/">Tender board</a>' : '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span>') + ' · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
           '</div>' +
         '</div>' +
         comtrade.cardHtml(l.country || l.name) +

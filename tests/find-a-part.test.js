@@ -80,3 +80,37 @@ context.window.TPParts={rfqPrefill(doc,id){ assert.equal(doc,context.document); 
 afterParse();
 assert.equal(appliedPart,'mac-rd11');
 console.log('Find a Part: 10 sourced cards, exact profile paths, filters, and safe prefill verified.');
+
+// Dated availability suggestions are contact drafts, not public inventory.
+const report = {
+  family:'tap-changer', seller:'Example Supply', model:'Maker RD11', country:'India',
+  status:'seller-stock', evidence:'seller-record', confirmed:'2026-11-25', until:'2026-12-04', source:''
+};
+const today = '2026-11-26';
+const privateDraft = parts.availabilityReport(report, today);
+assert.match(privateDraft.message, /supplier-declared, for editorial review/);
+assert.match(privateDraft.message, /Supplier-stated status: Supplier reports stock/);
+assert.match(privateDraft.message, /Date checked: 2026-11-25/);
+assert.match(privateDraft.message, /Report valid through: 2026-12-04/);
+assert.match(privateDraft.message, /not independent stock verification/);
+assert.equal(privateDraft.fields.source, '');
+for (const invalid of [
+  {family:'gasket'}, {family:'constructor'}, {status:'verified'}, {evidence:'__proto__'},
+  {confirmed:'2026-11-27'}, {confirmed:'2026-10-26'}, {confirmed:'2026-02-30'},
+  {until:'2026-11-25'}, {until:'2026-12-26'}, {seller:'someone@example.com'},
+  {source:'javascript:alert(1)'}, {source:'http://maker.example/model'},
+  {source:'https://u:p@maker.example/model'}, {source:'https://maker.example/model?key=secret'},
+  {source:'https://maker.example/model#private'}, {evidence:'public-source'}
+]) assert(parts.availabilityReport({...report, ...invalid}, today).error, JSON.stringify(invalid));
+const publicEvidence = parts.availabilityReport({
+  ...report, status:'made-to-order', evidence:'public-source', source:'https://maker.example/model'
+}, today);
+assert.match(publicEvidence.message, /Public evidence URL: https:\/\/maker.example\/model/);
+assert.match(publicEvidence.message, /Made to order/);
+assert(!parts.availabilityReport({...report,confirmed:'2026-10-27',until:'2026-11-26'},today).error); // exact 30-day boundary
+assert.match(page, /id="parts-comparison"/);
+assert.match(page, /id="parts-availability-form" hidden/);
+const contact = fs.readFileSync('contact.html', 'utf8');
+assert.match(contact, /id="contact-part-draft-status" role="status" hidden/);
+assert.match(contact, /<script src="tp-parts\.js\?v=2" defer><\/script>/);
+console.log('Parts availability: date, evidence, source, and draft-only contracts verified.');
