@@ -1,4 +1,68 @@
 {
+  "voltageRegulationPilots": {
+    "reviewed": "2026-11-26",
+    "cases": [
+      {
+        "id": "danube-ingrid",
+        "country": "Hungary",
+        "title": "Danube InGrid · E.ON distribution grid",
+        "date": "2026-06-30",
+        "stage": "Installed in 2024; early field results",
+        "evidence": "field",
+        "setup": "Three MV/LV on-load tap-changing transformers were installed in late 2024: 400 kVA in Paloznak and Komárom-Szőny, and 630 kVA in Jánossomorja. The sites targeted seasonal demand, PV-driven LV overvoltage and fluctuations on the incoming MV supply, respectively.",
+        "finding": "The grid-operator platform published voltage traces with and without control from one pilot location and reported acceptable voltage in initial observations. CINEA confirmed real-time operation in Hungary in June 2026.",
+        "limit": "The initial evaluation does not establish long-run performance, fleet-wide deployment counts or financial return.",
+        "sources": [
+          {
+            "name": "TSO–DSO platform · pilot measurements",
+            "url": "https://www.tsodsoplatform.eu/technopedia/factsheets/ac-power-transformers-tap-changer"
+          },
+          {
+            "name": "CINEA · 30 June 2026 project update",
+            "url": "https://cinea.ec.europa.eu/news-events/news/beyond-steel-and-cables-how-danube-ingrid-preparing-europes-electricity-networks-future-2026-06-30_en"
+          }
+        ]
+      },
+      {
+        "id": "smart-street",
+        "country": "United Kingdom",
+        "title": "Smart Street · Electricity North West",
+        "date": "2018-04-30",
+        "stage": "Field trial complete",
+        "evidence": "field",
+        "setup": "The operator monitored radial LV feeder endpoints. The field trial included an OLTC-only test regime as well as separate combinations with capacitors and other network controls.",
+        "finding": "The operator documented the results in its close-out report and added the tested tap changer as an option in its distribution-transformer specification.",
+        "limit": "Do not read energy or loss results for the whole multi-technology programme as savings from the transformer alone.",
+        "sources": [
+          {
+            "name": "Electricity North West · close-out report, sections 3.3 and 9",
+            "url": "https://www.enwl.co.uk/globalassets/innovation/smart-street/smart-street-key-docs/smart-street-closedown--report.pdf"
+          }
+        ]
+      },
+      {
+        "id": "dtu-esvm",
+        "country": "Denmark",
+        "title": "Voltage Optimization Unit · Technical University of Denmark",
+        "date": "2016",
+        "stage": "Lab validation and simulation reported",
+        "evidence": "lab-model",
+        "setup": "DTU tested a distribution transformer with single-phase on-load tap changers on a simplified experimental LV network at SYSLAB–PowerLabDK. Separate modelling used the Bistrup distribution grid as its case.",
+        "finding": "The lab report shows effective voltage-band control with remote measurement under the tested conditions and compares the experimental results with a PowerFactory model.",
+        "limit": "Bistrup results were simulations; the physical test took place in the lab, not on a live customer feeder.",
+        "sources": [
+          {
+            "name": "DTU · test and simulation report",
+            "url": "https://orbit.dtu.dk/en/publications/modeling-and-experimental-testingactivity-of-the-voltage-optimiza/"
+          }
+        ]
+      }
+    ],
+    "excluded": {
+      "name": "Fraunhofer ISI · EU-TRACE project scope",
+      "url": "https://www.isi.fraunhofer.de/en/competence-center/energietechnologien-energiesysteme/projekte/eu-trace.html"
+    }
+  },
   "reviewed": "2026-11-25",
   "scope": "A starting point for transformer procurement and sourcing in Europe: EU-wide public notices, selected national portals in the EU and outside it, and a source-linked sample of manufacturers, component suppliers and test laboratories. This is not a complete list of European buyers or suppliers. Check the issuing buyer for amendments, deadlines, qualification and the actual submission channel.",
   "portals": [

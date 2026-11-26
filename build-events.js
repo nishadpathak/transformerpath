@@ -24,6 +24,7 @@ const schema = require('./lib/seo-schema');
 const eventSeo = require('./lib/event-seo');
 const stepLocale = require('./lib/step-locale');
 const { applyEventVisitorSpotlight } = require('./lib/event-visitor-spotlight');
+const enlit = require('./lib/event-enlit-registration');
 const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -189,13 +190,16 @@ function visitorCtaHtml(ev) {
   const hasCampaign = Boolean(cta.href_after && cta.cutoff && Number.isFinite(Date.parse(cta.cutoff)));
   const perks = Array.isArray(cta.perks) ? cta.perks.filter(Boolean) : [];
   const isShanghai = ev.id === 'ep-shanghai-2026';
-  const genericLabel = isShanghai ? 'Pre-register with the organiser' : cta.label;
+  const genericLabel = cta.label;
   const campaignLabel = isShanghai ? 'Pre-register through the organiser’s campaign' : cta.label;
   const perksBlock = hasCampaign && perks.length ? '<details id="' + id + '-perks" hidden>' +
     '<summary>Campaign benefits and eligibility</summary>' +
     (cta.perks_intro ? '<p>' + esc(cta.perks_intro) + '</p>' : '') +
     '<ul>' + perks.map((item) => '<li>' + esc(item) + '</li>').join('') + '</ul>' +
     (cta.eligibility ? '<p>' + esc(cta.eligibility) + '</p>' : '') + '</details>' : '';
+  const expiryId = id + '-campaign-ended';
+  const expiry = hasCampaign && cta.expired_note ? '<p id="' + expiryId + '"' +
+    (Date.now() <= Date.parse(cta.cutoff) ? ' hidden' : '') + '>' + esc(cta.expired_note) + '</p>' : '';
   const attrs = hasCampaign
     ? ' data-campaign-url="' + esc(cta.href) + '" data-campaign-cutoff="' + esc(cta.cutoff) +
       '" data-campaign-label="' + esc(campaignLabel) + '"' : '';
@@ -203,20 +207,35 @@ function visitorCtaHtml(ev) {
     ? '<script>(function(){var a=document.getElementById(' + JSON.stringify(ev.id + '-cta') + ');' +
       'if(!a)return;var cutoff=Date.parse(a.dataset.campaignCutoff),normal=a.href,label=a.textContent,timer;' +
       'var perks=document.getElementById(' + JSON.stringify(ev.id + '-perks') + ');' +
+      'var expiry=document.getElementById(' + JSON.stringify(ev.id + '-campaign-ended') + ');' +
       'function refresh(){clearTimeout(timer);var remaining=cutoff-Date.now()+1;var active=Number.isFinite(remaining)&&remaining>0;' +
       'a.href=active?a.dataset.campaignUrl:normal;a.textContent=active?a.dataset.campaignLabel:label;' +
       'a.setAttribute("data-track-registration_type",active?"organiser_campaign":"organiser");' +
-      'if(perks)perks.hidden=!active;if(active)timer=setTimeout(refresh,Math.min(remaining,2147483647));}' +
+      'if(perks)perks.hidden=!active;if(expiry)expiry.hidden=active;if(active)timer=setTimeout(refresh,Math.min(remaining,2147483647));}' +
       'refresh();window.addEventListener("pageshow",refresh);document.addEventListener("visibilitychange",refresh);})();</script>'
     : '';
   return '<section class="event-visit card" id="visitor-registration" aria-labelledby="' + id + '-visit-title">' +
     '<h2 id="' + id + '-visit-title">Visitor registration</h2>' +
-    (isShanghai ? '<p>Free admission for industry professionals. Registration and badges are handled by the event organiser.</p>' : '') +
+    (cta.registration_note ? '<p>' + esc(cta.registration_note) + '</p>' : '') +
     '<div class="event-visit-actions"><a class="btn btn-amber" id="' + id + '-cta" href="' + esc(normal) + '"' +
     ' data-track="event_registration_click" data-track-event_id="' + id +
     '" data-track-registration_type="organiser" data-track-placement="edition"' + attrs + '>' + esc(genericLabel) + '</a>' +
     (isShanghai && EVENT_DIRECTORY[ev.id] && EVENT_DIRECTORY[ev.id].entries.length ? '<a class="event-visit-secondary" href="#ep-shanghai-exhibitors">Browse exhibitors</a>' : '') +
-    '</div>' + perksBlock + script + '</section>';
+    (ev.post_show ? '<a class="event-visit-secondary" href="#post-show">Post-show updates</a>' : '') +
+    '</div>' + expiry + perksBlock + script + '</section>';
+}
+function postShowHtml(ev) {
+  if (!ev.post_show) return '';
+  const block = ev.post_show;
+  const news = httpHref(block.news_url);
+  const linked = (ev.intel_links || []).map((slug) => ({
+    slug,
+    href: /^[a-z0-9-]+$/.test(slug) ? publishedHref('/events/' + slug + '/summary/') : ''
+  })).filter((row) => row.href);
+  return '<section id="post-show" aria-labelledby="post-show-title"><h2 id="post-show-title">Post-show updates</h2>' +
+    (linked.length ? '<ul>' + linked.map((row) => '<li><a href="' + esc(row.href) + '">Read the verified post-show summary</a></li>').join('') + '</ul>'
+      : '<p>' + esc(block.pending_note) + '</p>') +
+    (news ? '<p><a href="' + esc(news) + '" rel="noopener">Organiser’s news centre</a></p>' : '') + '</section>';
 }
 function statsHtml(ev) {
   const s = ev.stats || {};
@@ -348,7 +367,7 @@ Object.keys(groups).forEach((slug) => {
       '<h1>' + esc(ev.name) + '</h1>' + (stepGuide ? stepLocale.handoffLink('en') : '') +
       '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
-      deadlineCallout(ev) + visitorCtaHtml(ev) +
+      deadlineCallout(ev) + visitorCtaHtml(ev) + enlit.registration(ev, TODAY, 'edition') +
       '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
@@ -365,10 +384,11 @@ Object.keys(groups).forEach((slug) => {
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       sectionHtml(ev, 'Deadlines', deadlineHtml(ev), !(ev.deadlines && ev.deadlines.length)) +
       sectionHtml(ev, 'Programme', programmeHtml(ev), !(ev.programme && ev.programme.length)) +
+      postShowHtml(ev) +
       directorySection(ev) +
       sectionHtml(ev, 'Key exhibitors', exhibitorHtml(ev), !(ev.key_exhibitors && ev.key_exhibitors.length)) +
       (ev.stats == null ? '' : '<h2>Stats</h2>' + statsHtml(ev)) +
-      ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
+      (!ev.post_show && (ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
       relatedHtml(ev) +
       siblingHtml +
       (pastEd ? '' : '<p id="series-cta"><b>Meet the industry at ' + esc(ev.name) + '</b></p>');
@@ -379,12 +399,16 @@ Object.keys(groups).forEach((slug) => {
       { name: ev.name, item: edUrl }
     ];
     const noindex = eventSeo.shouldNoindexEdition(ev, TODAY);
+    const eventInput = eventSeo.editionInput(ev);
+    if (ev.id === 'ep-shanghai-2026' && ev.visitor_cta && httpHref(ev.visitor_cta.href_after)) {
+      eventInput.offer = { name: ev.visitor_cta.label, price: '0', priceCurrency: 'CNY', url: ev.visitor_cta.href_after };
+    }
     writePage('events/' + ev.id + '/index.html', shell(
       eventSeo.eventProfileTitle(ev),
       ev.description || ev.name,
       edUrl,
       edBody,
-      ldScript(edUrl, edCrumbs, eventSeo.editionInput(ev)),
+      ldScript(edUrl, edCrumbs, eventInput),
       ev.id,
       { role: 'edition', eventId: ev.id, noindex: noindex, online: schema.isOnlineEvent(ev),
         alternates: stepGuide ? stepLocale.alternateTags() : '' }
@@ -402,7 +426,8 @@ Object.keys(groups).forEach((slug) => {
 const confirmedUpcoming = ALL.filter((ev) => allowsCalendar(ev) && ev.end >= TODAY);
 if (!SERIES_FILTER.length) {
 const eventsHub = fs.readFileSync('events.html', 'utf8');
-const eventsSpotlight = applyEventVisitorSpotlight(eventsHub, byId['ep-shanghai-2026']);
+const eventsSpotlight = enlit.applyEnlitRegistration(
+  applyEventVisitorSpotlight(eventsHub, byId['ep-shanghai-2026']), byId['enlit-europe-2027'], TODAY);
 if (eventsSpotlight !== eventsHub) fs.writeFileSync('events.html', eventsSpotlight);
 /* Calendars: CONFIRMED upcoming only. */
 fs.mkdirSync('events/ics', { recursive: true });
