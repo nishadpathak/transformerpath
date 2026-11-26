@@ -53,8 +53,8 @@ const DIST = 'dist';
 const DIRS = [
   'accessories', 'applications', 'admin', 'approved-vendors', 'books', 'brand', 'case-studies', 'checkout', 'claim-listing', 'tools', 'engineer-track', 'epc', 'guides', 'learn', 'laboratories', 'logistics', 'education', 'monitoring', 'recycling', 'services', 'rental-emergency', 'jobs',
   'components', 'directory', 'events', 'grids', 'knowledge', 'machinery', 'manufacturers',
-  'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
-  'viz', 'vendor',
+  'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'store', 'templates', 'tenders', 'topics', 'utilities',
+  'viz', 'vendor', 'equipment',
 ];
 
 // Individual files from directories that are NOT wholly public.

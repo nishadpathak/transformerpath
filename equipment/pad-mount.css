@@ -1,0 +1,25 @@
+.eq-main [hidden]{display:none!important}
+.eq-main h2{margin-top:1.2rem}
+.eq-main a:not(.part-action){color:var(--accent);text-decoration:underline;text-underline-offset:.15em}
+.eq-emergency{margin:.8rem 0 1.2rem;padding:.7rem .85rem;border-left:3px solid var(--accent);background:var(--card)}
+.eq-how dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.6rem}
+.eq-how dl>div{padding:.7rem .8rem;border:1px solid var(--border);border-radius:9px;background:var(--card)}
+.eq-how dt,.eq-controls label{font-weight:750;color:var(--ink)}
+.eq-how dd{margin:.25rem 0 0;color:var(--muted)}
+.eq-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:.65rem;padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.eq-controls p,.eq-controls .eq-buttons{grid-column:1/-1;margin:0}
+.eq-controls label{display:block;margin:0 0 .3rem}
+.eq-controls input,.eq-controls select{box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:.5rem;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:8px;font:inherit}
+.eq-toolbar,.eq-buttons{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.eq-toolbar{justify-content:space-between}
+.eq-toolbar h2{margin-bottom:.4rem}
+.eq-compare{margin:1rem 0;padding:.8rem;border:1px solid var(--border);border-radius:10px;min-width:0}
+.eq-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+.eq-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.eq-scroll table{width:100%;min-width:520px;border-collapse:collapse;text-align:left;font-size:.91rem}
+.eq-scroll caption,.eq-scroll th,.eq-scroll td{padding:.6rem;vertical-align:top;border-bottom:1px solid var(--border)}
+.eq-scroll caption{text-align:left;font-weight:750}
+.eq-scroll th{background:var(--bg);min-width:110px}
+.eq-state{margin:0;color:var(--accent);font-weight:750;font-size:.9rem}
+.eq-card dd{overflow-wrap:anywhere}
+.eq-claim{color:var(--muted);font-size:.88rem}
