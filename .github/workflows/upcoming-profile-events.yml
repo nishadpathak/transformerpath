@@ -11,5 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Rebuild artifacts under test from current sources
+        run: node build-company-pages.js && node build_ssr.js
       - run: node tests/upcoming-profile-events.js
       - run: node tests/past-events-regression.js
