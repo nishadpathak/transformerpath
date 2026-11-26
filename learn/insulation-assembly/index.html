@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Insulation Assembly Lab | TransformerPath</title>
+  <meta name="description" content="Match five real insulation components to their locations in a simplified oil-filled transformer winding. Free interactive 2D schematic and optional 3D cutaway.">
+  <link rel="canonical" href="https://transformerpath.com/learn/insulation-assembly/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TransformerPath">
+  <meta property="og:title" content="Insulation Assembly Lab | TransformerPath">
+  <meta property="og:description" content="Match five parts in a simplified oil-filled transformer winding. Try an interactive schematic or optional 3D cutaway.">
+  <meta property="og:url" content="https://transformerpath.com/learn/insulation-assembly/">
+  <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+  <link rel="stylesheet" href="./lab.css">
+  <script src="./lab.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#challenge">Skip to the challenge</a>
+  <header class="top"><div class="shell top-inner">
+    <a class="brand" href="/">Transformer<span>Path</span></a>
+    <span class="tpnav-utils"><a href="/learn.html">← Back to Learn</a></span>
+  </div></header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="title">
+      <p class="eyebrow">TransformerPath Learn <span> / </span> Free interactive lab</p>
+      <h1 id="title">Insulation Assembly Lab</h1>
+      <p>Where do the solid insulation parts go in an oil-filled transformer winding? Match five parts to a single cutaway and see what each one does.</p>
+    </section>
+    <div class="lab-layout">
+      <section class="panel viewer" aria-labelledby="model-title">
+        <div class="viewer-heading">
+          <div><h2 id="model-title">One core limb, two windings</h2><p id="view-label">2D cutaway · section is not to scale</p></div>
+          <button class="button compact" id="view-toggle" type="button" aria-pressed="false" hidden>View in 3D</button>
+        </div>
+        <div class="stage" id="stage">
+          <div class="diagram" id="diagram">
+            <svg viewBox="0 0 440 300" role="img" aria-labelledby="schematic-title schematic-desc">
+              <title id="schematic-title">Section of two concentric windings around a core limb</title>
+              <desc id="schematic-desc">The core is in the centre. The inner winding is close to the core and the outer winding sits farther away. The empty positions are described by the numbered slots in the challenge. Matching does not require the diagram.</desc>
+              <defs>
+                <pattern id="core-plate" width="7" height="8" patternUnits="userSpaceOnUse"><path d="M2 0v8" stroke="#9eb2cd" stroke-opacity=".32" stroke-width="2"/></pattern>
+                <pattern id="oil-line" width="15" height="15" patternUnits="userSpaceOnUse"><path d="m0 15 15-15" stroke="#7cd9f4" stroke-opacity=".2" stroke-width="2"/></pattern>
+                <g id="winding-pack">
+                  <rect x="0" y="0" width="56" height="34" rx="5"/>
+                  <rect x="0" y="46" width="56" height="34" rx="5"/>
+                  <rect x="0" y="92" width="56" height="34" rx="5"/>
+                  <rect x="0" y="138" width="56" height="34" rx="5"/>
+                  <path d="M7 10h42m-42 9h42m-42 46h42m-42 46h42m-42 46h42" stroke="#411d16" stroke-opacity=".6" fill="none"/>
+                </g>
+              </defs>
+              <path d="M32 55h376v190H32z" fill="#173647" stroke="#53738c" stroke-dasharray="5 5"/>
+              <path d="M67 61h18v174H67zM355 61h18v174h-18z" fill="url(#oil-line)" stroke="#459ab1" stroke-dasharray="4 4"/>
+              <rect x="190" y="31" width="60" height="228" rx="6" fill="#415675"/>
+              <rect x="196" y="36" width="48" height="217" fill="url(#core-plate)"/>
+              <g fill="#a973d7" stroke="#dcb5ff"><use href="#winding-pack" x="107" y="63"/><use href="#winding-pack" x="277" y="63"/></g>
+              <g fill="#c66b46" stroke="#f8ad85"><use href="#winding-pack" x="11" y="63"/><use href="#winding-pack" x="373" y="63"/></g>
+              <g fill="#efb23f" stroke="#ffe1a2" class="installed">
+                <g data-installed="cylinder" hidden><rect x="171" y="55" width="7" height="186" rx="2"/><rect x="262" y="55" width="7" height="186" rx="2"/></g>
+                <g data-installed="barrier" hidden><rect x="91" y="54" width="7" height="189" rx="2"/><rect x="342" y="54" width="7" height="189" rx="2"/></g>
+                <g data-installed="disc" hidden><rect x="27" y="100" width="9" height="7" rx="1"/><rect x="45" y="100" width="9" height="7" rx="1"/><rect x="386" y="100" width="9" height="7" rx="1"/><rect x="404" y="100" width="9" height="7" rx="1"/></g>
+                <g data-installed="duct" hidden><rect x="75" y="69" width="5" height="157" rx="2"/><rect x="361" y="69" width="5" height="157" rx="2"/></g>
+                <g data-installed="ring" hidden><rect x="12" y="41" width="53" height="9" rx="3"/><rect x="375" y="41" width="53" height="9" rx="3"/></g>
+              </g>
+              <g fill="#d6e6f5" font-family="system-ui,sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+                <path d="M39 236v38m96-38v38m85-13v13" stroke="#95b1c8" fill="none"/>
+                <text x="49" y="292">Outer (HV)</text><text x="147" y="292">Inner (LV)</text><text x="230" y="292">Core</text>
+              </g>
+            </svg>
+            <div id="diagram-markers" class="markers" aria-label="Schematic placement markers" role="group"></div>
+          </div>
+          <div id="model" class="model" aria-hidden="true" hidden></div>
+        </div>
+        <div class="viewer-bottom">
+          <div class="view-controls" id="view-controls" hidden aria-label="3D view controls" role="group">
+            <button class="button compact" type="button" id="rotate-left" aria-label="Rotate 3D model left">↶ Left</button>
+            <button class="button compact" type="button" id="rotate-right" aria-label="Rotate 3D model right">↷ Right</button>
+            <button class="button compact" type="button" id="reset-camera">Reset view</button>
+            <button class="button compact" type="button" id="cutaway" aria-pressed="true">Cutaway</button>
+          </div>
+          <p id="view-status" role="status" aria-atomic="true"></p>
+          <ul class="legend" aria-label="Diagram legend"><li><i class="key key-core"></i>Core</li><li><i class="key key-inner"></i>Inner LV</li><li><i class="key key-outer"></i>Outer HV</li><li><i class="key key-part"></i>Placed part</li></ul>
+          <a class="jump-to-match" href="#challenge">Go to placement controls ↓</a>
+        </div>
+      </section>
+      <section class="panel challenge" id="challenge" tabindex="-1" aria-labelledby="challenge-title">
+        <div class="challenge-top"><h2 id="challenge-title">Match the parts</h2><span id="score">0 of 5</span></div>
+        <noscript><p>Turn on JavaScript to check your placement. The diagram and the reference below still work without it.</p></noscript>
+        <form id="placement-form" hidden>
+          <progress id="progress" value="0" max="5" aria-label="Correct placements"></progress>
+          <p class="instructions">Choose one part and one numbered slot. Check your match in any order.</p>
+          <label for="part">1. Pick a part</label>
+          <select id="part" required>
+            <option value="">Select a part</option>
+            <option value="ring">Insulating end ring</option>
+            <option value="duct">Axial duct strip</option>
+            <option value="cylinder">Inner pressboard cylinder</option>
+            <option value="disc">Radial inter-disc spacer</option>
+            <option value="barrier">Main insulation barrier</option>
+          </select>
+          <label for="slot">2. Pick a slot</label>
+          <select id="slot" required>
+            <option value="">Select a numbered location</option>
+            <option value="cylinder">1. Between core and inner winding</option>
+            <option value="barrier">2. Between inner and outer windings</option>
+            <option value="disc">3. In a gap between winding discs</option>
+            <option value="duct">4. Along the vertical oil channel</option>
+            <option value="ring">5. Over the end of the winding stack</option>
+          </select>
+          <div class="form-actions">
+            <button class="button primary" id="place" type="submit">Check placement</button>
+            <button class="button text-button" type="button" id="reset" disabled>Start over</button>
+          </div>
+          <p id="placement-feedback" role="status" aria-atomic="true">You can tap a numbered marker in 2D to choose its slot.</p>
+          <details class="clues">
+            <summary>Slot clues and your matches</summary>
+            <ol id="clue-list">
+              <li data-slot-ref="cylinder">Between core and inner winding <strong data-clue-match></strong><p>Look for the tube immediately outside the core.</p></li>
+              <li data-slot-ref="barrier">Between inner and outer windings <strong data-clue-match></strong><p>Look for the dividing shell between the two windings.</p></li>
+              <li data-slot-ref="disc">In a gap between winding discs <strong data-clue-match></strong><p>Look for the small gap between stacked conductor discs.</p></li>
+              <li data-slot-ref="duct">Along the vertical oil channel <strong data-clue-match></strong><p>Look for the long strip running along, not across, the channel.</p></li>
+              <li data-slot-ref="ring">Over the end of the winding stack <strong data-clue-match></strong><p>Look above the top disc, at the axial end of the winding.</p></li>
+            </ol>
+          </details>
+        </form>
+      </section>
+    </div>
+    <section class="panel reference" aria-labelledby="reference-title">
+      <h2 id="reference-title">What this model shows</h2>
+      <p>One illustrative core-type, liquid-filled arrangement. The diagram places the LV winding closer to the core and the HV winding outside it. An inter-disc spacer keeps adjacent discs apart and leaves paths for radial oil flow; a duct strip runs axially to hold open a channel. Real designs can use different winding and insulation arrangements.</p>
+      <p class="scope"><strong>Learning only.</strong> One slot stands for a component family; this is not an assembly order, dimensional design, or manufacturing instruction.</p>
+      <details><summary>Component reference and sources</summary>
+        <dl>
+          <dt>Inner pressboard cylinder</dt><dd>A cylindrical insulation support around the core-side of the inner winding.</dd>
+          <dt>Main insulation barrier</dt><dd>A separate cylindrical pressboard barrier in the insulation space between windings.</dd>
+          <dt>Radial inter-disc spacer</dt><dd>Separates adjacent winding discs at selected positions around the circumference, leaving radial oil-flow space between spacers.</dd>
+          <dt>Axial duct strip</dt><dd>Runs along the winding height to maintain separation and help leave space for axial oil flow.</dd>
+          <dt>Insulating end ring</dt><dd>A ring at the end of a winding stack; in this model it represents end insulation and support.</dd>
+        </dl>
+        <ul>
+          <li><a href="https://www.weidmann-electrical.com/products/insulation-components/cylinders/">Weidmann Electrical Technology: insulation cylinders</a></li>
+          <li><a href="https://www.weidmann-electrical.com/products/insulation-components/spacing-elements/">Weidmann Electrical Technology: spacing elements</a></li>
+          <li><a href="https://www.weidmann-electrical.com/products/insulation-components/end-rings/">Weidmann Electrical Technology: end rings</a></li>
+          <li><a href="https://krempel.com/en/solutions/energy/liquid-transformers">Krempel: insulation for liquid-filled transformers</a></li>
+        </ul>
+      </details>
+    </section>
+  </main>
+  <footer class="shell footer"><a href="/learn.html">More TransformerPath learning resources</a></footer>
+</body>
+</html>
