@@ -80,7 +80,7 @@ const ROOT_JS = [
   'analytics.js', 'checkout-email.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'data-checkout.js', 'event-badges.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'quote-request.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
-  'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js', 'tp-parts.js',
+  'tp-affiliate.js', 'tp-autodesk.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js', 'tp-parts.js',
   'google-auth-config.js', 'tp-auth.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',

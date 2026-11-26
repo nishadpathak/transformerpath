@@ -1,0 +1,91 @@
+{
+  "baseUrl": "AUTODESK_AFFILIATE_URL_PLACEHOLDER",
+  "subIdParam": "sid",
+  "swap": "Replace baseUrl with the live CJ https URL. Leave subIdParam until CJ names its sub-ID field. tp-autodesk.js appends subIdParam and the placement sid; do not edit each page.",
+  "placements": [
+    {
+      "page": "/calculator.html",
+      "sid": "tp-calc-calculator",
+      "tone": "light",
+      "lead": "The core area, turns and window from this workbench are the dimensions a drawing starts from.",
+      "label": "Draw the core, windings and tank in Fusion"
+    },
+    {
+      "page": "/knowledge/transformer-sizing-calculation.html",
+      "sid": "tp-calc-transformer-sizing-calculation",
+      "tone": "light",
+      "lead": "Once the kVA, voltages and impedance are fixed, the tank and core still have to be drawn.",
+      "label": "Open the outline in AutoCAD"
+    },
+    {
+      "page": "/learn/volume-6/module-1/",
+      "sid": "tp-learn-volume-6-module-1",
+      "tone": "light",
+      "lead": "The core joint, winding build and lead dress are fixed on the drawing before the tank goes on.",
+      "label": "Set that arrangement in AutoCAD"
+    },
+    {
+      "page": "/learn/volume-7/module-1/",
+      "sid": "tp-learn-volume-7-module-1",
+      "tone": "light",
+      "lead": "Barrier cylinders, angle rings and creepage paths are drawn around the winding, not chosen from a list.",
+      "label": "Lay out the barriers in AutoCAD"
+    },
+    {
+      "page": "/learn/volume-8/module-1/",
+      "sid": "tp-learn-volume-8-module-1",
+      "tone": "light",
+      "lead": "Bushings, the tap changer and the radiator bank meet on the tank outline.",
+      "label": "Draw those interfaces in Inventor"
+    },
+    {
+      "page": "/learn/volume-10/module-1/",
+      "sid": "tp-learn-volume-10-module-1",
+      "tone": "light",
+      "lead": "Radial and axial force depend on the winding geometry you can measure on a model.",
+      "label": "Model the winding build in Fusion"
+    },
+    {
+      "page": "/explorer.html",
+      "sid": "tp-learn-explorer",
+      "tone": "dark",
+      "lead": "This view is a study model of the assembly.",
+      "label": "Build the same assembly in Fusion"
+    },
+    {
+      "page": "/windings.html",
+      "sid": "tp-learn-windings",
+      "tone": "dark",
+      "lead": "Helical, layer, disc and interleaved builds are different solids.",
+      "label": "Model the winding in Inventor"
+    },
+    {
+      "page": "/coretopology.html",
+      "sid": "tp-learn-coretopology",
+      "tone": "dark",
+      "lead": "A 3-limb, 5-limb or shell core is a different stack.",
+      "label": "Model the core in Fusion"
+    },
+    {
+      "page": "/construction-guide.html",
+      "sid": "tp-learn-construction-guide",
+      "tone": "light",
+      "lead": "The cutaway above is a schematic general arrangement, not a fabrication drawing.",
+      "label": "Draft the GA in AutoCAD"
+    },
+    {
+      "page": "/knowledge/transformer-core-build.html",
+      "sid": "tp-learn-transformer-core-build",
+      "tone": "light",
+      "lead": "The stepped cross-section and the mitred joint are set on the core drawing before the plates are cut.",
+      "label": "Model the stepped core in Fusion"
+    },
+    {
+      "page": "/knowledge/transformer-lead-design.html",
+      "sid": "tp-learn-transformer-lead-design",
+      "tone": "light",
+      "lead": "Lead exits are a three-dimensional route from the winding to the bushing, with clearance at every bend.",
+      "label": "Route the leads in Inventor"
+    }
+  ]
+}

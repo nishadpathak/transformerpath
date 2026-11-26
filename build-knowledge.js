@@ -18,6 +18,7 @@
 'use strict';
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
+const autodesk = require('./lib/autodesk-affiliate');
 const { scoreHtml } = require('./build-knowledge-depth.js');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const ASSETS = (() => {
@@ -2311,7 +2312,7 @@ function articlePage(a) {
     '<div class="quick"><b>Quick answer</b> — ' + esc(a.quick) + '</div>' +
     '<div class="toc"><b>Contents</b>' + toc(a.sections) + '</div>' +
     '<div class="lead" style="margin-top:18px">' + esc(a.question) + '</div>' +
-    body + eq + ex + refs + links + compSec +
+    body + eq + ex + autodesk.blockForPage('/knowledge/' + a.slug + '.html') + refs + links + compSec +
     '<div class="method">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></div>' +
     (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +

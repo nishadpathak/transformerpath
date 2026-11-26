@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Affiliate disclosure — TransformerPath</title>
-<meta name="description" content="How TransformerPath uses Travelpayouts hotel, flight, activity, insurance and eSIM links, and where click counts are recorded.">
+<meta name="description" content="How TransformerPath uses affiliate links for travel search tools and for design software on engineering and Learn pages.">
 <link rel="canonical" href="https://transformerpath.com/affiliate-disclosure.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
@@ -107,6 +107,7 @@
 </header>
 <main id="main" class="container" style="max-width:800px;padding:44px 20px 80px">
 <h1>Affiliate disclosure</h1>
+<p>TransformerPath uses affiliate links in two places: travel search tools on event and trip pages, and design software on engineering and Learn pages. Both are described below.</p>
 <p>Some TransformerPath pages link to travel search tools. When a link is an affiliate link, TransformerPath may earn a commission if you book. That does not change the price the provider charges. TransformerPath does not quote hotel rates, airfares, insurance premiums or eSIM prices.</p>
 <h2>What is on the site</h2>
 <p>The Travelpayouts partner marker in this project is <b>736890</b>. It is the same marker already used by the Hotellook hotel links and by the Kiwi flight link in the events calendar. The Travelpayouts project id (trs) on those flight links is <b>548938</b>.</p>
@@ -126,6 +127,13 @@
 <p><b>Google Analytics 4.</b> Property <code>G-98Q0V62L72</code>. A click on a placement fires the event <code>affiliate_click</code> with parameter <code>sub_id</code> (and <code>placement</code>: hotel, flight, activities, insurance or esim). The tag loads only on transformerpath.com after the visitor accepts cookies. In GA4: Reports → Engagement → Events → <code>affiliate_click</code>. The same event appears in Realtime while you test, and in Explorations if you break it down by the <code>sub_id</code> parameter.</p>
 <p><b>Travelpayouts.</b> Reports → Performance, grouped or filtered by SubID. Hotel searches use the marker sub-ID. Flight clicks that go through the Kiwi campaign use the same sub-ID on <code>shmarker</code>. Direct VisitorsCoverage and Airalo visits do not appear there until <code>TP_INSURANCE_URL</code> or <code>TP_ESIM_URL</code> is set.</p>
 <p>The events calendar also stores a click log in this browser only (<code>localStorage</code> key <code>tp-aff-clicks</code>, including <code>sub</code>). That log is not the site-wide count. Use GA4 and Travelpayouts for that.</p>
+<h2>Software and engineering tools</h2>
+<p>Some engineering and Learn pages link to design software where a drawing or a 3D model is part of the work on that page. The current partner is Autodesk, for tools such as AutoCAD, Inventor and Fusion. When the link is an affiliate link, TransformerPath may earn a commission if you buy or subscribe. The commission is paid by the seller. It does not add to the price you pay.</p>
+<p>A software link does not change the editorial text on the page. It does not change which company is listed, how a directory is ordered, or any ranking on this site. Each software link is marked with the words Affiliate link.</p>
+<p>These links are not placed on the homepage, on RFQ pages, on directory or supplier pages, on pricing or checkout, or on event pages.</p>
+<p>Each placement has its own sub-ID, taken from the page address. The parameter name is in the site config, because the network's exact field is not fixed yet. The config currently uses <code>sid</code>. Examples: <code>tp-learn-explorer</code> and <code>tp-calc-calculator</code>.</p>
+<p>Software links are ordinary HTML. They do not load a third-party script. The sub-ID travels on the link. Commission totals for these links are reported by the affiliate network once a live link is connected. They are separate from the Travelpayouts reports above.</p>
+<p>Questions about these links, or about the travel links above: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
 </main>
 <footer>
   <div class="container">
