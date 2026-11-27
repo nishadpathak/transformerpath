@@ -110,7 +110,7 @@ function rowHtml(tender) {
     '<span class="st ' + (ST[tender.status] || 'st-closed') + '">' + esc(tender.statusLabel || tender.status || '') + '</span>' +
     (expired ? ' <span class="st expired">Expired</span>' : '') +
     '<span class="t-meta">' + esc(bits.join(' · ')) + '</span>' +
-    (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener">Official notice</a>' : '') +
+    (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener" data-track="tender_notice_opened" data-track-placement="product">Official notice</a>' : '') +
     '</div>';
 }
 

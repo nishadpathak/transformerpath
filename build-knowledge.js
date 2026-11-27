@@ -1196,13 +1196,14 @@ const ARTICLES = [
     slug: 'pad-mounted-transformer', topic: 'Applications', level: 'Beginner', minutes: 5,
     title: 'What Is a Pad-Mounted Transformer?',
     question: 'What is a pad-mounted transformer?',
-    quick: 'A pad-mounted transformer is a self-contained distribution transformer in a tamper-resistant enclosure, mounted on a concrete pad at ground level, with the HV and LV connections made through a dead-front compartment. It is common in North American underground distribution, commercial and residential service, and is typically liquid-filled with a fused or dead-front HV feed.',
+    quick: 'A pad-mounted transformer is a self-contained distribution transformer in a tamper-resistant enclosure, mounted on a concrete pad at ground level, with the primary and secondary terminations in a separate compartment. It is common in North American underground distribution and typically liquid-filled. Confirm the primary termination and feed arrangement for the specific unit.',
     sections: [
       ['Its design', 'It sits on a pad, with the tank and a separate compartment for the HV and LV terminations, so it is safe and convenient for service and completely enclosed and tamper-resistant.'],
       ['Where it is used', 'Underground residential distribution (URD), commercial and light-industrial applications, and where the transformer is at grade rather than pole-mounted.'],
-      ['Why it matters', 'It provides safe, compact, low-profile power distribution for a local area. It is usually filled with oil or an ester and rated from tens of kVA to a few MVA.'],
+      ['Why it matters', 'It provides compact, low-profile power distribution for a local area. The insulating fluid, rating and enclosure depend on the application.'],
+      ['U.S. sourcing checklist', 'For a quote, give the phase count, kVA, primary and secondary voltages, primary termination and radial or loop feed, liquid type, enclosure requirements and delivery destination. Include the serving utility’s specification and any required approvals. Request a current drawing, test documentation and a written lead time. A directory listing is not proof of pad-mount capability or stock.'],
     ],
-    refs: ['IEEE C57.12.20', 'IEEE C57.12.00'],
+    refs: ['IEEE C57.12.34', 'IEEE C57.12.38', 'IEEE C57.12.00'],
     comps: ['transformer-bushings', 'tank-and-mechanical'], types: ['DT'],
   },
   {
@@ -2288,6 +2289,9 @@ function articlePage(a) {
     (a.calc ? '<a class="tpill" href="../' + a.calc + '">' + esc(a.calcLabel || 'Calculator') + '</a>' : '') +
     (a.model ? '<a class="tpill" href="../' + a.model + '">3D model</a>' : '') +
     '<a class="tpill" href="../books.html">Book series</a><a class="tpill" href="../academy.html">Academy</a></div>';
+  const sourcing = a.slug === 'pad-mounted-transformer'
+    ? '<p><a href="/manufacturers/distribution-transformers/usa/">Browse U.S. distribution transformer manufacturers</a> or <a href="/rfq.html">draft a transformer RFQ</a>.</p>'
+    : '';
   const compSec = compLinks ? '<h2>Related components</h2><div>' + compLinks + '</div>' : '';
   const faq = [
     { q: a.question, a: a.quick }];
@@ -2311,7 +2315,7 @@ function articlePage(a) {
     '<div class="quick"><b>Quick answer</b> — ' + esc(a.quick) + '</div>' +
     '<div class="toc"><b>Contents</b>' + toc(a.sections) + '</div>' +
     '<div class="lead" style="margin-top:18px">' + esc(a.question) + '</div>' +
-    body + eq + ex + refs + links + compSec +
+    body + sourcing + eq + ex + refs + links + compSec +
     '<div class="method">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></div>' +
     (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +

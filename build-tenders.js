@@ -413,7 +413,9 @@ function tenderPage(t) {
   const closed = t.status === 'CLOSED';
   const projLink = t.project_slug ? '<a href="../../projects/' + esc(t.project_slug) + '/" style="color:var(--accent)">' + esc(t.full_title || t.title) + '</a>' : esc(t.full_title || t.title);
   const linkText = esc(t.source || 'Official notice');
-  const srcLinks = (t.source_urls || []).filter(Boolean).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + linkText + '</a>').join(' · ') || '—';
+  const srcLinks = (t.source_urls || []).filter(Boolean).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener"' +
+    (u === t.official_procurement_url && isOfficialProcurementUrl(u) ? ' data-track="tender_notice_opened" data-track-placement="detail"' : '') +
+    ' style="color:var(--accent)">' + linkText + '</a>').join(' · ') || '—';
   const scopeBadge = { CONFIRMED: '<span class="cls-badge cls-CONFIRMED">CONFIRMED</span>', INFERRED: '<span class="cls-badge cls-INFERRED">INFERRED</span>', UNKNOWN: '<span class="cls-badge cls-UNKNOWN">UNKNOWN</span>' }[t.transformer_scope] || '';
   const statusNote = (T_STATUS_LEGEND[t.status] || '') + (t.open_withheld ? ' This record is not shown as open because the linked source is not a verified official procurement portal.' : '');
   const rows = [
@@ -530,7 +532,7 @@ console.log('tender sitemap entries added: ' + sitemapAdded);
       (t.status === 'CLOSED' ? '<span class="st st-closed">Expired</span>' : '') +
       (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
       '<span class="t-meta">' + esc(bits.join(' · ')) + '</span>' +
-      (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener">Official notice</a>' : '') +
+      (official ? '<a class="t-notice" href="' + esc(official) + '" target="_blank" rel="noopener" data-track="tender_notice_opened" data-track-placement="board">Official notice</a>' : '') +
       '</div>';
   }
   const expiredRows = tenders.filter(function (t) { return t.status === 'CLOSED'; })

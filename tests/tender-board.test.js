@@ -27,6 +27,8 @@ check('alert CTA uses the partner constant', html.indexOf('data-tender-cta="1"')
 check('listing does not mark the internal CTA as sponsored', html.indexOf('rel="sponsored') === -1);
 check('listing does not name an aggregator', /tendersontime/i.test(html) === false);
 check('expired empty state follows the filters', html.indexOf('toggleEmpty("expiredEmpty",expView,name==="expired")') >= 0);
+check('public official-notice links on the tender board have opt-in analytics attribution',
+  /data-track="tender_notice_opened" data-track-placement="board">Official notice/.test(openSlice));
 const closedOnly = {};
 const liveCountries = {};
 tenders.forEach(function (tender) {

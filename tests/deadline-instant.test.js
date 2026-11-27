@@ -22,6 +22,8 @@ check('the instant is still open at 21:00 UTC', isPast(INSTANT, '2026-10-16T21:0
 check('the same calendar day is still open at 22:00 UTC', isPast('2026-10-16', '2026-10-16T22:00:00Z') === false);
 check('a calendar day is past at 00:00 UTC the next day', isPast('2026-10-16', '2026-10-17T00:00:00Z') === true);
 check('11:00 IST on 28 Nov is open on 13 Nov', classifyOpenDeadline('2026-11-28T11:00:00+05:30', '2026-11-13T12:00:00Z') === 'OPEN');
+check('11:00 IST is closed at the exact submission instant', classifyOpenDeadline('2026-11-28T11:00:00+05:30', '2026-11-28T05:30:00Z') === 'CLOSED');
+check('a bare day stays open through its final UTC millisecond', classifyOpenDeadline('2026-11-28', '2026-11-28T23:59:59.999Z') === 'CLOSING_SOON');
 check('11:00 IST on 28 Nov is closed a minute later', classifyOpenDeadline('2026-11-28T11:00:00+05:30', '2026-11-28T05:31:00Z') === 'CLOSED');
 
 const dual = dualZoneLabel('2026-11-28T11:00:00+05:30', 'Asia/Kolkata');

@@ -118,6 +118,7 @@ if (fs.existsSync(mexicoHtmlPath)) {
 }
 
 require('./india-market-hub.test');
+require('./market-tender-register.test');
 require('./regional-market-hubs.test');
 
 if (failed) {

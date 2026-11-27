@@ -62,7 +62,8 @@ for(const slug of Object.keys(R.CONFIG)) {
   }
 }
 const index=fs.readFileSync('markets.html','utf8');
-for(const r of ['/markets/gcc/','/markets/europe/','/directory/region/latin-america/']) assert.ok(index.includes('href="'+r+'"'));
+const featured=index.split('<section id="regional-hubs"')[1].split('</section>')[0];
+for(const r of ['/markets/gcc/','/markets/europe/','/directory/region/latin-america/','/markets/india/','/markets/china/']) assert.ok(featured.includes('href="'+r+'"'),r+' missing in featured markets');
 const saudi=fs.readFileSync('markets/saudi-arabia/index.html','utf8');
 assert.match(saudi,/60 Hz nominal transmission frequency/);
 assert.doesNotMatch(saudi,/Frequency is 50 Hz|60 Hz transmission is not used/);
