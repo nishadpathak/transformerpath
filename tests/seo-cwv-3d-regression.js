@@ -69,8 +69,11 @@ check('hero-3d still tells the parent when 3D cannot start',
 
 const home = publish('index.html');
 check('homepage does not ship three.min.js', home.indexOf('three.min.js') === -1);
-check('homepage still defers the WebGL gate',
-  /<script\b[^>]*src=["']tp-webgl-gate\.js["'][^>]*defer|<script\b[^>]*defer[^>]*src=["']tp-webgl-gate\.js["']/.test(home));
+check('homepage lazy-loads the WebGL gate on desktop only',
+  !/<script\b[^>]*src=["'][^"']*tp-webgl-gate\.js["']/.test(home) &&
+  home.indexOf("loadScript('tp-webgl-gate.js')") !== -1 &&
+  /max-width: 768px/.test(home) &&
+  /prefers-reduced-motion: reduce/.test(home));
 check('phones still wait for a tap before the 3D iframe',
   /matchMedia\('\(max-width: 819px\)'\)/.test(home) && home.indexOf("f.src='hero-3d.html'") !== -1);
 check('homepage keeps the static unavailable note',

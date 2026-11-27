@@ -30,10 +30,10 @@ check('poster is not faded in from opacity 0', /\.hero-stage__viz\{ animation: n
 check('the full wordmark file is not the mobile preload', !/rel="preload" as="image" href="brand\/hero\.jpg"/.test(html));
 check('phone wordmark no longer competes with first-screen actions', fs.existsSync(heroSmall) && !/rel="preload" as="image" href="brand\/hero-800\.jpg"/.test(html) && /class="home-hero-banner"[^>]*loading="lazy"/.test(html));
 check('the wordmark is responsive and sized', /class="home-hero-banner"[^>]*src="brand\/hero-800\.jpg"[^>]*srcset="brand\/hero-800\.jpg 800w, brand\/hero\.jpg 1774w"[^>]*width="1774" height="887"/.test(html));
-check('the desktop poster preload does not compete on phones', /rel="preload" as="image" href="media\/power-transformer-3d-poster-800\.jpg"[\s\S]{0,280}media="\(min-width: 761px\)"/.test(html));
+check('the desktop poster preload does not compete on phones', /rel="preload" as="image" href="media\/power-transformer-3d-poster-800\.jpg"[\s\S]{0,280}media="\(min-width: 769px\)"/.test(html));
 check('google fonts do not block first paint', /rel="preload" as="style" href="https:\/\/fonts\.googleapis\.com\//.test(html));
 check('late font swap cannot reset LCP', /display=optional/.test(html));
-check('phones do not load the hidden 3D model on search interaction', /if\(!viz\|\|!stage \|\| window\.matchMedia\('\(max-width: 760px\)'\)\.matches\) return;/.test(html));
+check('phones do not load the hidden 3D model on search interaction', /matchMedia\('\(max-width: 768px\)'\)\.matches/.test(html) && /prefers-reduced-motion: reduce/.test(html) && /phone \|\| reduced\) return;/.test(html));
 check('small tablets do not idle-load the 3D model', /matchMedia\('\(max-width: 819px\)'\)/.test(html));
 check('the LCP poster is preloaded and decoded on the critical path', /rel="preload" as="image" href="media\/power-transformer-3d-poster-800\.jpg"/.test(html) && !/data-tp-3d-poster[\s\S]{0,400}decoding="async"/.test(html));
 check('aurora blur does not animate forever', !/animation: aurora /.test(html) && !/animation: aurora /.test(fs.readFileSync('style.css', 'utf8')));

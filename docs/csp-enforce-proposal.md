@@ -4,9 +4,9 @@ Reviewed 21 October 2026 against `netlify.toml` and `tests/csp-report-only.js`.
 
 ## What is live
 
-The site already sends an enforcing `Content-Security-Policy`. It starts with `default-src 'self' https: data: blob:` and allows `'unsafe-inline'`, `'unsafe-eval'`, and `https:` in `script-src`. A second header, `Content-Security-Policy-Report-Only`, names the hosts the pages load, including Stripe (`js.stripe.com`, `api.stripe.com`, `hooks.stripe.com`, `m.stripe.network`, `buy.stripe.com`, `checkout.stripe.com`), Google fonts, analytics, ads, cdnjs, and `ipapi.co`.
+The site already sends an enforcing `Content-Security-Policy`. It starts with `default-src 'self' https: data: blob:` and allows `'unsafe-inline'`, `'unsafe-eval'`, and `https:` in `script-src`. That enforcing header is unchanged.
 
-The report-only header still also allows `'unsafe-inline'`, `'unsafe-eval'`, and `https:`. It is not a tighter policy than the enforcing header.
+WebKit logged a console error on every page for `Content-Security-Policy-Report-Only` because the policy named no `report-to` endpoint, then ignored the policy. The report-only header was removed. It is not delivered in a meta tag. Stripe, AdSense, analytics, and checkout stay on the enforcing policy, which already allows `https:`.
 
 ## Violations
 
@@ -14,7 +14,7 @@ There is no `report-uri` and no `report-to` on either header. This repository ha
 
 ## Decision
 
-Enforce mode is not changed. The existing enforcing header stays. The report-only header stays. A switch to a host allowlist would not be based on a reviewed, clean report.
+Enforce mode is not changed. The existing enforcing header stays. A switch to a host allowlist would not be based on a reviewed, clean report.
 
 ## Proposed enforce policy, after a clean report window
 

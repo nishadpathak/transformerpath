@@ -27,28 +27,13 @@ const report = header('Content-Security-Policy-Report-Only');
 check(enforce.indexOf("default-src 'self' https: data: blob:") === 0, 'enforcing CSP is still present');
 check(enforce.indexOf("object-src 'none'") !== -1, 'enforcing CSP still blocks object embeds');
 check(enforce.indexOf('js.stripe.com') === -1, 'enforcing CSP was not rewritten around Stripe');
-const hosts = [
-  'pagead2.googlesyndication.com',
-  'googleads.g.doubleclick.net',
-  'fundingchoicesmessages.google.com',
-  'js.stripe.com',
-  'api.stripe.com',
-  'hooks.stripe.com',
-  'm.stripe.network',
-  'buy.stripe.com',
-  'checkout.stripe.com',
-  'fonts.googleapis.com',
-  'fonts.gstatic.com',
-  'cdnjs.cloudflare.com',
-  'www.googletagmanager.com',
-  'www.google-analytics.com',
-  'ipapi.co'
-];
-hosts.forEach(function (host) {
-  check(report.indexOf(host) !== -1, 'report-only allows ' + host);
-});
-check(report.indexOf("'unsafe-inline'") !== -1 && report.indexOf('https:') !== -1, 'report-only keeps inline scripts and https:');
-check(report.indexOf("object-src 'none'") !== -1, 'report-only still names object-src none');
+check(enforce.indexOf('pagead2.googlesyndication.com') !== -1, 'enforcing CSP still names AdSense');
+check(enforce.indexOf('https:') !== -1 && enforce.indexOf("'unsafe-inline'") !== -1, 'enforcing CSP still allows https and inline scripts');
+/* WebKit logs a console error on every page for a report-only policy that
+ * has no report-to endpoint, and then ignores the policy. The header is
+ * removed. The enforcing policy is unchanged. */
+check(report === '', 'report-only CSP header is not sent');
+check(toml.indexOf('Content-Security-Policy-Report-Only') === -1, 'netlify.toml does not set a report-only policy');
 
 if (failed) {
   console.error(failed + ' CSP check(s) failed');

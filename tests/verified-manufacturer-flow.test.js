@@ -427,7 +427,7 @@ async function main() {
   check('migration select policy matches the jwt email', /paid_listings_select_own/.test(migration) && /auth\.jwt\(\) ->> 'email'/.test(migration) && !/for insert/.test(migration) && !/for update/.test(migration) && !/for delete/.test(migration));
   const proposal = fs.readFileSync('docs/csp-enforce-proposal.md', 'utf8');
   const toml = fs.readFileSync('netlify.toml', 'utf8');
-  check('csp enforce header was not replaced', toml.indexOf('Content-Security-Policy = "default-src \'self\' https:') >= 0 && toml.indexOf('Content-Security-Policy-Report-Only') >= 0);
+  check('csp enforce header was not replaced', toml.indexOf('Content-Security-Policy = "default-src \'self\' https:') >= 0 && toml.indexOf('Content-Security-Policy-Report-Only') < 0);
   check('csp proposal does not switch enforce on', /Enforce mode is not changed/.test(proposal) && /no collected CSP violation reports/.test(proposal));
 
   const { PGlite } = await import('@electric-sql/pglite');
