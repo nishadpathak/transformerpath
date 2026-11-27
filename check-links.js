@@ -62,6 +62,8 @@ function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
   if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(clean)) return { ok: true }; // protocol (http, mailto, tel, data)
+  // Staged CJ base. It is not a site path. The live https URL replaces it in data/autodesk-affiliate.json.
+  if (clean === 'AUTODESK_AFFILIATE_URL_PLACEHOLDER') return { ok: true };
   if (clean.startsWith('//')) return { ok: true };
   if (clean === '') return { ok: true };
   const resolved = clean.startsWith('/')
