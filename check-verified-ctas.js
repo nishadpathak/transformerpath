@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/* CI gate: every Get verified / Claim this profile CTA href is the checkout
- * gate for the $499 Verified Manufacturer Payment Link, with the maker slug.
- * Profiles that already carry the earned verified badge omit it.
+/* CI gate: a profile's free claim opens /claim-listing/<slug>/.
+ * The optional Verified upgrade uses the $499 checkout gate with the maker slug.
+ * Profiles that already carry the earned verified badge omit that upgrade.
  * A verified label is rendered only for a reviewed paid listing.
  */
 'use strict';
@@ -85,35 +85,33 @@ function auditProfiles(doc) {
     if (!fs.existsSync(file) || !fs.statSync(file).isFile()) return;
     const html = fs.readFileSync(file, 'utf8');
     if (html.indexOf('http-equiv="refresh"') >= 0) return;
-    if (html.indexOf('>Claim this profile →</a>') < 0) return;
+    if (html.indexOf('>Claim this profile</a>') < 0) return;
     const earned = paid.isVerifiedManufacturer(dir, doc);
     const badge = html.indexOf('data-paid-badge="verified-manufacturer"') >= 0;
-    const ctas = payAnchors(html).filter(function (tag) { return attr(tag, 'data-mfr-verify-cta'); });
-    const kinds = ctas.map(function (tag) { return attr(tag, 'data-mfr-verify-cta'); });
+    const claimHref = '/claim-listing/' + dir + '/';
+    if (html.indexOf(claimHref) < 0 || html.indexOf('data-claim-listing="1"') < 0) {
+      violations.push(file + ': missing free claim link');
+    }
+    const pay = payAnchors(html).filter(function (tag) { return attr(tag, 'data-verified-manufacturer-pay'); });
     if (earned || badge) {
       if (!earned) violations.push(file + ': verified badge without a reviewed paid row');
-      if (ctas.length) violations.push(file + ': verify CTA on a profile that already has the verified badge');
-      payAnchors(html).forEach(function (tag) {
-        violations.push(file + ': payment CTA still present on an earned profile');
-      });
+      if (pay.length) violations.push(file + ': verify CTA on a profile that already has the verified badge');
       if (hasVerifiedLabel(html) && !earned) {
         violations.push(file + ': verified label without a reviewed paid row');
       }
       return;
     }
     pages++;
-    if (kinds.indexOf('claim') < 0 || kinds.indexOf('get-verified') < 0) {
-      violations.push(file + ': missing Get verified or Claim this profile CTA');
-    }
-    const claimAt = html.indexOf('data-mfr-verify-cta="claim"');
+    if (!pay.length) violations.push(file + ': missing Verified checkout');
+    const claimAt = html.indexOf(claimHref);
     const noteAt = html.indexOf('Independent census profile');
-    if (claimAt < 0 || noteAt < 0 || claimAt > noteAt) {
+    if (noteAt >= 0 && (claimAt < 0 || claimAt > noteAt)) {
       violations.push(file + ': CTA is not at the top of the profile');
     }
     if (hasVerifiedLabel(html)) {
       violations.push(file + ': verified label without a reviewed paid row');
     }
-    payAnchors(html).forEach(function (tag) {
+    pay.forEach(function (tag) {
       const v = hrefViolation(tag, dir, file);
       if (v) violations.push(v);
     });
@@ -138,21 +136,20 @@ function auditBoard(board, map, earned) {
     if (/^Served by/i.test(name)) return;
     rows++;
     const slug = directoryCompanySlug(name, map);
-    const ctas = payAnchors(part).filter(function (tag) { return attr(tag, 'data-mfr-verify-cta'); });
-    const kinds = ctas.map(function (tag) { return attr(tag, 'data-mfr-verify-cta'); });
     const rowEarned = !!(slug && earned.has(slug));
-    if (rowEarned) {
-      if (ctas.length) violations.push('directory row ' + name + ': CTA on an earned verified profile');
-      return;
+    const linked = part.match(/href="\/claim-listing\/([a-z0-9-]+)\//);
+    if (!slug && !linked) violations.push('directory row ' + name + ': no maker slug for client_reference_id');
+    if (!linked || part.indexOf('data-claim-listing="1"') < 0) {
+      violations.push('directory row ' + name + ': missing free claim link');
     }
-    if (!slug) violations.push('directory row ' + name + ': no maker slug for client_reference_id');
-    if (kinds.indexOf('claim') < 0 || kinds.indexOf('get-verified') < 0) {
-      violations.push('directory row ' + name + ': missing Get verified or Claim this profile CTA');
+    if (rowEarned && part.indexOf('data-verified-manufacturer-pay') >= 0) {
+      violations.push('directory row ' + name + ': CTA on an earned verified profile');
     }
     if (hasVerifiedLabel(part) || part.indexOf('data-paid-badge="verified-manufacturer"') >= 0 || part.indexOf('data-earned-verified="1"') >= 0) {
-      violations.push('directory row ' + name + ': verified label without a reviewed paid row');
+      if (!rowEarned) violations.push('directory row ' + name + ': verified label without a reviewed paid row');
     }
-    ctas.forEach(function (tag) {
+    payAnchors(part).forEach(function (tag) {
+      if (!attr(tag, 'data-verified-manufacturer-pay')) return;
       const v = hrefViolation(tag, slug, 'directory row ' + name);
       if (v) violations.push(v);
     });
