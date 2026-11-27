@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-10-16T07:39:29.126Z",
+  "generated": "2026-11-27T14:54:38.827Z",
   "build_at": "2026-10-16T07:39:29.126Z",
   "latest_source_date": "2026-10-16",
   "latest_source_checked_at": "2026-10-16",
@@ -2682,6 +2682,24 @@
       "status": "HEALTHY",
       "source_health": "reference only — not a live feed",
       "records": 7
+    },
+    {
+      "id": "gcc_discovery",
+      "name": "GCC Intel discovery",
+      "cadence": "daily (when adapters live)",
+      "description": "GCC utility/tender-board/water-authority discovery layer. Distinct from curated Daily Intel. Discovery does not equal publication.",
+      "last_build": "2026-11-27T14:54:38.827Z",
+      "last_data_refresh": null,
+      "last_attempted_refresh": "2026-11-27",
+      "last_successful_refresh": null,
+      "latest_source_observation": "2026-09-25",
+      "records_added": 14,
+      "records_updated": 0,
+      "source_count": 23,
+      "source_failures": 11,
+      "status": "MANUAL_REVIEW",
+      "source_health": "2/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+      "records": 14
     }
   ],
   "sources": [
@@ -2723,6 +2741,21 @@
       "latest_content_date": null,
       "failure_count": null,
       "status": "MANUAL_REVIEW"
+    },
+    {
+      "name": "GCC procurement & authority registry",
+      "type": "gcc-source-registry",
+      "region": "GCC",
+      "works_for": [
+        "gcc_discovery",
+        "daily_intel",
+        "tenders"
+      ],
+      "last_checked": null,
+      "last_success": null,
+      "latest_content_date": "2026-09-25",
+      "failure_count": null,
+      "status": "MANUAL_REVIEW"
     }
   ],
   "clocks": {
@@ -2731,5 +2764,17 @@
     "reason": "source_within_1d",
     "data_current_claim_allowed": false,
     "honesty": "Status follows latest_source_date, not build_at and not the GCC discovery gate. A sourced item no more than 1 day old reads Updated with that calendar day. Desk rebuild alone never yields UPDATED or DATA CURRENT."
+  },
+  "gcc_market_watch": {
+    "generated": "2026-11-27T14:54:38.827Z",
+    "statement": "2/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "markets_registered": 6,
+    "markets_adapter_live": 2,
+    "latest_confirmed_event_date": "2026-09-25",
+    "data_current_claim_allowed": false,
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
+    "surface_id": "gcc_discovery",
+    "status": "MANUAL_REVIEW",
+    "source_health": "GCC source registry populated; portal adapters NEEDS_ADAPTER until live crawl stamps last_checked"
   }
 }
