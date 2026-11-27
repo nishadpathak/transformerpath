@@ -32,6 +32,10 @@ check('an origin the regulation does not name is not guessed', duty.estimate(row
 check('switzerland and taiwan are the named non-exempt origins', duty.estimate(row({ code: '8504 33 00', origin: 'Switzerland', weight: 0.25 })).amountEur === 285 && duty.estimate(row({ code: '8504 21 00', origin: 'Taiwan', weight: 2, unit: 'kg' })).amountEur === 2.28);
 check('an unrecognised code is not a number', duty.estimate(row({ code: '8511 11 00' })).result === duty.BROKER);
 check('a missing core weight does not invent a duty', duty.estimate(row({ weight: '' })).status === 'need_weight' && duty.estimate(row({ weight: 0 })).amountEur == null);
+check('a decimal comma is one and a half tonnes, not fifteen', duty.estimate(row({ weight: '1,5' })).amountEur === 1710 && duty.estimate(row({ weight: '1,50' })).tonnes === 1.5);
+check('a thousands comma still groups', duty.estimate(row({ weight: '1,500' })).tonnes === 1500);
+check('mixed European grouping is read from the last separator', duty.estimate(row({ weight: '1.500,5' })).tonnes === 1500.5 && duty.estimate(row({ weight: '1 500,5' })).tonnes === 1500.5);
+check('an unclear comma group is not a duty', duty.estimate(row({ weight: '1,5000' })).status === 'need_weight' && duty.estimate(row({ weight: '1,5000' })).amountEur == null);
 check('the rate and the provisional end date are the regulation figures', duty.RATE_EUR_PER_TONNE === 1140 && duty.PROVISIONAL_END === '2027-02-26' && duty.RULE_DATE === '2026-09-18');
 check('developing list keeps the annex tail and a diacritic name', duty.DEVELOPING_COUNT === 122 && duty.originStatus('Zimbabwe') === 'exempt' && duty.originStatus("Côte d'Ivoire") === 'exempt');
 
