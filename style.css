@@ -194,14 +194,20 @@ input, select, textarea {
   color: var(--text);
   border: 1px solid var(--border);
 }
-select {
-  color: var(--text);
-  -webkit-text-fill-color: var(--text);
-}
+select,
 select option {
-  color: var(--text);
-  background-color: var(--card);
-  -webkit-text-fill-color: var(--text);
+  color: #1f2937;
+  background-color: #ffffff;
+  -webkit-text-fill-color: #1f2937;
+}
+html[data-theme="dark"] select,
+html[data-theme="dark"] select option {
+  color: #e5e7eb;
+  background-color: #1f2937;
+  -webkit-text-fill-color: #e5e7eb;
+}
+html[data-theme="dark"] select {
+  color-scheme: dark;
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);

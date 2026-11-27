@@ -31,6 +31,15 @@ check('article 1 covers the united states and the united kingdom', duty.estimate
 check('a union origin is not charged the import rate', duty.estimate(row({ origin: 'Germany' })).result === duty.BROKER && duty.estimate(row({ origin: 'Germany' })).amountEur == null && duty.estimate(row({ origin: 'France' })).amountEur == null && duty.estimate(row({ origin: 'Italy' })).amountEur == null && duty.estimate(row({ origin: 'Netherlands' })).amountEur == null);
 check('aliases recognise uae korea us and uk', duty.estimate(row({ origin: 'UAE', weight: 1 })).amountEur === 1140 && duty.estimate(row({ origin: 'United Arab Emirates', weight: 1 })).amountEur === 1140 && duty.estimate(row({ origin: 'Korea', weight: 1 })).amountEur === 1140 && duty.estimate(row({ origin: 'South Korea', weight: 1 })).amountEur === 1140 && duty.estimate(row({ origin: 'Republic of Korea', weight: 1 })).amountEur === 1140 && duty.estimate(row({ origin: 'USA' })).amountEur === 2280 && duty.estimate(row({ origin: 'UK' })).amountEur === 2280);
 check('an unrecognised origin is not guessed', duty.estimate(row({ origin: 'Narnia' })).result === duty.BROKER && duty.estimate(row({ origin: 'Narnia' })).amountEur == null);
+check('no origin asks for a selection', (function () {
+  var empty = duty.estimate(row({ origin: '' }));
+  var text = (empty.result || '') + ' ' + (empty.reason || '');
+  return empty.status === 'need_origin' && empty.amountEur == null && empty.reason === 'Select an origin.' && text.toLowerCase().indexOf('coverage is not clear') === -1;
+})());
+check('other not listed returns the broker result', duty.estimate(row({ origin: 'Other / not listed' })).result === duty.BROKER && duty.estimate(row({ origin: 'Other / not listed' })).amountEur == null);
+['Serbia', 'Bosnia and Herzegovina', 'Belarus', 'Iran', 'Azerbaijan', 'Uzbekistan'].forEach(function (name) {
+  check('article 1 covers ' + name, duty.estimate(row({ origin: name })).amountEur === 2280 && duty.originStatus(name) === 'covered');
+});
 check('switzerland and taiwan are the named non-exempt origins', duty.estimate(row({ code: '8504 33 00', origin: 'Switzerland', weight: 0.25 })).amountEur === 285 && duty.estimate(row({ code: '8504 21 00', origin: 'Taiwan', weight: 2, unit: 'kg' })).amountEur === 2.28);
 check('an unrecognised code is not a number', duty.estimate(row({ code: '8511 11 00' })).result === duty.BROKER);
 check('a missing core weight does not invent a duty', duty.estimate(row({ weight: '' })).status === 'need_weight' && duty.estimate(row({ weight: 0 })).amountEur == null);

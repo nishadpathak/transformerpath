@@ -24,7 +24,7 @@
 .duty-wrap{max-width:880px;margin:0 auto;padding:8px 16px 72px;overflow-wrap:anywhere}
 .duty-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:12px 0 16px}
 .duty-grid label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
-.duty-grid input,.duty-grid select{width:100%;max-width:100%;box-sizing:border-box;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit}
+.duty-grid input,.duty-grid select{width:100%;max-width:100%;box-sizing:border-box;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background-color:var(--card);color:var(--text);font:inherit}
 .duty-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 14px}
 .duty-card h2{margin:0 0 8px;font-size:1.05rem;color:var(--ink)}
 .duty-card p,.duty-card li{margin:0 0 8px;line-height:1.55;overflow-wrap:anywhere}
@@ -207,6 +207,10 @@ document.addEventListener('DOMContentLoaded', function () {
       option.textContent = name;
       origin.appendChild(option);
     });
+    var other = document.createElement('option');
+    other.value = api.OTHER_OPTION;
+    other.textContent = api.OTHER_OPTION;
+    origin.appendChild(other);
   }
   document.getElementById('duty-form').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -237,6 +241,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (row.status === 'estimate') {
       result.textContent = 'EUR ' + api.formatGrouped(row.amountEur);
       reason.textContent = api.formatGrouped(row.tonnes) + ' tonnes of declared core weight × EUR 1,140 per tonne. ' + row.reason;
+    } else if (row.status === 'need_origin') {
+      result.textContent = 'Select an origin';
+      reason.textContent = row.reason;
     } else if (row.status === 'need_weight') {
       result.textContent = 'Declared core weight needed';
       reason.textContent = row.reason;
