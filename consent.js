@@ -13,7 +13,10 @@
      - null        -> not decided; show the banner
  */
 (function () {
+  // An embedded TP view uses the top-level page’s consent UI.
+  if (window.top !== window || window.tpResetConsent) return;
   var KEY = 'tp-cookie-consent';
+  var stopTrackingSize = null;
   var started = false;
 
   function getConsent() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
@@ -38,7 +41,7 @@
       'font-size:.82rem;line-height:1.4;');
     b.innerHTML =
       '<div class="tp-consent-inner">' +
-      '<div class="tp-consent-copy">We use essential cookies to keep the site working. With your consent we load Google Analytics. Advertising uses Google AdSense; visitors in the EEA, UK and Switzerland get Google&rsquo;s privacy message before personalized ads. <a href="/privacy.html">Privacy policy</a>.</div>' +
+      '<div class="tp-consent-copy">Essential cookies keep the site working. Google Analytics is optional. Where applicable, Google asks separately about personalized ads. <a href="/privacy.html">Privacy policy</a>.</div>' +
       '<div class="tp-consent-actions">' +
       '<button type="button" data-c="accept">Accept</button>' +
       '<button type="button" data-c="essential">Essential only</button>' +
@@ -51,12 +54,13 @@
         '#tp-consent a{color:#f5a623;text-decoration:underline}' +
         '.tp-consent-inner{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:stretch}' +
         '.tp-consent-actions{display:flex;gap:8px;flex-wrap:wrap}' +
-        '.tp-consent-actions button{flex:1 1 140px;min-height:40px;border-radius:9px;padding:9px 16px;font-weight:800;cursor:pointer;font-family:inherit}' +
+        '.tp-consent-actions button{flex:1 1 120px;min-height:44px;border-radius:9px;padding:9px 16px;font-weight:800;cursor:pointer;font-family:inherit}' +
         '.tp-consent-actions [data-c=accept]{background:#f5a623;color:#0d1b2e;border:none}' +
         '.tp-consent-actions [data-c=essential]{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);font-weight:600}' +
         '@media (min-width:720px){.tp-consent-inner{flex-direction:row;align-items:center}.tp-consent-copy{flex:1}.tp-consent-actions{flex:none}}';
       document.head.appendChild(css);
     }
+    var previousPad = document.body.style.paddingBottom;
     document.body.appendChild(b);
     function syncPad() {
       var h = Math.ceil(b.getBoundingClientRect().height) || 72;
@@ -64,15 +68,22 @@
       document.body.style.paddingBottom = 'var(--tp-consent-pad)';
     }
     syncPad();
-    if (window.ResizeObserver) new ResizeObserver(syncPad).observe(b);
+    var observer = window.ResizeObserver ? new ResizeObserver(syncPad) : null;
+    if (observer) observer.observe(b);
     window.addEventListener('resize', syncPad);
+    stopTrackingSize = function () {
+      if (observer) observer.disconnect();
+      window.removeEventListener('resize', syncPad);
+      document.body.style.paddingBottom = previousPad;
+      document.documentElement.style.removeProperty('--tp-consent-pad');
+      stopTrackingSize = null;
+    };
     b.addEventListener('click', function (e) {
       var c = e.target && e.target.getAttribute && e.target.getAttribute('data-c');
       if (!c) return;
       var value = c === 'accept' ? 'accepted' : 'essential';
       setConsent(value);
-      document.body.style.paddingBottom = '';
-      document.documentElement.style.removeProperty('--tp-consent-pad');
+      if (stopTrackingSize) stopTrackingSize();
       if (b.parentNode) b.parentNode.removeChild(b);
       notify(value);
     });
@@ -91,6 +102,7 @@
     try { localStorage.removeItem(KEY); } catch (e) {}
     started = false;
     notify(getConsent());
+    if (stopTrackingSize) stopTrackingSize();
     var existing = document.getElementById('tp-consent');
     if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
     showBanner();
