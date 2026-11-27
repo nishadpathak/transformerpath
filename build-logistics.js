@@ -251,6 +251,7 @@ window.__TP_LOGISTICS__ = ${logJson};
       '<p>' + esc(row.description || '') + '</p>' +
       '<p>Location: ' + esc(loc || '—') + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
       (row.verification_source ? '<p style="font-size:.85rem;color:var(--muted)">Source: ' + esc(row.verification_source) + '. Checked ' + esc(row.verification_date || '—') + '.</p>' : '') +
+      require('./lib/paid-listings').profileClaimBlockHtml({ companySlug: slug, trackName: row.company_name }) +
       '</main>\n' + FOOT + '\n</body></html>\n';
     if (outreach.leaked(page) || outreach.leakedPlace(page)) throw new Error('outreach or place flag leaked into logistics profile ' + slug);
     fs.mkdirSync('logistics/' + slug, { recursive: true });

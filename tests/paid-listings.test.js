@@ -526,7 +526,7 @@ async function main() {
   check('claim form pay button uses the gate', claimHtml.indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && claimHtml.indexOf('href="' + mfrLink + '"') < 0 && claimHtml.indexOf('id="claimForm"') >= 0 && claimHtml.indexOf('name="payment_session"') >= 0 && claimHtml.indexOf('claimPaidBanner') >= 0);
   check('pricing manufacturer pay button uses the gate', fs.readFileSync('pricing.html', 'utf8').indexOf('href="/checkout/?product=verified_manufacturer"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + mfrLink + '"') < 0);
   const profileDirs = fs.readdirSync('manufacturers').filter(function (d) {
-    return fs.existsSync('manufacturers/' + d + '/index.html') && fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8').indexOf('>Claim this profile →</a>') >= 0;
+    return fs.existsSync('manufacturers/' + d + '/index.html') && fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8').indexOf('>Claim this profile</a>') >= 0;
   });
   const reviewedDoc = paid.load();
   const unpaidProfiles = profileDirs.filter(function (d) { return !paid.isVerifiedManufacturer(d, reviewedDoc); });
@@ -538,12 +538,15 @@ async function main() {
   const beyPage = fs.readFileSync('manufacturers/bey-trafo/index.html', 'utf8');
   check('reviewed Bey Trafo profile omits the Get Verified payment link', paid.isVerifiedManufacturer('bey-trafo', reviewedDoc) && beyPage.indexOf('Pay $499 one-time — Get Verified') < 0 && beyPage.indexOf('data-paid-badge="verified-manufacturer"') >= 0);
   check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('slug=erea-energy-engineering') >= 0 && fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('buy.stripe.com') < 0);
-  const sampleCtas = paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
-  check('profile and directory ctas use the $499 gate with the maker slug', sampleCtas.indexOf('href="/checkout/?product=verified_manufacturer&amp;slug=erea-energy-engineering"') >= 0 && sampleCtas.indexOf(mfrLink) < 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);
-  check('earned manufacturer does not get a verify cta', paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', earned: true }) === '');
+  const sampleCtas = paid.profileClaimBlockHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
+  check('profile claim is free and upgrades use the existing gates', sampleCtas.indexOf('>Claim this profile</a>') >= 0 && sampleCtas.indexOf('href="/claim-listing/erea-energy-engineering/"') >= 0 && sampleCtas.indexOf('data-claim-listing="1"') >= 0 && sampleCtas.indexOf('href="/checkout/?product=verified_manufacturer&amp;slug=erea-energy-engineering"') >= 0 && sampleCtas.indexOf('href="/checkout/?product=featured_listing&amp;slug=erea-energy-engineering"') >= 0 && sampleCtas.indexOf(mfrLink) < 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') < 0);
+  check('earned manufacturer omits the Verified checkout and keeps the free claim', (function () {
+    const earned = paid.profileClaimBlockHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering', earned: true });
+    return earned.indexOf('>Claim this profile</a>') >= 0 && earned.indexOf('verified_manufacturer') < 0 && earned.indexOf('featured_listing') >= 0;
+  })());
   const samplePage = fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8');
-  const topAt = samplePage.indexOf('data-mfr-verify-cta="get-verified"');
-  check('sample profile shows both ctas above the census note', topAt > 0 && topAt < samplePage.indexOf('Independent census profile') && samplePage.indexOf('data-mfr-verify-cta="claim"') > 0 && samplePage.indexOf('data-mfr-verify-cta="claim"') < samplePage.indexOf('Independent census profile'));
+  const topAt = samplePage.indexOf('>Claim this profile</a>');
+  check('sample profile shows the free claim above the census note', topAt > 0 && topAt < samplePage.indexOf('Independent census profile') && samplePage.indexOf('data-mfr-verify-cta="claim"') < 0);
 
   const gate = require('../check-paid-badges');
   const stray = '<span class="paid-badge" data-paid-badge="verified-manufacturer" data-company-slug="a-plus-power-solution">VERIFIED MANUFACTURER</span>';

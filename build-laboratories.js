@@ -522,6 +522,7 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
       '<h1>' + esc(lab.name) + (badge ? ' ' + badge : '') + '</h1>' +
       (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
       profileRecord(lab) +
+      require('./lib/paid-listings').profileClaimBlockHtml({ companySlug: slug, trackName: lab.name }) +
       '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
     if (lab.directory_publish === true && (outreach.leaked(htmlPage) || outreach.leakedPlace(htmlPage))) {
       throw new Error('outreach or place flag leaked into laboratory profile ' + slug);

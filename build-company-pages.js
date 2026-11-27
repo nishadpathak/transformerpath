@@ -388,12 +388,14 @@ function developmentsHtml(r) {
   let d = null;
   entityNames(r).some(function (n) { d = DEV_BY_NAME[norm(n)]; return !!d; });
   if (!d || !d.developments || !d.developments.length) return '';
-  const lis = d.developments.map(function (x) {
-    const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
-    const date = dateMatch ? dateMatch[1] : '';
+  const blocked = require('./lib/blocked-sources').isBlockedSource;
+  const lis = d.developments.filter(function (x) {
+    return /^https?:\/\//i.test(x.url || '') && !blocked(x.url) && !blocked(x.src);
+  }).map(function (x) {
     return '<li style="margin:7px 0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(x.title) + '</a><br>' +
       '<span style="color:var(--muted);font-size:.82rem">' + esc(x.src || '') + '</span></li>';
   }).join('');
+  if (!lis) return '';
   return '<h2>Recent developments</h2><p style="font-size:.82rem;color:var(--muted)">Sourced from TransformerPath Daily Intel. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution.</p>' +
     '<ul>' + lis + '</ul>';
 }
@@ -502,7 +504,9 @@ function metaFromLead(text) {
 const UPCOMING_AS_OF = platformToday();
 function eventsFor(rec) {
   const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
+  const blockedEvent = require('./lib/blocked-sources').isBlockedEvent;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
+    .filter(function (ev) { return !blockedEvent(ev); })
     .filter(function (ev) { return isUpcoming(ev, UPCOMING_AS_OF); })
     .sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 5);
 }
@@ -572,7 +576,7 @@ function page(r, slug) {
     : (score >= 50 ? 'linear-gradient(90deg, #f5a623, #d97706)' : 'linear-gradient(90deg, #94a3b8, #64748b)');
   const missingList = missing.length ? '<div style="font-size:.82rem;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;margin-top:10px">' +
     '<b style="color:var(--accent)">Pending technical specifications:</b> ' + missing.map(function(m){ return esc(m); }).join(' · ') +
-    '<div style="margin-top:8px"><a href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" class="btn btn-outline btn-sm" style="font-size:.74rem;padding:3px 10px" data-track="claim_from_completeness" data-track-manufacturer="' + esc(r.name) + '">Claim profile to complete specifications →</a></div></div>' : '';
+    '</div>' : '';
 
   const completenessCard = '<div class="card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:18px 0;box-shadow:0 4px 16px rgba(0,0,0,.08)">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
@@ -656,8 +660,7 @@ function page(r, slug) {
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + [r.flag || '', shownCountry ? '<b style="color:var(--text)">' + esc(shownCountry) + '</b>' : '', shownCity ? esc(shownCity) : '', '<span style="color:var(--accent)">' + verify + '</span>', r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : ''].filter(Boolean).join(' · ') + '</p>' +
     (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
     (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
-    (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
-    '<p class="claim-listing-row" style="margin:10px 0 0">' + claimListing.linkHtml(slug) + '</p>' +
+    paidListings.profileClaimBlockHtml({ companySlug: slug, trackName: r.name, earned: earnedVerified }) +
     exhibitorTags.block(exhibitorTags.forSlug(slug)) +
     trust +
     completenessCard +
@@ -681,16 +684,7 @@ function page(r, slug) {
     (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same country, not evidenced as about this company.</p><ul>' + regionalHtml + '</ul>' : '') +
     '<h2 data-upcoming-as-of="' + UPCOMING_AS_OF + '">Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
-    '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
-    claimListing.linkHtml(slug) + ' ' +
-    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '&slug=' + encodeURIComponent(slug) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
-    (earnedVerified ? '' : paidListings.verifiedManufacturerPayHtml({
-      companySlug: slug,
-      trackName: r.name,
-      formHref: '../../claim-profile.html?paid=verified_manufacturer#claimForm',
-      style: 'margin-left:8px',
-      label: 'Pay $499 one-time — Get Verified'
-    })) + '</div>' +
+    '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate. The free claim is above. Featured and Verified are optional.</p></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching ' + (shownCountry ? 'across the ' + esc(shownCountry) + ' and regional manufacturing base' : 'across the regional manufacturing base') + '.</p>' +

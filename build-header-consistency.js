@@ -49,6 +49,10 @@ function isNested(file) {
   return file.split(path.sep).length > 1 && file !== path.basename(file);
 }
 
+function shadowsDirectory(file) {
+  return require('./lib/shadow-asset-paths').isShadowPage(file);
+}
+
 function locateSiteChrome(html) {
   const skipRe = /<a\s+class="skip-link"[^>]*>[\s\S]*?<\/a>/;
   const skipMatch = skipRe.exec(html);
@@ -151,17 +155,18 @@ function main() {
     let html = fs.readFileSync(file, 'utf8');
     const original = html;
     const nested = isNested(file);
+    const absChrome = nested || shadowsDirectory(file);
 
     if (!skipHeader) {
       const loc = locateSiteChrome(html);
       if (!loc) { skipped += 1; return; }
-      const nextHead = nested ? ABS : REL;
+      const nextHead = absChrome ? ABS : REL;
       html = html.slice(0, loc.start) + nextHead + html.slice(loc.end).replace(/^\s*\n/, '\n');
       html = ensureTpNavCss(html);
       html = dedupeChromeScripts(html);
     }
 
-    html = ensureAffiliateFooter(html, nested);
+    html = ensureAffiliateFooter(html, absChrome);
     if (html === original) {
       if (skipHeader) skipped += 1;
       else unchanged += 1;

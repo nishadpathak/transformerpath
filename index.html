@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="media/power-transformer-3d-poster-800.jpg" imagesrcset="media/power-transformer-3d-poster-800.jpg 800w, media/power-transformer-3d-poster.jpg 1280w" imagesizes="100vw" media="(min-width: 761px)" fetchpriority="high">
+<link rel="preload" as="image" href="media/power-transformer-3d-poster-800.jpg" imagesrcset="media/power-transformer-3d-poster-800.jpg 800w, media/power-transformer-3d-poster.jpg 1280w" imagesizes="100vw" media="(min-width: 769px)" fetchpriority="high">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Syne:wght@700;800&display=optional"></noscript>
 <link rel="stylesheet" href="style.css?v=14">
@@ -52,7 +52,7 @@
    then the keyword ticker underneath it, after the primary homepage tasks.
    Wider screens do not add a second hero image. */
 .home-hero-banner { display: none; }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .home-hero-banner {
     display: block;
     width: 100%;
@@ -310,7 +310,7 @@
   .hero-stage__copy{ max-width:40rem; }
 }
 /* On phones the primary tasks need the first screen, not the desktop poster. */
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .hero-stage__viz,
   .hero-stage__poster,
   .hero-stage__scrim { display: none; }
@@ -391,18 +391,11 @@
       <span id="heroVideoTitle">TransformerPath — platform features tour</span>
       <button type="button" id="heroVideoClose" aria-label="Close platform tour">×</button>
     </div>
-    <video
-      id="heroVideo"
-      controls
-      playsinline
-      preload="none"
-      poster="media/platform-features-poster.jpg"
-      src="media/platform-features-tour.mp4">
-    </video>
+    <div id="heroVideoSlot"></div>
   </div>
 </dialog>
 
-<img class="home-hero-banner" src="brand/hero-800.jpg" srcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" sizes="(max-width: 760px) 100vw, 800px" width="1774" height="887" loading="lazy" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
+<img class="home-hero-banner" src="brand/hero-800.jpg" srcset="brand/hero-800.jpg 800w, brand/hero.jpg 1774w" sizes="(max-width: 768px) 100vw, 800px" width="1774" height="887" loading="lazy" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
 <div class="ticker" aria-label="Market and industry headlines">
   <div class="ticker-inner" id="ticker"></div>
 </div>
@@ -1234,26 +1227,37 @@ if('IntersectionObserver' in window){
 <script src="analytics.js?v=8" defer></script>
 <script src="site-stats.js?v=9" defer></script>
 <script src="material-latest.js?v=8" defer></script>
-<script src="tp-webgl-gate.js" defer></script>
-<script src="tp-canvas-scroll.js"></script>
 <script>
-/* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required. */
+/* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required.
+   At 768px and below, and when reduced motion is requested, the static poster
+   stays and the WebGL gate, canvas helper, and hero-3d document are not loaded. */
 (function(){
   function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function loadScript(src){
+    return new Promise(function(resolve, reject){
+      var s=document.createElement('script');
+      s.src=src;
+      s.onload=function(){ resolve(); };
+      s.onerror=function(){ reject(); };
+      document.body.appendChild(s);
+    });
+  }
   ready(function(){
-    if(window.TPCanvasScroll) TPCanvasScroll.installParentScrollRelay();
     var stage=document.querySelector('.hero-stage');
     var viz=document.getElementById('heroViz');
     var note=document.getElementById('hero3dNote');
     var hint=document.getElementById('hero3dHint');
+    var phone=window.matchMedia('(max-width: 768px)').matches;
+    var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Phones and reduced-motion use the static poster. Do not fetch the 3D library.
+    if(!viz||!stage || phone || reduced) return;
+    loadScript('tp-webgl-gate.js').then(function(){ return loadScript('tp-canvas-scroll.js'); }).then(function(){
+    if(window.TPCanvasScroll) TPCanvasScroll.installParentScrollRelay();
     if(viz && hint){
       var showHint=function(){ hint.hidden=false; hint.textContent='Ctrl + scroll to zoom'; };
       viz.addEventListener('pointerenter', showHint, {once:true});
       viz.addEventListener('mouseenter', showHint, {once:true});
     }
-    // The desktop preview is hidden at phone widths; the explicit explorer
-    // link works there without downloading a hidden interactive model.
-    if(!viz||!stage || window.matchMedia('(max-width: 760px)').matches) return;
     var gate=window.TPWebGL;
     var started=false;
     function unavailable(detail){
@@ -1299,6 +1303,7 @@ if('IntersectionObserver' in window){
       if('requestIdleCallback' in window) requestIdleCallback(kick,{timeout:2500});
       else setTimeout(kick,1800);
     }
+  }).catch(function(){});
   });
 })();
 </script>
@@ -1307,14 +1312,30 @@ if('IntersectionObserver' in window){
 <script>
 (function(){
   var modal = document.getElementById('heroVideoModal');
-  var video = document.getElementById('heroVideo');
   var openBtn = document.getElementById('heroWatchBtn');
   var closeBtn = document.getElementById('heroVideoClose');
-  if(!modal || !video || !openBtn || !closeBtn) return;
+  var TOUR = 'media/platform-features-tour.mp4';
+  if(!modal || !openBtn || !closeBtn) return;
+  function ensureVideo(){
+    var video = document.getElementById('heroVideo');
+    if(video) return video;
+    var slot = document.getElementById('heroVideoSlot');
+    if(!slot) return null;
+    video = document.createElement('video');
+    video.id = 'heroVideo';
+    video.controls = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.preload = 'none';
+    video.poster = 'media/platform-features-poster.jpg';
+    video.src = TOUR;
+    slot.appendChild(video);
+    return video;
+  }
   if(typeof modal.showModal !== 'function'){
     var tourLink = document.createElement('a');
     tourLink.className = openBtn.className;
-    tourLink.href = video.getAttribute('src');
+    tourLink.href = TOUR;
     tourLink.textContent = openBtn.textContent.trim();
     openBtn.replaceWith(tourLink);
     return;
@@ -1322,7 +1343,8 @@ if('IntersectionObserver' in window){
   var lastFocus = null;
   var previousOverflow = '';
   function openModal(){
-    if(modal.open) return;
+    var video = ensureVideo();
+    if(modal.open || !video) return;
     lastFocus = document.activeElement;
     previousOverflow = document.body.style.overflow;
     modal.showModal();
@@ -1338,7 +1360,8 @@ if('IntersectionObserver' in window){
   closeBtn.addEventListener('click', function(){ modal.close(); });
   modal.addEventListener('click', function(e){ if(e.target === modal) modal.close(); });
   modal.addEventListener('close', function(){
-    video.pause();
+    var video = document.getElementById('heroVideo');
+    if(video) video.pause();
     document.body.style.overflow = previousOverflow;
     if(lastFocus && lastFocus.focus) lastFocus.focus();
   });

@@ -117,7 +117,7 @@ ${HEAD}
 
   <div class="filter-bar">
     <div class="filter-row">
-      <input type="search" id="medSearch" class="search-input" placeholder="Search publication, publisher, or subject (e.g. Transformers Magazine, IEEE, T&D World, CIGRE)...">
+      <input type="search" id="medSearch" class="search-input" placeholder="Search publication, publisher, or subject (e.g. IEEE, T&D World, CIGRE)...">
       <select id="medType" class="select-input">
         <option value="">All Publication Types</option>
         <option value="Trade">Trade Magazines &amp; Portals</option>

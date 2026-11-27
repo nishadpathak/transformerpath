@@ -40,6 +40,7 @@ const { stampHtml } = require('./adsense-inject');
 const { ensureLegalFooter } = require('./lib/legal-footer');
 const { ensureSiteX, chromeGaps } = require('./lib/site-x');
 const { ensureSkipTarget } = require('./lib/skip-target');
+const { rootAbsoluteAssets, isShadowPage } = require('./lib/shadow-asset-paths');
 
 const DIST = 'dist';
 
@@ -184,7 +185,16 @@ const INTERNAL_ROOT_HTML = new Set(['gcc-weekly-pack.html']);
 for (const f of fs.readdirSync('.')) {
   if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
   if (INTERNAL_ROOT_HTML.has(f)) continue;
-  if (f.endsWith('.html')) { copyFile(f, f); count++; }
+  if (f.endsWith('.html')) {
+    copyFile(f, f);
+    if (isShadowPage(f)) {
+      const dest = path.join(DIST, f);
+      const html = fs.readFileSync(dest, 'utf8');
+      const next = rootAbsoluteAssets(html);
+      if (next !== html) fs.writeFileSync(dest, next);
+    }
+    count++;
+  }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }
 
