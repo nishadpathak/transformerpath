@@ -4,6 +4,7 @@
 const fs = require('fs');
 const { isOfficialProcurementUrl, isAggregatorUrl, portalZone } = require('../lib/tender-sources');
 const { validateNotice } = require('../lib/tender-notices');
+const { classifyOpenDeadline } = require('../lib/deadline');
 
 let failed = 0;
 function check(label, pass, detail) {
@@ -49,7 +50,8 @@ notices.forEach(function (notice) {
   check(notice.official_reference + ' is published', !!row);
   if (!row) return;
   check(notice.official_reference + ' keeps the close instant', row.close_at === notice.close_at);
-  check(notice.official_reference + ' is open', row.status === 'OPEN' || row.status === 'CLOSING_SOON', row.status);
+  const expected = classifyOpenDeadline(row.close_at || notice.close_at);
+  check(notice.official_reference + ' status follows the close instant', row.status === expected, row.status + ' vs ' + expected);
   check(notice.official_reference + ' source is official', isOfficialProcurementUrl(row.official_procurement_url) && !isAggregatorUrl(row.official_procurement_url));
   const slug = String(row.title).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
     .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
@@ -58,7 +60,9 @@ notices.forEach(function (notice) {
   check(notice.official_reference + ' page shows the buyer portal zone and Dubai',
     page.indexOf('(' + buyerZone + ')') !== -1 && page.indexOf('(Asia/Dubai)') !== -1);
   check(notice.official_reference + ' page links the official URL', page.indexOf(notice.official_source_url) !== -1);
-  check(notice.official_reference + ' page is indexable', /noindex/i.test(page) === false);
+  const closed = expected === 'CLOSED';
+  check(notice.official_reference + (closed ? ' page is not indexable after the close instant' : ' page is indexable'),
+    /noindex/i.test(page) === closed);
 });
 
 check('no aggregator is the listed source', tenders.every(function (t) {
