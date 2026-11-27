@@ -504,7 +504,9 @@ function metaFromLead(text) {
 const UPCOMING_AS_OF = platformToday();
 function eventsFor(rec) {
   const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
+  const blockedEvent = require('./lib/blocked-sources').isBlockedEvent;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
+    .filter(function (ev) { return !blockedEvent(ev); })
     .filter(function (ev) { return isUpcoming(ev, UPCOMING_AS_OF); })
     .sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 5);
 }

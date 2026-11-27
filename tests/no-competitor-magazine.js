@@ -4,7 +4,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { BLOCKED_SOURCE_HOSTS } = require('../lib/blocked-sources');
+const { BLOCKED_SOURCE_HOSTS, isBlockedEvent } = require('../lib/blocked-sources');
 
 const ROOT = path.join(__dirname, '..');
 const SKIP = new Set(['.git', 'node_modules', 'dist', 'vendor']);
@@ -19,6 +19,20 @@ function walk(dir, out) {
     else if (TEXT.test(ent.name)) out.push(p);
   }
   return out;
+}
+
+const conference = 'https://conference.' + BLOCKED_SOURCE_HOSTS[0] + '/conference/industry-navigator-2027/';
+if (!isBlockedEvent({ official_url: conference, name: 'Industry Navigator 2027', series_slug: 'industry-navigator' })) {
+  console.error('events pipeline did not block a Merit Media conference');
+  process.exit(1);
+}
+if (!isBlockedEvent({ name: 'Industry Navigator 2028', id: 'industry-navigator-2028' })) {
+  console.error('events pipeline did not block an Industry Navigator edition');
+  process.exit(1);
+}
+if (isBlockedEvent({ name: 'CIGRE 2027', official_url: 'https://www.cigre.org/' })) {
+  console.error('events pipeline blocked an unrelated event');
+  process.exit(1);
 }
 
 const hits = [];
