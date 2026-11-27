@@ -340,6 +340,7 @@
 
 <script src="analytics.js?v=8" defer></script>
 <script src="tp-parts.js?v=1"></script>
+<script src="/equipment/pad-mount.js?v=1" defer></script>
 <script>
 /* ====== TECHNICAL SPECIFICATION & SCHEDULE BUILDER (TRACK 1) ====== */
 (function(){
@@ -496,6 +497,14 @@
   // Query parameter auto-population
   function loadQueryParams(){
     var p = new URLSearchParams(window.location.search);
+    if(p.has('equipment')){
+      // Like the parts flow, the hosted build defers the public index. Do not apply legacy query fields here.
+      var fromEquipment = function(){ if(window.TPPadMount) window.TPPadMount.rfqPrefill(document,p); };
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fromEquipment, {once:true});
+      else fromEquipment();
+      renderSchedule();
+      return;
+    }
     if(p.has('parts')){
       if(p.getAll('parts').length === 1){
         // The static publisher defers external scripts. Wait for the reviewed part index.
