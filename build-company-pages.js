@@ -656,8 +656,7 @@ function page(r, slug) {
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + [r.flag || '', shownCountry ? '<b style="color:var(--text)">' + esc(shownCountry) + '</b>' : '', shownCity ? esc(shownCity) : '', '<span style="color:var(--accent)">' + verify + '</span>', r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : ''].filter(Boolean).join(' · ') + '</p>' +
     (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
     (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
-    (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
-    '<p class="claim-listing-row" style="margin:10px 0 0">' + claimListing.linkHtml(slug) + '</p>' +
+    paidListings.profileClaimBlockHtml({ companySlug: slug, trackName: r.name, earned: earnedVerified }) +
     exhibitorTags.block(exhibitorTags.forSlug(slug)) +
     trust +
     completenessCard +
@@ -681,16 +680,7 @@ function page(r, slug) {
     (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same country, not evidenced as about this company.</p><ul>' + regionalHtml + '</ul>' : '') +
     '<h2 data-upcoming-as-of="' + UPCOMING_AS_OF + '">Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
-    '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
-    claimListing.linkHtml(slug) + ' ' +
-    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '&slug=' + encodeURIComponent(slug) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
-    (earnedVerified ? '' : paidListings.verifiedManufacturerPayHtml({
-      companySlug: slug,
-      trackName: r.name,
-      formHref: '../../claim-profile.html?paid=verified_manufacturer#claimForm',
-      style: 'margin-left:8px',
-      label: 'Pay $499 one-time — Get Verified'
-    })) + '</div>' +
+    '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate. The free claim is above. Featured and Verified are optional.</p></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching ' + (shownCountry ? 'across the ' + esc(shownCountry) + ' and regional manufacturing base' : 'across the regional manufacturing base') + '.</p>' +

@@ -580,7 +580,6 @@ function renderManufacturers(html) {
   try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[censusNameKey(c.name)] = c.slug; }); } catch (e) {}
   const csl = (m) => CSMAP[censusNameKey(m[0])];
   const paidListings = require('./lib/paid-listings');
-  const claimListing = require('./lib/claim-listing');
   const eventBadges = require('./event-badges');
   const availability = require('./lib/availability');
   const availabilityBySlug = availability.load();
@@ -595,16 +594,12 @@ function renderManufacturers(html) {
     }
     return '';
   };
-  const verifyCtas = (name, slug) => {
-    const claim = claimListing.linkHtml(slug);
-    const paid = (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc))
-      ? ''
-      : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
-    if (!paid) {
-      return '<div class="mfr-verify-ctas" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%;min-width:0">' + claim + '</div>';
-    }
-    return paid.replace(/(<div class="mfr-verify-ctas"[^>]*>)/, '$1' + claim);
-  };
+  const verifyCtas = (name, slug) => paidListings.profileClaimBlockHtml({
+    companySlug: slug,
+    trackName: name,
+    earned: !!(slug && paidListings.isVerifiedManufacturer(slug, paidDoc)),
+    compact: true
+  });
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
   const ownedProfiles = ownedProfileSlugs(DATA, CSMAP);
   const visibleMakers = (list) => (list || []).filter((m) => !aliasRowHidden(m[0], CSMAP, ownedProfiles));

@@ -72,7 +72,7 @@ const unsourced = sourcedFacilityId(co('cq'), { title: 'Shanghai plant', snippet
 check('unsourced census row is not a factory event', unsourced == null);
 
 const INDIA_URL = 'https://www.cnbctv18.com/business/exclusive-hitachi-energy-eyes-more-india-investments-amid-global-power-grid-demand-surge-20011073.htm';
-const HEFEI_URL = 'https://transformer-magazine.com/news/hitachi-energy-invests-300-m-in-china/';
+const HEFEI_URL = 'https://36kr.jp/500659/';
 const devs = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
 function holders(url) {
   const out = [];

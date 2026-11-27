@@ -275,7 +275,7 @@ const report = {
       'English-language news',
       'Google-indexed articles',
       'manufacturer press releases',
-      'existing RSS/news feeds (tdworld, power-eng, transformers-magazine, etc. — no GCC portals)'
+      'existing RSS/news feeds (tdworld, power-eng, and the other feeds in the intel source — no GCC portals)'
     ],
     under_covered: [
       'utility procurement portals (DEWA, SEWA, KAHRAMAA)',

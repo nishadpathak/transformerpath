@@ -13,6 +13,7 @@
      2. Public transformer / power-industry RSS feeds (keyless fallback) — so
         the page auto-updates even before an API key is configured. */
 
+const { isBlockedSource } = require('../../lib/blocked-sources');
 const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
 const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
@@ -31,7 +32,6 @@ const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles'
 const RSS_FEEDS = [
   { url: 'https://www.tdworld.com/rss.xml',                  lang: 'en', region: null },
   { url: 'https://www.power-eng.com/rss.xml',                lang: 'en', region: null },
-  { url: 'https://www.transformers-magazine.com/feed',       lang: 'en', region: null },
   { url: 'https://www.powermag.com/feed/',                   lang: 'en', region: null },
   // Multi-language market coverage (energy / grid news, transformer-adjacent)
   { url: 'https://www.pv-magazine-mexico.com/feed/',         lang: 'es', region: 'Latin America' },
@@ -173,6 +173,7 @@ async function fetchEventRegistry() {
       const body = article.body || '';
 
       /* Someone else's advertising is not our news. */
+      if (isBlockedSource(article.url) || isBlockedSource(article.source && article.source.title)) { dropped.ads++; return; }
       if (looksLikeAd(article.title, body, article.url)) { dropped.ads++; return; }
 
       /* Aggregators syndicate the same story under several sources. */
@@ -208,6 +209,7 @@ async function fetchRSS() {
   let dropped = { ads: 0, dupes: 0 };
   for (const feed of RSS_FEEDS) {
     try {
+      if (isBlockedSource(feed.url)) continue;
       const r = await fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0 TransformerPath' } });
       if (!r.ok) { console.warn('RSS http', r.status, feed.url); continue; }
       const xml = await r.text();
@@ -220,6 +222,7 @@ async function fetchRSS() {
         if (!title) continue;
 
         /* Someone else's advertising is not our news. */
+        if (isBlockedSource(link) || isBlockedSource(title)) { dropped.ads++; continue; }
         if (looksLikeAd(title, desc, link)) { dropped.ads++; continue; }
 
         /* The same story reaches us from several feeds. */
@@ -256,7 +259,7 @@ function finalize(regions, sourceName, configured) {
   const grouped = REGION_LABELS
     .map((label) => ({
       label,
-      items: (regions[label] || []).filter((it) => (it.url ? !seen.has(it.url) && seen.add(it.url) : true)).slice(0, 5),
+      items: (regions[label] || []).filter((it) => !isBlockedSource(it.url) && !isBlockedSource(it.src) && (it.url ? !seen.has(it.url) && seen.add(it.url) : true)).slice(0, 5),
     }))
     .filter((r) => r.items.length > 0);
 
