@@ -192,7 +192,13 @@ input, select, textarea {
   font-size: .95rem;
   background: var(--card);
   color: var(--text);
+  -webkit-text-fill-color: var(--text);
   border: 1px solid var(--border);
+}
+select option {
+  color: var(--text);
+  background-color: var(--card);
+  -webkit-text-fill-color: var(--text);
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);

@@ -138,14 +138,14 @@
     <h2>EU core-duty estimator</h2>
     <p>Commission Implementing Regulation (EU) 2026/2133 of 18 September 2026 sets a provisional safeguard duty of EUR 1,140 per tonne of the core incorporated in a covered transformer. The rate uses the declared core weight. It does not use the weight of the whole unit, and it does not apply to all electrical steel.</p>
     <p>Loose grain-oriented steel (CN 7225 11 00 and 7226 11 00) and standalone laminations or cores (CN 8504 90 13) follow a price-threshold and quota rule. This module does not compute those with the EUR 1,140 rate.</p>
-    <p>The regulation is dated 18 September 2026 and enters into force on 25 September 2026. <strong>26 February 2027 is the provisional end date of the measure. It is not a confirmed decision date.</strong> Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ%3AL_202602133">OJ L 2026/2133 on EUR-Lex</a>.</p>
+    <p>The regulation is dated 18 September 2026 and enters into force on 25 September 2026. <strong>26 February 2027 is the provisional end date of the measure. It is not a confirmed decision date.</strong> Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202602133">OJ L 2026/2133 on EUR-Lex</a>.</p>
     <form id="duty-form">
       <div class="duty-grid">
         <div><label for="duty-code">Product code (CN or HS)</label><input id="duty-code" name="code" inputmode="numeric" autocomplete="off" placeholder="for example 8504 23 00" aria-describedby="duty-code-help"><p id="duty-code-help" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">Eight-digit CN, or a six-digit heading only when the regulation lists one CN line under it.</p></div>
       </div>
       <div class="duty-grid two">
-        <div><label for="duty-origin">Country of origin</label><input id="duty-origin" name="origin" autocomplete="off" placeholder="Origin name as in the regulation"></div>
-        <div><label for="duty-weight">Declared core weight</label><input id="duty-weight" name="weight" inputmode="decimal" autocomplete="off" placeholder="Core only, not the whole unit" aria-describedby="duty-weight-help"><p id="duty-weight-help" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">1.5 and 1,5 are the same. 1,500 is one thousand five hundred.</p></div>
+        <div><label for="duty-origin">Country of origin</label><select id="duty-origin" name="origin"><option value="">Select origin</option></select></div>
+        <div><label for="duty-weight">Declared core weight</label><input id="duty-weight" name="weight" inputmode="decimal" autocomplete="off" placeholder="Core only, not the whole unit" aria-describedby="duty-weight-help"><p id="duty-weight-help" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">1.5 and 1,5 are the same. 1,500 is one thousand five hundred. 1.500 asks you to confirm which you mean.</p></div>
       </div>
       <div class="duty-grid">
         <div><label for="duty-unit">Weight unit</label>
@@ -161,12 +161,13 @@
     <div id="duty-out" class="duty-card" hidden>
       <p class="duty-result" id="duty-result"></p>
       <p id="duty-reason"></p>
+      <div id="duty-confirm" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
     </div>
   </section>
   <section class="duty-card">
     <h2>When this module shows a number</h2>
-    <p>A number is the declared core tonnes multiplied by EUR 1,140. It is shown only when the code is a transformer CN named in Article 1(3) and the origin is one the regulation subjects to the laminations-and-cores measure. That set is the Annex III.2 column for laminations and cores, plus Japan, the Republic of Korea, Switzerland, and Taiwan, which the regulation names and does not exclude.</p>
-    <p>An origin the text exempts, a code for loose steel or a standalone core, a code that is not one of those transformer lines, or an origin the text does not match, returns <strong>Check with your broker</strong>. No duty figure is shown in those cases. Codes and origins are taken from the regulation linked above. An origin that text does not name is not guessed.</p>
+    <p>A number is the declared core tonnes multiplied by EUR 1,140. Article 1 applies that rate to the transformer CN codes in Article 1(3). An origin is covered unless Article 5 or Annex III excludes it. Article 5 excludes Iceland, Liechtenstein, Norway, Kenya, and Ukraine. Annex III excludes other developing-country origins, except China, Türkiye, and the United Arab Emirates for laminations and cores inside transformers.</p>
+    <p>An excluded origin, a code for loose steel or a standalone core, a code that is not one of those transformer lines, or an origin this page does not recognise, returns <strong>Check with your broker</strong>. No duty figure is shown in those cases.</p>
     <p>Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
   </section>
 </main>
@@ -194,46 +195,69 @@
 </footer>
 <script src="/lib/eu-core-duty.js" defer></script>
 <script>
-document.getElementById('duty-form').addEventListener('submit', function (event) {
-  event.preventDefault();
+document.addEventListener('DOMContentLoaded', function () {
   var api = window.TPCoreDuty;
-  var err = document.getElementById('duty-error');
-  var out = document.getElementById('duty-out');
-  var result = document.getElementById('duty-result');
-  var reason = document.getElementById('duty-reason');
-  function showError(message) {
-    err.hidden = false;
-    err.textContent = message;
-    out.hidden = true;
+  var origin = document.getElementById('duty-origin');
+  if (api && origin) {
+    api.countryOptions().forEach(function (name) {
+      var option = document.createElement('option');
+      option.value = name;
+      option.textContent = name;
+      origin.appendChild(option);
+    });
   }
-  if (!api) {
-    showError('The estimator did not load. Refresh the page and try again.');
-    return;
-  }
-  var row = api.estimate({
-    code: document.getElementById('duty-code').value,
-    origin: document.getElementById('duty-origin').value,
-    weight: document.getElementById('duty-weight').value,
-    unit: document.getElementById('duty-unit').value
+  document.getElementById('duty-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    var err = document.getElementById('duty-error');
+    var out = document.getElementById('duty-out');
+    var result = document.getElementById('duty-result');
+    var reason = document.getElementById('duty-reason');
+    var confirm = document.getElementById('duty-confirm');
+    function showError(message) {
+      err.hidden = false;
+      err.textContent = message;
+      out.hidden = true;
+    }
+    if (!api) {
+      showError('The estimator did not load. Refresh the page and try again.');
+      return;
+    }
+    var row = api.estimate({
+      code: document.getElementById('duty-code').value,
+      origin: origin.value,
+      weight: document.getElementById('duty-weight').value,
+      unit: document.getElementById('duty-unit').value
+    });
+    err.hidden = true;
+    out.hidden = false;
+    confirm.hidden = true;
+    confirm.innerHTML = '';
+    if (row.status === 'estimate') {
+      result.textContent = 'EUR ' + api.formatGrouped(row.amountEur);
+      reason.textContent = api.formatGrouped(row.tonnes) + ' tonnes of declared core weight × EUR 1,140 per tonne. ' + row.reason;
+    } else if (row.status === 'need_weight') {
+      result.textContent = 'Declared core weight needed';
+      reason.textContent = row.reason;
+    } else if (row.status === 'confirm_weight') {
+      result.textContent = 'Confirm the weight';
+      reason.textContent = row.reason;
+      confirm.hidden = false;
+      [row.decimalEntered, row.groupedEntered].forEach(function (value) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-outline';
+        button.textContent = api.formatGrouped(value) + ' ' + row.unitLabel;
+        button.addEventListener('click', function () {
+          document.getElementById('duty-weight').value = String(value);
+          document.getElementById('duty-form').requestSubmit();
+        });
+        confirm.appendChild(button);
+      });
+    } else {
+      result.textContent = row.result;
+      reason.textContent = row.reason;
+    }
   });
-  err.hidden = true;
-  out.hidden = false;
-  if (row.status === 'estimate') {
-    var amount = row.amountEur;
-    var text = amount.toFixed(amount % 1 === 0 ? 0 : 2);
-    var bits = text.split('.');
-    bits[0] = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    var tonnes = row.tonnes;
-    var tonneText = (Math.round(tonnes * 1000) / 1000).toString();
-    result.textContent = 'EUR ' + bits.join('.');
-    reason.textContent = tonneText + ' tonnes of declared core weight × EUR 1,140 per tonne. ' + row.reason;
-  } else if (row.status === 'need_weight') {
-    result.textContent = 'Declared core weight needed';
-    reason.textContent = row.reason;
-  } else {
-    result.textContent = row.result;
-    reason.textContent = row.reason;
-  }
 });
 </script>
 <script src="/analytics.js?v=7" defer></script>

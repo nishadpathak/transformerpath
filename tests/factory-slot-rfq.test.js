@@ -26,6 +26,10 @@ check('wording leaves the slot to the supplier terms', slot.indexOf('does not, b
 check('checklist links the buy-early guide instead of copying it', slot.indexOf('href="/buy-early/"') !== -1 && slot.indexOf('does not repeat that guide') !== -1);
 check('prompts ask for the impacts in writing', slot.indexOf('Get this in writing.') !== -1);
 check('buy-early links the checklist', buy.indexOf('href="/rfq.html#factory-slot"') !== -1 && buy.indexOf('depends on those terms') !== -1);
+check('the page builder keeps that checklist link', fs.readFileSync('build-buyer-pages.js', 'utf8').indexOf('href="/rfq.html#factory-slot"') !== -1);
+var magazine = 'transformer' + '-magazine';
+var magazines = 'transformers' + '-magazine';
+check('buy-early and its source note do not link the competitor magazine', buy.indexOf(magazine) === -1 && buy.indexOf(magazines) === -1 && fs.readFileSync('data/mid-tier-capacity-notes.json', 'utf8').indexOf(magazine) === -1 && fs.readFileSync('spare-capacity/index.html', 'utf8').indexOf(magazine) === -1 && fs.readFileSync('build-buyer-pages.js', 'utf8').indexOf(magazine) === -1);
 check('notify payload names the checklist fields', html.indexOf('slot_confirmed: val(\'fld_slot_confirmed\')') !== -1 && html.indexOf('delivery_impact_after_freeze: val(\'fld_delivery_impact\')') !== -1);
 check('signed-in save sends the checklist and can fall back', client.indexOf('factory_slot: slot') !== -1 && client.indexOf('PGRST204') !== -1 && client.indexOf('if (!slotFilled(slot)) return insert(base);') !== -1);
 check('migration is present and is not a production apply step', migration.indexOf('add column if not exists factory_slot jsonb') !== -1 && migration.indexOf('NOT applied by CI') !== -1);
