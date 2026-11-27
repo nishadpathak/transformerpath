@@ -50,9 +50,7 @@ function isNested(file) {
 }
 
 function shadowsDirectory(file) {
-  if (path.dirname(file) !== '.') return false;
-  const folder = file.replace(/\.html$/, '');
-  try { return fs.statSync(folder).isDirectory(); } catch (e) { return false; }
+  return require('./lib/shadow-asset-paths').isShadowPage(file);
 }
 
 function locateSiteChrome(html) {
