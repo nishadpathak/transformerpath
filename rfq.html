@@ -302,6 +302,24 @@
           <div><label for="fld_dest">Required delivery destination</label><input id="fld_dest" type="text" name="destination" placeholder="City / country, e.g. Riyadh, Saudi Arabia"></div>
           <div><label for="fld_budget">Budget (optional)</label><input id="fld_budget" type="text" name="budget" placeholder="USD / EUR"></div>
         </div>
+        <fieldset id="factory-slot" style="border:1px solid var(--border);border-radius:12px;padding:14px 14px 4px;margin:0 0 16px;min-width:0;width:100%;max-width:100%;box-sizing:border-box">
+          <legend style="font-weight:700;color:var(--ink);padding:0 6px">Factory slot checklist (optional)</legend>
+          <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px">How buyers reserve a slot and freeze a specification is on the <a href="/buy-early/">buy-early guide</a>. This checklist records the supplier's written terms. It does not repeat that guide. A design change after the freeze does not, by itself, decide whether the slot stays. The effect on price, and the effect on delivery or the slot, depend on the supplier's terms.</p>
+          <div class="row">
+            <div><label for="fld_slot_confirmed">Written slot confirmation</label><select id="fld_slot_confirmed" name="slot_confirmed">
+              <option value="">Not recorded</option>
+              <option value="yes">Yes, the supplier confirmed the slot in writing</option>
+              <option value="no">No written confirmation yet</option>
+            </select></div>
+            <div><label for="fld_slot_confirmed_on">Confirmation date</label><input id="fld_slot_confirmed_on" type="date" name="slot_confirmed_on" aria-describedby="slotDateHelp"><p id="slotDateHelp" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">The date on the supplier's written confirmation, if you have one.</p></div>
+          </div>
+          <div style="margin-bottom:16px"><label for="fld_slot_reference">Confirmation reference or attachment note</label><input id="fld_slot_reference" type="text" name="slot_reference" placeholder="Reference or attachment note"><p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">This form does not upload files. Email the confirmation to <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a> with the RFQ reference in the subject.</p></div>
+          <div class="row">
+            <div><label for="fld_spec_freeze">Spec-freeze deadline</label><input id="fld_spec_freeze" type="date" name="spec_freeze_date" aria-describedby="freezeHelp"><p id="freezeHelp" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">The date by which the supplier asks for the design to be frozen. Ask for it in writing.</p></div>
+          </div>
+          <div style="margin-bottom:16px"><label for="fld_price_impact">Price impact if the design changes after the freeze</label><textarea id="fld_price_impact" name="price_impact_after_freeze" rows="3" placeholder="What the supplier says happens to price. Get this in writing."></textarea></div>
+          <div style="margin-bottom:16px"><label for="fld_delivery_impact">Delivery or slot impact if the design changes after the freeze</label><textarea id="fld_delivery_impact" name="delivery_impact_after_freeze" rows="3" placeholder="What the supplier says happens to delivery or the slot. The impact depends on the supplier's terms. Get this in writing."></textarea></div>
+        </fieldset>
         <p style="font-size:.82rem;color:var(--muted);margin:0 0 16px"><strong>Have a specification file?</strong> After submitting, email it to <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a> with the RFQ reference in the subject. This form does not upload files.</p>
         <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Buyers submit free. Enter a rating or a voltage. If the automatic checks pass, we match your requirement and can offer it to at most 5 suppliers. Your name, email, and phone are never shown on this page, and this check does not release them.</p>
         <label style="display:block;font-weight:600;font-size:.9rem;margin:0 0 14px"><input id="fld_consent" type="checkbox" name="consent" value="yes" required> I agree that TransformerPath may send my name, work email, company, and the technical fields in this RFQ to at most 5 matched suppliers so they can respond to this request. This disclosure is to those suppliers, not a processor relationship. I can withdraw consent, and further sends will stop.</label>
@@ -609,7 +627,7 @@
     var stamp=document.getElementById('fld_consent_at'); if(stamp && !stamp.value) stamp.value=new Date().toISOString();
     var reference=ref();
     if(window.TP && window.TP.saveRfq){
-      window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest")});
+      window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest"), slot_confirmed:val("fld_slot_confirmed"), slot_confirmed_on:val("fld_slot_confirmed_on"), slot_reference:val("fld_slot_reference"), spec_freeze_date:val("fld_spec_freeze"), price_impact_after_freeze:val("fld_price_impact"), delivery_impact_after_freeze:val("fld_delivery_impact")});
     }
     var data=new FormData(f);
     var stored=fetch('/', {
@@ -627,6 +645,9 @@
         rating: val('fld_rating'), voltage: val('fld_voltage'), standard: val('fld_standard'),
         details: val('fld_details'), deadline: val('fld_deadline'), delivery_by: val('fld_delivery_by'), budget: val('fld_budget'),
         destination: val('fld_dest'), supplier_shortlist: val('fld_supplier_shortlist'),
+        slot_confirmed: val('fld_slot_confirmed'), slot_confirmed_on: val('fld_slot_confirmed_on'),
+        slot_reference: val('fld_slot_reference'), spec_freeze_date: val('fld_spec_freeze'),
+        price_impact_after_freeze: val('fld_price_impact'), delivery_impact_after_freeze: val('fld_delivery_impact'),
         consent: 'yes', consent_version: val('fld_consent_version'),
         consent_at: val('fld_consent_at')
       })

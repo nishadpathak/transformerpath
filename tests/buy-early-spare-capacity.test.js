@@ -23,8 +23,8 @@ const stripe = paid.VERIFIED_MANUFACTURER_PAYMENT_LINK;
 
 console.log('=== BUY EARLY AND SPARE CAPACITY ===');
 check('seventeen mid-tier profiles', rows.length === 17, String(rows.length));
-check('one sourced capacity note', noted.length === 1, noted.map(function (r) { return r.slug; }).join(','));
-check('the sourced note is Virginia', noted.map(function (r) { return r.slug; }).join(',') === 'virginia-transformer-corp');
+check('two sourced capacity notes', noted.length === 2, noted.map(function (r) { return r.slug; }).join(','));
+check('notes are Virginia and SGB-SMIT', noted.map(function (r) { return r.slug; }).sort().join(',') === 'sgb-smit-group,virginia-transformer-corp');
 rows.forEach(function (row) {
   check(row.slug + ' has region, country, and voltage', !!(row.region && row.country && row.kv != null), [row.region, row.country, row.kv].join('|'));
   check(row.slug + ' uses the existing verified checkout', row.payHref.indexOf(stripe) === 0 && row.payHref.indexOf('client_reference_id=' + row.slug) !== -1, row.payHref);

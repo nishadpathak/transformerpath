@@ -70,6 +70,7 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/component-availability.js', // Availability listings, off unless the flag is on
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
+  'lib/eu-core-duty.js',        // duty checker: EU incorporated-core safeguard estimate
   'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row
   'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale

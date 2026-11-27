@@ -29,7 +29,7 @@ function envMail() {
 }
 
 // Nicely printable field order for the email body.
-const FIELD_ORDER = ['form', 'form-name', 'reference', 'name', 'company', 'email', 'phone', 'country', 'category', 'quantity', 'rating', 'voltage', 'standard', 'details', 'deadline', 'delivery_by', 'budget', 'destination', 'consent', 'consent_version', 'consent_at', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
+const FIELD_ORDER = ['form', 'form-name', 'reference', 'name', 'company', 'email', 'phone', 'country', 'category', 'quantity', 'rating', 'voltage', 'standard', 'details', 'deadline', 'delivery_by', 'budget', 'destination', 'slot_confirmed', 'slot_confirmed_on', 'slot_reference', 'spec_freeze_date', 'price_impact_after_freeze', 'delivery_impact_after_freeze', 'consent', 'consent_version', 'consent_at', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
 const OMIT = { 'bot-field': 1, bot_field: 1, consent_text: 1, attachment: 1 };
 
 function formName(data) {
@@ -73,7 +73,14 @@ function linesFor(data) {
   const rfqDates = formName(data) === 'rfq' && Object.prototype.hasOwnProperty.call(data, 'delivery_by');
   return keys.map((f) => {
     const label = rfqDates && f === 'deadline' ? 'Quote by'
-      : rfqDates && f === 'delivery_by' ? 'Delivery needed by' : null;
+      : rfqDates && f === 'delivery_by' ? 'Delivery needed by'
+      : rfqDates && f === 'slot_confirmed' ? 'Written slot confirmation'
+      : rfqDates && f === 'slot_confirmed_on' ? 'Slot confirmation date'
+      : rfqDates && f === 'slot_reference' ? 'Slot confirmation reference'
+      : rfqDates && f === 'spec_freeze_date' ? 'Spec-freeze deadline'
+      : rfqDates && f === 'price_impact_after_freeze' ? 'Price impact after the spec freeze'
+      : rfqDates && f === 'delivery_impact_after_freeze' ? 'Delivery or slot impact after the spec freeze'
+      : null;
     return fmtVal(f, data[f], label);
   }).filter(Boolean).join('\n');
 }
