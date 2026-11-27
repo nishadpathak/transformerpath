@@ -566,7 +566,7 @@
      * is reachable without editing every header. Idempotent. */
     function injectNav() {
       if (navInjected) return; navInjected = true;
-      var href = 'workspace.html';
+      var href = '/workspace.html';
       ['nav-links', 'tp-navlinks'].forEach(function (cls) {
         var nav = document.querySelector('.' + cls);
         if (!nav || nav.querySelector('[data-tp-account]')) return;

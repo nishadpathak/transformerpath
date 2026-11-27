@@ -254,7 +254,7 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
       const cardsHtml = filteredSuppliers.map(s => {
         const loc = [s.city, s.state, s.country].filter(Boolean).join(', ');
         const slug = slugify(s.name);
-        const profile = ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="supp-name" style="color:var(--accent);text-decoration:none">' + esc(s.name) + '</a>' : '<h4 class="supp-name">' + esc(s.name) + '</h4>';
+        const profile = ACC_SLUGS.has(slug) ? '<a href="/accessories/' + slug + '/" class="supp-name" style="color:var(--accent);text-decoration:none">' + esc(s.name) + '</a>' : '<h4 class="supp-name">' + esc(s.name) + '</h4>';
         return '<div class="supp-card">' +
           '<div>' +
             '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">' +
@@ -265,7 +265,7 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
             '<div class="supp-desc">' + esc(s.description) + '</div>' +
           '</div>' +
           '<div class="supp-foot">' +
-            (ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="btn btn-outline btn-sm" style="font-size:.76rem">Profile →</a>' : (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Official Website ↗</a>' : '<span></span>')) +
+            (ACC_SLUGS.has(slug) ? '<a href="/accessories/' + slug + '/" class="btn btn-outline btn-sm" style="font-size:.76rem">Profile →</a>' : (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Official Website ↗</a>' : '<span></span>')) +
             '<a href="rfq.html?company=' + encodeURIComponent(s.name) + '" class="btn btn-amber btn-sm" style="font-size:.76rem">Inquire / RFQ →</a>' +
           '</div>' +
         '</div>';

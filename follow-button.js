@@ -40,7 +40,7 @@
       buttons.forEach(function (b) {
         b.setAttribute('aria-disabled', 'true');
         b.innerHTML = 'Sign in to follow';
-        b.onclick = function () { window.location.href = 'workspace.html'; };
+        b.onclick = function () { window.location.href = '/workspace.html'; };
       });
       // One-time: listen for auth to upgrade buttons.
       if (TP && TP.onAuth) TP.onAuth(function () { refreshAll(); });
@@ -62,7 +62,7 @@
 
     buttons.forEach(function (b) {
       b.onclick = function () {
-        if (!TP.user) { window.location.href = 'workspace.html'; return; }
+        if (!TP.user) { window.location.href = '/workspace.html'; return; }
         var type = b.getAttribute('data-follow-type');
         var subject = b.getAttribute('data-follow-subject');
         var label = b.getAttribute('data-follow-label') || subject;
