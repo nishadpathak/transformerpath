@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EU core-duty estimator for transformers | TransformerPath</title>
+<meta name="description" content="Provisional EU safeguard estimate for declared core weight in a covered imported transformer. Loose steel and standalone cores use other rules. Estimate only.">
+<link rel="canonical" href="https://transformerpath.com/tools/duty-checker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="EU core-duty estimator">
+<meta property="og:description" content="Provisional EU safeguard estimate for declared core weight in a covered imported transformer. Loose steel and standalone cores use other rules. Estimate only.">
+<meta property="og:url" content="https://transformerpath.com/tools/duty-checker/">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="stylesheet" href="/tp-nav.css?v=14">
+<link rel="stylesheet" href="/tp-feedback.css?v=14">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.duty-wrap{max-width:880px;margin:0 auto;padding:8px 16px 72px;overflow-wrap:anywhere}
+.duty-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:12px 0 16px}
+.duty-grid label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.duty-grid input,.duty-grid select{width:100%;max-width:100%;box-sizing:border-box;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit}
+.duty-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.duty-card h2{margin:0 0 8px;font-size:1.05rem;color:var(--ink)}
+.duty-card p,.duty-card li{margin:0 0 8px;line-height:1.55;overflow-wrap:anywhere}
+.duty-note{background:rgba(245,166,35,.12);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0}
+.duty-result{font-size:1.35rem;font-weight:800;color:var(--ink);margin:0 0 8px}
+#duty-error{color:#b91c1c;font-weight:700}
+@media (min-width:640px){
+  .duty-grid.two{grid-template-columns:1fr 1fr}
+}
+</style>
+<script src="/consent.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/buy-early/">Buy early</a>
+          <a href="/spare-capacity/">Mid-tier makers</a>
+          <a href="/lead-times/">Lead times</a>
+          <a href="/bottlenecks/">Bottlenecks</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="/tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          
+          <a href="/standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="/google-auth-config.js" defer></script>
+  <script src="/tp-auth.js?v=1" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:48px 0 28px">
+  <div class="container">
+    <h1 style="font-size:2.05rem">Duty <span>checker</span></h1>
+    <p>The first module estimates one EU provisional safeguard: the declared core weight inside a covered imported transformer.</p>
+  </div>
+</section>
+<main id="main" class="duty-wrap">
+  <p class="duty-note" id="duty-disclaimer"><strong>This is an estimate only, not customs advice.</strong> TransformerPath is not a customs broker. Confirm the code, the origin, and the declared core weight before you rely on a figure.</p>
+  <section class="duty-card" id="eu-core-duty">
+    <h2>EU core-duty estimator</h2>
+    <p>Commission Implementing Regulation (EU) 2026/2133 of 18 September 2026 sets a provisional safeguard duty of EUR 1,140 per tonne of the core incorporated in a covered transformer. The rate uses the declared core weight. It does not use the weight of the whole unit, and it does not apply to all electrical steel.</p>
+    <p>Loose grain-oriented steel (CN 7225 11 00 and 7226 11 00) and standalone laminations or cores (CN 8504 90 13) follow a price-threshold and quota rule. This module does not compute those with the EUR 1,140 rate.</p>
+    <p>The regulation is dated 18 September 2026 and enters into force on 25 September 2026. <strong>26 February 2027 is the provisional end date of the measure. It is not a confirmed decision date.</strong> Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ%3AL_202602133">OJ L 2026/2133 on EUR-Lex</a>.</p>
+    <form id="duty-form">
+      <div class="duty-grid">
+        <div><label for="duty-code">Product code (CN or HS)</label><input id="duty-code" name="code" inputmode="numeric" autocomplete="off" placeholder="for example 8504 23 00" aria-describedby="duty-code-help"><p id="duty-code-help" style="font-size:.78rem;color:var(--muted);margin:6px 0 0">Eight-digit CN, or a six-digit heading only when the regulation lists one CN line under it.</p></div>
+      </div>
+      <div class="duty-grid two">
+        <div><label for="duty-origin">Country of origin</label><input id="duty-origin" name="origin" autocomplete="off" placeholder="Origin name as in the regulation"></div>
+        <div><label for="duty-weight">Declared core weight</label><input id="duty-weight" name="weight" inputmode="decimal" autocomplete="off" placeholder="Core only, not the whole unit"></div>
+      </div>
+      <div class="duty-grid">
+        <div><label for="duty-unit">Weight unit</label>
+          <select id="duty-unit" name="unit">
+            <option value="tonnes">tonnes</option>
+            <option value="kg">kg</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-amber" type="submit">Estimate</button>
+    </form>
+    <p id="duty-error" hidden></p>
+    <div id="duty-out" class="duty-card" hidden>
+      <p class="duty-result" id="duty-result"></p>
+      <p id="duty-reason"></p>
+    </div>
+  </section>
+  <section class="duty-card">
+    <h2>When this module shows a number</h2>
+    <p>A number is the declared core tonnes multiplied by EUR 1,140. It is shown only when the code is a transformer CN named in Article 1(3) and the origin is one the regulation subjects to the laminations-and-cores measure. That set is the Annex III.2 column for laminations and cores, plus Japan, the Republic of Korea, Switzerland, and Taiwan, which the regulation names and does not exclude.</p>
+    <p>An origin the text exempts, a code for loose steel or a standalone core, a code that is not one of those transformer lines, or an origin the text does not match, returns <strong>Check with your broker</strong>. No duty figure is shown in those cases. Codes and origins are taken from the regulation linked above. An origin that text does not name is not guessed.</p>
+    <p>Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+  </section>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="/lib/eu-core-duty.js" defer></script>
+<script>
+document.getElementById('duty-form').addEventListener('submit', function (event) {
+  event.preventDefault();
+  var api = window.TPCoreDuty;
+  var err = document.getElementById('duty-error');
+  var out = document.getElementById('duty-out');
+  var result = document.getElementById('duty-result');
+  var reason = document.getElementById('duty-reason');
+  function showError(message) {
+    err.hidden = false;
+    err.textContent = message;
+    out.hidden = true;
+  }
+  if (!api) {
+    showError('The estimator did not load. Refresh the page and try again.');
+    return;
+  }
+  var row = api.estimate({
+    code: document.getElementById('duty-code').value,
+    origin: document.getElementById('duty-origin').value,
+    weight: document.getElementById('duty-weight').value,
+    unit: document.getElementById('duty-unit').value
+  });
+  err.hidden = true;
+  out.hidden = false;
+  if (row.status === 'estimate') {
+    var amount = row.amountEur;
+    var text = amount.toFixed(amount % 1 === 0 ? 0 : 2);
+    var bits = text.split('.');
+    bits[0] = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    var tonnes = row.tonnes;
+    var tonneText = (Math.round(tonnes * 1000) / 1000).toString();
+    result.textContent = 'EUR ' + bits.join('.');
+    reason.textContent = tonneText + ' tonnes of declared core weight × EUR 1,140 per tonne. ' + row.reason;
+  } else if (row.status === 'need_weight') {
+    result.textContent = 'Declared core weight needed';
+    reason.textContent = row.reason;
+  } else {
+    result.textContent = row.result;
+    reason.textContent = row.reason;
+  }
+});
+</script>
+<script src="/analytics.js?v=7" defer></script>
+<script src="/tp-freshness.js?v=7" defer></script>
+<script src="/tp-feedback.js?v=7" defer></script>
+</body>
+</html>
