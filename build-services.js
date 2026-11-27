@@ -46,13 +46,13 @@ function render() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transformer Service & Repair Companies Directory | TransformerPath</title>
-<meta name="description" content="Global directory of verified transformer service, repair, rewinding, oil processing, high-voltage field testing, and life extension specialists. Sourced evidence and verified capabilities.">
+<title>Transformer Repair & Field Service Directory | TransformerPath</title>
+<meta name="description" content="Find transformer repair companies for field service, rewinding and oil processing. Check each provider’s service scope, location and available evidence.">
 <link rel="canonical" href="https://transformerpath.com/services.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
-<meta property="og:title" content="Transformer Service & Repair Companies Directory | TransformerPath">
-<meta property="og:description" content="Find verified transformer repair specialists, emergency field service teams, on-site oil regeneration, rewinding, and diagnostics up to 1,200 kV.">
+<meta property="og:title" content="Transformer Repair & Field Service Directory | TransformerPath">
+<meta property="og:description" content="Find transformer repair and field service companies. Confirm each provider’s scope and evidence before requesting a quote.">
 <meta property="og:url" content="https://transformerpath.com/services.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
@@ -99,7 +99,7 @@ function render() {
   "@type": "CollectionPage",
   "name": "Transformer Service & Repair Companies Directory",
   "url": "https://transformerpath.com/services.html",
-  "description": "Global directory of verified transformer service, repair, rewinding, and field engineering specialists."
+  "description": "Directory of transformer repair, rewinding, oil processing, and field-service companies."
 }
 </script>
 </head>
@@ -110,7 +110,7 @@ ${HEAD}
   <div class="srv-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Service &amp; Repair</nav>
     <h1>Transformer <span style="color:var(--accent)">Service &amp; Repair</span> Directory</h1>
-    <p class="lead">Independent, verified directory of specialized companies providing transformer field service, emergency active-part repair, mobile vacuum oil treatment, factory rewinding, and diagnostic testing. Filter by voltage class, service type, and location.</p>
+    <p class="lead">Find transformer repair companies for on-site field service, oil treatment, rewinding and diagnostics. Search by country and service type; confirm the provider’s scope for your unit. For a stand-alone test or an accreditation check, browse the <a href="/laboratories.html">transformer testing laboratory directory</a>.</p>
   </div>
 
   <div class="stats-bar">

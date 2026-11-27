@@ -208,12 +208,12 @@ function render() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Independent Transformer Testing Laboratories Directory | TransformerPath</title>
-<meta name="description" content="Directory of transformer testing and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them.">
+<title>Transformer Testing Laboratories Directory | TransformerPath</title>
+<meta name="description" content="Find transformer test labs by country and capability. Check published voltage, short-circuit and ISO/IEC 17025 scope for the specific test you need.">
 <link rel="canonical" href="https://transformerpath.com/laboratories.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
-<meta property="og:title" content="Independent Transformer Testing Laboratories Directory | TransformerPath">
+<meta property="og:title" content="Transformer Testing Laboratories Directory | TransformerPath">
 <meta property="og:description" content="Transformer testing and laboratory listings. Ratings and ISO/IEC 17025 accreditation appear only when a source records them.">
 <meta property="og:url" content="https://transformerpath.com/laboratories.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
@@ -274,7 +274,7 @@ ${HEAD}
   <div class="lab-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › Testing Laboratories</nav>
     <h1>Transformer <span style="color:var(--accent)">Testing Laboratories</span> Directory</h1>
-    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them. <a href="/knowledge/standard-transformer-oil-tests.html">Standard transformer oil tests</a> explains what each routine oil test is for and what the results indicate.</p>
+    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them. <a href="/knowledge/standard-transformer-oil-tests.html">Standard transformer oil tests</a> explains what each routine oil test is for and what the results indicate. For onsite treatment or repair, see the <a href="/services.html">transformer repair and field service directory</a>.</p>
   </div>
 
   <div class="stats-bar">

@@ -64,12 +64,18 @@ const { dubaiToday } = require('./lib/event-display');
 const EVENTS = loadEvents();
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+const { marketTenderSnapshot, marketTenderView } = require('./lib/market-tender-register');
+const { dualZoneLabel } = require('./lib/tender-time');
+const { parseCloseInstant } = require('./lib/deadline');
+const BUILD_NOW = Date.now();
 const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
 const indiaHub = require('./lib/india-market-hub');
 const regional = require('./lib/regional-market-hubs');
 const tenderIntake = require('./lib/tender-notices');
-const INDIA_TENDERS = indiaHub.activeTenderSnapshot(TENDERS,
-  tenderIntake.load('data/tender-notices.json').concat(tenderIntake.load('data/public-tender-notices.json')));
+const TENDER_INTAKE = tenderIntake.load('data/tender-notices.json').concat(tenderIntake.load('data/public-tender-notices.json'));
+const MARKET_TENDERS = marketTenderSnapshot(TENDERS, TENDER_INTAKE, BUILD_NOW);
+const ALL_INDIA_TENDERS = indiaHub.activeTenderSnapshot(MARKET_TENDERS, [], BUILD_NOW, Infinity);
+const INDIA_TENDERS = ALL_INDIA_TENDERS.slice(0, 6);
 const AWARDS = JSON.parse(fs.readFileSync('data/awards.json', 'utf8')).awards || [];
 const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8'));
 const ACCS = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8')).suppliers || [];
@@ -553,7 +559,38 @@ function biFor(m) {
 }
 
 function tendersFor(m) {
-  return TENDERS.filter(function (t) { return recordOnMarket(t, m); }).slice(0, 6);
+  return marketTenderView(MARKET_TENDERS, m, BUILD_NOW);
+}
+
+const PROCUREMENT_HISTORY_STATUS = {
+  EXPECTED: 'Expected', UNDATED: 'No published deadline', UNKNOWN: 'Open status unverified',
+  EVALUATION: 'In evaluation', AWARDED: 'Awarded', CLOSED: 'Closed',
+  CANCELLED: 'Cancelled', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU'
+};
+const tenderDate = new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', dateStyle: 'medium' });
+function renderMarketProcurement(tenders, m) {
+  const count = tenders.current.length;
+  const notices = tenders.current.slice(0, 6).map(function (t) {
+    const exact = parseCloseInstant(t.deadline);
+    const label = exact ? dualZoneLabel(exact, t.portal_timezone)
+      : tenderDate.format(Date.parse(t.deadline + 'T00:00:00Z')) + ' (time not stated)';
+    return '<li style="margin:8px 0" data-listing="tender" data-tender-status="' + esc(t.status) + '" data-project-country="' + esc(t.project_country || t.country || '') +
+      '"><b>' + esc(t.title) + '</b> · <time datetime="' + esc(t.deadline) + '">' + esc(label) + '</time> · <a href="' + esc(t.source) +
+      '" rel="noopener">Check official notice</a>' + (t.summary ? '<p style="font-size:.88rem;color:var(--muted);margin:.25rem 0">' + esc(t.summary) + '</p>' : '') + '</li>';
+  }).join('');
+  const history = tenders.history.slice(0, 6).map(function (t) {
+    return '<li style="margin:8px 0" data-listing="procurement-record" data-tender-status="' + esc(t.status) + '" data-project-country="' +
+      esc(t.project_country || t.country || '') + '"><b>' + esc(t.title) + '</b> · ' + esc(PROCUREMENT_HISTORY_STATUS[t.status] || 'Status unverified') + '</li>';
+  }).join('');
+  const country = '?country=' + encodeURIComponent(m.gridsName || m.name);
+  return '<section id="market-open-tenders" aria-labelledby="market-open-title"><h2 id="market-open-title">Open tender notices (' + count +
+    ' at build)</h2>' + (count ? '<p>Confirm amendments and eligibility on the official portal before acting.</p><ul>' + notices + '</ul>'
+      : '<p>No open notice with a published deadline and verified official source in this market at build.</p>') +
+    '<p><a href="../../tenders.html' + country + '">Open tender board</a></p></section>' +
+    (history ? '<section aria-labelledby="market-history-title"><h2 id="market-history-title">Procurement history and pipeline</h2>' +
+      '<p>These are records, not open bids.</p><ul>' + history + '</ul><p><a href="../../tenders.html' + country +
+      '&amp;view=pipeline">Tender and award records</a> · <a href="../../tenders.html' + country +
+      '&amp;view=expired">Expired tender deadlines</a></p></section>' : '');
 }
 
 function awardsFor(m) {
@@ -695,14 +732,6 @@ function marketPage(m) {
     }).join('') + '</ul>'
   ) : '';
 
-  const tendersHtml = tenders.length ? (
-    '<ul>' + tenders.map(function (t) {
-      const st = '<span class="vbadge" style="font-size:.72rem;margin-left:6px">' + esc(t.status || 'ACTIVE') + '</span>';
-      const ut = t.utility ? ' · <span style="color:var(--muted)">' + esc(t.utility) + '</span>' : '';
-      return '<li style="margin:8px 0" data-listing="tender" data-project-country="' + esc(t.project_country || '') + '"><a href="../../tenders.html" style="color:var(--accent);font-weight:600">' + esc(t.title) + '</a>' + st + ut + '</li>';
-    }).join('') + '</ul>'
-  ) : '<p style="color:var(--muted);font-size:.85rem">No active public tenders recorded at this build. See the <a href="../../tenders.html" style="color:var(--accent)">Tenders</a> board.</p>';
-
   const awardsHtml = awards.length ? (
     '<ul>' + awards.map(function (a) {
       const val = a.value ? ' · <b style="color:var(--green)">' + esc(a.value) + '</b>' : '';
@@ -737,17 +766,17 @@ function marketPage(m) {
     gccCoverageHtml(m) +
     (isIndia ? '' : (function () {
       const nextEv = evs[0];
-      const openT = tenders.filter(function (t) { return /open|active|evaluation|tender/i.test(String(t.status || 'OPEN')); }).slice(0, 3);
+      const openT = tenders.current.length;
       const confirmedIntel = intel.filter(function (it) { return /confirmed|transformer/i.test(String(it.title || '') + ' ' + String(it.snippet || '')); }).slice(0, 2);
-      if (!nextEv && !openT.length && !confirmedIntel.length) return '';
+      if (!nextEv && !openT && !confirmedIntel.length) return '';
       return '<div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:12px;padding:14px 16px;margin:16px 0 4px">' +
         '<div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Live this build — discovery, not static copy</div>' +
         '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;font-size:.86rem;line-height:1.45">' +
         '<div><b style="color:var(--ink)">Next event</b><div style="color:var(--muted);margin-top:4px">' +
         (nextEv ? '<a href="' + esc(nextEv.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(nextEv.n) + '</a> · ' + fmt(nextEv.s) : 'None upcoming in calendar') +
         '</div></div>' +
-        '<div><b style="color:var(--ink)">Open / live tenders</b><div style="color:var(--muted);margin-top:4px">' +
-        (openT.length ? openT.map(function (t) { return esc(t.title); }).join(' · ') : (tenders.length ? tenders.length + ' recorded (see board)' : 'None in this build')) +
+        '<div><b style="color:var(--ink)">Open notices at build</b><div style="color:var(--muted);margin-top:4px">' +
+        (openT ? '<a href="#market-open-tenders">' + openT + ' with published deadlines →</a>' : 'None verified') +
         '</div></div>' +
         '<div><b style="color:var(--ink)">Intel signal</b><div style="color:var(--muted);margin-top:4px">' +
         (confirmedIntel.length ? confirmedIntel.map(function (it) { return esc(it.title).slice(0, 90); }).join(' · ') : (intel.length ? intel.length + ' market items graded this build' : 'See Daily Intel')) +
@@ -761,7 +790,7 @@ function marketPage(m) {
     '<div class="s"><b>' + plantFigure(facs.length) + '</b><span>sourced plants</span></div>' +
     '<div class="s"><b>' + utl.length + '</b><span>grid operators</span></div>' +
     '<div class="s"><b>' + (g ? esc(g.freq) : '-') + ' Hz</b><span>' + esc((g && g.sync) || 'grid frequency') + '</span></div>' +
-    (isIndia ? '' : '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>') +
+    (isIndia ? '' : '<div class="s"><b>' + tenders.current.length + '</b><span>open notices at build</span></div>') +
     '<div class="s"><b>' + evs.length + '</b><span>upcoming events</span></div>' +
     '</div>' +
     comtrade.sectionHtml(m.gridsName) +
@@ -769,7 +798,7 @@ function marketPage(m) {
     '<h2>Confirmed manufacturing plants &amp; facilities (' + plantFigure(facs.length) + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
-    (isIndia ? '' : '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml) +
+    (isIndia ? '' : renderMarketProcurement(tenders, m)) +
     (isIndia ? '<section class="india-module" id="india-awards" aria-labelledby="india-awards-title"><h2 id="india-awards-title">India transformer contract awards</h2>' + awardsHtml + '<p><a href="/awards.html">Browse the full awards board</a></p></section>' : '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml) +
     '<h2>Component &amp; material suppliers in this market</h2>' + localSupHtml +
     '<h2>Components &amp; accessories directory</h2><div style="margin:4px 0">' + compHtml + '</div>' +
@@ -838,7 +867,7 @@ marketsInPageOrder(MARKETS).forEach(function (m) {
     freq: g.freq || '50',
     sync: g.sync || '',
     primaryVoltage: primaryV,
-    tenders: m.slug === 'india' ? INDIA_TENDERS.length : tenders.length,
+    tenders: m.slug === 'india' ? ALL_INDIA_TENDERS.length : tenders.current.length,
     awards: awards.length,
     suppliers: localSuppliers.length,
     projects: bi.projects.length,
@@ -853,7 +882,7 @@ const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
 
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
-  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders and project pipelines. RFQ routing is coming soon.">' +
+  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, procurement records and project pipelines. RFQ routing is coming soon.">' +
   '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
   '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;margin-top:20px}' +
@@ -867,7 +896,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<div class="container" style="max-width:1120px">' +
   '<span style="display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(11,95,165,.08);padding:4px 12px;border-radius:999px;margin-bottom:12px">Geographic Intelligence Hubs</span>' +
   '<h1 style="font-size:2.2rem;margin:0 0 12px;color:var(--ink)">Global Transformer Markets by Country</h1>' +
-  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and project pipelines. RFQ routing is coming soon.</p>' +
+  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, open notices where verified and project pipelines. RFQ routing is coming soon.</p>' +
   '</div></section>' +
   '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
   regional.teasers() + '<div class="market-grid">' +
@@ -906,8 +935,8 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
             '<b style="color:var(--accent);font-size:1.1rem">' + l.makers + '</b> <span style="color:var(--text)">makers</span> · <b style="color:var(--text)">' + plantFigure(l.facs) + '</b> <span style="color:var(--muted)">plants</span>' +
           '</div>' +
           '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
-            '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Demand &amp; Awards</span>' +
-            '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
+            '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Procurement &amp; Awards</span>' +
+            '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">open notices at build</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
           '</div>' +
         '</div>' +
         comtrade.cardHtml(l.country || l.name) +

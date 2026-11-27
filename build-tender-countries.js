@@ -157,7 +157,7 @@ function tenderRows(tenders) {
       ? '<span class="t-meta">Sourced award: <a data-award-link="1" href="/awards.html#award-' + esc(award.tender_id) + '">' + esc(award.awardee) + '</a></span>'
       : '<span class="t-meta">No sourced award record for this tender.</span>';
     const official = isOfficialProcurementUrl(tender.official_procurement_url)
-      ? '<a class="t-notice" href="' + esc(tender.official_procurement_url) + '" target="_blank" rel="noopener">Official notice</a>'
+      ? '<a class="t-notice" href="' + esc(tender.official_procurement_url) + '" target="_blank" rel="noopener" data-track="tender_notice_opened" data-track-placement="country">Official notice</a>'
       : '';
     return '<div class="t-row" data-tender-id="' + esc(tender.tender_id) + '" data-award-id="' + esc(award ? award.tender_id : '') + '" data-expired="' + (expired ? '1' : '0') + '">' +
       '<a href="/tenders/' + esc(slug) + '/">' + esc(tender.title) + '</a> ' + status +
@@ -206,10 +206,13 @@ slugs.forEach(function (slug) {
   const filed = directoryGroupsFor(MANUF, group.canonical);
   const makers = makerRows(filed);
   const description = fitDesc(group.name + ' lists ' + group.tenders.length + ' transformer tenders and ' + makers.length + ' directory manufacturers. Award links appear only where a sourced award record exists.');
+  const indiaHelp = slug === 'india'
+    ? '<p>Check the official notice and latest amendments for the current bid deadline in India Standard Time and the qualification rules. For buyer portals, market news and suppliers, see the <a href="/markets/india/#india-tenders">India transformer hub</a>.</p>'
+    : '';
   const body = '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html" style="color:var(--accent)">Tenders</a> · <a href="/tenders/countries.html" style="color:var(--accent)">Countries</a> · ' + esc(group.name) + '</nav>' +
     '<h1>' + esc(group.name) + ' transformer tenders</h1>' +
     '<p class="lead">' + group.tenders.length + ' tenders are filed under ' + esc(group.name) + '. Each title links to the tender page. Where a sourced award record exists, the awardee links to that award. Manufacturers below are directory matches, not predictions of who will win.</p>' +
-    partner.ctaHtml() +
+    indiaHelp + partner.ctaHtml() +
     '<p class="t-meta">' + esc(modeRegion(group.tenders)) + ' · ' + awardCount + ' with a sourced award · <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a></p>' +
     '<h2>Tenders (' + group.tenders.length + ')</h2>' +
     tenderRows(group.tenders) +
