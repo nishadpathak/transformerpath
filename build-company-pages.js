@@ -388,12 +388,14 @@ function developmentsHtml(r) {
   let d = null;
   entityNames(r).some(function (n) { d = DEV_BY_NAME[norm(n)]; return !!d; });
   if (!d || !d.developments || !d.developments.length) return '';
-  const lis = d.developments.map(function (x) {
-    const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
-    const date = dateMatch ? dateMatch[1] : '';
+  const blocked = require('./lib/blocked-sources').isBlockedSource;
+  const lis = d.developments.filter(function (x) {
+    return /^https?:\/\//i.test(x.url || '') && !blocked(x.url) && !blocked(x.src);
+  }).map(function (x) {
     return '<li style="margin:7px 0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(x.title) + '</a><br>' +
       '<span style="color:var(--muted);font-size:.82rem">' + esc(x.src || '') + '</span></li>';
   }).join('');
+  if (!lis) return '';
   return '<h2>Recent developments</h2><p style="font-size:.82rem;color:var(--muted)">Sourced from TransformerPath Daily Intel. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution.</p>' +
     '<ul>' + lis + '</ul>';
 }
@@ -572,7 +574,7 @@ function page(r, slug) {
     : (score >= 50 ? 'linear-gradient(90deg, #f5a623, #d97706)' : 'linear-gradient(90deg, #94a3b8, #64748b)');
   const missingList = missing.length ? '<div style="font-size:.82rem;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;margin-top:10px">' +
     '<b style="color:var(--accent)">Pending technical specifications:</b> ' + missing.map(function(m){ return esc(m); }).join(' · ') +
-    '<div style="margin-top:8px"><a href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" class="btn btn-outline btn-sm" style="font-size:.74rem;padding:3px 10px" data-track="claim_from_completeness" data-track-manufacturer="' + esc(r.name) + '">Claim profile to complete specifications →</a></div></div>' : '';
+    '</div>' : '';
 
   const completenessCard = '<div class="card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:18px 0;box-shadow:0 4px 16px rgba(0,0,0,.08)">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
