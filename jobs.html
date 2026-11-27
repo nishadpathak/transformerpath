@@ -729,6 +729,11 @@ const SIGNALS = [
 ];
 let liveRows = [];
 function escJob(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function rootHref(url) {
+  var u = String(url == null ? '' : url).trim();
+  if (!u || /^(?:https?:|data:|mailto:|tel:|javascript:|\/\/|#|\/)/i.test(u) || u.indexOf('../') === 0) return u;
+  return '/' + u.replace(/^\.\//, '');
+}
 function renderLive(rows){
   liveRows = rows || [];
   const board = document.getElementById('liveBoard');
@@ -738,7 +743,7 @@ function renderLive(rows){
        <span class="lc">${escJob(j.co)}</span>
        <span class="ll">📍 ${escJob(j.loc||'')}</span>
        <span class="ld">${escJob(j.fn||'')} · verified ${escJob(j.last_verified_at)}</span>
-       <a class="lapply" href="/${escJob(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
+       <a class="lapply" href="${rootHref(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
        ${j.featured?'<p class="job-featured-note">'+escJob(j.featured_note||'')+'</p>':''}
      </div>`).join("") : '<p class="jobs-empty">0 live openings.</p>';
   const lc = document.getElementById('liveCount'); if (lc) lc.textContent = liveRows.length;
@@ -753,7 +758,7 @@ function renderSignals(rows){
        <span class="lc">${j.co}</span>
        <span class="ll">📍 ${j.loc||''}</span>
        ${j.fn?`<span class="ld">${j.fn}</span>`:''}
-       <a class="lapply" href="/${j.url}" target="_blank" rel="noopener">Careers page →</a>
+       <a class="lapply" href="${rootHref(j.url)}" target="_blank" rel="noopener">Careers page →</a>
      </div>`).join('');
 }
 renderSignals(SIGNALS);
@@ -837,7 +842,7 @@ function renderBoard(){
       `<div class="emp-card">
         <div class="emp-head">
           <div><h3>${d.co}</h3><div class="hq">📍 ${d.hq}</div></div>
-          <a class="btn btn-amber btn-sm" href="/${d.url}" target="_blank" rel="noopener">Careers →</a>
+          <a class="btn btn-amber btn-sm" href="${rootHref(d.url)}" target="_blank" rel="noopener">Careers →</a>
         </div>
         <div>${d.fn.map(x=>`<span class="fn-pill ${FN_CLASS[x]}">${FN[x].split(' ')[0]}</span>`).join('')}</div>
         <ul>${d.roles.map(r=>`<li>${r}</li>`).join('')}</ul>

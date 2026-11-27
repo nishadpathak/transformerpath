@@ -8,7 +8,8 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-const { isShadowPage, isBareRelative, fixUrl, rootAbsoluteAssets } = require('../lib/shadow-asset-paths');
+const vm = require('vm');
+const { isShadowPage, isBareRelative, fixUrl, rootAbsoluteAssets, rootHref } = require('../lib/shadow-asset-paths');
 const { accessoryPublicSlug } = require('../lib/accessory-slug');
 
 assert.strictEqual(fixUrl('intel.html'), '/intel.html');
@@ -18,6 +19,18 @@ assert.strictEqual(fixUrl('/intel.html'), '/intel.html');
 assert.strictEqual(fixUrl('../intel.html'), '../intel.html');
 assert.strictEqual(fixUrl('https://example.com/a'), 'https://example.com/a');
 assert.strictEqual(fixUrl('#main'), '#main');
+assert.strictEqual(fixUrl('${ev.u}'), '${ev.u}');
+assert.strictEqual(rootHref('https://example.com/a'), 'https://example.com/a');
+assert.strictEqual(rootHref('data:text/calendar,BEGIN'), 'data:text/calendar,BEGIN');
+assert.strictEqual(rootHref('mailto:hello@transformerpath.com'), 'mailto:hello@transformerpath.com');
+assert.strictEqual(rootHref('//map.html?q=1'), '//map.html?q=1');
+assert.strictEqual(rootHref('/map.html?q=1'), '/map.html?q=1');
+assert.strictEqual(rootHref('#main'), '#main');
+assert.strictEqual(rootHref('events/sirexe/'), '/events/sirexe/');
+
+const dynamic = rootAbsoluteAssets('<a href="${ev.u}"></a><a href="${hotelURL(ev)}"></a>');
+assert.strictEqual(dynamic.includes('href="/${'), false);
+assert.strictEqual(dynamic.includes('href="${ev.u}"'), true);
 
 const rewritten = rootAbsoluteAssets(
   '<a href="intel.html">Intel</a><a href="accessories/\'+slug+\'/">Card</a>' +
@@ -142,4 +155,147 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('directory-relative-links: ok');
+const notFound = fs.readFileSync('404.html', 'utf8');
+assert.strictEqual(/<link[^>]+href="style\.css/.test(notFound), false, '404 stylesheet must be root-absolute');
+assert.strictEqual(/<script[^>]+src="(?!\/)[^"]+\.js/.test(notFound), false, '404 scripts must be root-absolute');
+assert.strictEqual(notFound.includes('href="/style.css'), true);
+assert.strictEqual(notFound.includes('src="/analytics.js'), true);
+
+function domStub() {
+  function el() {
+    return {
+      innerHTML: '', textContent: '', value: '', style: {}, dataset: {}, className: '', hidden: false, disabled: false,
+      firstChild: null,
+      classList: { add() {}, remove() {}, toggle() { return false; }, contains() { return false; } },
+      appendChild(child) { return child; },
+      insertBefore() {},
+      setAttribute() {}, getAttribute() { return ''; },
+      addEventListener() {}, removeEventListener() {},
+      querySelector() { return null; }, querySelectorAll() { return []; },
+      closest() { return null; }, scrollIntoView() {}, focus() {}, click() {},
+      setAttributeNS() {}, getBBox() { return { x: 0, y: 0, width: 0, height: 0 }; }
+    };
+  }
+  const elements = {};
+  const document = {
+    getElementById(id) { if (!elements[id]) elements[id] = el(); return elements[id]; },
+    querySelector() { return null; },
+    querySelectorAll() { return []; },
+    createElement() { return el(); },
+    createElementNS() { return el(); },
+    addEventListener() {},
+    documentElement: el(),
+    body: el()
+  };
+  return { elements: elements, document: document };
+}
+
+function pageScript(file, needle) {
+  const html = fs.readFileSync(file, 'utf8');
+  const scripts = html.match(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/gi) || [];
+  for (let i = 0; i < scripts.length; i++) {
+    const body = scripts[i].replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, '');
+    if (body.indexOf(needle) !== -1) return body;
+  }
+  throw new Error('no inline script in ' + file + ' containing ' + needle);
+}
+
+function localFetch(url) {
+  const rel = String(url).replace(/^\//, '').split('?')[0];
+  if (rel && fs.existsSync(rel) && fs.statSync(rel).isFile()) {
+    const body = JSON.parse(fs.readFileSync(rel, 'utf8'));
+    return Promise.resolve({ ok: true, status: 200, json: function () { return Promise.resolve(body); } });
+  }
+  return Promise.resolve({ ok: false, status: 404, json: function () { return Promise.resolve({}); } });
+}
+
+function runInline(file, needle, endNeedle) {
+  let code = pageScript(file, needle);
+  if (endNeedle) {
+    const at = code.indexOf(endNeedle);
+    if (at < 0) throw new Error(file + ' missing ' + endNeedle);
+    code = code.slice(0, at);
+  }
+  const dom = domStub();
+  const context = {
+    document: dom.document,
+    console: console,
+    URLSearchParams: URLSearchParams,
+    URL: { createObjectURL: function () { return 'blob:local'; } },
+    fetch: localFetch,
+    location: { search: '', hash: '', href: '/', replace: function () {}, assign: function () {} },
+    localStorage: { getItem: function () { return null; }, setItem: function () {} },
+    setTimeout: setTimeout,
+    clearTimeout: clearTimeout,
+    encodeURIComponent: encodeURIComponent,
+    decodeURIComponent: decodeURIComponent,
+    Date: Date, Math: Math, JSON: JSON, Promise: Promise, Blob: function Blob() {},
+    navigator: { language: 'en' },
+    window: null
+  };
+  context.window = context;
+  context.globalThis = context;
+  vm.createContext(context);
+  vm.runInContext(code, context, { filename: file, timeout: 20000 });
+  return { elements: dom.elements, context: context };
+}
+
+function collectHrefs(elements, ids) {
+  let html = '';
+  ids.forEach(function (id) {
+    html += (elements[id] && elements[id].innerHTML) || '';
+  });
+  return (html.match(/href="([^"]*)"/g) || []).map(function (attr) {
+    return attr.slice(6, -1);
+  });
+}
+
+function brokenRendered(href) {
+  return /^\/https?:/i.test(href) || /^\/data:/i.test(href) || /^\/mailto:/i.test(href) || /^\/\/[^/?#]*\.html(?:[?#]|$)/i.test(href);
+}
+
+function flush() {
+  return new Promise(function (resolve) { setImmediate(resolve); });
+}
+
+async function renderedCounts() {
+  const events = runInline('events.html', 'const EVENTS', "fetch('https://ipapi.co/json/')");
+  const eventsHrefs = collectHrefs(events.elements, ['grid', 'upNext', 'liveNow']);
+  const jobs = runInline('jobs.html', 'function escJob', null);
+  if (typeof jobs.context.renderLive === 'function') {
+    jobs.context.renderLive([{
+      t: 'Tester', co: 'Example', loc: 'Austin', fn: 'Engineering',
+      posting_url: 'https://example.com/jobs/apply', last_verified_at: '2026-11-01'
+    }]);
+  }
+  const jobsHrefs = collectHrefs(jobs.elements, ['liveBoard', 'signalBoard', 'board']);
+  const grids = runInline('grids.html', 'const DATA', null);
+  const gridsHrefs = collectHrefs(grids.elements, ['board']);
+  const makers = runInline('manufacturers.html', 'function makerHref', null);
+  for (let i = 0; i < 30; i++) await flush();
+  const makerHrefs = collectHrefs(makers.elements, ['board']);
+  return {
+    'events.html': { hrefs: eventsHrefs.length, broken: eventsHrefs.filter(brokenRendered) },
+    manufacturers: { hrefs: makerHrefs.length, broken: makerHrefs.filter(brokenRendered) },
+    grids: { hrefs: gridsHrefs.length, broken: gridsHrefs.filter(brokenRendered) },
+    jobs: { hrefs: jobsHrefs.length, broken: jobsHrefs.filter(brokenRendered) }
+  };
+}
+
+renderedCounts().then(function (counts) {
+  let broken = 0;
+  Object.keys(counts).forEach(function (page) {
+    const row = counts[page];
+    console.log('rendered ' + page + ' hrefs=' + row.hrefs + ' broken=' + row.broken.length);
+    if (row.broken.length) {
+      broken += row.broken.length;
+      console.error(page + ' ' + row.broken.slice(0, 5).join('\n'));
+    }
+    assert.ok(row.hrefs > 0, page + ' rendered no hrefs');
+  });
+  assert.strictEqual(broken, 0);
+  console.log('directory-relative-links: ok');
+}).catch(function (err) {
+  console.error(err);
+  process.exit(1);
+});

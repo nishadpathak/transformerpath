@@ -4459,6 +4459,11 @@ function matchesTheme(ev, theme){
   return true;
 }
 
+function rootHref(url) {
+  var u = String(url == null ? '' : url).trim();
+  if (!u || /^(?:https?:|data:|mailto:|tel:|javascript:|\/\/|#|\/)/i.test(u) || u.indexOf('../') === 0) return u;
+  return '/' + u.replace(/^\.\//, '');
+}
 function eventPageHref(ev) {
   if (ev && ev.id === 'oman-sustainability-week-2027') return 'events/oman-sustainability-week-2027/';
   if (ev && ev.series_slug) return 'events/' + ev.series_slug + '/';
@@ -4494,7 +4499,7 @@ function render() {
       const endPassed = Date.parse(ev.e + 'T23:59:59Z') < todayUTC;
       const isLive = !endPassed && Date.parse(ev.s + 'T00:00:00Z') <= todayUTC;
       const lbl = endPassed ? 'Ended' : isLive ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
-      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel" data-rel="${ev.s}" data-rel-end="${ev.e}">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="/${ev.u}" target="_blank" rel="noopener">View →</a> <a class="btn btn-outline btn-sm" href="/map.html?layer=events&amp;q=${encodeURIComponent(ev.n)}">View on map</a></div>`;
+      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel" data-rel="${ev.s}" data-rel-end="${ev.e}">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="${rootHref(ev.u)}" target="_blank" rel="noopener">View →</a> <a class="btn btn-outline btn-sm" href="/map.html?layer=events&amp;q=${encodeURIComponent(ev.n)}">View on map</a></div>`;
     }).join('');
   }
 
@@ -4509,13 +4514,13 @@ function render() {
       <div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co} · ${ev.r}</div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${ev.d}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
-        <a class="btn btn-amber btn-sm" href="/${ev.u}" target="_blank" rel="noopener">Official site →</a>
-        ${eventPageHref(ev) ? `<a class="btn btn-outline btn-sm" href="/${eventPageHref(ev)}">Event page →</a>` : ''}
-        <a class="btn btn-outline btn-sm" href="/${eventMapHref(ev)}">View on map</a>
-        ${open ? `<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="/${hotelURL(ev)}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>` : ''}
-        ${open && flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="/${flightURL(ev)}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
-        ${open && AFFILIATE.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="/${AFFILIATE.kkdayLink}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
-        ${open ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="/${icsHref(ev)}" download target="_blank" rel="noopener">📅 Add</a>` : ''}
+        <a class="btn btn-amber btn-sm" href="${rootHref(ev.u)}" target="_blank" rel="noopener">Official site →</a>
+        ${eventPageHref(ev) ? `<a class="btn btn-outline btn-sm" href="${rootHref(eventPageHref(ev))}">Event page →</a>` : ''}
+        <a class="btn btn-outline btn-sm" href="${rootHref(eventMapHref(ev))}">View on map</a>
+        ${open ? `<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="${rootHref(hotelURL(ev))}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>` : ''}
+        ${open && flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="${rootHref(flightURL(ev))}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
+        ${open && AFFILIATE.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="${rootHref(AFFILIATE.kkdayLink)}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
+        ${open ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${ev.n.replace(/"/g,'&quot;')}" href="${rootHref(icsHref(ev))}" download target="_blank" rel="noopener">📅 Add</a>` : ''}
         <button class="btn btn-outline btn-sm" data-save="1" data-type="event" data-id="${ev.n.replace(/"/g,'&quot;')}" data-title="${ev.n.replace(/"/g,'&quot;')}" data-subtitle="${(ev.c+', '+ev.co+' · '+ev.r).replace(/"/g,'&quot;')}" data-url="${ev.u.replace(/"/g,'&quot;')}">🔖 Save</button>
       </div>
     </div>`;
