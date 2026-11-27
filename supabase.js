@@ -401,12 +401,44 @@
     };
 
     /* RFQs */
+    function factorySlot(o) {
+      o = o || {};
+      return {
+        slot_confirmed: o.slot_confirmed || '',
+        slot_confirmed_on: o.slot_confirmed_on || '',
+        slot_reference: o.slot_reference || '',
+        spec_freeze_date: o.spec_freeze_date || '',
+        price_impact_after_freeze: o.price_impact_after_freeze || '',
+        delivery_impact_after_freeze: o.delivery_impact_after_freeze || ''
+      };
+    }
+    function slotFilled(slot) {
+      return Object.keys(slot).some(function (key) { return String(slot[key] || '').trim() !== ''; });
+    }
     TP.saveRfq = function (o) {
       if (!guard()) return Promise.resolve(false);
-      return supabase.from('user_rfqs').insert({
+      var base = {
         user_id: uid(), reference: o.reference || '', category: o.category || '', quantity: o.quantity || '',
         rating: o.rating || '', voltage: o.voltage || '', standard: o.standard || '', destination: o.destination || '', status: 'open'
-      }).then(function (r) { if (r.error) throw r.error; return true; });
+      };
+      function insert(row) {
+        return supabase.from('user_rfqs').insert(row).then(function (r) {
+          if (r.error) throw r.error;
+          return true;
+        });
+      }
+      var slot = factorySlot(o);
+      if (!slotFilled(slot)) return insert(base);
+      /* factory_slot is optional. If the column is not applied yet, store the
+       * RFQ without it. The form post and the site-inbox notice still carry
+       * the checklist. */
+      return supabase.from('user_rfqs').insert(Object.assign({}, base, { factory_slot: slot })).then(function (r) {
+        if (!r.error) return true;
+        var msg = String((r.error && r.error.message) || '');
+        var code = String((r.error && r.error.code) || '');
+        if (code === 'PGRST204' || /factory_slot/.test(msg)) return insert(base);
+        throw r.error;
+      });
     };
     TP.listRfqs = function () {
       if (!guard()) return emptyArray();
