@@ -192,8 +192,11 @@ input, select, textarea {
   font-size: .95rem;
   background: var(--card);
   color: var(--text);
-  -webkit-text-fill-color: var(--text);
   border: 1px solid var(--border);
+}
+select {
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
 }
 select option {
   color: var(--text);
@@ -202,6 +205,7 @@ select option {
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
   opacity: 1;
 }
 form input, form select, form textarea {
