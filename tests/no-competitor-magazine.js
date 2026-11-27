@@ -8,7 +8,10 @@ const { BLOCKED_SOURCE_HOSTS, isBlockedEvent } = require('../lib/blocked-sources
 
 const ROOT = path.join(__dirname, '..');
 const SKIP = new Set(['.git', 'node_modules', 'dist', 'vendor']);
-const ALLOW = new Set([path.join(ROOT, 'lib', 'blocked-sources.js')]);
+const ALLOW = new Set([
+  path.join(ROOT, 'lib', 'blocked-sources.js'),
+  path.join(ROOT, 'functions', 'lib', 'blocked-sources.js')
+]);
 const TEXT = /\.(html|js|json|md|txt|ics|xml|css|yml|yaml|toml|csv)$/i;
 
 function walk(dir, out) {

@@ -13,7 +13,7 @@
      2. Public transformer / power-industry RSS feeds (keyless fallback) — so
         the page auto-updates even before an API key is configured. */
 
-const { isBlockedSource } = require('../../lib/blocked-sources');
+const { isBlockedSource } = require('./blocked-sources');
 const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
 const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
