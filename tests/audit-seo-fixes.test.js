@@ -9,6 +9,8 @@ const { fitWindow } = require('../lib/seo-fit');
 const catalog = require('../lib/seo-catalog');
 const { ensureSkipTarget } = require('../lib/skip-target');
 const snap = require('../build-intel-feed-snapshot');
+const { isBareRelative } = require('../lib/shadow-asset-paths');
+const { stampHtml } = require('../adsense-inject');
 
 let failed = 0;
 function check(cond, msg) {
@@ -89,6 +91,33 @@ check(/for = "\/\*\.js"[\s\S]{0,80}max-age=31536000, immutable/.test(toml), 'js 
 check(/for = "\/sw\.js"[\s\S]{0,80}must-revalidate/.test(toml), 'service worker stays revalidated');
 check(fs.readFileSync('functions/intel-feed.js', 'utf8').indexOf('fetch(') === -1, 'intel-feed does not fetch upstream on the request');
 check(fs.readFileSync('tp-freshness.js', 'utf8').indexOf('FEED_TIMEOUT_MS = 3000') !== -1, 'freshness call times out at 3s');
+
+const frame = '<head><script src="/consent.js?v=old" defer></script></head><body></body>';
+check(!/consent\.js/.test(stampHtml(frame, 'hero-3d.html')), 'decorative 3D iframe has no separate cookie banner');
+check(/consent\.js/.test(stampHtml('<head></head><body></body>', 'index.html')), 'homepage keeps cookie consent');
+
+if (fs.existsSync('dist/index.html')) {
+  const relativeNav = [];
+  let count = 0;
+  for (const file of fs.readdirSync('dist').filter(name => name.endsWith('.html'))) {
+    const html = fs.readFileSync('dist/' + file, 'utf8');
+    const nav = html.match(/<nav\b[^>]*(?:class="tpnav"|id="mainNav")[^>]*>[\s\S]*?<\/nav>/i);
+    if (!nav) continue;
+    count++;
+    if (Array.from(nav[0].matchAll(/\shref\s*=\s*["']([^"']+)["']/gi)).some(m => isBareRelative(m[1]))) relativeNav.push(file);
+  }
+  check(count > 75 && relativeNav.length === 0, 'published root-page menus work from slash aliases: ' + count + ' menus, ' + relativeNav.length + ' with relative links');
+  for (const page of ['privacy', 'terms']) {
+    const html = fs.readFileSync('dist/' + page + '.html', 'utf8');
+    check(/href="\/style\.css(?:\?[^"]*)?"/.test(html), page + ' layout loads the root stylesheet');
+    check(/href="\/tp-nav\.css(?:\?[^"]*)?"/.test(html), page + ' menu loads the root stylesheet');
+    check(/src="\/tp-nav\.js(?:\?[^"]*)?"/.test(html), page + ' menu loads the root script');
+  }
+  const publishedHome = fs.readFileSync('dist/index.html', 'utf8');
+  const publishedFrame = fs.readFileSync('dist/hero-3d.html', 'utf8');
+  check((publishedHome.match(/src="[^"]*\bconsent\.js(?:\?[^"]*)?"/g) || []).length === 1, 'published homepage loads consent exactly once');
+  check(!/src="[^"]*\bconsent\.js(?:\?[^"]*)?"/.test(publishedFrame), 'published homepage iframe loads no consent');
+}
 
 if (failed) {
   console.error(failed + ' failed');

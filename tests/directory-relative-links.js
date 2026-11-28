@@ -22,6 +22,11 @@ assert.strictEqual(fixUrl('#main'), '#main');
 assert.strictEqual(fixUrl('${ev.u}'), '${ev.u}');
 assert.strictEqual(rootHref('https://example.com/a'), 'https://example.com/a');
 assert.strictEqual(rootHref('data:text/calendar,BEGIN'), 'data:text/calendar,BEGIN');
+assert.strictEqual(rootHref('blob:https://transformerpath.com/report'), 'blob:https://transformerpath.com/report');
+assert.strictEqual(rootHref('?status=open'), '?status=open');
+assert.strictEqual(rootAbsoluteAssets('<form action="search.html"><button formaction="rfq.html">Go</button></form>'),
+  '<form action="/search.html"><button formaction="/rfq.html">Go</button></form>');
+
 assert.strictEqual(rootHref('mailto:hello@transformerpath.com'), 'mailto:hello@transformerpath.com');
 assert.strictEqual(rootHref('//map.html?q=1'), '//map.html?q=1');
 assert.strictEqual(rootHref('/map.html?q=1'), '/map.html?q=1');

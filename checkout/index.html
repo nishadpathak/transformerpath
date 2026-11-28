@@ -142,6 +142,7 @@
       </div>
       <p id="checkout-status" style="color:var(--muted);font-size:.9rem;margin:8px 0 0">Your email is attached to this Stripe checkout. It is not saved as a TransformerPath lead until this step stores it. Cancel on the card page returns to TransformerPath pricing. A listing checkout returns to the TransformerPath page you opened it from. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
     </form>
+    <p id="exhibitor-checkout-notice" hidden><a href="/sponsor.html#featured-exhibitor">Ask about Featured Exhibitor →</a></p>
     <p style="margin:18px 0 0"><a href="/pricing.html">Back to pricing</a></p>
     <noscript><p>Turn on JavaScript so this page can name the plan and open payment. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
   </div>
@@ -182,6 +183,14 @@
   var prefilled = q.get('prefilled_email') || '';
   if (!from && document.referrer) from = document.referrer;
   var form = document.getElementById('checkout-gate');
+  if (product.trim() === 'featured_exhibitor') {
+    document.getElementById('checkout-title').textContent = 'Featured Exhibitor';
+    document.getElementById('checkout-price').textContent = 'Checkout is not open. If you already paid, use the sponsor form to submit your details.';
+    form.hidden = true;
+    form.querySelectorAll('input, button').forEach(function (control) { control.disabled = true; });
+    document.getElementById('exhibitor-checkout-notice').hidden = false;
+    return;
+  }
   var emailInput = form.querySelector('[data-checkout-email]');
   if (prefilled && emailInput && !emailInput.value) emailInput.value = prefilled;
   if (prefilled && window.history && history.replaceState) {

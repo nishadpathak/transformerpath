@@ -20,6 +20,7 @@ const cfg = require('./adsense-config');
 
 const SLOT_RE = /^\d{8,12}$/;
 const LOADER_RE = /<script\b[^>]*\bsrc=["'][^"']*pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js[^"']*["'][^>]*>\s*<\/script>/gi;
+const CONSENT_SCRIPT_RE = /<script\b[^>]*\bsrc=["'][^"']*\bconsent\.js(?:\?[^"']*)?["'][^>]*>\s*<\/script>/gi;
 const SLOT_RE_HTML = /<aside\b[^>]*\bdata-tp-ad="in-content"[\s\S]*?<\/aside>(?:\s*<script>[\s\S]*?<\/script>)?/gi;
 
 function norm(rel) {
@@ -170,6 +171,9 @@ function stampHtml(html, rel) {
     }
     if (wantsInContentSlot(rel)) out = placeSlot(out, rel);
   }
+  // The homepage already has the consent controls. The visual-only hero
+  // frame must not draw a second banner under the parent's tinted scrim.
+  if (norm(rel) === 'hero-3d.html') return out.replace(CONSENT_SCRIPT_RE, '');
   if (!/consent\.js/.test(out)) {
     out = injectBeforeHeadClose(out, '<script src="/consent.js" defer></script>');
   }

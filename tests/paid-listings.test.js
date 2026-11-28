@@ -64,6 +64,17 @@ async function main() {
   global.fetch = function () { throw new Error('stripe must not be called'); };
   const checkout = require('../functions/create-checkout');
 
+  const continuation = require('../functions/checkout-continue');
+  let exhibitorLeadWrites = 0;
+  continuation._leadInsertForTests = async function () { exhibitorLeadWrites++; return { saved: true }; };
+  const closedExhibitor = { httpMethod: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ product: 'featured_exhibitor', email: 'buyer@example.test', event_id: 'middle-east-energy' }) };
+  const legacyExhibitor = await checkout.handler(closedExhibitor);
+  const currentExhibitor = await continuation.handler(closedExhibitor);
+  const htmlExhibitor = await continuation.handler({ httpMethod: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, queryStringParameters: { product: 'featured_exhibitor' }, body: 'email=buyer%40example.test' });
+  delete continuation._leadInsertForTests;
+  check('both site endpoints block new exhibitor checkout before lead write or Stripe', [legacyExhibitor,currentExhibitor].every(function (result) { const b = JSON.parse(result.body); return result.statusCode === 409 && b.error === 'checkout_unavailable' && !b.url && !b.payment_link; }) && exhibitorLeadWrites === 0);
+  check('no-script exhibitor checkout POST cannot redirect to payment', htmlExhibitor.statusCode === 409 && !htmlExhibitor.headers.Location && /checkout is not available/.test(htmlExhibitor.body));
+
   let res = await checkout.handler({ httpMethod: 'GET' });
   check('create-checkout GET is 405', res.statusCode === 405);
 
@@ -444,13 +455,9 @@ async function main() {
     return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('data-product="featured_event"') >= 0;
   });
   check('event pages use the payment link', cardPages.length > 20 && linkedPages.length === cardPages.length && leftoverWidgets.length === 0, 'cards=' + cardPages.length + ' linked=' + linkedPages.length + ' leftover=' + leftoverWidgets.length);
-  const pricedPages = cardPages.filter(function (d) {
-    const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
-    return html.indexOf('Featured Event is $299 per event.') >= 0 && html.indexOf('Featured Exhibitor is $399 per event.') >= 0 && html.indexOf('from $399') < 0;
-  });
-  check('event cards show Featured Event at $299 and Featured Exhibitor at $399', pricedPages.length === cardPages.length, 'priced=' + pricedPages.length + ' cards=' + cardPages.length);
-  check('event card template keeps the two prices distinct', fs.readFileSync('build-events.js', 'utf8').indexOf('Featured Event is $299 per event. Featured Exhibitor is $399 per event.') >= 0 && fs.readFileSync('build-events.js', 'utf8').indexOf('from $399') < 0);
-  check('online event cards omit the unpaid exhibitor offer', fs.readFileSync('build-events.js', 'utf8').indexOf("flags.online ? '' : paidListings.featuredExhibitorPayHtml") >= 0);
+  const template = fs.readFileSync('build-events.js', 'utf8');
+  check('event card template keeps the active event and planned exhibitor prices distinct', template.includes('Featured Event is $299 per event. Featured Exhibitor is planned at $399 per event; checkout is not open.'));
+  check('online event cards omit the exhibitor inquiry', template.includes("flags.online ? '' : paidListings.featuredExhibitorInquiryHtml"));
 
   function jsHits(dir, hits) {
     fs.readdirSync(dir).forEach(function (name) {
@@ -481,15 +488,19 @@ async function main() {
   }
   jsHitsExhibitor('.', exhibitorHits);
   check('exhibitor payment link URL lives in that same constant', exhibitorHits.length === 1 && exhibitorHits[0] === './lib/paid-listings.js', exhibitorHits.join(','));
-  check('events list exhibitor pay button uses the gate', fs.readFileSync('events.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('events.html', 'utf8').indexOf('Featured Exhibitor · $399') >= 0);
-  check('pricing exhibitor pay button uses the gate', fs.readFileSync('pricing.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('Feature your exhibitor — $399') >= 0);
-  check('sponsor exhibitor pay button uses the gate', fs.readFileSync('sponsor.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('id="contact"') >= 0);
-  check('exhibitions page exhibitor pay button uses the gate', fs.readFileSync('exhibitions.html', 'utf8').indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && fs.readFileSync('exhibitions.html', 'utf8').indexOf('href="' + exhibitorLink + '"') < 0);
+  ['events.html', 'pricing.html', 'sponsor.html'].forEach(function (file) {
+    const html = fs.readFileSync(file, 'utf8');
+    check(file + ' shows an exhibitor inquiry without a payment link', html.includes('Ask about Featured Exhibitor') && !html.includes('/checkout/?product=featured_exhibitor') && !html.includes(exhibitorLink));
+  });
+  const checkoutGate = require('../lib/checkout-gate');
+  check('cached and generated exhibitor CTAs resolve to the sponsor inquiry', checkoutGate.gateQuery({product:'featured_exhibitor',event:'middle-east-energy'}) === '/sponsor.html#featured-exhibitor' && checkoutGate.paymentUrl('featured_exhibitor') === '');
+  const inquiry = paid.featuredExhibitorInquiryHtml({eventId:'middle-east-energy'});
+  check('event and exhibition generator uses the inquiry component', inquiry.includes('/sponsor.html#featured-exhibitor') && inquiry.includes('data-track-event="middle-east-energy"') && !inquiry.includes('checkout') && fs.readFileSync('build-exhibitions.js','utf8').includes('paidListings.featuredExhibitorInquiryHtml'));
   const commerce = JSON.parse(fs.readFileSync('data/commerce.json', 'utf8'));
   const commerceExhibitor = commerce.sections.reduce(function (found, section) {
     return found || (section.products || []).filter(function (product) { return product.id === 'featured_exhibitor'; })[0];
   }, null);
-  check('commerce catalog stores the exhibitor payment link', commerceExhibitor && commerceExhibitor.price === 399 && commerceExhibitor.payment_link === exhibitorLink, JSON.stringify(commerceExhibitor && { price: commerceExhibitor.price, payment_link: commerceExhibitor.payment_link }));
+  check('commerce catalog describes the planned price but does not sell exhibitor placement', commerceExhibitor && commerceExhibitor.price === 399 && commerceExhibitor.checkout_available === false && !commerceExhibitor.payment_link && commerceExhibitor.cta_url === '/sponsor.html#featured-exhibitor');
   const retiredWebinarCode = '14A3co8Kc6ln77Wc1AfYY07';
   check('hosted webinar is not a sellable payment link', !paid.PAYMENT_LINKS.hosted_webinar && !paid.HOSTED_WEBINAR_PAYMENT_LINK);
   check('webinars page is not published', !fs.existsSync('webinars.html'));
@@ -501,11 +512,6 @@ async function main() {
     return found || (section.products || []).filter(function (product) { return product.id === 'hosted_webinar'; })[0];
   }, null);
   check('commerce catalog does not sell a hosted webinar', !commerceWebinar && JSON.stringify(commerce).indexOf(retiredWebinarCode) < 0);
-  const exhibitorPages = cardPages.filter(function (d) {
-    const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
-    return html.indexOf('href="/checkout/?product=featured_exhibitor') >= 0 && html.indexOf('href="' + exhibitorLink + '"') < 0 && html.indexOf('data-featured-exhibitor-pay="1"') >= 0 && html.indexOf('href="../../sponsor.html">Feature your company — $399') < 0;
-  });
-  check('event pages use the exhibitor payment link', exhibitorPages.length === cardPages.length && cardPages.length > 20, 'cards=' + cardPages.length + ' exhibitor=' + exhibitorPages.length);
   const mfrHits = [];
   function jsHitsMfr(dir, found) {
     fs.readdirSync(dir).forEach(function (name) {
@@ -1364,13 +1370,13 @@ async function main() {
       && card.indexOf('$699') < 0;
   })());
   check('pricing keeps the featured event link', pricingSource.indexOf('href="/checkout/?product=featured_event"') >= 0 && pricingSource.indexOf(link) < 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
-  check('pricing keeps the exhibitor link', pricingSource.indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && pricingSource.indexOf(exhibitorLink) < 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
+  check('pricing separates exhibitor inquiries from legacy fulfilment', pricingSource.includes('Ask about Featured Exhibitor') && pricingSource.includes('paid=featured_exhibitor#contact') && !pricingSource.includes('/checkout/?product=featured_exhibitor'));
   check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf('href="/checkout/?product=featured_listing"') >= 0 && pricingSource.indexOf('href="/checkout/?product=featured_verified"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) < 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);
   check('pricing adds the component sponsor', pricingSource.indexOf('id="component-sponsor"') >= 0 && pricingSource.indexOf('href="/checkout/?product=component_sponsor"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) < 0 && pricingSource.indexOf('Sponsor this section, $199/mo') >= 0 && pricingSource.indexOf('plus tax') >= 0);
   const pricingText = pricingSource.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   check('pricing featured prices use yr and mo labels', pricingSource.indexOf('$299/yr') >= 0 && pricingSource.indexOf('$699/yr') >= 0 && pricingSource.indexOf('$199/mo') >= 0 && !/\$\d[\d,]*\s*\/\s*year\b/i.test(pricingText));
   const advertisePage = fs.readFileSync('sponsor.html', 'utf8');
-  check('advertise page keeps the exhibitor checkout', advertisePage.indexOf('href="/checkout/?product=featured_exhibitor"') >= 0 && advertisePage.indexOf(exhibitorLink) < 0 && advertisePage.indexOf('id="featured-listings"') >= 0 && advertisePage.indexOf('id="component-sponsor"') >= 0 && advertisePage.indexOf('Core steel') >= 0 && advertisePage.indexOf('$199/mo plus tax') >= 0);
+  check('sponsorship preserves other offers and separates the exhibitor inquiry', advertisePage.includes('Ask about Featured Exhibitor') && !advertisePage.includes('/checkout/?product=featured_exhibitor') && advertisePage.includes('id="featured-listings"') && advertisePage.includes('id="component-sponsor"') && advertisePage.includes('Core steel') && advertisePage.includes('$199/mo plus tax'));
 
   const claimFile = fs.readFileSync('claim.html', 'utf8');
   const claimNote = claimFile.slice(claimFile.indexOf('id="claimSetupNote"'), claimFile.indexOf('id="claimSetupNote"') + 420);
