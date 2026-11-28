@@ -126,6 +126,8 @@ function addTender(o) {
   const key = ci(o.title + '|' + o.buyer + '|' + o.country);
   if (seen[key]) return null;
   seen[key] = 1;
+  const tenderId = 'T-' + slugify(o.title).slice(0, 32).replace(/-+$/, '');
+  if (tenders.some(function (row) { return row.tender_id === tenderId; })) return null;
   const closeAt = parseCloseInstant(o.close_at || o.deadline_raw || '');
   const deadline = parseDeadline(closeAt || o.deadline_raw || o.expected_raw || '');
   const status = deriveStatus(o.stage, o.expected_raw, closeAt || deadline);
@@ -133,7 +135,7 @@ function addTender(o) {
     ? o.project_country
     : ((o.country != null && String(o.country).trim() !== '') ? o.country : null);
   tenders.push(Object.assign({}, o, {
-    tender_id: 'T-' + slugify(o.title).slice(0, 32).replace(/-+$/, ''),
+    tender_id: tenderId,
     project_country: projectCountry,
     buyer_country: o.buyer_country != null ? o.buyer_country : null,
     supplier_country: o.supplier_country != null ? o.supplier_country : null,
