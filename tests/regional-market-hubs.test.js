@@ -69,3 +69,26 @@ assert.match(saudi,/60 Hz nominal transmission frequency/);
 assert.doesNotMatch(saudi,/Frequency is 50 Hz|60 Hz transmission is not used/);
 for(const [d,m] of [['europe','europe'],['middle-east','gcc']]) assert.ok(fs.readFileSync('directory/region/'+d+'/index.html','utf8').includes('href="/markets/'+m+'/"'));
 console.log('Regional markets: exact dates, geographic isolation, source status, awards separation and route links passed');
+
+
+const buyerGuides = require('../lib/buyer-regional-hubs');
+const marketIndex = fs.readFileSync('markets.html','utf8');
+for (const [slug, guide] of Object.entries(buyerGuides.guides)) {
+  const item = fs.readFileSync('markets/' + slug + '/index.html','utf8');
+  const selected = item.slice(item.indexOf('<main '), item.indexOf('</main>'));
+  assert.ok(item.includes('href="https://transformerpath.com' + buyerGuides.pathFor(slug) + '"'), slug + ' canonical');
+  assert.ok(marketIndex.includes('href="' + buyerGuides.pathFor(slug) + '"'), slug + ' discoverable from Markets');
+  assert.ok(item.includes('name="robots" content="index,follow"') && guide.checks.length && selected.includes('Before you shortlist'));
+  const links = Array.from(selected.matchAll(/href="(\/[^"]+)"/g), match => match[1].split('#')[0]);
+  for (const route of links) assert.ok(fs.existsSync(route.slice(1) + (route.endsWith('/') ? 'index.html' : '')), route + ' resolves to local source');
+  for (const [, market] of guide.cards.filter(card => card[1].startsWith('/markets/'))) {
+    assert.ok(fs.readFileSync(market.slice(1) + 'index.html','utf8').includes('href="' + buyerGuides.pathFor(slug) + '"'), market + ' links back');
+  }
+}
+const suppliedDates = {};
+require('../lib/sitemap-dates').applyContentSignals(suppliedDates);
+for (const slug of Object.keys(buyerGuides.guides)) assert.equal(suppliedDates['markets/' + slug + '/index.html'], buyerGuides.reviewed);
+for (const [d,m] of [['north-america','north-america'],['oceania','australia']]) {
+  assert.ok(fs.readFileSync('directory/region/' + d + '/index.html','utf8').includes('href="/markets/' + m + '/"'));
+}
+console.log('Regional buyer guides canonical, crawlable, source-linked, with working local destinations.');

@@ -2,6 +2,7 @@
 'use strict';
 const fs=require('node:fs');
 const regions=require('./lib/regional-market-hubs');
+const buyerGuides=require('./lib/buyer-regional-hubs');
 const read=(path)=>JSON.parse(fs.readFileSync(path,'utf8'));
 const absolute=(s)=>s.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g,'$1="/$2"');
 function buildRegionalMarkets() {
@@ -14,6 +15,12 @@ function buildRegionalMarkets() {
     fs.mkdirSync(dir,{recursive:true});
     fs.writeFileSync(dir+'/index.html',regions.render(slug,seed,tenders,awards,fixtures));
     console.log('Regional transformer market hub: /'+dir+'/');
+  }
+  for (const slug of Object.keys(buyerGuides.guides)) {
+    const dir='markets/'+slug;
+    fs.mkdirSync(dir,{recursive:true});
+    fs.writeFileSync(dir+'/index.html',buyerGuides.render(slug,fixtures.head,fixtures.foot));
+    console.log('Regional transformer buyer guide: /'+dir+'/');
   }
 }
 if (require.main === module) buildRegionalMarkets();
