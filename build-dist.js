@@ -40,7 +40,7 @@ const { stampHtml } = require('./adsense-inject');
 const { ensureLegalFooter } = require('./lib/legal-footer');
 const { ensureSiteX, chromeGaps } = require('./lib/site-x');
 const { ensureSkipTarget } = require('./lib/skip-target');
-const { rootAbsoluteAssets, isShadowPage } = require('./lib/shadow-asset-paths');
+const { rootAbsoluteAssets } = require('./lib/shadow-asset-paths');
 
 const DIST = 'dist';
 
@@ -187,12 +187,6 @@ for (const f of fs.readdirSync('.')) {
   if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) {
     copyFile(f, f);
-    if (isShadowPage(f) || f === '404.html') {
-      const dest = path.join(DIST, f);
-      const html = fs.readFileSync(dest, 'utf8');
-      const next = rootAbsoluteAssets(html);
-      if (next !== html) fs.writeFileSync(dest, next);
-    }
     count++;
   }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
@@ -302,7 +296,13 @@ let stampErrors = 0;
     try { html = fs.readFileSync(p, 'utf8'); }
     catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
     let next;
-    try { next = ensureSkipTarget(ensureSiteX(ensureLegalFooter(stampHtml(html, rel)))); }
+    try {
+      next = ensureSkipTarget(ensureSiteX(ensureLegalFooter(stampHtml(html, rel))));
+      // Netlify also serves published root files at /name/, even without an
+      // explicit rewrite or sibling directory. Their links still belong to
+      // the site root. Preserve intentional local links in real subdirectories.
+      if (!rel.includes('/')) next = rootAbsoluteAssets(next);
+    }
     catch (err) {
       console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
       stampErrors++;

@@ -168,16 +168,28 @@
     var asked = params ? String(params.get('slug') || '').trim().toLowerCase() : '';
     if (asked && slugInput && !slugInput.value) slugInput.value = asked;
     var listing = { name: '', website: '' };
+    var listingReady = false;
+    var listingMissing = false;
 
     function currentSlug() {
       return String(slugInput && slugInput.value || '').trim().toLowerCase();
     }
 
     function applyFlag() {
-      var flag = reviewFlag(emailInput ? emailInput.value : '', listing.website);
+      var email = emailInput ? emailInput.value : '';
+      var flag = reviewFlag(email, listing.website);
       if (flagInput) flagInput.value = flag;
       if (siteInput) siteInput.value = listing.website || '';
       if (!status) return;
+      if (listingMissing) return;
+      // The hidden field remains conservative; only show a diagnostic once a
+      // complete email and the listing lookup are ready to compare.
+      if (!validEmail(email) || !listingReady) {
+        status.textContent = '';
+        status.hidden = true;
+        return;
+      }
+      status.hidden = false;
       if (!listing.website) {
         status.textContent = 'No listing website is on file for this slug. This claim is flagged for manual review.';
         return;
@@ -205,6 +217,8 @@
 
     function applyListing(row) {
       listing = row || { name: '', website: '' };
+      listingReady = true;
+      listingMissing = false;
       if (companyInput && listing.name && !companyInput.value) companyInput.value = listing.name;
       stampPays(currentSlug());
       applyFlag();
@@ -216,7 +230,8 @@
       if (flagInput) flagInput.value = 'manual_review';
       if (siteInput) siteInput.value = '';
       stampPays('');
-      if (status) status.textContent = 'Listing not found';
+      listingMissing = true;
+      if (status) { status.hidden = false; status.textContent = 'Listing not found'; }
     }
 
     form.addEventListener('submit', applyFlag);
@@ -231,6 +246,9 @@
     }
 
     function loadIndex() {
+      listingReady = false;
+      listingMissing = false;
+      applyFlag();
       var slug = currentSlug();
       if (!slug) {
         applyListing({ name: '', website: '' });

@@ -159,7 +159,8 @@ function hoursHtml(ev) {
   if (!rows.length) return '';
   const bits = rows.map((h) => esc(fmtDay(h.date) || h.date) + ' ' + esc(h.open) + '\u2013' + esc(h.close));
   const label = ev.hours_label ? ' (' + esc(ev.hours_label) + ')' : '';
-  return '<span><b>Hours</b> ' + bits.join(', ') + label + '</span>';
+  const source = httpHref(ev.hours_source_url);
+  return '<span><b>Hours</b> ' + bits.join(', ') + label + (source ? ' · <a href="' + esc(source) + '" rel="noopener">Official opening hours</a>' : '') + '</span>';
 }
 function attendanceHtml(ev) {
   if (ev.attendance !== 'offline') return '';
@@ -267,15 +268,13 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
   });
   /* An online session has no exhibitor floor. The $399 control is an unpaid
    * offer, so it is omitted. A paid Featured Event badge still renders. */
-  const exhibitorPay = flags.online ? '' : paidListings.featuredExhibitorPayHtml({
+  const exhibitorInquiry = flags.online ? '' : paidListings.featuredExhibitorInquiryHtml({
     eventId: eventId || '',
-    formHref: '../../sponsor.html#contact',
-    className: 'btn btn-amber',
-    label: 'Feature your company — $399 →'
+    className: 'btn btn-outline'
   });
   const offerLine = flags.online
     ? 'Feature this event on TransformerPath — Featured Event is $299 per event.'
-    : 'Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.';
+    : 'Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is planned at $399 per event; checkout is not open.';
   const robots = flags.noindex ? 'noindex,follow' : 'index,follow';
   const role = flags.role ? ' data-tp-event-role="' + esc(flags.role) + '"' : '';
   const eid = flags.eventId ? ' data-tp-event-id="' + esc(flags.eventId) + '"' : '';
@@ -294,7 +293,7 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">' + offerLine + '</div>' +
     pay +
-    exhibitorPay + '</div>' +
+    exhibitorInquiry + '</div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a></p>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
 }

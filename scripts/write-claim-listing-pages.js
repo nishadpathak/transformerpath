@@ -30,7 +30,11 @@ function payButton(plan, slug, cls, label) {
   return '<a class="' + cls + '" href="' + esc(payHref(plan, slug)) + '" data-pay-plan="' + plan + '" data-pay-slug="' + esc(slug) + '">' + label + '</a>';
 }
 
-function upgrades(slug) {
+function upgrades(slug, providerOnly) {
+  if (providerOnly) return '<section class="claim-upgrades" aria-label="Upgrade options">'
+    + '<h2>Optional featured placement</h2><p>Claiming a listing is free. Featured is a paid placement and is published only after review.</p>'
+    + payButton('featured_listing', slug, 'btn btn-outline', 'Featured $299/yr')
+    + '</section>';
   return '<section class="claim-upgrades" aria-label="Upgrade options">'
     + '<h2>Upgrade options</h2>'
     + '<p>Claiming a listing is free. These paid options open the same checkout page as a manufacturer profile. Payment does not publish a listing before review. Verified Manufacturer is a $499 one-time payment that covers 12 months, with no auto-renewal. Identity and contact details checked. Not a product certification.</p>'
@@ -96,8 +100,9 @@ function formMain(row) {
   const company = row ? row.name : '';
   const slug = row ? row.slug : '';
   const website = row ? row.website : '';
+  const providerOnly = !!(row && row.providerOnly);
   return '<h1>Claim this listing</h1>'
-  + '<p>Tell TransformerPath what to correct on a manufacturer listing. The directory does not change until a person checks the claim.</p>'
+  + '<p>Tell TransformerPath what to correct on ' + (providerOnly ? 'this service provider listing' : 'a manufacturer listing') + '. The directory does not change until a person checks the claim.</p>'
   + '<p class="claim-confirm" role="status">' + CONFIRM + '</p>'
   + '<p class="claim-note">Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a></p>'
   + '<form id="claimListingForm" class="claim-form" name="claim-listing" method="POST" action="/claim-listing/received/" data-netlify="true" data-netlify-honeypot="bot-field">'
@@ -121,7 +126,7 @@ function formMain(row) {
   + '</select>'
   + '<label for="claim-email">Work email</label>'
   + '<input id="claim-email" type="email" name="email" required maxlength="160" autocomplete="email" inputmode="email">'
-  + '<p id="claim-domain-status" class="claim-note" role="status">A work email on the listing website domain is recorded as a domain match. Any other email is flagged for manual review. With JavaScript off, the claim is flagged for manual review.</p>'
+  + '<p id="claim-domain-status" class="claim-note" role="status" hidden></p>'
   + '<fieldset class="claim-checks"><legend>Fields to correct</legend>'
   + '<label><input type="checkbox" name="correct_fields" value="website"> Website</label>'
   + '<label><input type="checkbox" name="correct_fields" value="city"> City</label>'
@@ -136,7 +141,7 @@ function formMain(row) {
   + '<p style="margin-top:16px"><button class="btn btn-amber" type="submit">Submit claim</button></p>'
   + '<noscript><p class="claim-note">This form submits without JavaScript. ' + CONFIRM + '</p></noscript>'
   + '</form>'
-  + upgrades(slug);
+  + upgrades(slug, providerOnly);
 }
 
 const notFoundMain = '<h1>Listing not found</h1>'
@@ -171,9 +176,10 @@ const notFoundHtml = page({
   main: notFoundMain
 });
 
+const htmlOnly = process.argv.includes('--html-only');
 const claimRoot = path.join(root, 'claim-listing');
 fs.mkdirSync(path.join(claimRoot, 'received'), { recursive: true });
-fs.readdirSync(claimRoot, { withFileTypes: true }).forEach(function (ent) {
+if (!htmlOnly) fs.readdirSync(claimRoot, { withFileTypes: true }).forEach(function (ent) {
   if (ent.isDirectory() && ent.name !== 'received') {
     fs.rmSync(path.join(claimRoot, ent.name), { recursive: true, force: true });
   }
@@ -183,22 +189,29 @@ fs.writeFileSync(path.join(claimRoot, 'received', 'index.html'), receivedHtml);
 fs.mkdirSync(path.join(claimRoot, 'not-found'), { recursive: true });
 fs.writeFileSync(path.join(claimRoot, 'not-found', 'index.html'), notFoundHtml);
 
-const claimIndex = require(path.join(root, 'lib/claim-listing')).buildClaimIndex(root);
-fs.writeFileSync(path.join(root, 'data/claim-listing-index.json'), JSON.stringify(claimIndex, null, 2) + '\n');
+const claimLib = require(path.join(root, 'lib/claim-listing'));
+const claimIndex = claimLib.buildClaimIndex(root);
+const providerClaims = claimLib.providerOnlyClaimSlugs(root);
+if (!htmlOnly) fs.writeFileSync(path.join(root, 'data/claim-listing-index.json'), JSON.stringify(claimIndex, null, 2) + '\n');
 const slugs = Object.keys(claimIndex);
 slugs.forEach(function (slug) {
   const row = claimIndex[slug];
   const html = page({
     title: 'Claim this listing — TransformerPath',
-    description: 'Submit a free correction claim for a TransformerPath manufacturer listing. Claims are reviewed manually.',
+    description: 'Submit a free correction claim for a TransformerPath ' + (providerClaims.has(slug) ? 'service provider' : 'manufacturer') + ' listing. Claims are reviewed manually.',
     canonical: 'https://transformerpath.com/claim-listing/' + slug + '/',
-    main: formMain({ name: row.name, slug: slug, website: row.website || '' }),
+    main: formMain({ name: row.name, slug: slug, website: row.website || '', providerOnly: providerClaims.has(slug) }),
     extra: '<script src="/claim-listing.js" defer></script>\n'
   });
   const dir = path.join(claimRoot, slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 });
+
+if (htmlOnly) {
+  console.log('refreshed claim-listing HTML for ' + slugs.length + ' listings');
+  process.exit(0);
+}
 
 const begin = '# BEGIN claim-listing-query-redirects';
 const end = '# END claim-listing-query-redirects';

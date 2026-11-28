@@ -59,6 +59,15 @@ check('accreditation stat is the verified count of the directory', ssr.indexOf(v
 check('page does not claim every laboratory is accredited', ssr.indexOf('>' + labs.length + '<') < 0 || ssr.indexOf(labs.length + ' of ' + labs.length) < 0);
 check('no empty kV pill in the directory', !/>\s*kV(?:\s|Peak|<)/.test(ssr));
 
+for (const [dir, slug] of [['laboratories', 'lrqa'], ['logistics', 'allelys']]) {
+  const profile = fs.readFileSync(dir + '/' + slug + '/index.html', 'utf8');
+  const claimPage = fs.readFileSync('claim-listing/' + slug + '/index.html', 'utf8');
+  check(slug + ' offers a free profile claim', profile.includes('href="/claim-listing/' + slug + '/"'));
+  check(slug + ' does not offer a manufacturer badge', !/verified manufacturer|data-verified-manufacturer-pay/i.test(profile + claimPage));
+  check(slug + ' has a service provider claim page', claimPage.includes('this service provider listing'));
+  check(slug + ' keeps optional featured placement', claimPage.includes('data-pay-plan="featured_listing"'));
+}
+
 if (failed) {
   console.error('LABORATORY CLAIMS FAILED (' + failed + ')');
   process.exit(1);
