@@ -21,6 +21,13 @@ const notices = JSON.parse(fs.readFileSync('data/public-tender-notices.json', 'u
 const openSlice = html.slice(html.indexOf('id="openView"'), html.indexOf('id="pipelineView"'));
 const expiredSlice = html.slice(html.indexOf('id="expiredView"'));
 
+const brazilNotice = 'https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=26340105000082026';
+check('Brazil Compras.gov.br individual notices are official', isOfficialProcurementUrl(brazilNotice));
+check('Compras.gov.br acceptance excludes other paths, identifiers and lookalikes',
+  !isOfficialProcurementUrl(brazilNotice.replace('/acompanhamento-compra', '/outro')) &&
+  !isOfficialProcurementUrl(brazilNotice.replace('26340105000082026', 'abc')) &&
+  !isOfficialProcurementUrl(brazilNotice.replace('https:', 'http:')) &&
+  !isOfficialProcurementUrl(brazilNotice.replace('.gov.br/', '.gov.br.example.com/')));
 check('product and region filters exist', html.indexOf('id="productFilter"') >= 0 && html.indexOf('id="regionFilter"') >= 0);
 check('expired view is hidden by default', /id="expiredView" hidden/.test(html));
 check('alert CTA uses the partner constant', html.indexOf('data-tender-cta="1"') >= 0 && html.indexOf('href="' + TENDER_PARTNER_URL + '"') >= 0);
