@@ -44,6 +44,13 @@ assert.equal((html.match(/<link rel="canonical" href="https:\/\/transformerpath\
   assert(html.includes('id="india-' + s + '"'), 'India hub renders the ' + s + ' section');
   assert(html.includes('href="#india-' + s + '"'), 'India hub links to the ' + s + ' section');
 });
+const identity = html.match(/<section[^>]*id="india-supplier-identity"[\s\S]*?<\/section>/);
+assert(identity && identity[0].includes('L31100GJ1967PLC001437') && identity[0].includes('L33121GJ1994PLC022460'));
+assert(identity[0].includes('L28920MH1957PLC010839') && identity[0].includes('L28110MH2024PLC418770'));
+assert(identity[0].includes('25 March 2025'));
+assert(identity[0].includes('Registration does not establish manufacturing capability'));
+assert(identity[0].includes('nsearchives.nseindia.com/') && identity[0].includes('www.transformerindia.com/investor-relations'));
+assert(!identity[0].includes('zaubacorp.com'), 'Discovery mirrors are not primary proof');
 assert(!html.includes('Open / live tenders'), 'No legacy India status heuristic');
 const buildNow = Date.now();
 const activeRefs = refs(hub.activeTenderSnapshot(require('../data/tenders.json').tenders, intake.concat(publicIntake), buildNow));

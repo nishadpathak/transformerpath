@@ -51,6 +51,16 @@ assert(directory.indexOf('Loading the directory index') < 0, 'directory loading 
 assert(directory.indexOf('class="dir-list"') >= 0, 'directory rows are in the page');
 assert(directory.indexOf(companies[0].name) >= 0, 'first directory record is in the static HTML');
 
+const searchStart = directory.indexOf('id="dirQ"');
+const firstResults = directory.indexOf('class="dir-list"');
+assert(searchStart > 0 && searchStart < firstResults, 'search precedes results');
+assert(firstResults < directory.indexOf('data-featured-slot="directory"'), 'paid promotion does not interrupt sourcing');
+assert(firstResults < directory.indexOf('Directory coverage and evidence'), 'coverage detail follows results');
+assert(directory.includes('href="#dirLanding"') && directory.includes('id="dirLanding"'), 'role browsing stays reachable');
+execFileSync(process.execPath, ['build_ssr.js', 'manufacturers.html'], { stdio: 'inherit' });
+const manufacturers = fs.readFileSync('manufacturers.html', 'utf8');
+assert(manufacturers.indexOf('href="#search"') < manufacturers.indexOf('id="census-method"'), 'manufacturer search jump precedes methodology');
+
 const countryFiles = fs.readdirSync('manufacturers').filter(function (name) { return name.endsWith('.html'); });
 assert(countryFiles.length > 80, 'country listing pages are present');
 countryFiles.forEach(function (name) {

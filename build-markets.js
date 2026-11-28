@@ -24,6 +24,28 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+function indiaSupplierIdentity() {
+  const examples = [
+    { slug: 'voltamp-transformers', name: 'Voltamp Transformers Limited', cin: 'L31100GJ1967PLC001437', office: 'Registered office: Makarpura, Vadodara, Gujarat',
+      source: 'https://nsearchives.nseindia.com/corporate/VOLTAMP_29102026162453_BM_30092026.pdf', sourceLabel: 'Issuer filing on NSE, 29 October 2026' },
+    { slug: 'transformers-and-rectifiers-india-taril', name: 'Transformers and Rectifiers (India) Limited', cin: 'L33121GJ1994PLC022460',
+      source: 'https://www.transformerindia.com/investor-relations', sourceLabel: 'Company investor relations' },
+    { slug: 'siemens-ltd', name: 'Siemens Limited', cin: 'L28920MH1957PLC010839',
+      source: 'https://www.siemens.com/en-gb/company/region-legal-info/', sourceLabel: 'Siemens legal information' },
+    { slug: 'siemens-energy-india', name: 'Siemens Energy India Limited', cin: 'L28110MH2024PLC418770', office: 'Registered office: Worli, Mumbai, Maharashtra',
+      source: 'https://nsearchives.nseindia.com/corporate/ENRIN_25112026201025_BoardMeetingOutcome25112026signed.pdf', sourceLabel: 'Issuer filing on NSE, 25 November 2026' }
+  ];
+  return '<section class="india-module" id="india-supplier-identity" aria-labelledby="india-supplier-identity-title">' +
+    '<h2 id="india-supplier-identity-title">Check an Indian supplier’s legal identity</h2>' +
+    '<p>Match the legal name and company registration number (CIN or LLPIN) before shortlisting. A registered office is not a factory address. Registration does not establish manufacturing capability, certifications, utility approval, or stock.</p>' +
+    '<ul>' + examples.map(function (r) {
+      return '<li><a href="/manufacturers/' + esc(r.slug) + '/">' + esc(r.name) + '</a> · CIN ' + esc(r.cin) +
+        (r.office ? ' · ' + esc(r.office) : '') + ' · <a href="' + esc(r.source) + '">' + esc(r.sourceLabel) + '</a></li>';
+    }).join('') + '</ul>' +
+    '<p>Siemens Limited and Siemens Energy India Limited have different CINs. The energy-business demerger took effect on 25 March 2025; do not use one entity’s registration or project history as evidence for the other. <a href="https://www.siemens-energy-india.com/siemens-energy-india-limited-announces-its-board-of-directors.html">Company announcement</a>.</p>' +
+    '<p>Four examples checked 28 November 2026, not a full registry or a live status check. <a href="https://www.mca.gov.in/content/mca/global/en/mca/master-data/MDS.html">Look up a company in India’s MCA master data</a>.</p></section>';
+}
 const { facilityBadge } = require('./lib/provenance-badge');
 const comtrade = require('./lib/comtrade-hs8504');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
@@ -798,6 +820,7 @@ function marketPage(m) {
     '<h2>Confirmed manufacturing plants &amp; facilities (' + plantFigure(facs.length) + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
+    (isIndia ? indiaSupplierIdentity() : '') +
     (isIndia ? '' : renderMarketProcurement(tenders, m)) +
     (isIndia ? '<section class="india-module" id="india-awards" aria-labelledby="india-awards-title"><h2 id="india-awards-title">India transformer contract awards</h2>' + awardsHtml + '<p><a href="/awards.html">Browse the full awards board</a></p></section>' : '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml) +
     '<h2>Component &amp; material suppliers in this market</h2>' + localSupHtml +
