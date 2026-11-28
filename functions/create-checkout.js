@@ -29,6 +29,7 @@
  */
 'use strict';
 const paid = require('../lib/paid-listings');
+const { checkoutPaused } = require('../lib/checkout-gate');
 const { jobsRfqPaymentsEnabled } = require('../lib/feature-flags');
 
 const STRIPE_API = 'https://api.stripe.com/v1/checkout/sessions';
@@ -73,6 +74,7 @@ exports.handler = async function (event) {
   catch (e) { return json(400, { error: 'invalid json' }); }
 
   const product = String(body.product || '').trim();
+  if (checkoutPaused(product)) return json(409, { configured: false, error: 'checkout_unavailable', message: 'Featured Exhibitor checkout is not available.' });
   const spec = paid.PRODUCTS[product];
   if (!spec) return json(400, { error: 'unknown product' });
   if (paid.JOBS_RFQ_GROUPS && (paid.JOBS_RFQ_GROUPS.jobs.indexOf(product) !== -1 || paid.JOBS_RFQ_GROUPS.rfq.indexOf(product) !== -1 || paid.JOBS_RFQ_GROUPS.supplier.indexOf(product) !== -1)) {

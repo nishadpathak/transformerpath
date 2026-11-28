@@ -211,6 +211,11 @@ exports.handler = async function (event) {
   const body = parseBody(event);
   const query = event.queryStringParameters || {};
   const product = String(body.product || query.product || '').trim();
+  if (gate.checkoutPaused(product)) {
+    return failure(event, 409, 'checkout_unavailable', {
+      message: 'Featured Exhibitor checkout is not available. See Sponsorship for details.'
+    });
+  }
   const email = String(body.email || query.email || '').trim();
   const company = gate.cleanCompany(body.company || query.company);
   const slug = gate.cleanSlug(body.slug || query.slug);

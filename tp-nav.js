@@ -182,12 +182,17 @@
 
     /* ── Mark the current page ─────────────────────────────────────────── */
     if (nav) {
-      var here = location.pathname.split('/').pop() || 'index.html';
+      function pageKey(pathname) {
+        var key = pathname.replace(/\/+$/, '').replace(/\.html$/i, '');
+        return key === '/index' ? '' : key;
+      }
+      var here = pageKey(location.pathname);
       var links = nav.querySelectorAll('a[href]');
       for (var i = 0; i < links.length; i++) {
         var href = links[i].getAttribute('href');
-        if (!href || href.charAt(0) === '#') continue;
-        if (href.split('?')[0].split('#')[0] === here) {
+        if (!href || /^[#?]/.test(href)) continue;
+        var target = links[i];
+        if (target.origin === location.origin && pageKey(target.pathname) === here) {
           links[i].setAttribute('aria-current', 'page');
         }
       }

@@ -190,14 +190,26 @@ slugBox.addEventListener = function (name, fn) { listeners['slug-' + name] = fn;
 api.boot();
 setTimeout(function () {
   check('slug and company are filled from the address', slugBox.value === 'bemag-transformer' && companyBox.value === 'Bemag Transformer', slugBox.value + ' / ' + companyBox.value);
+  const domainStatus = nodes['claim-domain-status'];
+  check('a blank email keeps the status hidden while preserving the conservative flag', domainStatus.hidden === true && domainStatus.textContent === '' && flagBox.value === 'manual_review');
+  emailBox.value = 'sales@';
+  listeners['email-input']();
+  check('a partial email does not show a manual-review warning', domainStatus.hidden === true && domainStatus.textContent === '');
   emailBox.value = 'sales@bemag.ca';
   listeners['email-input']();
   check('a matching email is stored as domain_match', flagBox.value === 'domain_match' && siteBox.value === 'https://www.bemag.ca/', flagBox.value + ' ' + siteBox.value);
+  check('a complete matching address shows the domain match only', domainStatus.hidden === false && domainStatus.textContent === 'Work email matches the listing website.');
+
   check('verified checkout keeps the gate and the maker slug', payLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('verified_manufacturer', payLink.getAttribute('data-pay-slug'), payPlans) === '/checkout/?product=verified_manufacturer&slug=bemag-transformer', payLink.getAttribute('data-pay-slug'));
   check('featured checkouts keep the gate and the maker slug', featuredLink.getAttribute('data-pay-slug') === 'bemag-transformer' && bothLink.getAttribute('data-pay-slug') === 'bemag-transformer' && claim.checkoutUrl('featured_listing', featuredLink.getAttribute('data-pay-slug'), payPlans) === '/checkout/?product=featured_listing&slug=bemag-transformer' && claim.checkoutUrl('featured_verified', bothLink.getAttribute('data-pay-slug'), payPlans) === '/checkout/?product=featured_verified&slug=bemag-transformer');
   emailBox.value = 'sales@gmail.com';
   listeners['email-input']();
   check('a different email stays on manual review', flagBox.value === 'manual_review', flagBox.value);
+  check('a valid mismatch shows manual review', domainStatus.hidden === false && /flagged for manual review/.test(domainStatus.textContent));
+  emailBox.value = '';
+  listeners['email-input']();
+  check('clearing the email removes the prior warning', domainStatus.hidden === true && domainStatus.textContent === '');
+
   slugBox.value = 'not-a-real-listing';
   listeners['slug-change']();
   setTimeout(function () {

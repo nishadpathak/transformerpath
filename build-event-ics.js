@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadEvents } = require('./lib/events-reader');
 const { eventIcs } = require('./lib/event-ics');
+const { syncCalendarDownloadHeaders } = require('./lib/event-calendar-download');
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'transformerpath', 'functions']);
@@ -82,12 +83,13 @@ function syncEventCalendars(options) {
       wrote += 1;
     }
   });
-  return { linked: wanted.size, wrote, stripped };
+  const shortened = syncCalendarDownloadHeaders(root, wanted.keys());
+  return { linked: wanted.size, wrote, stripped, shortened };
 }
 
 module.exports = { hasCalendarDates, stripIcsAnchor, syncEventCalendars, linkedIds, listHtmlFiles };
 
 if (require.main === module) {
   const result = syncEventCalendars();
-  console.log('event calendars: ' + result.linked + ' with dates, ' + result.wrote + ' written, ' + result.stripped + ' undated links removed');
+  console.log('event calendars: ' + result.linked + ' with dates, ' + result.wrote + ' written, ' + result.stripped + ' undated links removed, ' + result.shortened + ' shorter download names');
 }

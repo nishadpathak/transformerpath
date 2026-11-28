@@ -143,9 +143,9 @@
         <p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="/checkout/?product=featured_event" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></p>
         <p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">After payment, submit the event name, URL, and dates on the <a href="events.html#submit-event" style="color:var(--accent)">events list</a>. The FEATURED label is shown only after review.</p>
       </div>
-      <div class="card"><span class="emoji" aria-hidden="true">🏢</span><h3>Featured Exhibitor</h3><p data-feature="featured_exhibitor_card" data-delivery="coming_soon">A featured exhibitor card — logo, booth number, and brochure on the event page — <span class="tp-soon">Coming soon</span>. $399 per event. Payment does not publish the card; review comes first.</p>
-        <p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="/checkout/?product=featured_exhibitor" data-featured-exhibitor-pay="1" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Feature your exhibitor — $399</a></p>
-        <p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">After payment, submit your company and the event on the form below. The FEATURED label is shown only after review.</p>
+      <div class="card" id="featured-exhibitor" style="scroll-margin-top:6rem"><span class="emoji" aria-hidden="true">🏢</span><h3>Featured Exhibitor</h3><p data-feature="featured_exhibitor_card" data-delivery="coming_soon">A featured exhibitor card — logo, booth number, and brochure on the event page — <span class="tp-soon">Coming soon</span>. $399 per event planned. Checkout is not open; no payment is taken when you inquire.</p>
+        <p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="#contact" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Ask about Featured Exhibitor →</a></p>
+        <p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">Already paid? Submit your company and the event on the form below. The FEATURED label is shown only after review.</p>
       </div>
       <div class="card" id="featured-listings"><span class="emoji" aria-hidden="true">📌</span><h3>Featured Listing</h3><p>A labelled Featured slot on the directory and country pages. Empty slots say "Your company here" until a real buyer is reviewed. $299/yr plus tax. Featured + Verified is $699/yr plus tax.</p>
         <p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="/checkout/?product=featured_listing" data-featured-listing-pay="1">Featured Listing — $299/yr plus tax</a></p>
@@ -157,13 +157,13 @@
         <p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">plus tax. <a href="pricing.html#component-sponsor" style="color:var(--accent)">Pricing</a></p>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:.9rem;margin:16px 0 0">Featured Event and Featured Exhibitor are event checkouts. Featured listings and component sponsorship are separate checkouts. A media kit and an article-writing service are not for sale.</p>
+    <p style="color:var(--muted);font-size:.9rem;margin:16px 0 0">Featured Event, Featured Listing and Component Sponsor have separate checkouts. Featured Exhibitor is inquiry only. A media kit and an article-writing service are not for sale.</p>
   </div>
 </section>
 
 <section class="block alt" id="contact">
   <div class="container" style="max-width:640px">
-    <div class="section-head"><h2>Submit a featured listing</h2><p>Use this form after a Featured Exhibitor payment.</p></div>
+    <div class="section-head"><h2>Featured Exhibitor inquiries</h2><p>Ask about the planned placement, or send your event details if you already paid. This form does not take payment.</p></div>
     <div id="exhibitorPayNote" role="status" style="display:none;margin:0 0 12px;padding:12px 14px;border-radius:10px;background:#14365c;color:#fff;font-size:.9rem;line-height:1.5"></div>
     <div class="card">
       <form name="sponsor-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="sForm" data-track-form="sponsor_inquiry">
