@@ -53,7 +53,7 @@ assert.equal(accessories.includes('href="/accessories/\'+slug+\'/"'), true);
 assert.equal(accessories.includes('href="accessories/'), false);
 assert.equal(read('machinery.html').includes('href="/machinery/broomfield-winding/"'), true);
 
-assert.equal(listings.length, 12, 'four new manufacturer listings and the eight already on file');
+assert.equal(listings.length, 14, 'the 28 Nov manufacturer listings plus Leeds Transformer and Gedelsa');
 assert.equal(listings.filter(row => /transformergrid\.com/.test(row.website || '')).length, 1);
 assert.equal(listings.some(row => /kalpataruprojects\.com|felbermayr\.cc|epoxyhouse\.com/.test(row.website || '')), false);
 
