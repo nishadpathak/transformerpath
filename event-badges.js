@@ -245,7 +245,7 @@
         var event = eventBySlug(part.event);
         var key = seriesKey(event);
         if (!key) return;
-        (groups[key] = groups[key] || []).push(event);
+        (groups[key] = groups[key] || []).push({ event: event, stand: part.stand || '' });
       });
     });
     var keys = Object.keys(groups).sort(function (a, b) { return (rank[a] || 0) - (rank[b] || 0); });
@@ -254,15 +254,21 @@
       var seen = Object.create(null);
       var live = [];
       var past = [];
-      groups[key].forEach(function (event) {
+      groups[key].forEach(function (item) {
+        var event = item && item.event;
         if (!event || seen[event.slug]) return;
         seen[event.slug] = 1;
-        (isPast(event, now) ? past : live).push(event);
+        (isPast(event, now) ? past : live).push(item);
       });
-      past.sort(function (a, b) { return editionYear(b) - editionYear(a); });
-      var pastYears = past.map(editionYear);
-      live.forEach(function (event) { html += liveBadge(event, pastYears, now); });
-      if (past.length) html += historyBadge(past[0], pastYears, live.length === 1 ? live[0] : null);
+      past.sort(function (a, b) { return editionYear(b.event) - editionYear(a.event); });
+      var pastYears = past.map(function (item) { return editionYear(item.event); });
+      live.forEach(function (item) {
+        html += liveBadge(item.event, pastYears, now);
+        if (item.stand) {
+          html += '<span class="event-stand" data-event-stand="' + esc(item.event.slug) + '">Stand ' + esc(item.stand) + '</span>';
+        }
+      });
+      if (past.length) html += historyBadge(past[0].event, pastYears, live.length === 1 ? live[0].event : null);
     });
     return html;
   }
