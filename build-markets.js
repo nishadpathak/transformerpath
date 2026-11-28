@@ -71,6 +71,7 @@ const BUILD_NOW = Date.now();
 const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
 const indiaHub = require('./lib/india-market-hub');
 const regional = require('./lib/regional-market-hubs');
+const buyerRegional = require('./lib/buyer-regional-hubs');
 const tenderIntake = require('./lib/tender-notices');
 const TENDER_INTAKE = tenderIntake.load('data/tender-notices.json').concat(tenderIntake.load('data/public-tender-notices.json'));
 const MARKET_TENDERS = marketTenderSnapshot(TENDERS, TENDER_INTAKE, BUILD_NOW);
@@ -663,7 +664,12 @@ const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', 
 function marketPage(m) {
   const isIndia = m.slug === 'india';
   const regionalSlug = regional.regionForCountry(m.gridsName);
+  const buyerRegionalSlug = Object.keys(buyerRegional.guides).find(function (slug) {
+    return buyerRegional.guides[slug].cards.some(function (card) { return card[1] === '/markets/' + m.slug + '/'; });
+  });
   const pageTitle = isIndia ? 'India Transformer Hub' : 'Transformer Industry — ' + m.name;
+  const metaTitle = isIndia ? 'India Transformer Hub: Suppliers, News and Tenders' :
+    m.slug === 'china' ? 'China Transformer Market: Suppliers and Tenders' : pageTitle;
   const pageDescription = isIndia
     ? 'India transformer news, buyer tenders with IST submission times, contract awards and sourced supplier clusters across manufacturing, materials, testing and service.'
     : m.blurb.slice(0, 155);
@@ -748,11 +754,11 @@ function marketPage(m) {
   ) : '<p style="color:var(--muted);font-size:.85rem">Browse the global <a href="../../components.html" style="color:var(--accent)">Components Directory</a> for regional suppliers.</p>';
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-    '<title>' + esc(pageTitle) + (isIndia ? ': News &amp; Tenders' : '') + ' | TransformerPath</title>' +
+    '<title>' + esc(metaTitle) + ' | TransformerPath</title>' +
     '<meta name="description" content="' + esc(pageDescription) + '">' +
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
-    '<meta property="og:title" content="' + esc(pageTitle) + '"><meta property="og:url" content="' + url + '">' +
+    '<meta property="og:title" content="' + esc(metaTitle) + '"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
     '<link rel="stylesheet" href="../../style.css?v=12"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:940px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.82rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.78rem;font-weight:600;margin-left:auto}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.stats{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px}.stats .s b{color:var(--accent);font-size:1.15rem;display:block}.stats .s span{color:var(--muted);font-size:.78rem}.tbl-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}.vbadge{color:var(--green);font-weight:700;font-size:.78rem}</style>' + schema +
@@ -762,6 +768,7 @@ function marketPage(m) {
     '<p class="lead">' + esc(isIndia ? 'Explore the Indian transformer ecosystem: see what buyers are procuring, track capacity and grid news, and find suppliers by region and capability.' : m.blurb) + '</p>' +
     (isIndia ? indiaHub.renderNav() + indiaHub.renderTenders(INDIA_TENDERS) + indiaHub.renderNews() + indiaHub.renderDirectory() : '') +
     (regionalSlug ? '<p class="market-parent"><a href="' + regional.pathFor(regionalSlug) + '">' + esc(regional.CONFIG[regionalSlug].label) + ' transformer market hub</a></p>' : '') +
+    (buyerRegionalSlug ? '<p class="market-parent"><a href="' + buyerRegional.pathFor(buyerRegionalSlug) + '">' + esc(buyerRegional.guides[buyerRegionalSlug].label) + ' transformer sourcing guide</a></p>' : '') +
     (m.slug === 'saudi-arabia' ? '<p><a href="https://www.sera.gov.sa/-/media/760cb4c6f4d7482fbae4325f53e035d1.ashx" rel="noopener">Saudi Arabian Grid Code: 60 Hz nominal transmission frequency</a></p>' : '') +
     gccCoverageHtml(m) +
     (isIndia ? '' : (function () {
