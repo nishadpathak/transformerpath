@@ -187,7 +187,7 @@ for (const f of fs.readdirSync('.')) {
   if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) {
     copyFile(f, f);
-    if (isShadowPage(f)) {
+    if (isShadowPage(f) || f === '404.html') {
       const dest = path.join(DIST, f);
       const html = fs.readFileSync(dest, 'utf8');
       const next = rootAbsoluteAssets(html);

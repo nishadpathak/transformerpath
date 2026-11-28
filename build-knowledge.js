@@ -2525,7 +2525,7 @@ function build() {
     HEAD +
     '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformers, explained</h1><p style="color:var(--muted);max-width:720px">Best answers to transformer-engineering questions — written neutrally, referenced to standards, and linked to the tools, components, manufacturers and book chapters that go deeper.</p></div></section>' +
     '<main id="main" class="container" style="max-width:960px;padding:0 0 60px">' +
-    '<form id="kh-filters" action="knowledge.html" method="get">' +
+    '<form id="kh-filters" action="/knowledge.html" method="get">' +
     '<label for="kh-topic">Topic<select id="kh-topic" name="topic">' + options(topics) + '</select></label>' +
     '<label for="kh-level">Level<select id="kh-level" name="level">' + options(levels) + '</select></label>' +
     '<label for="kh-life">Lifecycle<select id="kh-life" name="lifecycle">' + options(lives, function (v) { return labels[v] || v; }) + '</select></label>' +

@@ -155,7 +155,7 @@ function main() {
     let html = fs.readFileSync(file, 'utf8');
     const original = html;
     const nested = isNested(file);
-    const absChrome = nested || shadowsDirectory(file);
+    const absChrome = nested || shadowsDirectory(file) || base === '404.html';
 
     if (!skipHeader) {
       const loc = locateSiteChrome(html);

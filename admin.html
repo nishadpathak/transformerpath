@@ -44,7 +44,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
 <div class="admin-wrap" id="panel">
   <h1 style="margin:20px 0 4px">TransformerPath <span style="color:var(--accent)">Admin</span></h1>
-  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="index.html" style="color:var(--accent)">← back to site</a></p>
+  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="/index.html" style="color:var(--accent)">← back to site</a></p>
 
   <div class="grid2">
 
@@ -86,7 +86,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>💳 Course & Payments</h3>
-      <p class="sub">Three plans via Stripe Payment Links — Learning $199, Engineering Pro $599, Engineering Team $1,999, each a single payment. See <a href="pricing.html">pricing.html</a> for the live CTAs.</p>
+      <p class="sub">Three plans via Stripe Payment Links — Learning $199, Engineering Pro $599, Engineering Team $1,999, each a single payment. See <a href="/pricing.html">pricing.html</a> for the live CTAs.</p>
       <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
       <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
     </div>
@@ -117,12 +117,12 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>🔗 Quick Links</h3>
-      <a class="abtn" href="subscribe.html">Subscribe page</a>
-      <a class="abtn" href="intel.html">Daily Intel</a>
-      <a class="abtn" href="admin/job-rfq-review.html" style="background:var(--accent);color:var(--navy);font-weight:700">Job review queue</a>
-      <a class="abtn" href="admin/directory-health.html" style="background:var(--accent);color:var(--navy);font-weight:700">Directory Health ↗</a>
-      <a class="abtn" href="admin/source-health.html">Source Health ↗</a>
-      <a class="abtn amber" href="admin/operations.html">Operations Console</a>
+      <a class="abtn" href="/subscribe.html">Subscribe page</a>
+      <a class="abtn" href="/intel.html">Daily Intel</a>
+      <a class="abtn" href="/admin/job-rfq-review.html" style="background:var(--accent);color:var(--navy);font-weight:700">Job review queue</a>
+      <a class="abtn" href="/admin/directory-health.html" style="background:var(--accent);color:var(--navy);font-weight:700">Directory Health ↗</a>
+      <a class="abtn" href="/admin/source-health.html">Source Health ↗</a>
+      <a class="abtn amber" href="/admin/operations.html">Operations Console</a>
       <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
       <a class="abtn" href="https://eventregistry.org/" target="_blank" rel="noopener">EventRegistry ↗</a>
     </div>
@@ -175,7 +175,7 @@ function say(msg) { document.getElementById('tools-out').textContent = '✓ ' + 
 
 // ── Data Quality triage (reads data/data-quality.json) ─────────────────────
 function renderDataQuality() {
-  fetch('data/data-quality.json').then(function (r) { return r.json(); }).then(function (d) {
+  fetch('/data/data-quality.json').then(function (r) { return r.json(); }).then(function (d) {
     var sev = d.counts.by_severity || {};
     var sevEl = document.getElementById('dq-severity');
     if (sevEl) {
@@ -212,7 +212,7 @@ function renderDataQuality() {
 
 // ── Revenue (honest) — never estimates revenue; shows real platform scale ──
 function renderRevenue() {
-  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+  fetch('/data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
     var st = d.revenue ? d.revenue.status : 'unknown';
     var stEl = document.getElementById('revStatus');
     if (stEl) stEl.innerHTML = '<span style="font-size:.82rem;color:var(--muted)">Revenue status: <b style="color:' + (st === 'collection-in-progress' ? 'var(--accent)' : 'var(--text)') + '">' + esc(st) + '</b> — ' + esc((d.revenue && d.revenue.note) || 'Live revenue requires the Stripe + Supabase integration to be wired.') + '</span>';
@@ -231,7 +231,7 @@ function renderRevenue() {
 
 // ── Source Health (reads data/freshness.json — canonical freshness) ───────
 function renderSourceHealth() {
-  fetch('data/freshness.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+  fetch('/data/freshness.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
     var noteEl = document.getElementById('healthSummary');
     if (noteEl) noteEl.innerHTML = '<span class="sub" style="color:var(--muted)">' + esc((d.honest_note) || 'Freshness is tracked per surface; build vs data-refresh dates are distinct.') + '</span>';
     var rowsEl = document.getElementById('healthRows');
@@ -252,7 +252,7 @@ function renderSourceHealth() {
           '<div style="color:var(--muted);margin-top:4px">cadence: <b style="color:var(--text)">' + esc(s.cadence || '—') + '</b> · last_build: <b style="color:var(--text)">' + esc(s.last_build || '—') + '</b> · last_data_refresh: <b style="color:var(--text)">' + esc(s.last_data_refresh || '—') + '</b></div>' +
           (s.latest_source_observation ? '<div style="color:var(--muted);margin-top:3px">latest_source_observation: <b style="color:var(--text)">' + esc(s.latest_source_observation) + '</b></div>' : '') +
           (s.records != null ? '<div style="color:var(--muted);margin-top:3px">records: <b style="color:var(--text)">' + esc(s.records) + '</b></div>' : '') +
-          '<a href="admin/source-health.html" style="color:var(--accent);font-size:.76rem;display:inline-block;margin-top:5px">Open per-source health →</a>' +
+          '<a href="/admin/source-health.html" style="color:var(--accent);font-size:.76rem;display:inline-block;margin-top:5px">Open per-source health →</a>' +
           '</div>';
       }).join('');
     rowsEl.innerHTML = grid || '<p class="sub" style="color:var(--muted)">No freshness surfaces recorded.</p>';
@@ -264,7 +264,7 @@ function renderSourceHealth() {
 
 // ── Commercial opportunities (honest, derived prospect queues) ──────────────
 function renderOpportunities() {
-  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+  fetch('/data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
     var sum = d.metrics ? d.metrics.prospect_signals : {};
     var sEl = document.getElementById('oppSummary');
     if (sEl) sEl.innerHTML = '<b style="color:var(--text)">Prospect signals</b><br>' +

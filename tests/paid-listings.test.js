@@ -1403,7 +1403,7 @@ async function main() {
     return { note: note, calls: calls, replaced: replaced };
   }
   const claimMissing = await claimReturn('', null, null);
-  check('claim without a session returns to the profile form', claimMissing.replaced.indexOf('claim-profile.html') === 0 && claimMissing.note.textContent.indexOf('Payment received') < 0);
+  check('claim without a session returns to the profile form', claimMissing.replaced === '/claim-profile.html' && claimMissing.note.textContent.indexOf('Payment received') < 0);
   const claimUnpaid = await claimReturn('?session_id=cs_test_unpaid', { valid: false, paid: false, product: null }, null);
   check('unconfirmed claim stays neutral', claimUnpaid.note.textContent.indexOf('Payment received') < 0 && claimUnpaid.note.textContent.indexOf('Stripe has not confirmed') >= 0 && claimUnpaid.calls.length === 1);
   const claimPaid = await claimReturn('?session_id=cs_test_featured_listing', { valid: false, paid: true, product: 'featured_listing', listing: 'paid_pending_verification' }, { configured: true, paid: true, product: 'featured_listing' });

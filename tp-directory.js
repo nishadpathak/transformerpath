@@ -93,7 +93,7 @@
         });
         var params = new URLSearchParams(window.location.search);
         if (params.get('q')) {
-          window.location.replace('search.html?q=' + encodeURIComponent(params.get('q')));
+          window.location.replace('/search.html?q=' + encodeURIComponent(params.get('q')));
           return;
         }
         if (params.get('kind')) kind = params.get('kind');
@@ -191,15 +191,15 @@
     if (/^\/(?:accessories|machinery|laboratories|services|logistics)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(c.profile_url || '')) return c.profile_url;
     var slug = c.slug ? String(c.slug).replace(/^(acc|mach|lab|srv|log|asc|edu|buy|med):/, '') : '';
     if (c.kind === 'manufacturer' && slug) return 'manufacturers/' + esc(slug) + '/';
-    if (c.kind === 'component_supplier') return slug ? 'accessories/' + esc(slug) + '/' : 'accessories.html';
-    if (c.kind === 'machinery_manufacturer') return 'machinery.html';
-    if (c.kind === 'testing_laboratory') return 'laboratories.html';
-    if (c.kind === 'service_repair') return 'services.html';
-    if (c.kind === 'transport_logistics') return 'logistics.html';
-    if (c.kind === 'industry_association') return 'associations.html';
-    if (c.kind === 'education_provider') return 'education.html';
-    if (c.kind === 'buyer_procurement') return 'buyers.html';
-    if (c.kind === 'media_publication') return 'media.html';
+    if (c.kind === 'component_supplier') return slug ? '/accessories/' + esc(slug) + '/' : '/accessories.html';
+    if (c.kind === 'machinery_manufacturer') return '/machinery.html';
+    if (c.kind === 'testing_laboratory') return '/laboratories.html';
+    if (c.kind === 'service_repair') return '/services.html';
+    if (c.kind === 'transport_logistics') return '/logistics.html';
+    if (c.kind === 'industry_association') return '/associations.html';
+    if (c.kind === 'education_provider') return '/education.html';
+    if (c.kind === 'buyer_procurement') return '/buyers.html';
+    if (c.kind === 'media_publication') return '/media.html';
     return c.website || '#';
   }
 
@@ -265,7 +265,7 @@
         '</div>' +
       '</div>' +
       '<div class="kg-card-actions">' +
-        '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
+        '<a class="btn btn-amber btn-sm" href="/rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
         '<a class="btn btn-outline btn-sm" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '">Profile →</a>' +
         (c.website ? '<a class="btn btn-outline btn-sm" href="' + esc(c.website) + '" target="_blank" rel="noopener" style="font-size:.72rem" data-track="official_website_click" data-track-entity="' + esc(c.name) + '">Site ↗</a>' : '') +
         claimListingLink(c) +
@@ -383,9 +383,9 @@
 
     root.innerHTML =
       '<div class="kg-hero-banner">' +
-        '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:10px"><a href="index.html" style="color:var(--amber)">Home</a> › Transformer Industry Directory</nav>' +
+        '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:10px"><a href="/index.html" style="color:var(--amber)">Home</a> › Transformer Industry Directory</nav>' +
         '<p style="margin:0 0 6px;color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:-.02em">Search the industry knowledge graph</p>' +
-        (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
+        (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="/search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
         '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
         dataAsOfHtml(STATS.updated) +
         '<div class="kg-kpi-grid">' +
@@ -465,7 +465,7 @@
     }).join('');
 
     var mSlugs = rows.map(function (c) { return c.slug; }).filter(Boolean);
-    var compareLink = mSlugs.length ? 'compare.html?m=' + mSlugs.join(',') : '#dirCompare';
+    var compareLink = mSlugs.length ? '/compare.html?m=' + mSlugs.join(',') : '#dirCompare';
 
     dock.innerHTML =
       '<div class="tp-cmp-dock-info">⚖️ <b>' + rows.length + ' of 5</b> selected for comparison</div>' +
@@ -495,7 +495,7 @@
         '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
           '<div><b style="color:var(--text);font-size:1.02rem">⚖️ Technical Knowledge Graph Comparison</b> — Comparing ' + rows.length + ' entities across verified capability fields</div>' +
           '<div style="display:flex;gap:6px">' +
-            '<a class="btn btn-amber btn-sm" href="compare.html?m=' + rows.map(function(c){return c.slug;}).filter(Boolean).join(',') + '">Open Full Page Comparison ↗</a>' +
+            '<a class="btn btn-amber btn-sm" href="/compare.html?m=' + rows.map(function(c){return c.slug;}).filter(Boolean).join(',') + '">Open Full Page Comparison ↗</a>' +
             '<button class="btn btn-outline btn-sm" id="btnCloseCmp">Close</button>' +
           '</div>' +
         '</div>' +
@@ -516,7 +516,7 @@
           var score = (c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40));
           return '<td><b>' + score + '%</b> (' + (c.provenance_type || 'Verified') + ')</td>';
         }).join('') + '</tr>' +
-        '<tr><td>Direct Action</td>' + rows.map(function (c) { return '<td><a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '">Submit RFQ</a></td>'; }).join('') + '</tr>' +
+        '<tr><td>Direct Action</td>' + rows.map(function (c) { return '<td><a class="btn btn-amber btn-sm" href="/rfq.html?company=' + encodeURIComponent(c.name) + '">Submit RFQ</a></td>'; }).join('') + '</tr>' +
         '</tbody></table>' +
       '</div>';
 

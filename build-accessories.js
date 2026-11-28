@@ -164,11 +164,13 @@ fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable
 (function embedIndexData() {
   try {
     const publicDoc = JSON.parse(JSON.stringify(DATA));
+    delete publicDoc.$schema;
     (publicDoc.suppliers || []).forEach(function (row) {
       delete row.never_contact;
       delete row.do_not_contact;
       delete row.outreach_flags;
       delete row.flags;
+      row.public_slug = accessoryPublicSlug(row);
     });
     const json = scrubLegacyLabels(JSON.stringify(publicDoc)).replace(/<\/script/gi, '<\\/script');
     if (/never_contact|do_not_contact/i.test(json)) throw new Error('outreach flag leaked into accessories.html');
