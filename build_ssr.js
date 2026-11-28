@@ -569,6 +569,7 @@ function renderGrids(html) {
  * #board empty for crawlers. Replicate the default render into the HTML.
  * ------------------------------------------------------------------ */
 function renderManufacturers(html) {
+  html = require('./lib/directory-layout').manufacturerLayout(html);
   const DATA = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'))
     .filter((c) => c.makers.some((m) => !/^Served by/i.test(m[0])));
   const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
@@ -941,6 +942,7 @@ function renderVendors(html) {
 }
 
 function renderDirectoryPage(html) {
+  html = require('./lib/directory-layout').directoryLayout(html);
   const index = loadDirectoryIndex();
   const eventBadges = require('./event-badges');
   let siteStats = {};

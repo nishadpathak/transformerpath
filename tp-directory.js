@@ -346,9 +346,10 @@
       if (elE && document.activeElement !== elE && elE.value !== evFilter) elE.value = evFilter;
 
       // Update count
-      var countEl = root.querySelector('.dir-count');
+      var countEl = root.querySelector('.dir-results-status');
       if (countEl) {
-        countEl.innerHTML = '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' directory records</span><span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>';
+        var countText = 'Showing ' + hits.length + ' of ' + DATA.length + ' directory records';
+        if (countEl.textContent !== countText) countEl.textContent = countText;
       }
 
       // Update list
@@ -381,11 +382,7 @@
       return '<button class="kg-tab-btn ' + (kind === t.key ? 'active' : '') + '" data-set-kind="' + esc(t.key) + '">' + t.label + ' <span class="badge-cnt">' + badge + '</span></button>';
     }).join('');
 
-    root.innerHTML =
-      '<div class="kg-hero-banner">' +
-        '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:10px"><a href="/index.html" style="color:var(--amber)">Home</a> › Transformer Industry Directory</nav>' +
-        '<p style="margin:0 0 6px;color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:-.02em">Search the industry knowledge graph</p>' +
-        (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="/search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
+    var coverage = '<details class="kg-hero-banner"><summary>Directory coverage and evidence</summary>' +
         '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
         dataAsOfHtml(STATS.updated) +
         '<div class="kg-kpi-grid">' +
@@ -395,11 +392,22 @@
           '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturingCountries">' + kpiValue(STATS.manufacturingCountries) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="indexedEntities">' + kpiValue(STATS.indexedEntities) + '</div><div class="kg-kpi-lbl">Indexed entities</div></div>' +
         '</div>' +
-      '</div>' +
+      '</details>';
 
+    root.innerHTML =
       // Ecosystem Tab Navigation
       '<div class="kg-tabs-bar" style="overflow-x:auto;white-space:nowrap;padding-bottom:6px">' +
         tabsHtml +
+      '</div>' +
+
+      // Main search & dropdown filter bar
+      '<div class="dir-controls">' +
+        '<input id="dirQ" type="search" aria-label="Search the supplier directory" placeholder="Company, product or capability (e.g. pressboard, OLTC, 400 kV)" value="' + esc(q) + '">' +
+        '<select id="dirCountry" aria-label="Filter by country"><option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) { return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>'; }).join('') + '</select>' +
+        '<select id="dirType" aria-label="Filter by transformer type">' + typSel + '</select>' +
+        '<select id="dirKv" aria-label="Filter by minimum voltage class"><option value="0">Any Voltage Class</option><option value="110"' + (minKv===110?' selected':'') + '>110 kV+ (HV)</option><option value="220"' + (minKv===220?' selected':'') + '>220 kV+ (HV)</option><option value="400"' + (minKv===400?' selected':'') + '>400 kV+ (EHV)</option><option value="765"' + (minKv===765?' selected':'') + '>765 kV+ (UHV)</option></select>' +
+        '<select id="dirEv" aria-label="Filter by evidence level"><option value="">Any Evidence Level</option><option value="CONFIRMED"' + (evFilter==='CONFIRMED'?' selected':'') + '>Confirmed</option><option value="COMPANY_REPORTED"' + (evFilter==='COMPANY_REPORTED'?' selected':'') + '>Company Reported</option><option value="INFERRED"' + (evFilter==='INFERRED'?' selected':'') + '>Inferred</option><option value="UNKNOWN"' + (evFilter==='UNKNOWN'?' selected':'') + '>Unknown</option></select>' +
+        '<button id="dirClear" class="btn btn-outline btn-sm">Reset</button>' +
       '</div>' +
 
       // Quick filter pills
@@ -413,18 +421,8 @@
         '<button class="kg-quick-pill ' + (minComp === 70 ? 'on' : '') + '" data-set-mincomp="70">⭐ ≥70% Profile Completeness</button>' +
       '</div>' +
 
-      // Main search & dropdown filter bar
-      '<div class="dir-controls">' +
-        '<input id="dirQ" type="search" aria-label="Search the supplier directory" placeholder="Search entity, capability, brand or keyword (e.g. 400 kV, OLTC, pressboard, VPD, Georg, KEMA)..." value="' + esc(q) + '">' +
-        '<select id="dirCountry" aria-label="Filter by country"><option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) { return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>'; }).join('') + '</select>' +
-        '<select id="dirType" aria-label="Filter by transformer type">' + typSel + '</select>' +
-        '<select id="dirKv" aria-label="Filter by minimum voltage class"><option value="0">Any Voltage Class</option><option value="110"' + (minKv===110?' selected':'') + '>110 kV+ (HV)</option><option value="220"' + (minKv===220?' selected':'') + '>220 kV+ (HV)</option><option value="400"' + (minKv===400?' selected':'') + '>400 kV+ (EHV)</option><option value="765"' + (minKv===765?' selected':'') + '>765 kV+ (UHV)</option></select>' +
-        '<select id="dirEv" aria-label="Filter by evidence level"><option value="">Any Evidence Level</option><option value="CONFIRMED"' + (evFilter==='CONFIRMED'?' selected':'') + '>Confirmed</option><option value="COMPANY_REPORTED"' + (evFilter==='COMPANY_REPORTED'?' selected':'') + '>Company Reported</option><option value="INFERRED"' + (evFilter==='INFERRED'?' selected':'') + '>Inferred</option><option value="UNKNOWN"' + (evFilter==='UNKNOWN'?' selected':'') + '>Unknown</option></select>' +
-        '<button id="dirClear" class="btn btn-outline btn-sm">Reset</button>' +
-      '</div>' +
-
       '<div class="dir-count" style="display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.85rem;margin:14px 0 10px">' +
-        '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' directory records</span>' +
+        '<span class="dir-results-status" role="status" aria-live="polite" aria-atomic="true">Showing <b>' + hits.length + '</b> of ' + DATA.length + ' directory records</span>' +
         '<span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>' +
       '</div>' +
 
@@ -432,6 +430,7 @@
       '<div class="dir-list">' + (hits.length ? hits.slice(0, 60).map(cardHtml).join('') : '<div class="card" style="text-align:center;padding:40px;color:var(--muted)"><h3>No matching entities found</h3><p style="margin:8px 0">Try relaxing your search terms or clearing the voltage/evidence filters.</p><button id="btnResetEmpty" class="btn btn-amber btn-sm">Clear All Filters</button></div>') + '</div>' +
       '<div class="dir-note" style="font-size:.78rem;color:var(--muted);margin-top:20px;line-height:1.6;border-top:1px solid var(--border);padding-top:14px">Capability evidence is independent of commercial/paid status. <b>Potentially relevant</b> does not mean technically qualified — verify with the manufacturer before a commercial decision. UNKNOWN is shown rather than guessed.</div>' +
 
+      coverage +
       // Floating bottom comparison dock
       '<div id="tpCmpDock" class="tp-cmp-dock"></div>';
 
