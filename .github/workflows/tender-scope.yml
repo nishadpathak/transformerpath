@@ -13,4 +13,4 @@ jobs:
           node-version: '22'
       - name: Rebuild artifacts under test from current sources
         run: node build-intel-news.js && node build-tenders.js
-      - run: node tests/deadline-instant.test.js && node tests/tender-scope-filter.test.js && node tests/tender-open-view.test.js
+      - run: node tests/deadline-instant.test.js && node tests/tender-scope-filter.test.js && node tests/tender-open-view.test.js && node tests/tender-saved-searches.test.js

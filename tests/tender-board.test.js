@@ -85,7 +85,9 @@ notices.forEach(function (notice) {
     const slice = openSlice;
     check(notice.official_reference + ' is in the open list', slice.indexOf(notice.title) >= 0);
     const start = slice.indexOf(notice.title);
-    const rowHtml = slice.slice(Math.max(0, start - 400), start + 900);
+    const rowStart = slice.lastIndexOf('<div class="t-row"', start);
+    const rowEnd = slice.indexOf('</div>', start);
+    const rowHtml = rowStart >= 0 && rowEnd >= 0 ? slice.slice(rowStart, rowEnd) : '';
     check(notice.official_reference + ' shows the buyer', rowHtml.indexOf('Buyer ' + notice.buyer) >= 0 || rowHtml.indexOf('Buyer ' + notice.buyer.replace(/&/g, '&amp;')) >= 0);
     check(notice.official_reference + ' shows the deadline date', /Deadline \d{1,2} [A-Z][a-z]{2} \d{4}/.test(rowHtml));
     check(notice.official_reference + ' links the official notice', rowHtml.indexOf(notice.official_source_url) >= 0);

@@ -84,7 +84,7 @@ const ROOT_JS = [
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js', 'tp-parts.js',
   'google-auth-config.js', 'tp-auth.js',
-  'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
+  'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'tp-tender-searches.js', 'map.js',
   'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',
   'tp-3d-core.js', 'tp-canvas-scroll.js', 'tp-label-layout.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
