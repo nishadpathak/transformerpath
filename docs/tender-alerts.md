@@ -1,0 +1,11 @@
+# Tender updates on this device
+
+On `/tenders.html`, filter **Open bids**, select **Save current search**, then **Track updates on this device**. On the first visit we record a baseline without notifying you about existing tenders. On later visits, the panel shows matching records newly listed on TransformerPath and previously seen records whose exact deadline changed after a newer recorded verification. It links to the notice and the tender page. Open status is checked against the deadline instant while the page loads. Closing-soon display changes are not deadline changes.
+
+The comparison uses confirmed transformer scope, an official HTTPS procurement link, a buyer/country/reference, a recorded verification date, and an exact deadline. Duplicate identities and date-only deadlines remain on the public board but are not eligible for updates. Alerts only display while the listing remains open. Use **Mark updates as read** to clear the list or **Stop tracking updates** to delete its local tracking history. Removing the search deletes the record and history together. The tracking baseline, unread updates and saved searches are stored in this browser only. No extra network request, account, billing, or email is needed. Changing the filters of a tracked saved search resets its baseline. Only explicit, properly sourced amendment records are labelled as official amendments.
+
+The data source is the generated public board; this is not instant monitoring, and it does not run while the app is closed. Keep the public tender board free.
+
+## Before enabling optional email
+
+Build separately from the older GCC Intel digest. Use explicit consent and verified ownership of the delivery address, a private per-user subscription store with revocable opt-in, a verified transactional sender and one-click stop, and a server-side ledger that detects changes only on exact, verified notices. Make retries idempotent and prevent stale board builds from reversing deadlines. Tests should suppress real sends, use synthetic recipients and confirm that no recipient information is returned by public or scheduled endpoints. Apply provider setup, migrations and outbound email only in a separately reviewed release; nothing in this feature enables them.
